@@ -6,8 +6,8 @@ window {
     anchor: center;
     background-color: @bg0;
     children: [mainbox];
-    width: 24em;
-    height: 24em;
+    width: 32em;
+    height: 29em;
 }
 
 mainbox {
@@ -44,7 +44,7 @@ listview {
     background-color: transparent;
     dynamic: true;
     expand: true;
-    columns: 1;
+    columns: 2;
 }
 
 element {
@@ -88,5 +88,10 @@ entry {
     placeholder-color: @fg3;
     padding: 12px;
     margin: 0px 12px 0px 12px;
-} 
+}
 
+textbox {
+    background-color: @bg0;
+    horizontal-align: 0.5;
+    vertical-align: 0.5;
+}
