@@ -59,7 +59,7 @@ exec blueman-applet
 exec ydotoold
 exec mpd-mpris
 exec ~/.config/background/wallpaper.sh set
-exec $eww/eww.sh
+exec $eww/run.sh
 # dbus secrets agent
 exec gnome-keyring-daemon
 # polkit
@@ -73,6 +73,9 @@ exec_always sleep 1 && $sc/layout.py
 # directional resizing
 exec_always pkill -f "python.*smart_resize.py"
 exec_always sleep 1 && $sc/smart_resize.py
+
+# wait for graphical pinentry
+exec sleep 10 && goimapnotify
 
 # handle effects for rofi in the compositor, much nicer and more consistent
 layer_effects "rofi" shadows enable; corner_radius 18; blur disable
