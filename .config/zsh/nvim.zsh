@@ -9,15 +9,15 @@ function nv {
 }
 
 function sp {
-    nvr -o "${@:--}" 
+    nvr -o "${@:--}"
 }
 
 function vsp {
-    nvr -O "${@:--}" 
+    nvr -O "${@:--}"
 }
 
 function tab {
-    nvr -p "${@:--}" 
+    nvr -p "${@:--}"
 }
 
 alias qf="nvr -q -"
@@ -29,6 +29,6 @@ function vg {
 compdef vg=rg
 
 EDITOR=nvr
-# make sure the buffer gets closed on q, so that the process exits 
+# make sure the buffer gets closed on q, so that the process exits
 export GIT_EDITOR="nvr -cc Sp -c 'se bufhidden=delete' --remote-wait"
 ZVM_VI_EDITOR=(nvr -cc Sp -c 'se bufhidden=delete' --remote-wait)

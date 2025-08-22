@@ -71,6 +71,8 @@ else
 fi
 compdef _files '-redirect-' # for some reason wasnt default
 
+# as magick tells me, `convert` is deprecated
+compdef magick=convert
 
 #history
 HISTFILE="$XDG_DATA_HOME/zsh/histfile"

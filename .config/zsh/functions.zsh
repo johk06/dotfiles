@@ -74,6 +74,15 @@ function open {
     done
 }
 
+# generate a "clean" version of the history
+# deduplicate
+# restore order
+function cleanhist {
+    fc -l -$HISTSIZE \
+        | sort -k 2 | uniq -f 1 \
+        | sort -nk 1 | sed 's/^\s*[0-9]*\s*//'
+}
+
 source $ZDOTDIR/handlers.zsh
 
 # load all the modules i always want

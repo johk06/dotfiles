@@ -31,7 +31,7 @@ export FZF_DEFAULT_OPTS
 
 # find & edit
 function fed {
-    local res="$(fd $@ --type=file|fzf --prompt=" ed: " --preview='bat -p --color=always -- {}')"
+    local res="$(fd $@ --type=file|fzf --prompt="ed: " --preview='bat -p --color=always -- {}')"
     if [[ -z "$res" ]]; then
         return
     fi
