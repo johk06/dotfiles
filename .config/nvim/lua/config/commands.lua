@@ -376,15 +376,26 @@ end, {
 })
 
 --[[
-Save all of the specified options in a modeline at the end of the file
-(or the end if ! is given).
-Replaces an existing modeline if it can detect one
+Save all of the specified options in a modeline at the end of the file (or the
+end if ! is given). Replaces an existing modeline if it can detect one (either
+at the start or end of the file)
 ]]
 command("Modeline", function(args)
     local commentstring = vim.bo.commentstring
+    if not commentstring or not commentstring:find("%%s") then
+        utils.error("Modeline", "Cannot create modeline, 'commenstring' is not set")
+        return
+    end
+    local escaped_commentstring = vim.pesc(commentstring)
+    local modeline_pattern = escaped_commentstring:gsub("%%%%s", "vim: .*")
+
     local set_cmd = {}
     for _, opt in ipairs(args.fargs) do
-        local val = api.nvim_get_option_value(opt, {})
+        local ok, val = pcall(api.nvim_get_option_value, opt, {})
+        if not ok then
+            utils.error("Modeline", val)
+            return
+        end
         local set
         if val == true then
             set = opt
@@ -400,27 +411,29 @@ command("Modeline", function(args)
     local directive = ("vim: set %s :"):format(table.concat(set_cmd, " "))
     local modeline = commentstring:format(directive)
 
-    local target, current
-    if args.bang then
-        target = 0
-        current = 1
-    else
-        local linecount = api.nvim_buf_line_count(0)
-        current = linecount
-        target = linecount + 1
-    end
+    local linecount = api.nvim_buf_line_count(0)
+    local firstline = api.nvim_buf_get_lines(0, 0, 1, false)[1]
+    local lastline = api.nvim_buf_get_lines(0, linecount - 1, linecount, false)[1]
 
-    local escaped_commentstring = vim.pesc(commentstring)
-    local pattern = escaped_commentstring:gsub("%%%%s", "vim: .*")
-
-    local replace = false
-    local current_line = api.nvim_buf_get_lines(0, current - 1, current, false)[1]
-    if current_line:match(pattern) then
+    local text = { modeline }
+    local target, replace = 1, false
+    if firstline:match(modeline_pattern) then
+        target = 1
         replace = true
-        target = current
+    elseif lastline:match(modeline_pattern) then
+        target = linecount
+        replace = true
+    elseif args.bang then
+        target = 0
+        replace = false
+        text = { modeline, "" }
+    else
+        target = linecount
+        replace = false
+        text = { "", modeline }
     end
 
-    api.nvim_buf_set_lines(0, target - (replace and 1 or 0), target, false, { modeline })
+    api.nvim_buf_set_lines(0, target - (replace and 1 or 0), target, false, text)
 end, {
     desc = "Save options in modeline",
     nargs = "+",
