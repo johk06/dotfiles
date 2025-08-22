@@ -347,7 +347,7 @@ command("OnWrite", function(args)
             for _, item in ipairs(cmd) do
                 table.insert(com, vim.fn.expand(item))
             end
-            vim.system(com, {text = true}, function(out)
+            vim.system(com, { text = true }, function(out)
                 if out.code ~= 0 then
                     vim.schedule(function()
                         utils.error("OnWrite", out.stderr)
@@ -373,6 +373,59 @@ end, {
     nargs = "+",
     bang = true,
     complete = "shellcmd",
+})
+
+--[[
+Save all of the specified options in a modeline at the end of the file
+(or the end if ! is given).
+Replaces an existing modeline if it can detect one
+]]
+command("Modeline", function(args)
+    local commentstring = vim.bo.commentstring
+    local set_cmd = {}
+    for _, opt in ipairs(args.fargs) do
+        local val = api.nvim_get_option_value(opt, {})
+        local set
+        if val == true then
+            set = opt
+        elseif val == false then
+            set = "no" .. opt
+        else
+            set = ("%s=%s"):format(opt, val):gsub("[: ]", "\\%1")
+        end
+
+        table.insert(set_cmd, set)
+    end
+
+    local directive = ("vim: set %s :"):format(table.concat(set_cmd, " "))
+    local modeline = commentstring:format(directive)
+
+    local target, current
+    if args.bang then
+        target = 0
+        current = 1
+    else
+        local linecount = api.nvim_buf_line_count(0)
+        current = linecount
+        target = linecount + 1
+    end
+
+    local escaped_commentstring = vim.pesc(commentstring)
+    local pattern = escaped_commentstring:gsub("%%%%s", "vim: .*")
+
+    local replace = false
+    local current_line = api.nvim_buf_get_lines(0, current - 1, current, false)[1]
+    if current_line:match(pattern) then
+        replace = true
+        target = current
+    end
+
+    api.nvim_buf_set_lines(0, target - (replace and 1 or 0), target, false, { modeline })
+end, {
+    desc = "Save options in modeline",
+    nargs = "+",
+    bang = true,
+    complete = "option"
 })
 -- }}}
 
