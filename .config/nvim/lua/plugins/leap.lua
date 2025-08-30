@@ -13,7 +13,7 @@ The standalone leap in normal mode can still be useful,
 *if* I am just navigating inside a single screen of text
 Otherwise, search or various more powerful (and easier) motions
 are much much easier
-}}} ]]--
+}}} ]] --
 
 M.config = function()
     local utils = require("config.utils")
@@ -22,11 +22,16 @@ M.config = function()
     map("n", "S", "<Plug>(leap-from-window)")
     map("n", "s", "<Plug>(leap)")
 
-    -- much more flexible than leap-spooky, no more need for mapping every object, this allows motions
-    -- format is different: <op>r<leap><motion/textobject>
-    -- e.g. crle<cr>i"<esc>
-    -- repeat the operator for line: crle<cr>c<esc>
-    -- not for visual mode, since r is useful there
+    --[[ Leap Remote
+        Much more flexible than the classic remap for every textobject,
+        this avoids enumerating all textobjects here.
+        No map for visual mode, since r is useful there
+
+        Some examples & use cases:
+        - Use this with gy from ./substitute.lua to swap two regions of text
+        - Yanking/deleting a region and pasting it at the cursor
+        - Quick changes in other regions required by edits at the cursor
+    ]]
     map("o", "r", function() require("leap.remote").action() end)
 
     -- HACK: override colors only after it has been setup
