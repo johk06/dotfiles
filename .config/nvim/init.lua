@@ -44,7 +44,6 @@ o.scrolloff = 8
 o.shiftwidth = 4
 o.showmode = false
 o.smartcase = true
-o.softtabstop = 4
 o.title = true
 o.undofile = true
 o.winborder = "rounded"
