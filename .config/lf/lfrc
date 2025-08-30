@@ -25,6 +25,10 @@ set previewer '~/.config/lf/bin/previewer.sh'
 set cleaner '~/.config/lf/bin/cleaner.sh'
 set shellopts '-ey'
 set ifs "\n"
+# regex is cool, generally the only exception are file extensions
+# which need backslash-escaping
+set filtermethod "regex"
+set searchmethod "regex"
 set ignorecase
 set smartcase
 set relativenumber
@@ -100,10 +104,10 @@ map <esc> clear
 map M mark-save
 
 # sort
-map =t :set sortby time; set info 'time'
-map =d :set sortby natural; set info size
-map =i :set reverse!
-map =T :set sortby time; set reverse!;top;set info 'time'
+map st :set sortby time; set info 'time'
+map sd :set sortby natural; set info size
+map si :set reverse!
+map sT :set sortby time; set reverse!;top;set info 'time'
 
 # selections
 map <space>

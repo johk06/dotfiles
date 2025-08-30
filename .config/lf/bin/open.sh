@@ -35,7 +35,7 @@ application/pdf)
     disown
     ;;
 image/*)
-    imv_pid="$(pgrep imv || echo)"
+    imv_pid="$(pgrep -f imv || echo)"
     if [[ -z "$imv_pid" ]]; then
         echo "$fx" | imv
     else

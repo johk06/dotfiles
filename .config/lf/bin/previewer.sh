@@ -332,7 +332,7 @@ function bsdtar_list {
                 fi
                 lastwasdir=0
                 name="${name:t}"
-                print -P "󰈔 $name"
+                print -P "$name"
                 ;;
         esac
     done
