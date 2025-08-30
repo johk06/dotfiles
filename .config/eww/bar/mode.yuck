@@ -1,6 +1,5 @@
 (defvar mode-names '{
 "default": "Insert",
-"normal": "Normal",
 "media": "Media",
 "screenshot": "Print",
 "clipboard":"Clip",
@@ -49,16 +48,6 @@
     {"keys": "b", "action": "Toggle Bar"},
     {"keys": "c", "action": "Toggle Clock"},
     {"keys": "m", "action": "Mirror Screen"}
-],
-"normal": [
-    {"keys": "[0-9]", "action": "Workspace"},
-    {"keys": "\`", "action": "Scratch"},
-    {"keys": "][", "action": "n/p"},
-    {"keys": "hjkl", "action":"Windows"},
-    {"keys": "<C-*>", "action":"Resize"},
-    {"keys": "<S-*>", "action": "Move"},
-    {"keys": "f", "action": "Fullscreen"},
-    {"keys": "d", "action": "Detach"}
 ],
 "clipboard": [
     {"keys": "<M-*>", "action": "Operate on Selection"},
