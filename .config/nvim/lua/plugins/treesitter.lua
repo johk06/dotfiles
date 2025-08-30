@@ -138,18 +138,8 @@ local ts_texobjects = {
 
         -- use the builtin repeat
         local ts_repeat = require("nvim-treesitter-textobjects.repeatable_move")
-        map(modes, ";", function()
-            local keys = ts_repeat.repeat_last_move_next()
-            if keys then
-                vim.cmd(('normal! %d%s'):format(vim.v.count1, vim.keycode(keys)))
-            end
-        end)
-        map(modes, ",", function()
-            local keys = ts_repeat.repeat_last_move_previous()
-            if keys then
-                vim.cmd(('normal! %d%s'):format(vim.v.count1, vim.keycode(keys)))
-            end
-        end)
+        map(modes, ";", ts_repeat.repeat_last_move_next)
+        map(modes, ",", ts_repeat.repeat_last_move_previous)
 
         -- additional repeat movements for plugins
         local nd, pd = utils.make_mov_pair(
