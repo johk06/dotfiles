@@ -13,4 +13,5 @@ bindsym {
     $mod+Shift+Period    exec $sc/invoke-notification.sh
     $mod+Slash           exec killall rofi || rofi -show win
     $mod+I               exec $sc/toggle-numen
+    $mod+Minus           exec killall rofi || ~/.config/rofi/applets/pass/run.sh
 }
