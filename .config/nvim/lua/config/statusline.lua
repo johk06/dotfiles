@@ -1,8 +1,6 @@
 local api = vim.api
 local fn = vim.fn
 local utils = require("config.utils")
-local format_buf_name = utils.format_buf_name
-local btypehighlights, btypesymbols = utils.btypehighlights, utils.btypesymbols
 
 -- my own statusline
 -- this should be faster than lualine
@@ -91,15 +89,15 @@ end
 -- Current Buffer Title {{{
 local function update_title()
     local buf = api.nvim_get_current_buf()
-    local name, kind, show_modified = format_buf_name(buf)
+    local name, kind, show_modified = utils.format_buf_name(buf)
     name = name and esc(name)
 
     local changed = vim.bo[buf].modified
     local readonly = vim.bo[buf].readonly or not vim.bo[buf].modifiable
 
     return string.format("%%#SlI%s#%s %%#SlIText#%s%s%s",
-        btypehighlights[kind],
-        btypesymbols[kind],
+        utils.btypehighlights[kind],
+        utils.btypesymbols[kind],
         (name or "[-]"),
         (readonly and show_modified and "%#SlIReadonly#[ro]" or ""),
         (show_modified and not readonly
@@ -362,7 +360,7 @@ redraw_on("ModeChanged", {
 redraw_on("ModeChanged", {
     pattern = "v:*,V:*,\x16:*",
     callback = function()
-        sections[indices.words]  = update_words()
+        sections[indices.words] = update_words()
         redraw()
     end
 })
