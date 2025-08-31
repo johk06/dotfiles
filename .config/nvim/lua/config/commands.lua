@@ -299,7 +299,7 @@ command("Shebang", function(args)
     if api.nvim_buf_get_lines(0, 0, 1, false)[1]:match("^#!.*") then
         api.nvim_buf_set_lines(0, 0, 1, false, { "#!" .. shebang })
     else
-        api.nvim_buf_set_lines(0, 0, 1, false, { "#!" .. shebang, "" })
+        api.nvim_buf_set_lines(0, 0, 0, false, { "#!" .. shebang, "" })
     end
 
     -- make the file executable when it's first written
@@ -387,7 +387,7 @@ command("Modeline", function(args)
         return
     end
     local escaped_commentstring = vim.pesc(commentstring)
-    local modeline_pattern = escaped_commentstring:gsub("%%%%s", "vim: .*")
+    local modeline_pattern = escaped_commentstring:gsub("%%%%s", "vim: set .*")
 
     local set_cmd = {}
     for _, opt in ipairs(args.fargs) do
@@ -402,7 +402,7 @@ command("Modeline", function(args)
         elseif val == false then
             set = "no" .. opt
         else
-            set = ("%s=%s"):format(opt, val):gsub("[: ]", "\\%1")
+            set = ("%s=%s"):format(opt, val):gsub("[:%s]", "\\%1")
         end
 
         table.insert(set_cmd, set)
