@@ -600,6 +600,21 @@ M.select_register = function(buf)
     api.nvim_feedkeys("\"" .. reg, "n")
 end
 
+M.select_all_or_one = function(buf)
+    local picker = t_action_state.get_current_picker(buf)
+    local multi = picker:get_multi_selection()
+    if not vim.tbl_isempty(multi) then
+        t_actions.close(buf)
+        for _, entry in pairs(multi) do
+            if entry.filename then
+                vim.cmd.edit(entry.filename)
+            end
+        end
+    else
+        t_actions.select_default(buf)
+    end
+end
+
 --- View a commit in fugitive
 M.fugitive_commit = function(buf)
     local selection = t_action_state.get_selected_entry()
@@ -641,21 +656,6 @@ M.jumplist = function(opts)
             results = list
         }
     }):find()
-end
-
-M.select_all_or_one = function(buf)
-    local picker = t_action_state.get_current_picker(buf)
-    local multi = picker:get_multi_selection()
-    if not vim.tbl_isempty(multi) then
-        t_actions.close(buf)
-        for _, entry in pairs(multi) do
-            if entry.filename then
-                vim.cmd.edit(entry.filename)
-            end
-        end
-    else
-        t_actions.select_default(buf)
-    end
 end
 -- }}}
 

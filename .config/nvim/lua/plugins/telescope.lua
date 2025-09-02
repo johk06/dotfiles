@@ -1,4 +1,4 @@
-local builtin_picker_maps = {
+local picker_maps = {
     ["<space>j"] = { "jumplist", "Telescope: Jumps", custom = true },
     ["<space><space>"] = { "buffers", "Telescope: Buffers" },
     ["<space>:"] = { "command_history", "Telescope: Command History" },
@@ -28,7 +28,7 @@ local builtin_picker_maps = {
 ---@type LazySpec
 local M = {
     "nvim-telescope/telescope.nvim",
-    keys = vim.tbl_keys(builtin_picker_maps),
+    keys = vim.tbl_keys(picker_maps),
     cmd = { "Telescope" },
     dependencies = {
         {
@@ -287,7 +287,7 @@ M.config = function()
 
     local builtin = require("telescope.builtin")
     local map = utils.map
-    for lhs, rhs in pairs(builtin_picker_maps) do
+    for lhs, rhs in pairs(picker_maps) do
         map("n", lhs, rhs.custom and custom(rhs[1]) or builtin[rhs[1]], { desc = rhs[2] })
     end
 end
