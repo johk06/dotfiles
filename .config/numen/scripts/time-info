@@ -1,3 +1,7 @@
 #!/bin/sh
 
-date +"It's %_M minutes after %l %p" | espeak
+if [ "$1" = "time" ]; then
+    date +"It's %_M minutes after %l %p"
+elif [ "$1" = "date" ]; then
+    date +"It's %A, the %e. of %B"
+fi | espeak

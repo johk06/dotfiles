@@ -1,19 +1,19 @@
 # Letters, modelled on Old English Runes {{{
 ash: press a
-birch: press b
+beach: press b
 can: press c
 day: press d
-ear: press e
+edge: press e
 fee: press f
 good: press g
 hail: press h
 ice: press i
 joy: press j
-cap: press k
+kid: press k
 lake: press l
 man: press m
 need: press n
-offer: press o
+of: press o
 pain: press p
 quad: press q
 road: press r
@@ -22,11 +22,32 @@ tea: press t
 us: press u
 void: press v
 wish: press w
-# like Xen
-zen: press x
+plex: press x
 yew: press y
 zed: press z
 # }}}
+
+# Common pairs of letters {
+# Consonant digraphs
+shine: press s h
+thorn: press t h
+chasm: press c h
+phone: press p h
+yoke: press g h
+what: press w h
+faff: press f f
+sass: press s s
+ing: press n g
+ack: press c k
+
+# Vowel digraphs
+fool: press o o
+our: press o u
+eel: press e e
+eat: press e a
+err: press e r
+orc: press o r
+# }
 
 # Numbers {{{
 naught: press 0
@@ -69,7 +90,7 @@ tide: press asciitilde
 bang: press exclam
 dollar: press dollar
 euro: press Alt_R c equal
-under: press underscore
+sub: press underscore
 clause: press colon
 semi: press semicolon
 info: press parenleft
@@ -94,7 +115,7 @@ slash: press slash
 slope: press backslash
 list: press comma
 point: press period
-equals: press equal
+same: press equal
 # }}}
 
 space: press space
@@ -130,7 +151,7 @@ ante: press control+Left
 post: press control+Right
 
 prime: press Home
-ultimate: press End
+fine: press End
 
 next: press Next
 previous: press Prior

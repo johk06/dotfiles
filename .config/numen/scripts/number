@@ -1,54 +1,54 @@
 #!/usr/bin/env luajit
 
 local WORDS = {
-	one = 1,
-	two = 2,
-	three = 3,
-	four = 4,
-	five = 5,
-	six = 6,
-	seven = 7,
-	eight = 8,
-	nine = 9,
-	ten = 10,
-	eleven = 11,
-	twelve = 12,
-	thirteen = 13,
-	fourteen = 14,
-	fifteen = 15,
-	sixteen = 16,
-	seventeen = 17,
-	eighteen = 18,
-	ninteen = 19,
-	twenty = 20,
-	thirty = 30,
-	forty = 40,
-	fifty = 50,
-	sixty = 60,
-	seventy = 70,
-	eighty = 80,
-	ninety = 90,
-	hundred = 100,
-	thousand = 1000,
-	million = 1000000,
-	billion = 1000000000,
+    one = 1,
+    two = 2,
+    three = 3,
+    four = 4,
+    five = 5,
+    six = 6,
+    seven = 7,
+    eight = 8,
+    nine = 9,
+    ten = 10,
+    eleven = 11,
+    twelve = 12,
+    thirteen = 13,
+    fourteen = 14,
+    fifteen = 15,
+    sixteen = 16,
+    seventeen = 17,
+    eighteen = 18,
+    ninteen = 19,
+    twenty = 20,
+    thirty = 30,
+    forty = 40,
+    fifty = 50,
+    sixty = 60,
+    seventy = 70,
+    eighty = 80,
+    ninety = 90,
+    hundred = 100,
+    thousand = 1000,
+    million = 1000000,
+    billion = 1000000000,
 }
 
 ---@param seq number[]
 local seq_to_num = function(seq)
-	local multiplier = 1
-	local res = 0
-	for i, num in ipairs(seq) do
-		local next = seq[i + 1]
-		if next and next > num then
-			multiplier = multiplier * num
-		else
-			res = res + num * multiplier
-			multiplier = 1
-		end
-	end
+    local multiplier = 1
+    local res = 0
+    for i, num in ipairs(seq) do
+        local next = seq[i + 1]
+        if next and next > num then
+            multiplier = multiplier * num
+        else
+            res = res + num * multiplier
+            multiplier = 1
+        end
+    end
 
-	return res
+    return res
 end
 
 local file = assert(io.open(os.getenv("NUMEN_STATE_DIR") .. "/transcripts", "r"))
@@ -58,46 +58,46 @@ file:close()
 ---@type string[]
 local words = {}
 for word in string.gmatch(sentence, "(%S+)") do
-	table.insert(words, word)
+    table.insert(words, word)
 end
 
 
 local putres = function(n)
-	print(("%d"):format(n))
+    print(("%d"):format(n))
 end
 local unit = words[#words]
 if unit == "hexadecimal" or unit == "hex" then
-	words[#words] = nil
-	putres = function(n) print(("0x%x"):format(n)) end
+    words[#words] = nil
+    putres = function(n) print(("0x%x"):format(n)) end
 elseif unit == "octal" or unit == "oct" then
-	words[#words] = nil
-	putres = function(n) print(("0x%x"):format(n)) end
+    words[#words] = nil
+    putres = function(n) print(("0x%x"):format(n)) end
 elseif unit == "binary" or unit == "bin" then
-	words[#words] = nil
-	putres = function(n)
-		local ret = ""
-		while n > 0 do
-			local rem = n % 2
-			n = (n - rem) / 2
-			ret = rem .. ret
-		end
+    words[#words] = nil
+    putres = function(n)
+        local ret = ""
+        while n > 0 do
+            local rem = n % 2
+            n = (n - rem) / 2
+            ret = rem .. ret
+        end
 
-		print("0b" .. ret)
-	end
+        print("0b" .. ret)
+    end
 end
 
 local numbers = {}
 for _, word in ipairs(words) do
-	-- handle "onehundred" etc
-	local num
-	if word:match("..hundred$") then
-		num = WORDS[word:gsub("hundred$", "")] * 100
-	else
-		num = WORDS[word]
-	end
-	if num then
-		table.insert(numbers, num)
-	end
+    -- handle "onehundred" etc
+    local num
+    if word:match("..hundred$") then
+        num = WORDS[word:gsub("hundred$", "")] * 100
+    else
+        num = WORDS[word]
+    end
+    if num then
+        table.insert(numbers, num)
+    end
 end
 
 if arg[1] then

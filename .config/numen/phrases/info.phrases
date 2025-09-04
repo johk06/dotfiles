@@ -1,1 +1,2 @@
-what time is it: run ~/.config/numen/scripts/time-info& disown
+what time is it: run ~/.config/numen/scripts/time-info time& disown
+what day is it: run ~/.config/numen/scripts/time-info date& disown
