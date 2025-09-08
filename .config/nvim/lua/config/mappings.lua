@@ -710,13 +710,33 @@ map("i", "<C-b>", "<C-o>[a", { remap = true })
 -- <C-l>
 -- <C-j>
 -- <C-m> maybe, may conflict with <cr>
--- <C-z>
 -- }}}
 
 -- Snippets {{{
 -- move between snippet fields
 map({ "n", "s", "i" }, "<M-space>", function() vim.snippet.jump(1) end)
 map({ "n", "s", "i" }, "<C-space>", function() vim.snippet.jump(-1) end)
+
+-- Custom filetype-specific snippets with <C-z> as a leader key
+--[[ Common conventions for those keys, that *should* be followed:
+    - f: function declaration
+--]]
+map("i", "<C-z>", function()
+    local snippets = vim.b.snippets
+    if not snippets then
+        utils.error("Snippets", "No snippets for '" .. vim.bo.filetype .. "'")
+        return
+    end
+    local key = fn.getcharstr(-1, { cursor = "hide" })
+    local snippet = snippets[key]
+    if type(snippet) == "function" then
+        return snippet()
+    elseif type(snippet) == "string" then
+        vim.snippet.expand(snippet)
+    elseif vim.islist(snippet) then
+        vim.snippet.expand(table.concat(snippet, "\n"))
+    end
+end)
 -- }}}
 
 -- Additional Textobjects {{{
