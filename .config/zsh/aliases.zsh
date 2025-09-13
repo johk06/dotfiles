@@ -3,7 +3,7 @@ alias \
     bc="bc -l" \
     svim="sudoedit" \
     sv="sudoedit" \
-    nv="nvim -b" \
+    nv="nvim" \
     yay="yay --editmenu --devel" \
     mpv="mpv --hwdec=auto" \
     q="exit" \
@@ -16,11 +16,7 @@ alias \
     la='lsd -A --hyperlink=auto' \
     l='lsd --hyperlink=auto' \
     grep='grep --color=auto' \
-    fdd="fd -t d" \
-    fdf="fd -t f" \
     g="git" \
-    pg="less -ri" \
-    ap="less -rFi" \
 
 alias '#'="noglob qalc" # do math directly on the cmdline
 
