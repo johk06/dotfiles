@@ -98,6 +98,7 @@ function .. {
 # find the parent directory containing a file or dir
 # e.g. `root .git` or `root compile_commands.json`
 # if further arguments are given, it evaluates the rest in that place
+# otherwise cd to that directory
 function root {
     local pattern="$1"
     local cwd="$PWD"
@@ -124,10 +125,11 @@ function root {
     fi
 }
 
-# cd to a directory containing a file
-function rcd {
-    cd "$(root "$1")"
+# list files found using fd expression
+function lfd {
+    fd "$@" --strip-cwd-prefix --exec-batch lsd --directory-only -l -- '{}'
 }
+compdef lfd=fd
 
 autoload -Uz zmv
 alias zcp="zmv -C" zln="zmv -p 'ln -s'"
