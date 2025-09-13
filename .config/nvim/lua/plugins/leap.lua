@@ -13,7 +13,7 @@ The standalone leap in normal mode can still be useful,
 *if* I am just navigating inside a single screen of text
 Otherwise, search or various more powerful (and easier) motions
 are much much easier
-}}} ]] --
+}}} ]]
 
 M.config = function()
     local utils = require("config.utils")
@@ -32,7 +32,12 @@ M.config = function()
         - Yanking/deleting a region and pasting it at the cursor
         - Quick changes in other regions required by edits at the cursor
     ]]
+
     map("o", "r", function() require("leap.remote").action() end)
+    -- (u)sing, this primarily allows for edits to regions that are not visible
+    -- this is usually *not* a replacement for :s
+    map("o", "u/", function() require("leap.remote").action { jumper = "/" } end)
+    map("o", "u?", function() require("leap.remote").action { jumper = "?" } end)
 
     -- HACK: override colors only after it has been setup
     vim.api.nvim_create_autocmd("User", {
