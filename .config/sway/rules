@@ -2,7 +2,6 @@
 
 
 for_window [app_id="gamescope"] move window to workspace number 10
-for_window [title="^Minecraft.*"] move window to workspace number 10
 
 # float
 for_window [app_id="zenity"] floating enable
@@ -12,3 +11,8 @@ for_window [app_id="pavucontrol"] floating enable
 for_window [app_id="org.pipewire.Helvum"] floating enable
 for_window [app_id="nm-connection-editor"] floating enable
 for_window [app_id="nwg-icon-picker"] floating enable, resize set 300px 400px
+
+# mark certain windows by default
+for_window [app_id="firefox" title="YouTube"] mark yt
+for_window [app_id="vesktop"] mark msg
+for_window [app_id="gamescope"] mark game
