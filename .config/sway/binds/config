@@ -9,7 +9,7 @@ mode "config" {
     bindsym B exec eww open --toggle bar; mode "default"
     bindsym C exec eww open --toggle background; mode "default"
 
-    bindsym R exec '~/.config/background/wallpaper.sh both ~/.config/background/img/"$(ls ~/.config/background/img/ | shuf -n 1)"'
+    bindsym R exec '~/.config/background/wallpaper.sh both "$(find ~/.config/background/img -type f -print0 | shuf -z -n 1)"'
 }
 
 bindsym $mod+Delete mode "config"
