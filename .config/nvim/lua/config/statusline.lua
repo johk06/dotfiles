@@ -47,13 +47,6 @@ local mode_to_name = {
     ["\x13"]   = "^S",
 }
 
-local no_showcmd_modes = {
-    i = true,
-    t = true,
-    c = true,
-    R = true
-}
-
 local function update_mode()
     local mc = require("multicursor-nvim")
     local has_multicursor = mc.hasCursors()
@@ -65,7 +58,7 @@ local function update_mode()
     return string.format("%%#SlMode%s#%-2s%s",
         hl,
         (has_multicursor and mc.numCursors() or "") .. (mode_to_name[mode] or short),
-        (no_showcmd_modes[short] and "" or "%#SlTyped#%-5(%S%)")
+        "%#SlTyped#%-5(%S%)"
     )
 end
 -- }}}
