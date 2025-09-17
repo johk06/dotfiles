@@ -64,6 +64,8 @@
 <Multi_key> <equal> <quotedbl> <apostrophe> : "ъ"
 <Multi_key> <equal> <apostrophe> <quotedbl> : "Ь"
 <Multi_key> <equal> <apostrophe> <apostrophe> : "ь"
+<Multi_key> <equal> <y> : "ы"
+<Multi_key> <equal> <Y> : "Ы"
 <Multi_key> <equal> <apostrophe> <E> : "Э"
 <Multi_key> <equal> <apostrophe> <e> : "э"
 <Multi_key> <equal> <apostrophe> <U> : "Ю"
