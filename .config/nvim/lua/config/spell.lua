@@ -15,9 +15,7 @@ local spellfile_donwload_dir = vim.tbl_map(function(dir)
     end
 end, vim.opt.runtimepath:get())[1]
 
-
 local M = {}
-local fn = vim.fn
 local api = vim.api
 
 local download_spellfile = function(lang)
@@ -49,24 +47,7 @@ local download_spellfile = function(lang)
     end)
 end
 
-M.spell_cmd = function(arguments)
-    local args = arguments.fargs
-    if args[1] == "get" then
-        for i = 2, #args do
-            download_spellfile(args[i])
-        end
-    elseif args[1] == "set" then
-        vim.bo.spelllang = args[2] or "en_us"
-        vim.wo.spell = true
-    elseif args[1] == "toggle" then
-        vim.wo.spell = not vim.wo.spell
-    elseif args[1] == "off" then
-        vim.wo.spell = false
-    end
-end
-
 M.tried_languages = {}
-
 local try_to_download = function(name)
     if M.tried_languages[name] then
         print("Already tried to get language: " .. name)
@@ -82,85 +63,5 @@ api.nvim_create_autocmd("SpellFileMissing", {
         try_to_download(ev.match)
     end
 })
-
--- Completion constants {{{
-local spell_toplevel = {
-    "set",
-    "get",
-    "off",
-    "toggle"
-}
-
--- non authoritative list
--- taken from the mirror
-local spell_languages = {
-    "af",
-    "am",
-    "bg",
-    "br",
-    "ca",
-    "cs",
-    "cy",
-    "da",
-    "de",
-    "el",
-    "en",
-    "eo",
-    "es",
-    "eu",
-    "fo",
-    "fr",
-    "ga",
-    "gd",
-    "gl",
-    "he",
-    "hr",
-    "hu",
-    "id",
-    "it",
-    "ku",
-    "la",
-    "lt",
-    "lv",
-    "mg",
-    "mi",
-    "ms",
-    "nb",
-    "nl",
-    "nn",
-    "ny",
-    "pl",
-    "pt",
-    "ro",
-    "ru",
-    "rw",
-    "sk",
-    "sl",
-    "sr",
-    "sv",
-    "sw",
-    "tet",
-    "th",
-    "tl",
-    "tn",
-    "tr",
-    "uk",
-    "yi",
-    "yi-tr",
-    "zu"
-}
--- }}}
-
-M.spell_cmd_complete = function(lead, line, cpos)
-    local arg = vim.trim(line:match("^Spell%s*(.*)"))
-
-    if arg == "" then
-        return spell_toplevel
-    elseif arg == "off" or arg == "toggle" then
-        return
-    elseif arg == "set" or vim.startswith(arg, "get") then
-        return spell_languages
-    end
-end
 
 return M

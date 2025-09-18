@@ -291,7 +291,8 @@ end
 -- }}}
 
 -- easier mapping {{{
----@alias nvim_mode "n"|"i"|"c"|"v"|"x"|"s"|"o"|"t"|{}
+---@alias nvim_mode_char "n"|"i"|"c"|"v"|"x"|"s"|"o"|"t"
+---@alias nvim_mode nvim_mode_char | nvim_mode_char[]
 
 ---@param mode nvim_mode
 ---@param keys string

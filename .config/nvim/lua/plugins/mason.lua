@@ -15,6 +15,7 @@ local needed_programs = {
     ["typos-lsp"] = false,
     ["yaml-language-server"] = false,
     ["zls"] = false,
+    ["prettypst"] = false,
 }
 
 ---@param pkg Package

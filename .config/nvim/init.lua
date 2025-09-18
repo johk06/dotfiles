@@ -236,6 +236,7 @@ require("config.commands")     -- global custom commands
 require("config.statusline")   -- at bottom of screen
 require("config.bufferline")   -- at the top
 require("config.lsp")          -- language servers
+require("config.spell")        -- automatically install spelling languages
 
 -- load UI components
 local ui = require("config.ui")

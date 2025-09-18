@@ -159,18 +159,6 @@ end, {
 })
 -- }}}
 
--- Spell {{{
-command("Spell", function(args)
-    return require("config.spell").spell_cmd(args)
-end, {
-    desc = "Set spelling",
-    complete = function(...)
-        return require("config.spell").spell_cmd_complete(...)
-    end,
-    nargs = "*",
-})
--- }}}
-
 -- LSP {{{
 local lsp = vim.lsp
 local lsp_complete_clients = function()

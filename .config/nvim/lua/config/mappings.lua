@@ -523,9 +523,9 @@ end)
 
 -- Set options {{{
 -- [c]onfigure
-map("n", "<space>cs", "<cmd>Spell toggle<cr>", { desc = "Toggle 'spell'" })
-map("n", "<space>cg", "<cmd>Spell set de<cr>", { desc = "German spelling" })
-map("n", "<space>ce", "<cmd>Spell set en<cr>", { desc = "English spelling" })
+map("n", "<space>cs", "<cmd>set spell!<cr>", { desc = "Toggle 'spell'" })
+map("n", "<space>cg", "<cmd>set spell spl=de<cr>", { desc = "German spelling" })
+map("n", "<space>ce", "<cmd>set spell spl=en<cr>", { desc = "English spelling" })
 map("n", "<space>cl", "<cmd>set list!<cr>", { desc = "Toggle 'list'" })
 map("n", "<space>cw", "<cmd>set wrap!<cr>", { desc = "Toggle 'wrap'" })
 

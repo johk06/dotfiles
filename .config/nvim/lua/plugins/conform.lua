@@ -21,10 +21,11 @@ M.opts = {
         _     = { "trim_whitespace", "injected", lsp_format = "last" },
         c     = { "clang-format" },
         go    = { "gofmt" },
-        query = { "format-queries" },
         json  = { "jq" },
+        query = { "format-queries" },
         sh    = { "shfmt" },
         toml  = { "taplo" },
+        typst = {"prettypst"},
         xml   = { "xmllint" },
     },
     default_format_opts = {
