@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+ICON=qrscanner-symbolic
+
 CACHEDIR="$XDG_CACHE_HOME/qr"
 [[ ! -d "$CACHEDIR" ]] && mkdir -p "$CACHEDIR"
 
@@ -14,10 +16,13 @@ fi
 decoded="$(zbarimg -q "$file")"
 rm "$file"
 if [[ -z "$decoded" ]]; then
+    notify-send "QR-Scanner" "Failed to recognize a supported format" -i $ICON
     exit
 fi
 
-IFS=":" read -r prefix type data <<< "$decoded"
+IFS=":" read -r _ content <<< "$decoded"
+IFS=":" read -r type data <<< "$content"
+
 case "$type" in
     WIFI)
         IFS=";" read -ra fields <<< "$data"
@@ -48,19 +53,19 @@ case "$type" in
         esac
         ;;
     http|https)
-        reply="$(notify-send "Hyperlink" "$type:$data"\
+        reply="$(notify-send "Hyperlink" -i link "$content"\
             --action=copy="Copy"\
             --action=open="Open")"
         case "$reply" in 
-            copy) wl-copy <<< "$type:$data";;
-            open) xdg-open "$type:$data";;
+            copy) wl-copy <<< "$content";;
+            open) xdg-open "$content";;
         esac
         ;;
     *)
-        reply="$(notify-send "Text" "$type:$data" \
+        reply="$(notify-send "Unknown Format or Text" -i $ICON "$content" \
             --action=copy="Copy")"
         if [[ "$reply" == copy ]]; then
-            wl-copy <<< "$type:$data"
+            wl-copy <<< "$content"
         fi
 esac
 
