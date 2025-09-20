@@ -10,6 +10,13 @@ mode "config" {
     bindsym C exec eww open --toggle background; mode "default"
 
     bindsym R exec '~/.config/background/wallpaper.sh both "$(find ~/.config/background/img -type f -print0 | shuf -z -n 1)"'
+
+    bindsym K exec $sc/brightness.sh set +5
+    bindsym J exec $sc/brightness.sh set -5
+    bindsym Shift+K exec $sc/brightness.sh set +20
+    bindsym Shift+J exec $sc/brightness.sh set -20
+    bindsym Mod4+K exec $sc/brightness.sh set +50
+    bindsym Mod4+J exec $sc/brightness.sh set -50
 }
 
 bindsym $mod+Delete mode "config"

@@ -25,15 +25,14 @@ set)
         "$XDG_CONFIG_HOME/eww/bin/center_popup.sh" bright 2
         eww update brightness="$new_current"
     else
-        read -r _ _ _ current _ < <(ddcutil -d 1 getvcp 10 -t --lazy-sleep --sleep-multiplier 0.1)
+        current="$(eww get brightness)"
         ((new = current + delta))
         ((new = new >= 100 ? 100 : (new <= 0 ? 0 : new)))
-        for ((d = 1; d <= $(swaymsg -t get_outputs | jq 'length'); d++)); do
-            ddcutil setvcp 10 -d $d $new --lazy-sleep --disable-dynamic-sleep --sleep-multiplier 0.1 >/dev/null
-        done&
         eww update brightness="$new"
         "$XDG_CONFIG_HOME/eww/bin/center_popup.sh" bright 2
-        wait
+        for ((d = 1; d <= $(swaymsg -t get_outputs | jq 'length'); d++)); do
+            ddcutil setvcp 10 -d $d $new --lazy-sleep --disable-dynamic-sleep --sleep-multiplier 0.1 >/dev/null
+        done
     fi
     ;;
 rawset)

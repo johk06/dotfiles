@@ -47,7 +47,8 @@
     {"keys": "t", "action": "Theme"},
     {"keys": "b", "action": "Toggle Bar"},
     {"keys": "c", "action": "Toggle Clock"},
-    {"keys": "m", "action": "Mirror Screen"}
+    {"keys": "m", "action": "Mirror Screen"},
+    {"keys": "[jk]", "action": "Brightness"}
 ],
 "clipboard": [
     {"keys": "<M-*>", "action": "Operate on Selection"},

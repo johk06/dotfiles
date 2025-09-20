@@ -17,12 +17,12 @@ bindsym --locked Mod1+Ctrl+XF86AudioLowerVolume exec $audio DEFAULT_SOURCE lower
 bindsym --locked Mod1+XF86AudioMute             exec $audio DEFAULT_SOURCE mute
 
 # screen brightness
-bindsym --locked XF86MonBrightnessUp     exec $sc/brightness.sh set +5
-bindsym --locked XF86MonBrightnessDown   exec $sc/brightness.sh set -5
-bindsym --locked Ctrl+XF86MonBrightnessUp     exec $sc/brightness.sh set +20
-bindsym --locked Ctrl+XF86MonBrightnessDown   exec $sc/brightness.sh set -20
-bindsym --locked Mod4+XF86MonBrightnessUp     exec $sc/brightness.sh set +50
-bindsym --locked Mod4+XF86MonBrightnessDown   exec $sc/brightness.sh set -50
+bindsym --locked XF86MonBrightnessUp         exec $sc/brightness.sh set +5
+bindsym --locked XF86MonBrightnessDown       exec $sc/brightness.sh set -5
+bindsym --locked Shift+XF86MonBrightnessUp   exec $sc/brightness.sh set +20
+bindsym --locked Shift+XF86MonBrightnessDown exec $sc/brightness.sh set -20
+bindsym --locked Mod4+XF86MonBrightnessUp    exec $sc/brightness.sh set +50
+bindsym --locked Mod4+XF86MonBrightnessDown  exec $sc/brightness.sh set -50
 
 # media players
 bindsym --locked XF86AudioPlay exec playerctl play-pause
