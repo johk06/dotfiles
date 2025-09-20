@@ -17,12 +17,6 @@ run() {
     disown
 }
 
-type-string() {
-    coproc {
-        dotool <<<"type $1" >/dev/null 2>&1
-    }
-}
-
 notify-on-copy() {
     local seconds=${2:-45}
     notify-send -i password "$1 copied to clipboard" \
@@ -45,35 +39,41 @@ perform-action() {
     local action="$2"
     case "$action" in
     Copy)
-        run pass -c "$pass"
         notify-on-copy "Password"
+        run pass -c "$pass"
         ;;
     Type)
-        type-string "$(pass show "$pass" | head -n 1)"
+        coproc {
+            dotool <<<"type $(pass show "$pass" | head -n 1)"
+        }
         ;;
     "Copy OTP")
-        run pass otp -c "$pass"
         notify-on-copy "OTP Code"
+        run pass otp -c "$pass"
         ;;
     "Type OTP")
-        type-string "$(pass otp "$pass" | head -n 1)"
+        coproc {
+            dotool <<<"type $(pass otp "$pass")"
+        }
         ;;
     Show)
-        pass show "$pass"
+        run pass show "$pass"
         ;;
     *)
-        read -r field action <<<"$action"
-        match="$(pass show "$pass" | awk -F: -v field="$field" 'tolower($1) == field { sub(/^[ \t]*/, "", $2); print $2; exit }')"
-        case "$action" in
-        typ*)
-            type-string "$match"
-            ;;
-        *)
-            run wl-copy "$match"
-            notify-on-copy "Field: '$field'"
-            clear-clipboard 45
-            ;;
-        esac
+        coproc {
+            read -r field action <<<"$action"
+            match="$(pass show "$pass" | awk -F: -v field="$field" 'tolower($1) == field { sub(/^[ \t]*/, "", $2); print $2; exit }')"
+            case "$action" in
+            typ*)
+                dotool <<<"type $match"
+                ;;
+            *)
+                run wl-copy "$match"
+                notify-on-copy "Field: '$field'"
+                clear-clipboard 45
+                ;;
+            esac
+        }
         ;;
     esac
 }
