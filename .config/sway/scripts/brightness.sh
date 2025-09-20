@@ -22,27 +22,28 @@ set)
             brightnessctl set $delta%+
         fi
         new_current=$(brightnessctl -P get)
-        "$XDG_CONFIG_HOME/eww/bin/center_popup.sh" bright 2
+        "$XDG_CONFIG_HOME/eww/bin/center_popup.sh" bright 2 &
         eww update brightness="$new_current"
     else
         current="$(eww get brightness)"
         ((new = current + delta))
         ((new = new >= 100 ? 100 : (new <= 0 ? 0 : new)))
         eww update brightness="$new"
-        "$XDG_CONFIG_HOME/eww/bin/center_popup.sh" bright 2
+        "$XDG_CONFIG_HOME/eww/bin/center_popup.sh" bright 2 &
         for ((d = 1; d <= $(swaymsg -t get_outputs | jq 'length'); d++)); do
-            ddcutil setvcp 10 -d $d $new --lazy-sleep --disable-dynamic-sleep --sleep-multiplier 0.1 >/dev/null
+            ddcutil setvcp 10 -d $d $new >/dev/null
         done
     fi
     ;;
 rawset)
     new="$2"
-    if has_internal;  then
+    if has_internal; then
         brightnessctl set $new%
     else
         for ((d = 1; d <= $(swaymsg -t get_outputs | jq 'length'); d++)); do
-            ddcutil setvcp 10 -d $d $new --lazy-sleep --disable-dynamic-sleep --sleep-multiplier 0.1 >/dev/null 2>&1
+            ddcutil setvcp 10 -d $d $new >/dev/null 2>&1
         done
     fi
     eww update brightness="$new"
+    ;;
 esac
