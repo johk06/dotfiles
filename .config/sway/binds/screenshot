@@ -10,9 +10,9 @@ mode "screenshot" {
     bindsym Ctrl+W exec $sc/screenshot.sh window save; mode "default"
     bindsym Shift+S exec $sc/record.sh screen; mode "default"
     bindsym Shift+V exec $sc/record.sh select; mode "default"
-    bindsym C exec $sc/pick_color.sh; mode "default"
+    bindsym C exec $sc/pick-color.sh; mode "default"
 
-    bindsym Q exec $sc/scan_qr.sh; mode "default"
+    bindsym Q exec $sc/scan-qr.sh; mode "default"
     bindsym T exec $sc/ocr.sh; mode "default"
 }
 
