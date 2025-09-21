@@ -13,7 +13,6 @@ bindsym $mod+Shift+H move left
 bindsym $mod+Shift+J move down
 bindsym $mod+Shift+K move up
 bindsym $mod+Shift+L move right
-
 # Much smarter resize
 bindsym $mod+Ctrl+H nop resize left 32
 bindsym $mod+Ctrl+J nop resize down 32
@@ -31,11 +30,6 @@ bindsym $mod+Shift+F exec $sc/fake-fullscreen.sh
 bindsym $mod+A resize grow width 64px; resize grow height 64px
 bindsym $mod+X resize shrink width 64px; resize shrink height 64px 
 
-# Much smarter resize
-bindsym $mod+Ctrl+H nop resize left 32
-bindsym $mod+Ctrl+J nop resize down 32
-bindsym $mod+Ctrl+K nop resize up 32
-bindsym $mod+Ctrl+L nop resize right 32
 
 # suspend a windows underlying process
 bindsym $mod+Ctrl+Z exec $sc/stop-or-continue.sh
