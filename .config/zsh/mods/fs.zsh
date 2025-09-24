@@ -23,11 +23,9 @@ zmodload zsh/mapfile
 alias md="mkdir -p"
 
 function mcd {
-    if [[ -d "$1" ]] {
-        cd "$1"
-        return
+    if [[ ! -d "$1" ]] {
+        mkdir -p "$1"
     }
-    mkdir -p "$1"
     cd "$1"
 }
 compdef mcd=mkdir
@@ -127,7 +125,7 @@ function root {
 
 # list files found using fd expression
 function lfd {
-    fd "$@" --strip-cwd-prefix --exec-batch lsd --directory-only -l -- '{}'
+    fd "$@" --exec-batch lsd --directory-only -l -- '{}'
 }
 compdef lfd=fd
 
