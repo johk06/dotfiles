@@ -6,18 +6,18 @@ All mappings that are general purpose and active regardless of opened plugins
 local api = vim.api
 local fn = vim.fn
 local utils = require("config.utils")
-local ftpref = require("config.ftpref")
+local ftpref = require("config.lib.ftpref")
 local abbrev = utils.abbrev
 local map = utils.map
 local unmap = utils.unmap
-local ui = require("config.ui")
+local ui = require("config.lib.ui")
 local hlns = ui.ns
 
 local mov = utils.mode_motion
 local obj = utils.mode_object
 
 -- my own custom textobjects
-local textobjs = require("config.textobjs")
+local textobjs = require("config.lib.textobjs")
 -- create custom operators easily
 local operators = require("config.operators")
 

@@ -652,7 +652,7 @@ datefmt.fmt_short = function(secs)
 end
 datefmt.short_len = #datefmt.fmt_short(0)
 
-datefmt.long = "%b/%y %d, %H:%M"
+datefmt.long = "%y/%b %d, %H:%M"
 datefmt.fmt_long = function(secs)
     return os.date(datefmt.long, secs)
 end

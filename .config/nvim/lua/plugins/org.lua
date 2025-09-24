@@ -57,24 +57,7 @@ local opts = {
     org_startup_indented = true,
 }
 
-opts.org_capture_templates = {
-    u = {
-        description = "Unix Workflow",
-        target = "~/org/unix/%^{Shell Utility}.org",
-        template = "#+title: %?\n#+filetags: :unix: :cli: :programs:"
-
-    },
-    j = {
-        description = "Journal",
-        target = "~/org/journal/%<%Y-%m-%d>.org",
-        template = {
-            "#+title: Journal on %<%A, %d. %B>",
-            "#+filetags: :journal:",
-            "",
-            "%?"
-        }
-    }
-}
+opts.org_capture_templates = {}
 
 opts.mappings = {
     global = {

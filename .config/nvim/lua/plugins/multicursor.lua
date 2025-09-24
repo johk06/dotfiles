@@ -33,7 +33,7 @@ Actions to perform on cursors:
 local cursor_for_ts_node = function(ctx, capture, range)
     local main = ctx:mainCursor()
 
-    local matches = require("config.query").get_matches_in_range(0, "textobjects", capture, range, false)
+    local matches = require("config.lib.query").get_matches_in_range(0, "textobjects", capture, range, false)
 
     if not matches then
         return

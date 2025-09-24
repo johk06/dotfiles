@@ -239,7 +239,7 @@ require("config.lsp")          -- language servers
 require("config.spell")        -- automatically install spelling languages
 
 -- load UI components
-local ui = require("config.ui")
+local ui = require("config.lib.ui")
 vim.ui.input = ui.nvim_input
 -- }}}
 

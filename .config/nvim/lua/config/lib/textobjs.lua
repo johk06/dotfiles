@@ -1,7 +1,7 @@
 local M = {}
 local api = vim.api
 local esc = api.nvim_replace_termcodes("<esc>", true, false, true)
-local ftpref = require("config.ftpref")
+local ftpref = require("config.lib.ftpref")
 
 --[[ Information {{{
 see https://github.com/chrisgrieser/nvim-various-textobjs

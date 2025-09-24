@@ -1,5 +1,6 @@
 local M = {}
 
+local async = require("config.lib.async")
 local org = require("orgmode")
 
 ---@type fun(data: OrgMenuData)
@@ -34,7 +35,7 @@ M.menu = function(data)
         height = #items,
     })
 
-    local ns = require("config.ui").ns
+    local ns = require("config.lib.ui").ns
     for i = 1, #items do
         vim.api.nvim_buf_set_extmark(buf, ns, i - 1, 0, {
             end_line = i - 1,
