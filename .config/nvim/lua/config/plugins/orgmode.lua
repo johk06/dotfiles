@@ -1,6 +1,5 @@
 local M = {}
 
-local async = require("config.lib.async")
 local org = require("orgmode")
 
 ---@type fun(data: OrgMenuData)
@@ -118,7 +117,7 @@ local select_buf_lines = function(predicate)
 end
 
 ---@type OrgLinkType
-M.line_search_link = {
+M.line_start_link = {
     get_name = function(self)
         return "line"
     end,
@@ -135,12 +134,12 @@ M.line_search_link = {
         return true
     end,
     autocomplete = function(self, link)
-        if not vim.startswith(link, "^:") then
+        if not vim.startswith(link.base, "^:") then
             return { "^:" }
         end
 
         local out = {}
-        local search = link:gsub("^%^:", "")
+        local search = link.base:gsub("^%^:", "")
         local lines = vim.api.nvim_buf_get_lines(0, 0, -1, false)
         for _, line in ipairs(lines) do
             if vim.startswith(line, search) then

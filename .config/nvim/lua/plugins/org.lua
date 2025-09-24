@@ -162,7 +162,7 @@ M.config = function()
     local orgmode = require("orgmode")
     orgmode.setup(opts)
 
-    orgmode.links:add_type(custom.line_search_link)
+    orgmode.links:add_type(custom.line_start_link)
     orgmode.links:add_type(custom.regex_search_link)
 
     utils.autogroup("config.orgmode", {
