@@ -17,7 +17,7 @@ set)
     delta="$2"
     if has_internal; then
         if ((delta < 0)); then
-            brightnessctl set $delta%-
+            brightnessctl set $((-delta))%-
         else
             brightnessctl set $delta%+
         fi
