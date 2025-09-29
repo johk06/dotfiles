@@ -23,7 +23,6 @@ else
         printf -v url "$ROFI_DATA" "$*"
         (launch-or-inside firefox firefox --new-window "$url" >/dev/null 2>&1) &
         disown
-        run_in_background firefox "$url"
     else
         IFS=":" read -r type value <<<"$ROFI_INFO"
         printf "\0data\x1f%s\t%s\0icon\x1ffsearch\x1fnonselectable\x1ftrue\t" "$value" "$1"

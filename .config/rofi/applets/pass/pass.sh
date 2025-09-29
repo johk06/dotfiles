@@ -9,7 +9,7 @@ list-passwords() {
 print-menu() {
     local pass="$1"
     printf '\0data\x1f%s\n' "$pass"
-    printf '%s\n' "Copy" "Type" "Copy OTP" "Type OTP" "Show"
+    printf '%s\n' "Copy" "Type" "Copy OTP" "Type OTP" "Form" "Form OTP" "Show"
 }
 
 run() {
@@ -34,6 +34,21 @@ clear-clipboard() {
     }
 }
 
+fill-form() {
+    account="$1"
+    coproc {
+        user="$(pass show "$account" | awk -F: 'tolower($1) == "user" { sub(/^[ \t]/, "", $2); print $2}')"
+        pass="$(pass show "$account" | head -n 1)"
+
+        if [[ "$2" == "--otp" ]]; then
+            token="$(pass otp "$account")"
+            printf 'type %s\nkey tab\ntype %s\nkey enter\ntype %s' "$user" "$pass" "$token"
+        else
+            printf 'type %s\nkey tab\ntype %s' "$user" "$pass"
+        fi | dotool
+    }
+}
+
 perform-action() {
     local pass="$1"
     local action="$2"
@@ -46,6 +61,12 @@ perform-action() {
         coproc {
             dotool <<<"type $(pass show "$pass" | head -n 1)"
         }
+        ;;
+    "Form")
+        fill-form "$pass"
+        ;;
+    "Form OTP")
+        fill-form "$pass" --otp
         ;;
     "Copy OTP")
         notify-on-copy "OTP Code"
