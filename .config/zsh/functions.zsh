@@ -90,7 +90,6 @@ source "$ZDOTDIR/mods/fun.zsh"
 source "$ZDOTDIR/mods/proc.zsh"
 source "$ZDOTDIR/mods/net.zsh"
 source "$ZDOTDIR/mods/fs.zsh"
-source "$ZDOTDIR/mods/structured_data.zsh"
 source "$ZDOTDIR/mods/git.zsh"
 source "$ZDOTDIR/mods/fzf.zsh"
 
