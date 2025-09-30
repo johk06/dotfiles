@@ -26,8 +26,7 @@ local ensure_installed = {
     "vimdoc",
 }
 
-local textobjects = {}
-textobjects = {
+local textobjects = {
     -- function declarations
     ["af"] = "@function.outer",
     ["if"] = "@function.inner",
@@ -91,7 +90,6 @@ local brackets = {
         ["[M"] = "@method.outer",
     },
 }
-
 local swaps = {
     swap_next = {
         [">,"] = "@parameter.inner",
