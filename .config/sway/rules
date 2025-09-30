@@ -5,6 +5,7 @@ for_window [app_id="gamescope"] move window to workspace number 10
 
 # float
 for_window [app_id="zenity"] floating enable
+for_window [app_id="yad"] floating enable
 for_window [app_id="valent"] floating enable
 for_window [app_id=".*blueman.*"] floating enable
 for_window [app_id="pavucontrol"] floating enable
