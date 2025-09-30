@@ -18,11 +18,11 @@ local M = {
         map("n", "gS", substitute.eol)
         map("x", "gs", substitute.visual)
 
-        -- basically a better "yank" for exchanging
+        -- ex-change <=> change-ex
         local exchange = require("substitute.exchange")
-        map("n", "gy", exchange.operator)
-        map("n", "gyy", exchange.line)
-        map("x", "gy", exchange.visual)
+        map("n", "cx", exchange.operator)
+        map("n", "cxx", exchange.line)
+        map("x", "cx", exchange.visual)
     end
 }
 
