@@ -123,7 +123,7 @@ M[2].config = function()
     end, { desc = "Git: Log" })
     map("n", "a", "<cmd>Gclog<cr>", { desc = "Git: Log for all" })
     map("n", "o", "<cmd>Git log --oneline<cr>", { desc = "Git: Log to buffer, oneline" })
-    map("n", "cc", "<cmd>silent Git commit<cr>", { desc = "Git: Commit" })
+    map("n", "c", "<cmd>silent Git commit<cr>", { desc = "Git: Commit" })
     map("n", "p", "<cmd>Git push<cr>", { desc = "Git: Push" })
 
     map("n", "g", function()
