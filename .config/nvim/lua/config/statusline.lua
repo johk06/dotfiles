@@ -55,10 +55,9 @@ local function update_mode()
     local short = mode:sub(1, 1)
     local hl = mode_to_hl_group[short]
 
-    return string.format("%%#SlMode%s#%-2s%s",
+    return string.format("%%#SlMode%s#%-2s",
         hl,
-        (has_multicursor and mc.numCursors() or "") .. (mode_to_name[mode] or short),
-        "%#SlTyped#%-5(%S%)"
+        (has_multicursor and mc.numCursors() or "") .. (mode_to_name[mode] or short)
     )
 end
 -- }}}
@@ -296,15 +295,15 @@ end
 local sections
 local indices = {
     mode        = 2,
-    macro       = 3,
-    title       = 4,
-    git         = 5,
-    diagnostics = 6,
-    search      = 7,
+    macro       = 4,
+    title       = 5,
+    git         = 6,
+    diagnostics = 7,
+    search      = 8,
 
-    words       = 9,
-    filetype    = 10,
-    lsp         = 11,
+    words       = 10,
+    filetype    = 11,
+    lsp         = 12,
 }
 
 local last_update = 0
@@ -383,14 +382,14 @@ redraw_on({ "TextChanged", "TextChangedI" }, {
 
 redraw_on("OptionSet", {
     pattern = { "spell", "spellang", "shiftwidth", "expandtab", "conceallevel", "concealcursor", "filetype" },
-    callback = function()
+    callback = vim.schedule_wrap(function()
         local mode = api.nvim_get_mode().mode:sub(1, 1)
         if not (mode == "n" or mode == "c") then
             return
         end
         sections[indices.filetype] = update_filetype()
         redraw()
-    end
+    end)
 }, true)
 redraw_on({ "RecordingEnter", "RecordingLeave" }, {
     callback = function(ev)
@@ -450,6 +449,7 @@ end)
 sections = {
     "%#SlISL#",
     update_mode(),                 -- mode
+    "%#SlTyped#%-5(%S%)",          -- current keys
     "",                            -- macro register
     "",                            -- title of buffer with modified etc
     "",                            -- git
