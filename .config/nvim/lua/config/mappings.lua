@@ -19,7 +19,7 @@ local obj = utils.mode_object
 -- my own custom textobjects
 local textobjs = require("config.lib.textobjs")
 -- create custom operators easily
-local operators = require("config.operators")
+local operators = require("config.lib.operators")
 
 -- run ex command with count
 local function cmd_with_count(cmd)

@@ -48,7 +48,7 @@ local cursor_for_ts_node = function(ctx, capture, range)
 end
 
 local map_select_operator = function(keys, capture, field, desc)
-    require("config.operators").map_function(keys, function(mode, region, extra, get, set)
+    require("config.lib.operators").map_function(keys, function(mode, region, extra, get, set)
         require("multicursor-nvim").action(function(ctx)
             cursor_for_ts_node(ctx, capture, { region[1][1] - 1, region[1][2], region[2][1] - 1, region[2][2] })
         end)
@@ -62,7 +62,7 @@ function M.config()
     local utils = require("config.utils")
     local map = utils.map
     local action = utils.mode_action
-    local operators = require("config.operators")
+    local operators = require("config.lib.operators")
 
     map("n", "<esc>", function()
         if mc.hasCursors() then
