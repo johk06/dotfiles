@@ -19,7 +19,7 @@ configuration {
     kb-accept-alt: "";
     kb-custom-1: "Shift+Return";
     line-margin: 10;
-    modes: [drun,sway,marks];
+    modes: [drun,sway,marks,sys];
     display-drun: "run";
 }
 @theme "~/.config/rofi/style/theme.rasi"
