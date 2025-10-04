@@ -73,7 +73,7 @@ local function update_macro(ev)
         return ("%%#SlMacro#@%s "):format(last)
     else
         local reg = vim.fn.reg_recording()
-        return ('%%#SlMacro#>%s '):format(reg)
+        return ('%%#SlMacro#->@%s '):format(reg)
     end
 end
 -- }}}
