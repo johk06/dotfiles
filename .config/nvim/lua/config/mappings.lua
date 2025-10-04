@@ -594,10 +594,11 @@ map("n", "<space>cd", function()
 end, { desc = "Change Decoration" })
 -- }}}
 
--- Give Q more purpose {{{
--- use <C-q> for macros instead, i don't use them that often
+-- Rethink the macro system {{{
+-- use yq for macros instead of q, i don't use them that often
+-- I think of it like yank-macro
 -- use "reg, like other vim commands, defaulting to "q
-map("n", "<C-q>", function()
+map("n", "yq", function()
     if fn.reg_recording() ~= "" then
         return "q"
     else
@@ -605,6 +606,8 @@ map("n", "<C-q>", function()
         return "q" .. (reg ~= '"' and reg or "q")
     end
 end, { expr = true })
+
+map("n", "Q", "@@j")
 
 -- faster to close windows and cycle
 map("n", "q", function()
@@ -616,9 +619,6 @@ end)
 -- }}}
 
 -- Abbrevs {{{
--- force quit
-abbrev("c", "Q", "q!")
-abbrev("c", "Qa", "qa!")
 
 -- I probably never will actually use :file
 -- If I need it, i can survive typing the full name
@@ -628,13 +628,6 @@ abbrev("c", "vf", "vertical sf") -- much shorter, much more useful
 -- often useful for one-off commands
 abbrev("c", "vt", "vertical terminal")
 abbrev("c", "st", "horizontal terminal")
-
--- same for fugitive
-abbrev("c", "vG", "vertical Git")
-abbrev("c", "sG", "horizontal Git")
-
-abbrev("c", "v!", "vertical")   -- :v doesn't take !bang anyways
-abbrev("c", "s!", "horizontal") -- same for consistency
 -- }}}
 
 -- Terminal {{{
