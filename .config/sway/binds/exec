@@ -7,7 +7,7 @@ bindsym {
     $mod+E               exec nautilus -w
     $mod+Shift+E         exec $sc/exec-with --class org.gnome.Nautilus "nautilus -w" $floating
     $mod+Space           exec killall rofi || rofi -show drun
-    $mod+Shift+Semicolon exec killall rofi || ~/.config/rofi/applets/power/run.sh
+    $mod+Shift+Semicolon exec killall rofi || rofi -show sys
     $mod+Semicolon       exec gtklock -d
     $mod+Period          exec swaync-client --close-latest
     $mod+Shift+Period    exec swaync-client --close-all
