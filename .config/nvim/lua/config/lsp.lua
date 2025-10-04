@@ -7,6 +7,7 @@ local M = {}
 local api = vim.api
 local fn = vim.fn
 local utils = require("config.utils")
+local ui = require("config.lib.ui")
 local lsp = vim.lsp
 
 local rename_visually = function()
@@ -238,33 +239,45 @@ local on_lsp_detached = function(ev)
     end
 end
 
+local lsp_status_notif = ui.floating_notif_new {
+    align = "right",
+    max_width = 60,
+    name = "LSP"
+}
+
+---@param ev vim.api.keyset.create_autocmd.callback_args
+local on_lsp_progress = function(ev)
+    local data = ev.data
+    local client = lsp.get_client_by_id(data.client_id)
+    if not client then
+        return
+    end
+
+    local value = data.params.value
+
+    local message = {
+        { client.name, "Identifier" },
+        { ": ",        "Delimiter" },
+    }
+
+    if value.kind == "end" then
+        table.insert(message, { "Finished " })
+        table.insert(message, { value.title })
+        vim.defer_fn(function()
+            ui.floating_notif_hide(lsp_status_notif)
+        end, 1000)
+    elseif value.percentage then
+        table.insert(message, { value.title })
+        table.insert(message, { (" %02d%%"):format(value.percentage), "Number" })
+    end
+
+    ui.floating_notif_put(lsp_status_notif, message)
+end
+
 utils.autogroup("config.lsp", {
     LspAttach = on_lsp_attached,
     LspDetach = on_lsp_detached,
-    LspProgress = function(ev)
-        local data = ev.data
-        local client = lsp.get_client_by_id(data.client_id)
-        if not client then
-            return
-        end
-
-        local value = data.params.value
-
-        local message = {
-            { client.name, "Identifier" },
-            { ": ",        "Delimiter" },
-        }
-
-        if value.kind == "end" then
-            table.insert(message, { "Finished " })
-            table.insert(message, { value.title })
-        elseif value.percentage then
-            table.insert(message, { value.title })
-            table.insert(message, { (" %02d%%"):format(value.percentage), "Number" })
-        end
-
-        api.nvim_echo(message, false, {})
-    end,
+    LspProgress = on_lsp_progress,
 })
 -- }}}
 

@@ -149,4 +149,61 @@ M.nvim_input = function(opts, callback)
     end
 end
 
+
+---@class config.ui.notif_opts
+---@field max_width integer
+---@field align "left"|"right"
+---@field name string
+
+---@type table<integer, {win: integer, opts: config.ui.notif_opts}>
+M.floating_notifs = {}
+
+---@param opts config.ui.notif_opts
+---@return integer Buffer/Id
+M.floating_notif_new = function(opts)
+    local buf = api.nvim_create_buf(false, true)
+    M.floating_notifs[buf] = {
+        opts = opts,
+    }
+
+    return buf
+end
+
+---@param id integer
+M.floating_notif_delete = function(id)
+    M.floating_notifs[id] = nil
+    api.nvim_buf_delete(id, { force = true })
+end
+
+---@param id integer
+---@param text ([string, string])[]
+M.floating_notif_put = function(id, text)
+    api.nvim_buf_clear_namespace(id, ns, 0, 1)
+    local obj = M.floating_notifs[id]
+    if not obj.win then
+        obj.win = api.nvim_open_win(id, false, {
+            relative = "editor",
+            style = "minimal",
+            row = 1,
+            col = obj.opts.align == "right" and vim.o.columns or 0,
+            height = 1,
+            width = obj.opts.max_width,
+            border = "none",
+            mouse = false
+        })
+    end
+    api.nvim_buf_set_extmark(id, ns, 0, 0, {
+        virt_text = text,
+        virt_text_pos = obj.opts.align == "right" and "eol_right_align" or nil,
+    })
+end
+
+M.floating_notif_hide = function(id)
+    local obj = M.floating_notifs[id]
+    if obj.win then
+        api.nvim_win_close(obj.win, true)
+        obj.win = nil
+    end
+end
+
 return M
