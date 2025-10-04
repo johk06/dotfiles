@@ -598,16 +598,25 @@ end, { desc = "Change Decoration" })
 -- use yq for macros instead of q, i don't use them that often
 -- I think of it like yank-macro
 -- use "reg, like other vim commands, defaulting to "q
+local getmacroreg = function()
+    local r = vim.v.register
+    return r ~= '"' and r or "q"
+end
 map("n", "yq", function()
     if fn.reg_recording() ~= "" then
         return "q"
     else
-        local reg = vim.v.register
-        return "q" .. (reg ~= '"' and reg or "q")
+        return "q" .. getmacroreg()
     end
 end, { expr = true })
 
 map("n", "Q", "@@j")
+
+-- specify registers the same way for @
+map("n", "@", "<nop>")
+map("n", "@", function()
+    return "@" .. getmacroreg()
+end, { expr = true })
 
 -- faster to close windows and cycle
 map("n", "q", function()
