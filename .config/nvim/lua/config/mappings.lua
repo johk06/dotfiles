@@ -595,14 +595,12 @@ end, { desc = "Change Decoration" })
 -- }}}
 
 -- Rethink the macro system {{{
--- use yq for macros instead of q, i don't use them that often
--- I think of it like yank-macro
 -- use "reg, like other vim commands, defaulting to "q
 local getmacroreg = function()
     local r = vim.v.register
     return r ~= '"' and r or "q"
 end
-map("n", "yq", function()
+map({ "n", "x" }, "Q", function()
     if fn.reg_recording() ~= "" then
         return "q"
     else
@@ -610,15 +608,18 @@ map("n", "yq", function()
     end
 end, { expr = true })
 
-map("n", "Q", "@@j")
-
 -- specify registers the same way for @
-map("n", "@", "<nop>")
-map("n", "@", function()
-    return "@" .. getmacroreg()
+map({ "n", "x" }, "@", "<nop>")
+map({ "n", "x" }, "@", function()
+    if api.nvim_get_mode().mode:lower() == "v" then
+        return ("\x1b<cmd>'<,'>normal! @%s<cr>"):format(getmacroreg())
+    else
+        return "@" .. getmacroreg()
+    end
 end, { expr = true })
 
 -- faster to close windows and cycle
+-- additionally this is the norm for lots of plugin's floating windows as well
 map("n", "q", function()
     local ok = pcall(vim.cmd.close)
     if not ok then
