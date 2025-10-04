@@ -8,7 +8,6 @@ local M = {
         dependencies_bin = {
             tinymist = "tinymist", -- use system or mason version
         }
-
     }
 }
 

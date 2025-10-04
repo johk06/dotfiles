@@ -3,8 +3,7 @@ local M = {
     "stevearc/quicker.nvim",
 }
 
----@type quicker.Config
----@diagnostic disable-next-line: missing-fields
+---@type quicker.SetupOptions
 M.opts = {
     opts = {
         buflisted = true,

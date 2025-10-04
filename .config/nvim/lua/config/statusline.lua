@@ -285,7 +285,7 @@ local function update_lsp_servers()
 
     ---@param c vim.lsp.Client
     local names = vim.tbl_map(function(c)
-        return " +" .. c.name
+        return " =" .. c.name
     end, clients)
 
     return #clients > 0 and table.concat(names, "") or ""

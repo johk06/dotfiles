@@ -80,6 +80,7 @@ local typst_symbol_names = {
     ["in"]   = "∈",
     union    = "∪",
     inter    = "∩",
+    integral = "∫",
 }
 
 vim.treesitter.query.add_directive("jhk-typst-set-symbol-conceal!", function(match, pattern, source, predicate, metadata)

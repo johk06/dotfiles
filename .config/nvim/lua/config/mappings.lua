@@ -57,11 +57,13 @@ map("n", "gQ", "<nop>") -- ex mode is just plain annoying
 map("n", "Z", "<nop>")
 
 -- i don't like the lsp mappings
-unmap("n", "grn") -- rename
-unmap("n", "gra") -- actions
-unmap("n", "grr") -- references
-unmap("n", "gri") -- implementation
-unmap("n", "grt") -- type definition
+unmap("n", "grn")          -- rename
+unmap("n", "gra")          -- actions
+unmap("n", "grr")          -- references
+unmap("n", "gri")          -- implementation
+unmap("n", "grt")          -- type definition
+unmap({ "i", "s" }, "<Tab>") -- snippet
+unmap({ "i", "s" }, "<S-Tab>") -- snippet
 -- }}}
 
 --[[ qflist / loclist {{{
