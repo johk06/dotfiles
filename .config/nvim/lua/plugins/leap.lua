@@ -12,7 +12,7 @@ This allows me to use it to augment built in textobjects
 The standalone leap in normal mode can still be useful,
 *if* I am just navigating inside a single screen of text
 Otherwise, search or various more powerful (and easier) motions
-are much much easier
+are much much less taxing on both my eyes and my hands
 }}} ]]
 
 M.config = function()
@@ -28,14 +28,19 @@ M.config = function()
         No map for visual mode, since r is useful there
 
         Some examples & use cases:
-        - Use this with gy from ./substitute.lua to swap two regions of text
+        - Use this with cx from ./substitute.lua to swap two regions of text
         - Yanking/deleting a region and pasting it at the cursor
         - Quick changes in other regions required by edits at the cursor
+        - Fold text using zf, without needing to go near it
     ]]
-
     map("o", "r", function() require("leap.remote").action() end)
-    -- (u)sing, this primarily allows for edits to regions that are not visible
-    -- this is usually *not* a replacement for :s
+
+    --[[ (u)sing, this primarily allows for edits to regions that are not visible
+        this is usually *not* a replacement for :s
+        If the first search result is not the right one, first question your life choices
+        (why did you not just move normally...).
+        Then, there's <C-g> and <C-t> to move forward and back
+        TODO: maybe there's more things that could use the u prefix? ]]
     map("o", "u/", function() require("leap.remote").action { jumper = "/" } end)
     map("o", "u?", function() require("leap.remote").action { jumper = "?" } end)
 
