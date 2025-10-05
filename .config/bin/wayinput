@@ -40,6 +40,7 @@ class InputWindow(Gtk.Window):
         self.chars = []
         self.max_length = args.max_length
         self.callback = on_done
+        self.args = args
 
         self.connect("key-press-event", self.on_key)
 
@@ -89,7 +90,11 @@ class InputWindow(Gtk.Window):
     def on_activate(self, entry):
         self.on_done(entry.get_text())
 
-    def on_add(self, buffer, pos, text, len):
+    def on_add(self, buffer: Gtk.EntryBuffer, pos, text: str, len):
+        if self.args.numeric:
+            if not text.isdigit():
+                buffer.set_text("".join([c for c in buffer.get_text() if c.isdigit()]), 0)
+                return
         len = buffer.get_length()
         if len == self.max_length:
             self.on_done(buffer.get_text())
@@ -100,6 +105,7 @@ if __name__ == "__main__":
     parser.add_argument("-l", "--max-length", type=int, default=1)
     parser.add_argument("-t", "--title", type=str)
     parser.add_argument("-c", "--choices", nargs="*", action="extend")
+    parser.add_argument("-n", "--numeric", action="store_true")
     args = parser.parse_args()
 
     provider = Gtk.CssProvider()
