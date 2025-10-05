@@ -42,7 +42,9 @@ fill-form() {
 
         if [[ "$2" == "--otp" ]]; then
             token="$(pass otp "$account")"
-            printf 'type %s\nkey tab\ntype %s\nkey enter\ntype %s' "$user" "$pass" "$token"
+            printf 'type %s\nkey tab\ntype %s\nkey enter\n' "$user" "$pass" 
+            sleep 2
+            printf 'type %s\n' "$token"
         else
             printf 'type %s\nkey tab\ntype %s' "$user" "$pass"
         fi | dotool
