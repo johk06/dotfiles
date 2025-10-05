@@ -4,6 +4,7 @@ mode "config" {
     bindsym Escape mode "default" 
     bindsym W exec ~/.config/rofi/applets/wallpapers/run.sh; mode "default"
     bindsym N exec killall gammastep || gammastep -O 3000; mode "default"
+    bindsym Shift+N exec killall gammastep; gammastep -O $(wayinput -l -1 -t "Nightlight"); mode "default"
     bindsym T exec $eww/bin/color.sh; mode "default"
     bindsym M exec $sc/mirror.sh; mode "default"
     bindsym B exec eww open --toggle bar; mode "default"

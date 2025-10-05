@@ -43,7 +43,7 @@
 "config": [
     {"keys": "w", "action": "Wallpaper"},
     {"keys": "r", "action": "Random Wallpaper"},
-    {"keys": "n", "action": "Nighlight"},
+    {"keys": "[nN]", "action": "Nighlight"},
     {"keys": "t", "action": "Theme"},
     {"keys": "b", "action": "Toggle Bar"},
     {"keys": "c", "action": "Toggle Clock"},
