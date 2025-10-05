@@ -109,7 +109,7 @@ if __name__ == "__main__":
         if response.ok:
             as_json = response.json()
             print(
-                f"{as_json['character_count'] / as_json['character_limit'] * 100}%",
+                f"{as_json['character_count'] / as_json['character_limit'] * 100:.2f}%",
                 as_json["character_count"],
                 "of",
                 as_json["character_limit"],
