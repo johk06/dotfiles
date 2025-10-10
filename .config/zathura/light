@@ -25,7 +25,7 @@ set render-loading-bg "#eceff4"
 set render-loading-fg "#2e3440"
 set index-fg "#2e3440"
 set index-bg "#eceff4"
-set index-active-fg "#3b4252"
-set index-active-bg "#eceff4"
+set index-active-fg "#2e3440"
+set index-active-bg "#8fbcbb"
 
 # vim: set ft=zathurarc :
