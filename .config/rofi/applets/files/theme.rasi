@@ -32,6 +32,7 @@ element selected.normal {
 }
 
 element-text {
+    color: @fg0;
     background-color: transparent;
 }
 element-icon {
@@ -42,6 +43,8 @@ entry {
     expand: false;
     background-color: @bg0;
     padding: 12px;
+    text-color: @fg0;
+    cursor: text;
 }
 
 textbox {
