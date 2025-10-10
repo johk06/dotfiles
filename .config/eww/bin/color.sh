@@ -28,6 +28,7 @@ sed -i "s/$old.scss/$target.scss/" "$XDG_CONFIG_HOME/eww/style/color.scss" &
 sed -i "s/$old/$target/" "$XDG_CONFIG_HOME/rofi/style/color.rasi" &
 relink_file "$XDG_CONFIG_HOME/swaylock" config.$target config &
 relink_file "$XDG_CONFIG_HOME/sway" $target color &
+relink_file "$XDG_CONFIG_HOME/zathura" $target color &
 (
     unlink "$XDG_CONFIG_HOME/gtk-4.0/gtk.css"
     ln -s "$XDG_CONFIG_HOME/gtkcss/4.0/gtk-${target}.css" "$XDG_CONFIG_HOME/gtk-4.0/gtk.css"
