@@ -25,7 +25,7 @@ M.opts = {
         query = { "format-queries" },
         sh    = { "shfmt" },
         toml  = { "taplo" },
-        typst = {"prettypst"},
+        typst = { "prettypst" },
         xml   = { "xmllint" },
     },
     default_format_opts = {

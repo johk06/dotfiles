@@ -1,6 +1,7 @@
 ---@type LazySpec
 local M = {
     "windwp/nvim-autopairs",
+    event = "InsertEnter",
 }
 
 -- Don't mess up my apostrophes
@@ -30,7 +31,6 @@ local xml_angles = {
 M.config = function()
     local ap = require("nvim-autopairs")
     local rule = require("nvim-autopairs.rule")
-    local cond = require("nvim-autopairs.conds")
     ap.setup {}
 
     ap.get_rules("'")[1].not_filetypes = apostrophe_never_paired

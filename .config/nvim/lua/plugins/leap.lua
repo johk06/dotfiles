@@ -31,9 +31,9 @@ M.config = function()
         - Use this with cx from ./substitute.lua to swap two regions of text
         - Yanking/deleting a region and pasting it at the cursor
         - Quick changes in other regions required by edits at the cursor
-        - Fold text using zf, without needing to go near it
-    ]]
-    map("o", "r", function() require("leap.remote").action() end)
+        - Fold text using zf, without needing to go near it ]]
+    local remote = require("leap.remote")
+    map("o", "r", remote.action)
 
     --[[ (u)sing, this primarily allows for edits to regions that are not visible
         this is usually *not* a replacement for :s
@@ -41,8 +41,8 @@ M.config = function()
         (why did you not just move normally...).
         Then, there's <C-g> and <C-t> to move forward and back
         TODO: maybe there's more things that could use the u prefix? ]]
-    map("o", "u/", function() require("leap.remote").action { jumper = "/" } end)
-    map("o", "u?", function() require("leap.remote").action { jumper = "?" } end)
+    map("o", "u/", function() remote.action { jumper = "/" } end)
+    map("o", "u?", function() remote.action { jumper = "?" } end)
 
     -- HACK: override colors only after it has been setup
     vim.api.nvim_create_autocmd("User", {

@@ -38,6 +38,37 @@ local function getline(lnum)
     return api.nvim_buf_get_lines(0, lnum - 1, lnum, true)[1]
 end
 
+local set_selection = function(mode, sel)
+    norm("m`")
+    -- motion
+    ---@cast mode seltype
+    if type(sel[1]) == "number" then
+        ---@cast sel config.point
+        api.nvim_win_set_cursor(0, sel)
+    else -- textobject
+        ---@cast sel config.region
+        local vimode = api.nvim_get_mode().mode
+        api.nvim_win_set_cursor(0, sel[1])
+
+        local isvisreg = vimode:find("v")
+        local isvisline = vimode:find("V")
+        local isvis = isvisreg or isvisline
+        local linewise = mode == "line"
+
+        if isvisreg and linewise then
+            norm("V")
+        end
+
+        if isvis then
+            norm("o")
+        else
+            if linewise then norm("V") else norm("v") end
+        end
+
+        api.nvim_win_set_cursor(0, sel[2])
+    end
+end
+
 ---@param fn textobj_function
 ---@param opts table<string, any>
 function M.create_textobj(fn, opts)
@@ -50,34 +81,7 @@ function M.create_textobj(fn, opts)
             return
         end
 
-        norm("m`")
-        -- motion
-        ---@cast mode seltype
-        if type(sel[1]) == "number" then
-            ---@cast sel config.point
-            api.nvim_win_set_cursor(0, sel)
-        else -- textobject
-            ---@cast sel config.region
-            local vimode = api.nvim_get_mode().mode
-            api.nvim_win_set_cursor(0, sel[1])
-
-            local isvisreg = vimode:find("v")
-            local isvisline = vimode:find("V")
-            local isvis = isvisreg or isvisline
-            local linewise = mode == "line"
-
-            if isvisreg and linewise then
-                norm("V")
-            end
-
-            if isvis then
-                norm("o")
-            else
-                if linewise then norm("V") else norm("v") end
-            end
-
-            api.nvim_win_set_cursor(0, sel[2])
-        end
+        set_selection(mode, sel)
     end
 end
 
