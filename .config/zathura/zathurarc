@@ -2,11 +2,19 @@ include color
 
 # mappings {{{
 map R rotate rotate-ccw
-map <C-m> mark_add
-map <C-M> mark_evaluate
 map <C-l> nohlsearch
 map i recolor
 map go toggle_index
+map <C-a> zoom in
+map <C-x> zoom out
+
+map g1 set "pages-per-row 1"
+map g2 set "pages-per-row 2"
+map g3 set "pages-per-row 3"
+map g4 set "pages-per-row 4"
+map g5 set "pages-per-row 5"
+
+map <Space> snap_to_page
 # }}}
 
 # options {{{
