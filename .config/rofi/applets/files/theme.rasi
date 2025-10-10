@@ -1,0 +1,51 @@
+@theme "~/.config/rofi/style/color.rasi"
+
+window {
+    location: center;
+    anchor: center;
+    background-color: @bg0;
+    children: [listbox];
+    width: 32em;
+    height: 32em;
+}
+
+listbox {
+    expand: true;
+    background-color: transparent;
+    children: [listview, entry];
+}
+
+listview {
+    background-color: transparent;
+    expand: true;
+    dynamic: true;
+}
+
+element {
+    padding: 6px;
+    border-radius: 12px;
+    background-color: @bg0;
+    color: @fg0;
+}
+element selected.normal {
+    background-color: @selected;
+}
+
+element-text {
+    background-color: transparent;
+}
+element-icon {
+    background-color: transparent;
+}
+
+entry {
+    expand: false;
+    background-color: @bg0;
+    padding: 12px;
+}
+
+textbox {
+    background-color: @bg0;
+    horizontal-align: 0.5;
+    vertical-align: 0.5;
+}
