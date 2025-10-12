@@ -110,7 +110,6 @@ vim.treesitter.query.add_directive("jhk-typst-set-symbol-conceal!", function(mat
         metadata[id] = {}
     end
     local text = vim.treesitter.get_node_text(node, source)
-    vim.print(text)
 
     metadata[id].conceal = typst_symbol_names[text]
 end, {})
