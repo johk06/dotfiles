@@ -18,7 +18,7 @@ mainbox {
 }
 
 listbox {
-    children: [listview, entry, mode-switcher];
+    children: [listview, entrybox, mode-switcher];
     expand: true;
     background-color: transparent;
 }
@@ -79,8 +79,14 @@ element-icon {
 element-text {
     padding: 0 0 0 1em;
 }
-entry {
+entrybox {
     expand: false;
+    background-color: transparent;
+    orientation: horizontal;
+    children: [entry, message];
+}
+entry {
+    expand: true;
     background-color: @bg0;
     text-color: @fg0;
     cursor: text;
@@ -90,8 +96,18 @@ entry {
     margin: 0px 12px 0px 12px;
 }
 
+message {
+    text-color: @fg0;
+    background-color: transparent;
+}
 textbox {
+    vertical-align: 0.5;
+    horizontal-align: 1;
+}
+
+prompt {
     background-color: @bg0;
     horizontal-align: 0.5;
     vertical-align: 0.5;
+    text-color: @fg0;
 }

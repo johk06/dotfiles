@@ -9,7 +9,7 @@ list-passwords() {
 print-menu() {
     local pass="$1"
     printf '\0data\x1f%s\n' "$pass"
-    printf '%s\n' "Copy" "Type" "Copy OTP" "Type OTP" "Form" "Form OTP" "Show"
+    printf '%s\n' "Type" "Type OTP" "Form" "Form with OTP" "Copy" "Copy OTP" "Show"
 }
 
 run() {
@@ -67,7 +67,7 @@ perform-action() {
     "Form")
         fill-form "$pass"
         ;;
-    "Form OTP")
+    "Form with OTP")
         fill-form "$pass" --otp
         ;;
     "Copy OTP")
