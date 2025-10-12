@@ -3,7 +3,7 @@
 ICON="\0icon\x1f"
 INFO="\x1finfo\x1f"
 
-read -r -d '' JQ_QUERY << 'JQ'
+read -r -d '' JQ_QUERY <<'JQ'
 .. | ((.nodes? // empty)
     + (.floating_nodes? // empty))[] 
 | select(.pid)
@@ -20,16 +20,17 @@ if ((ROFI_RETV == 0)); then
         icon="$class"
         if [[ "$class" == "kitty" ]]; then
             case "$name" in
-                nv:*) icon="nvim" ;;
-                lf:*) icon="file-manager" ;;
-                qalc) icon="qalculator" ;;
+            nv:*) icon="nvim" ;;
+            lf:*) icon="file-manager" ;;
+            ncmpcpp:*) icon="multimedia-audio-player" ;;
+            qalc) icon="qalculator" ;;
             esac
         fi
         printf "%s\n%s$ICON%s$INFO%s\t" "$name" "$class" "$icon" "$id"
     done < <(swaymsg -t get_tree | jq -r "$JQ_QUERY")
 else
     if ((ROFI_RETV == 10)); then
-        swaymsg "[con_id=$ROFI_INFO] move to workspace current" > /dev/null
+        swaymsg "[con_id=$ROFI_INFO] move to workspace current" >/dev/null
     fi
-    swaymsg "[con_id=$ROFI_INFO] focus" > /dev/null
+    swaymsg "[con_id=$ROFI_INFO] focus" >/dev/null
 fi

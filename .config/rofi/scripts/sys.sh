@@ -1,13 +1,16 @@
 #!/usr/bin/env bash
 
+MENUFMT="%s\n%s\0icon\x1f%s\x1finfo\x1f%s\x1fmeta\x1f%s\t"
+
 print-menu() {
-    printf '%s\n%s\0icon\x1f%s\x1finfo\x1f%s\x1fmeta\x1f%s\t' \
+    printf "$MENUFMT" \
         Lock "Lock Session" lock session/lock "" \
         Suspend "Suspend System" sleep session/sleep "sleep" \
         Logout "Exit Session" system-log-out session/logout "" \
         Reboot "Reboot System" system-reboot session/reboot "restart" \
         Shutdown "Shut System down" system-shutdown session/poweroff "off" \
-        Wallpaper "Change Wallpaper" wallpaper other/wallpaper "background"
+        Wallpaper "Change Wallpaper" wallpaper other/wallpaper "background" \
+        Schedule "Manage AT Jobs" clock sched/manage ""
 }
 
 power-menu() {
@@ -49,11 +52,57 @@ command-menu() {
 
 show-menu() {
     case "$1" in
-    session)
-        power-menu "$2"
+    session) power-menu "$2" ;;
+    other) command-menu "$2" ;;
+    sched) sched-menu "$2" ;;
+    esac
+}
+
+sched-menu() {
+    IFS=/ read -r sub task <<<"$1"
+    case "$sub" in
+    manage)
+        printf "$MENUFMT" \
+            Notify "Schedule notification for some time" preferences-desktop-notification sched/notify "msg" \
+            List "Show currently schedule Jobs" application-text sched/list "ls"
         ;;
-    other)
-        command-menu "$2"
+    list)
+        atq | while read -r id wday month day time year queue user; do
+            printf "$MENUFMT" \
+                "$time on $wday $month $day" "by $user in queue $queue" sleep sched/task/"$id" ""
+        done
+        ;;
+    notify)
+        coproc {
+            out="$(yad --form --field=Time --field=Title --field=Message --field=Level:CB \
+                '' '' '' 'low!^normal!critical' --buttons-layout=edge --button=Schedule:0 --button=Abort:1)"
+            if $?; then
+                exit
+            fi
+            IFS="|" read -r time title msg level <<<"$out"
+            printf 'notify-send %q %q -u %q' "$title" "$msg" "$level" | at "$time"
+        }
+        ;;
+    task)
+        IFS=/ read -r id action <<<"$task"
+        case "$action" in
+        "")
+            printf "$MENUFMT" \
+                View "Show Commands to run" shellscript sched/task/"$id"/view "edit" \
+                Delete "Unschedule Job" emblem-remove sched/task/"$id"/rm ""
+            ;;
+        view)
+            coproc {
+                local file="$(mktemp --suffix=.sh)"
+                at -c "$id" >"$file"
+                xdg-open "$file"
+            }
+            ;;
+        rm)
+            atrm "$id"
+            sched-menu list
+            ;;
+        esac
         ;;
     esac
 }
