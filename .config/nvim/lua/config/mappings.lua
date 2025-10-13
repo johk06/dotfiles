@@ -706,13 +706,14 @@ so tapping one shift key while holding the other makes sense ]]
 map("i", "<S-BS>", "<C-w>")
 map("i", "<S-Del>", "<c-o>\"_dw")
 
--- move between arguments, that's one of the only things i actually do in insert mode
--- [f]orward, [b]ackward
-map("i", "<C-f>", "<C-o>]a", { remap = true })
-map("i", "<C-b>", "<C-o>[a", { remap = true })
+-- quick way to trigger things like ]a in insert mode
+-- useful example: <C-f>a to go to the next argument
+map("i", "<C-f>", "<C-o>]", { remap = true })
+map("i", "<C-b>", "<C-o>[", { remap = true })
 
 -- leftover keys looking for a mapping
 -- <C-l>
+-- <C-z>
 -- <C-j>
 -- <C-m> maybe, may conflict with <cr>
 -- }}}
