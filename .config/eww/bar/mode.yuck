@@ -26,6 +26,7 @@
     {"keys": "[shl]", "action": "Seek"},
     {"keys": "[HL]", "action": "Track"},
     {"keys": "q", "action": "Queue"},
+    {"keys": "p", "action": "Play"},
     {"keys": "[nN]", "action": "Device"},
     {"keys": "<Space>", "action": "Play / Pause"}
 ],
