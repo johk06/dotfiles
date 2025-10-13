@@ -711,7 +711,7 @@ map("i", "<S-Del>", "<c-o>\"_dw")
 map("i", "<C-f>", "<C-o>f", { remap = true })
 map("i", "<C-b>", "<C-o>F", { remap = true })
 -- quick way to trigger things like ]a in insert mode
--- useful example: <C-,>a to go to the next argument
+-- useful example: <C-.>a to go to the next argument
 map("i", "<C-.>", "<C-o>]", { remap = true })
 map("i", "<C-,>", "<C-o>[", { remap = true })
 
