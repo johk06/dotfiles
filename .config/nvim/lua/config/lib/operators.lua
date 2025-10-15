@@ -56,8 +56,8 @@ function M.make_operator(name, cb, extra, hijack_count)
             vim.o.operatorfunc = "v:lua.Jhk.opfunc"
             if hijack_count then
                 Ctx.last_count = vim.v.count
-                vim.cmd.redraw()
-                return "g@"
+                -- <C-l>
+                return "\x0cg@"
             else
                 return "g@"
             end
