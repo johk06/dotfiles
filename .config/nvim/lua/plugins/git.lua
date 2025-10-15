@@ -25,6 +25,7 @@ TODO: give other git plugins (i.e. lazygit) a serious try
 -- last buffer for :G, to be relative to the current file with <space>gg
 local git_relative_buf
 
+-- Keymaps for buffers belonging to files tracked in git only {{{
 local map_on_git_buffer = function(buf)
     local gitsigns = require("gitsigns")
     local utils = require("config.utils")
@@ -58,7 +59,6 @@ local map_on_git_buffer = function(buf)
 
     map("n", "w", gitsigns.toggle_word_diff, { desc = "Git: Word diff" })
 
-    map("n", "S", gitsigns.stage_buffer, { desc = "Git: Stage Buffer" })
     mapboth("s", gitsigns.stage_hunk, "Git: Toggle stage")
     mapboth("U", gitsigns.reset_hunk, "Git: Reset Hunk")     -- mirror builtin U
     mapboth("R", gitsigns.reset_buffer, "Git: Reset Buffer") -- maybe <C-u> instead?
@@ -77,6 +77,33 @@ local map_on_git_buffer = function(buf)
     map(utils.mode_action, "x", "<cmd>GitLink! browse<cr>", { desc = "Git: Open URL" })
     map(utils.mode_action, "X", "<cmd>GitLink! blame<cr>", { desc = "Git: Open Blame URL" })
 end
+-- }}}
+
+-- Always active global maps {{{
+M.init = function()
+    local map = function(mode, lhs, rhs, opts)
+        vim.keymap.set(mode, "<space>g" .. lhs, rhs, opts)
+    end
+
+    -- limit max commit count to count * 100, use 99 to get all for most repos
+    map("n", "L", function()
+        local max = vim.v.count > 0 and vim.v.count * 100 or 100
+        local cmd = "log --stat --max-count=" .. max
+        vim.cmd.Git(cmd)
+    end, { desc = "Git: Log" })
+    map("n", "a", "<cmd>Gclog<cr>", { desc = "Git: Log for all" })
+    map("n", "o", "<cmd>Git log --oneline<cr>", { desc = "Git: Log to buffer, oneline" })
+    map("n", "c", "<cmd>silent Git commit<cr>", { desc = "Git: Commit" })
+    map("n", "p", "<cmd>Git push<cr>", { desc = "Git: Push" })
+
+    map("n", "S", gitsigns.stage_buffer, { desc = "Git: Stage Buffer" })
+
+    map("n", "g", function()
+        git_relative_buf = vim.api.nvim_get_current_buf()
+        vim.cmd("Git")
+    end, { desc = "Git: Status" })
+end
+-- }}}
 
 -- gitsigns {{{
 M[1].opts = {
@@ -109,28 +136,8 @@ M[1].opts = {
 }
 -- }}}
 
--- fugitive {{{
+-- Fugitive {{{
 M[2].config = function()
-    local map = function(mode, lhs, rhs, opts)
-        vim.keymap.set(mode, "<space>g" .. lhs, rhs, opts)
-    end
-
-    -- limit max commit count to count * 100, use 99 to get all for most repos
-    map("n", "L", function()
-        local max = vim.v.count > 0 and vim.v.count * 100 or 100
-        local cmd = "log --stat --max-count=" .. max
-        vim.cmd.Git(cmd)
-    end, { desc = "Git: Log" })
-    map("n", "a", "<cmd>Gclog<cr>", { desc = "Git: Log for all" })
-    map("n", "o", "<cmd>Git log --oneline<cr>", { desc = "Git: Log to buffer, oneline" })
-    map("n", "c", "<cmd>silent Git commit<cr>", { desc = "Git: Commit" })
-    map("n", "p", "<cmd>Git push<cr>", { desc = "Git: Push" })
-
-    map("n", "g", function()
-        git_relative_buf = vim.api.nvim_get_current_buf()
-        vim.cmd("Git")
-    end, { desc = "Git: Status" })
-
     vim.g.fugitive_dynamic_colors = false
     local utils = require("config.utils")
 
@@ -185,7 +192,6 @@ M[2].config = function()
         end
     })
 end
-
 -- }}}
 
 return M
