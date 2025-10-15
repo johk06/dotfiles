@@ -1,4 +1,5 @@
 local M = {}
+local api = vim.api
 
 --[[ Information {{{
 Despite being able to add operators to vim, this usually needs to be redone by each plugin
@@ -16,7 +17,7 @@ local Ctx = {
     last = nil,
     -- HACK: preserve last cursor before going into O-pending mode
     last_cursor = nil,
-
+    last_count = nil,
 }
 
 M.Ctx = Ctx
@@ -37,22 +38,29 @@ function Jhk.opfunc(mode)
     Ctx.funs[Ctx.last](mode)
 end
 
----@alias op_extra {saved: table, repeated: boolean, arg: any}
----@alias config.op.get fun(mode: string?): string[]
----@alias config.op.set fun(range: config.region, replacement: string[])
----@alias config.op.cb fun(mode: string, region: config.region, extra: op_extra, get: config.op.get, set: config.op.set)
+---@alias config.op.extra {saved: table, repeated: boolean, args: table, hijacked_count: integer}
+---@alias config.op.get_region fun(mode: string?): string[]
+---@alias config.op.set_region fun(range: config.region, replacement: string[])
+---@alias config.op.operator_func fun(mode: string, region: config.region, extra: config.op.extra, get: config.op.get_region, set: config.op.set_region)
 
 ---@param name string
 ---@param cb function
----@param arg any
-function M.make_operator(name, cb, arg)
+---@param extra table
+---@param hijack_count boolean
+function M.make_operator(name, cb, extra, hijack_count)
     local function operator(mode)
         local is_repeat = true
         if mode == nil then
             Ctx.last = name
             Ctx.was_repeat[name] = false
             vim.o.operatorfunc = "v:lua.Jhk.opfunc"
-            return "g@"
+            if hijack_count then
+                Ctx.last_count = vim.v.count
+                vim.cmd.redraw()
+                return "g@"
+            else
+                return "g@"
+            end
         elseif not Ctx.was_repeat[name] then
             Ctx.was_repeat[name] = true
             is_repeat = false
@@ -81,11 +89,12 @@ function M.make_operator(name, cb, arg)
         if not Ctx.extra_data[name] then
             Ctx.extra_data[name] = {}
         end
-        ---@type op_extra
+        ---@type config.op.extra
         local extra = {
             saved = Ctx.extra_data[name],
             repeated = is_repeat,
-            arg = arg,
+            args = extra,
+            hijacked_count = Ctx.last_count,
         }
         cb(mode, region, extra, get_content, set_content)
     end
@@ -96,17 +105,17 @@ end
 
 --- Maps a function as a visual and normal mode operator
 ---@param keys string
----@param cb config.op.cb
----@param opts {normal_only: boolean?, no_repeated: boolean?, desc: string?}?
----@param arg any
-function M.map_function(keys, cb, opts, arg)
+---@param cb config.op.operator_func
+---@param opts {normal_only: boolean?, no_repeated: boolean?, desc: string?, hijack_count: boolean}?
+---@param extra any
+function M.map_function(keys, cb, opts, extra)
     opts = opts or {}
     local mapopts = {
         expr = true,
         desc = opts.desc
     }
     local id = keys
-    local operator = M.make_operator(id, cb, arg)
+    local operator = M.make_operator(id, cb, extra, opts.hijack_count)
     -- use last char of string to indicate repeat for one line
     local repeat_char = keys:sub(-1, -1)
 

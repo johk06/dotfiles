@@ -23,8 +23,8 @@ local ns = api.nvim_create_namespace("config.dashboard")
 local utils = require("config.utils")
 
 ---@class dashboard.entry
----@field left [string, string][]
----@field right [string, string][]
+---@field left ([string, string])[]
+---@field right ([string, string])[]
 ---@field data table
 ---@field callback fun()
 ---@field map string?
