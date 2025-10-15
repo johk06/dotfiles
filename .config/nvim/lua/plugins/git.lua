@@ -59,6 +59,7 @@ local map_on_git_buffer = function(buf)
 
     map("n", "w", gitsigns.toggle_word_diff, { desc = "Git: Word diff" })
 
+    map("n", "S", gitsigns.stage_buffer, { desc = "Git: Stage Buffer" })
     mapboth("s", gitsigns.stage_hunk, "Git: Toggle stage")
     mapboth("U", gitsigns.reset_hunk, "Git: Reset Hunk")     -- mirror builtin U
     mapboth("R", gitsigns.reset_buffer, "Git: Reset Buffer") -- maybe <C-u> instead?
@@ -80,7 +81,7 @@ end
 -- }}}
 
 -- Always active global maps {{{
-M.init = function()
+local map_global_maps = function()
     local map = function(mode, lhs, rhs, opts)
         vim.keymap.set(mode, "<space>g" .. lhs, rhs, opts)
     end
@@ -95,8 +96,6 @@ M.init = function()
     map("n", "o", "<cmd>Git log --oneline<cr>", { desc = "Git: Log to buffer, oneline" })
     map("n", "c", "<cmd>silent Git commit<cr>", { desc = "Git: Commit" })
     map("n", "p", "<cmd>Git push<cr>", { desc = "Git: Push" })
-
-    map("n", "S", gitsigns.stage_buffer, { desc = "Git: Stage Buffer" })
 
     map("n", "g", function()
         git_relative_buf = vim.api.nvim_get_current_buf()
@@ -191,6 +190,8 @@ M[2].config = function()
             map_on_git_buffer(vim.api.nvim_get_current_buf())
         end
     })
+
+    map_global_maps()
 end
 -- }}}
 
