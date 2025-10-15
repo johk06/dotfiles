@@ -818,29 +818,52 @@ operators.map_function("g:", function(mode, region, extra, get, set)
     end
 end)
 
+---@param lines string[]
+---@param count integer
+---@return string[]
+local multiply_lines = function(lines, count)
+    local ret = {}
+    if count <= 1 then
+        return lines
+    end
+    for _ = 1, count do
+        vim.list_extend(ret, lines)
+    end
+
+    return ret
+end
+
 ---@type config.op.operator_func
 local multiply_operator = function(mode, region, extra, get, set)
     local before = extra.args and extra.args.before or false
     local target = before and region[1] or region[2]
-    local text = get(mode)
 
-    if mode == "char" then
-        local to_insert = (text[1]):rep(math.max(1, extra.hijacked_count))
+    if mode == "char" and region[1][1] == region[2][1] then
+        local text = get(mode)
+        local sel = text[1]
+        if not (sel:match("%s$") or sel:match("^%s") or sel:match("%W$") or sel:match("^%W")) then
+            if before then
+                sel = sel .. " "
+            else
+                sel = " " .. sel
+            end
+        end
+        local to_insert = { sel:rep(math.max(1, extra.hijacked_count)) }
 
         local row = target[1] - 1
         local col = target[2] + (before and 0 or 1)
-        api.nvim_buf_set_text(0, row, col, row, col, { to_insert })
-    elseif mode == "line" then
-        local to_insert = {}
-        for _ = 1, math.max(1, extra.hijacked_count) do
-            vim.list_extend(to_insert, text)
-        end
-
+        api.nvim_buf_set_text(0, row, col, row, col, to_insert)
+    else
+        local text = get("line")
+        local to_insert = multiply_lines(text, extra.hijacked_count)
         local line = before and target[1] - 1 or target[1]
         api.nvim_buf_set_lines(0, line, line, false, to_insert)
     end
 end
 
+-- [g]o [m]ultiply
+-- uses the first count as an indication of how often to multiply
+-- e.g. 2gmiw -> duplicates the current word twice
 operators.map_function("gm", multiply_operator, { hijack_count = true })
 operators.map_function("gM", multiply_operator, { hijack_count = true }, { before = true })
 -- }}}
