@@ -1,0 +1,30 @@
+# vim: ft=dosini
+
+[general]
+
+[input]
+
+method = pulse
+source = auto
+
+[output]
+
+orientation = bottom
+channels = stereo
+
+[color]
+
+gradient = 1
+gradient_count = 8
+gradient_color_1 = '#9a8aac'
+gradient_color_2 = '#5e81ac'
+gradient_color_3 = '#81a1c1'
+gradient_color_4 = '#8fbcbb'
+gradient_color_5 = '#a3be8c'
+gradient_color_6 = '#ebcb8b'
+gradient_color_7 = '#d08770'
+gradient_color_8 = '#bf616a'
+
+[smoothing]
+
+[eq]
