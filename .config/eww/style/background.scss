@@ -1,3 +1,4 @@
+$widget-bg: rgba($bg0, 0.3);
 .background-widgets {
     margin: 3rem;
 }
@@ -53,4 +54,34 @@
     }
     &.header {
     }
+}
+
+.poem-content {
+    background-color: $widget-bg;
+    border-radius: 12px 12px 0px 0px;
+    padding: 1rem;
+}
+
+.poem-title {
+    color: $fg0;
+    font-size: 1.3rem;
+    font-style: italic;
+}
+
+.poem-text {
+    color: $snow0;
+    font-size: 1rem;
+    font-style: italic;
+    font-size: 1.2rem;
+}
+
+.poem-controls {
+    background-color: $bg0;
+    border-radius: 0px 0px 12px 12px;
+    padding: 1rem;
+}
+
+.poem-by {
+    @extend .text;
+    font-size: 1.2rem;
 }

@@ -7,6 +7,19 @@
     font-size: 14px;
 }
 
+.input {
+    background-color: $bg1;
+    color: $fg0;
+    padding: .8rem;
+    caret-color: $fg0;
+    border-radius: 12px;
+    margin: 0.4rem;
+    selection {
+        background-color: $accent;
+        color: $inv;
+    }
+}
+
 .button {
     transition: background-color 0.3s ease, color 0.3s ease;
     padding: 0.09rem 1.15rem 0.09rem 0.85rem;

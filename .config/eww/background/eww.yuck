@@ -1,3 +1,5 @@
+(include "background/poem-of-the-day.yuck")
+
 (defwindow background
     :monitor '["DP-1", "eDP-1", 0]'
     :geometry (geometry
@@ -5,6 +7,7 @@
         :height "100%"
         :anchor "center center")
     :stacking "bg"
+    :focusable "ondemand"
     :namespace "eww-background"
     (background-window))
 
@@ -14,11 +17,15 @@
         :show-details true))
 
 (defwidget background-window []
-    (box :hexpand true :vexpand true :space-evenly false :orientation "v"
-        :halign "${background-calendar-h}" :valign "${background-calendar-v}" :class "background-widgets"
-        :spacing 40
-        (background-clock)
-        (background-calendar)))
+    (centerbox :hexpand true :vexpand true :space-evenly false :class "background-widgets"
+        (box :hexpand true :vexpand true :space-evenly false :orientation "v"
+            :halign "start" :valign "center"
+            :spacing 40
+            (background-clock)
+            (background-calendar))
+        (box)
+        (box :orientation "v" :valign "center" :halign "end" :hexpand true
+            (background-poem))))
 
 
 (defwidget background-clock []

@@ -3,9 +3,6 @@
 (defvar nightlight-strengh 3000)
 (defpoll look-theme :interval "10m" "./bin/color.sh get")
 
-(defvar background-calendar-h "start")
-(defvar background-calendar-v "center")
-
 (defpoll cpu-governor :interval "20m" "cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor")
 
 (defvar cpu-governor-names '{

@@ -182,7 +182,7 @@
                     "")))
        (scroll :class "scrollbar" :hexpand true :style "min-height: 3.3rem;" :vscroll false (box :space-evenly false
             (for hour in {weather.weather[0].hourly}
-                (weather-for-hour :hour {hour})))) ))
+                (weather-for-hour :hour {hour}))))))
 
 (defwidget status-panel []
     (box :space-evenly false :orientation "vertical" :hexpand true

@@ -20,5 +20,5 @@ print_devices() {
 }
 
 while print_devices; do
-    sleep 6
+    sleep 10
 done
