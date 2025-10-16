@@ -5,7 +5,6 @@
 # - Use short words
 # - Use prefixes (like { for set operations)
 
-# Sets {{{
 <Multi_key> <i> <n> : "∈" U2208
 <Multi_key> <exclam> <i> <n> : "∉" U2209
 
@@ -19,7 +18,15 @@
 <Multi_key> <braceleft> <n> : "∩" U2229
 <Multi_key> <braceleft> <U> : "⋃" U22c3
 <Multi_key> <braceleft> <N> : "⋂" U22c2
-# }}}
+
+<Multi_key> <n> <o> <t> : "¬" U00ac
+# like programming languages
+<Multi_key> <ampersand> <ampersand> : "∧" U2229
+<Multi_key> <bar> <bar> : "∨" U2228
+<Multi_key> <a> <l> <l> : "∀" U2200
+<Multi_key> <e> <x> : "∃" U2203
+<Multi_key> <exclam> <e> <x> : "∄" U2204
+
 
 # Summation/Product: Repeat the operator
 <Multi_key> <plus> <plus> : "∑" U2211 # NOTE: No-One needs a digraph for `#`

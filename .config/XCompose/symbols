@@ -14,8 +14,6 @@
 # tironian et
 <Multi_key> <ampersand> <7> : "⁊"
 
-<Multi_key> <ampersand> <ampersand> : "🙵" # fancy ampersand, needs a space after it to be wider in monospace
-
 # Combining diacritics, like the regular ones with a space {{{
 <Multi_key> <grave> <space> : "̀"
 <Multi_key> <apostrophe> <space> : "́"
