@@ -1,5 +1,5 @@
-(defvar poem-author "Shakespeare")
-(defvar poem-title "Sonnet")
+(defvar poem-author "")
+(defvar poem-title "")
 (defpoll poem-of-the-day :interval "60m" "bin/poem.sh")
 (defvar update-poem 'eww update poem-of-the-day="$(bin/poem.sh)"')
 
