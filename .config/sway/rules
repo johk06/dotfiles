@@ -17,3 +17,5 @@ for_window [app_id="nwg-icon-picker"] floating enable, resize set 300px 400px
 for_window [app_id="firefox" title="YouTube"] mark yt
 for_window [app_id="vesktop"] mark msg
 for_window [app_id="gamescope"] mark game
+
+for_window [app_id="gcr-prompter"] focus
