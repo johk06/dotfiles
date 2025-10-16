@@ -9,7 +9,7 @@ to avoid collisions with those added by e.g. nvim-treesitter.
 ]]
 
 
--- Conceal Symbol Names in Typst {{{
+-- Conceal Symbol Names in Typst
 local typst_symbol_names = {
     -- greek alphabet
     Alpha           = "Α",
@@ -113,9 +113,8 @@ vim.treesitter.query.add_directive("jhk-typst-set-symbol-conceal!", function(mat
 
     metadata[id].conceal = typst_symbol_names[text]
 end, {})
--- }}}
 
--- Only select n initial characters of a node {{{
+-- Only select n initial characters of a node
 vim.treesitter.query.add_directive("jhk-set-length!", function(match, pattern, source, predicate, metadata)
     local id = predicate[2]
     local node = match[id]
@@ -132,4 +131,3 @@ vim.treesitter.query.add_directive("jhk-set-length!", function(match, pattern, s
     end
     metadata[id].range[4] = metadata[id].range[2] + tonumber(predicate[3])
 end, {})
--- }}}
