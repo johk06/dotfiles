@@ -3,16 +3,19 @@
 (defpoll poem-of-the-day :interval "60m" "bin/poem.sh")
 (defvar update-poem 'eww update poem-of-the-day="$(bin/poem.sh)"')
 
+(defvar poem-transparent true)
+
 (defwidget background-poem []
     (box :space-evenly false :orientation "vertical" :halign "start"
-        (box :class "poem-content" :space-evenly false :orientation "vertical" :hexpand true
-            (scroll :style "min-height: 24rem;"
+        (box :class "poem-content${poem-transparent ? "" : "-opaque"}" :space-evenly false :orientation "vertical" :hexpand true
+            (scroll :style "min-height: 32rem;"
                 (label :wrap true :justify "left" :text {jq(poem-of-the-day.lines, 'join("\\n")')} :class "poem-text")))
         (box :class "poem-controls" :space-evenly false :orientation "v"
             (scroll :style "min-height: 4rem;" (label :wrap true :justify "center"
-                :text "${poem-of-the-day.title} 
+                :text "${poem-of-the-day.title}
 by ${poem-of-the-day.author}" :class "poem-title"))
         (hsep :height 20)
+        (pref-toggle :enabled {poem-transparent} :name "poem-transparent" :text "Transparent")
         (box :space-evenly false
             (button :timeout "128s" :onclick {update-poem} :class "button active" "Get")
             (input :class "input"
