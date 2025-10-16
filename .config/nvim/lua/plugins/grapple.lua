@@ -110,7 +110,7 @@ local opts = {
     },
     tag_hook = on_window_open,
     -- allow for more at once
-    quick_select = "1234567890,.-_()[]{}<>",
+    quick_select = "1234567890,.!@#$%^&*",
     style = "colorized",
     styles = {
         colorized = colorized_display,

@@ -1,7 +1,7 @@
 local api = vim.api
 local utils = require("config.utils")
 local getbufname = utils.format_buf_name
-local btypehighlights, btypesymbols = utils.btypehighlights, utils.btypesymbols
+local btypehighlights = utils.btypehighlights
 ---@module "grapple.init"
 local grapple = require("grapple")
 
@@ -10,8 +10,11 @@ Most bufferline plugins don't do everything I want out of the box.
 
 This bufferline behaves like this:
  - Buffers are shown with a virtual buffer number
- - This is made accessible via _G.Bufs_for_idx in use by my \ mappings
- - Buffers show an identifier describing what type of buffer they are
+ - This is made accessible via _G.Bufs_for_idx in use by my ./mappings.lua
+ - The buffers number has a color corresponding to the buffers' type
+ - Each buffer that has a plugins/grapple.lua mark set shows that too
+ - Hidden buffers are dimmed
+ - The alternate buffer, if hidden, is underlined
 
 Additionally, tabs are shown with all their open buffers inside them
 and are also accessible via _G.Tabs_for_idx
@@ -20,9 +23,9 @@ Like my statusline, redraw only using autocommands
 }}} ]]
 
 ---@type table<integer, integer>
-_G.Bufs_for_idx = {}   -- mapping of buffer indices in the buffer line to buffer numbers
+_G.Bufs_for_idx = {} -- mapping of buffer indices in the buffer line to buffer numbers
 ---@type table<integer, integer>
-_G.Tabs_for_idx = {}   -- mapping of tab indices in the buffer line to tab ids
+_G.Tabs_for_idx = {} -- mapping of tab indices in the buffer line to tab ids
 
 ---@type table<integer, integer>
 _G.Short_for_bufs = {} -- reverse lookup of buffer names
