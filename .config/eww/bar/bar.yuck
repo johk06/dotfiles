@@ -35,15 +35,12 @@
             (mark-list)
             (workspace-list))
         (notifications))
-    (right-box)))
-
-
-(defwidget right-box []
     (box :space-evenly false :halign "end"
         (systray-expander)
         (mpris-current)
         (status)
-        (clock)))
+        (clock))))
+
 
 (defvar systray-expanded false)
 (defwidget systray-expander []
