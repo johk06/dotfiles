@@ -155,7 +155,7 @@ M.path_display = function(opts, path)
     local namewidth = fn.strdisplaywidth(tail)
     local dirlen = #parendir
 
-    local padding = math.max(MAX_FILENAME_WIDTH * 1.3 - namewidth, 0)
+    local padding = math.floor(math.max(MAX_FILENAME_WIDTH * 1.3 - namewidth, 0))
     local hl = utils.highlight_fname(tail)
     if hl == "FileTypeNormal" then
         hl = nil
@@ -271,12 +271,12 @@ local file_entry_display = function(entry)
     }
 end
 
-M.file_entries = function(line)
+M.file_entries = function(entry)
     return {
-        value = line,
+        value = entry,
         display = file_entry_display,
-        filename = line,
-        ordinal = line,
+        filename = entry.value,
+        ordinal = entry,
     }
 end
 -- }}}
