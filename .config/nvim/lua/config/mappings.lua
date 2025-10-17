@@ -874,7 +874,7 @@ This may benefit from being turned into a sub mode sometime (e.g. using hydra) ]
 local cdleader = "<space>."
 
 local function get_cur_buf_parent()
-    local path = fn.expand("%:h"):gsub("^oil://", "")
+    local path = fn.expand("%:p:h"):gsub("^oil://", "")
     return path
 end
 
