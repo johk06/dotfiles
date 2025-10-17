@@ -361,17 +361,17 @@ M.config = function(_, opts)
     -- [p]arent, why use <C-p> if k exists
     map("n", "<C-p>", oil.open)
 
-    map("n", "<C-w>e", function()
+    map("n", "'e", function()
         vim.cmd("split")
         oil.open()
-    end)
-    map("n", "<C-w>E", function()
+    end, { desc = "Buffer: Oil" })
+    map("n", "'E", function()
         vim.cmd("vsplit")
         oil.open()
-    end)
-    map("n", "<C-w><C-e>", function()
+    end, { desc = "Buffer: Vertical Oil" })
+    map("n", "'<C-e>", function()
         oil.open_float()
-    end)
+    end, { desc = "Buffer: Floating Oil" })
 end
 
 return M
