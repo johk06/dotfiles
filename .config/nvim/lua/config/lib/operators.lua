@@ -34,6 +34,8 @@ local function get_op_region(mode)
     end
 end
 
+M.get_op_region = get_op_region
+
 function Jhk.opfunc(mode)
     Ctx.funs[Ctx.last](mode)
 end
@@ -64,11 +66,10 @@ end
 ---@alias config.op.operator_func fun(mode: string, region: config.region, extra: config.op.extra)
 
 ---@param name string
----@param cb function
+---@param cb config.op.operator_func
 ---@param extra table
 ---@param hijack_count boolean
----@param two_phase boolean
-function M.make_operator(name, cb, extra, hijack_count, two_phase)
+function M.make_operator(name, cb, extra, hijack_count)
     local function operator(mode)
         local is_repeat = true
         if mode == nil then
@@ -108,7 +109,7 @@ end
 --- Maps a function as a visual and normal mode operator
 ---@param keys string
 ---@param cb config.op.operator_func
----@param opts {normal_only: boolean?, no_repeated: boolean?, desc: string?, hijack_count: boolean, two_phase: boolean}?
+---@param opts {normal_only: boolean?, no_repeated: boolean?, desc: string?, hijack_count: boolean}?
 ---@param extra any
 function M.map_function(keys, cb, opts, extra)
     opts = opts or {}
@@ -117,7 +118,7 @@ function M.map_function(keys, cb, opts, extra)
         desc = opts.desc
     }
     local id = keys
-    local operator = M.make_operator(id, cb, extra, opts.hijack_count, opts.two_phase)
+    local operator = M.make_operator(id, cb, extra, opts.hijack_count)
     -- use last char of string to indicate repeat for one line
     local repeat_char = keys:sub(-1, -1)
 

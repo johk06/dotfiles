@@ -6,9 +6,6 @@ return {
     settings = {
         Lua = {
             semantic = {
-                -- Luadoc highlighting is much better handled by treesitter
-                -- e.g. <.> between elements of an object chain
-                annotation = false
             }
         }
     },
