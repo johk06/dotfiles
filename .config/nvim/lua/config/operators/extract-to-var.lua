@@ -9,6 +9,18 @@ local last_text = nil
 ---@type string
 local reg = nil
 
+local sh_name_transformer = function(name, value)
+    if value[1]:find([=[["\\]]=]) then
+        return ('"$%s"'):format(name)
+    end
+    return ('${%s}'):format(name)
+end
+
+local sh_assignment_generator = function(name, value)
+    value[1] = ("%s=%s"):format(name, value[1])
+    return value
+end
+
 ---@type table<string, fun(name: string, value: string[]): string[]?>
 M.assignment_generators = {
     lua = function(name, value)
@@ -22,11 +34,16 @@ M.assignment_generators = {
 
         value[1] = ("local %s = %s"):format(name, valstart)
         return value
-    end
+    end,
+    bash = sh_assignment_generator,
+    sh = sh_assignment_generator,
 }
 
 ---@type table<string, fun(name: string, value: string[]): string>
-M.name_transformers = {}
+M.name_transformers = {
+    bash = sh_name_transformer,
+    sh = sh_name_transformer
+}
 
 Jhk.extract_opfunc = function(mode)
     if not last_text then
