@@ -48,7 +48,7 @@ local cursor_for_ts_node = function(ctx, capture, range)
 end
 
 local map_select_operator = function(keys, capture, field, desc)
-    require("config.lib.operators").map_function(keys, function(mode, region, extra, get, set)
+    require("config.lib.operators").map_function(keys, function(mode, region, extra)
         require("multicursor-nvim").action(function(ctx)
             cursor_for_ts_node(ctx, capture, { region[1][1] - 1, region[1][2], region[2][1] - 1, region[2][2] })
         end)
@@ -92,7 +92,7 @@ function M.config()
     -- turns multiple cursors into another vim command more than a full mode
     -- for linewise mode or when spanning multiple lines: create one cursor for each line, at the same position as the original one
     -- for charwise mode on a single line: create a single cursor at the destination of the motion
-    operators.map_function("--", function(mode, region, extra, get, set)
+    operators.map_function("--", function(mode, region, extra)
         if mode == "line" or region[2][1] ~= region[1][1] then
             local original_column = vim.fn.charcol(".")
             mc.action(function(ctx)

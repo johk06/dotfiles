@@ -772,6 +772,8 @@ map(obj, "i-", textobjs.create_pattern_obj("([-_]?)%w+([-_]?)"))
 map(obj, "a-", textobjs.create_pattern_obj("()[-_]?%w+[-_]?()"))
 
 -- object chain, most languages, NOTE: does not include lua `:`
+-- This can also be taken as a generic identifier object
+-- For languages that do not include e.g. -
 map(obj, "i.", textobjs.create_pattern_obj("()[%w._]+()"))
 map(obj, "a.", textobjs.create_pattern_obj("()%s*[%w._]+%s*()"))
 
@@ -793,7 +795,7 @@ map("o", "=", textobjs.variable_value)
 -- allows me to repeat commands like they're regular mappings
 -- mostly useful with things like :g and :s
 ---@diagnostic disable-next-line: unused-local
-operators.map_function("g:", function(mode, region, extra, get, set)
+operators.map_function("g:", function(mode, region, extra)
     if extra.repeated then
         ---@diagnostic disable-next-line: param-type-mismatch
         local ok, err = pcall(vim.cmd, string.format("%d,%d%s", region[1][1], region[2][1], extra.saved.cmd))
@@ -834,12 +836,12 @@ local multiply_lines = function(lines, count)
 end
 
 ---@type config.op.operator_func
-local multiply_operator = function(mode, region, extra, get, set)
+local multiply_operator = function(mode, region, extra)
     local before = extra.args and extra.args.before or false
     local target = before and region[1] or region[2]
 
     if mode == "char" and region[1][1] == region[2][1] then
-        local text = get(mode)
+        local text = operators.get_region(mode, region)
         local sel = text[1]
         if not (sel:match("%s$") or sel:match("^%s") or sel:match("%W$") or sel:match("^%W")) then
             if before then
@@ -854,7 +856,7 @@ local multiply_operator = function(mode, region, extra, get, set)
         local col = target[2] + (before and 0 or 1)
         api.nvim_buf_set_text(0, row, col, row, col, to_insert)
     else
-        local text = get("line")
+        local text = operators.get_region("line", region)
         local to_insert = multiply_lines(text, extra.hijacked_count)
         local line = before and target[1] - 1 or target[1]
         api.nvim_buf_set_lines(0, line, line, false, to_insert)

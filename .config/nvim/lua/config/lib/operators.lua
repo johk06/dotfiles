@@ -38,16 +38,37 @@ function Jhk.opfunc(mode)
     Ctx.funs[Ctx.last](mode)
 end
 
+---@param mode "char"|"line"
+---@param region config.region
+M.get_region = function(mode, region)
+    if mode == "line" then
+        return vim.api.nvim_buf_get_lines(0, region[1][1] - 1, region[2][1], false)
+    else
+        return vim.api.nvim_buf_get_text(0, region[1][1] - 1, region[1][2], region[2][1] - 1, region[2][2] + 1,
+            {})
+    end
+end
+
+---@param mode "char"|"line"
+---@param region config.region
+---@param replacement string[]
+M.set_region = function(mode, region, replacement)
+    if mode == "line" then
+        vim.api.nvim_buf_set_lines(0, region[1][1] - 1, region[2][1], false, replacement)
+    else
+        vim.api.nvim_buf_set_text(0, region[1][1] - 1, region[1][2], region[2][1] - 1, region[2][2] + 1, replacement)
+    end
+end
+
 ---@alias config.op.extra {saved: table, repeated: boolean, args: table, hijacked_count: integer}
----@alias config.op.get_region fun(mode: string?): string[]
----@alias config.op.set_region fun(range: config.region, replacement: string[])
----@alias config.op.operator_func fun(mode: string, region: config.region, extra: config.op.extra, get: config.op.get_region, set: config.op.set_region)
+---@alias config.op.operator_func fun(mode: string, region: config.region, extra: config.op.extra)
 
 ---@param name string
 ---@param cb function
 ---@param extra table
 ---@param hijack_count boolean
-function M.make_operator(name, cb, extra, hijack_count)
+---@param two_phase boolean
+function M.make_operator(name, cb, extra, hijack_count, two_phase)
     local function operator(mode)
         local is_repeat = true
         if mode == nil then
@@ -66,37 +87,18 @@ function M.make_operator(name, cb, extra, hijack_count)
             is_repeat = false
         end
         local region = get_op_region(mode)
-        local function get_content(_mode)
-            local m = _mode or mode
-            if m == "line" then
-                return vim.api.nvim_buf_get_lines(0, region[1][1] - 1, region[2][1], false)
-            else
-                return vim.api.nvim_buf_get_text(0, region[1][1] - 1, region[1][2], region[2][1] - 1, region[2][2] + 1,
-                    {})
-            end
-        end
-
-        local function set_content(reg, replacement)
-            if replacement then
-                if mode == "line" then
-                    vim.api.nvim_buf_set_lines(0, reg[1][1] - 1, reg[2][1], false, replacement)
-                else
-                    vim.api.nvim_buf_set_text(0, reg[1][1] - 1, reg[1][2], reg[2][1] - 1, reg[2][2] + 1, replacement)
-                end
-            end
-        end
 
         if not Ctx.extra_data[name] then
             Ctx.extra_data[name] = {}
         end
         ---@type config.op.extra
-        local extra = {
+        local params = {
             saved = Ctx.extra_data[name],
             repeated = is_repeat,
             args = extra,
             hijacked_count = Ctx.last_count,
         }
-        cb(mode, region, extra, get_content, set_content)
+        cb(mode, region, params)
     end
 
     Ctx.funs[name] = operator
@@ -106,7 +108,7 @@ end
 --- Maps a function as a visual and normal mode operator
 ---@param keys string
 ---@param cb config.op.operator_func
----@param opts {normal_only: boolean?, no_repeated: boolean?, desc: string?, hijack_count: boolean}?
+---@param opts {normal_only: boolean?, no_repeated: boolean?, desc: string?, hijack_count: boolean, two_phase: boolean}?
 ---@param extra any
 function M.map_function(keys, cb, opts, extra)
     opts = opts or {}
@@ -115,7 +117,7 @@ function M.map_function(keys, cb, opts, extra)
         desc = opts.desc
     }
     local id = keys
-    local operator = M.make_operator(id, cb, extra, opts.hijack_count)
+    local operator = M.make_operator(id, cb, extra, opts.hijack_count, opts.two_phase)
     -- use last char of string to indicate repeat for one line
     local repeat_char = keys:sub(-1, -1)
 
