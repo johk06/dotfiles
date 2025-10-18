@@ -6,11 +6,15 @@ local operators = require("config.lib.operators")
 
 ---@type string[]|nil
 local last_text = nil
+---@type string
+local reg = nil
 
 ---@type table<string, fun(name: string, value: string[]): string[]?>
 M.assignment_generators = {
     lua = function(name, value)
         local valstart = vim.trim(value[1])
+
+        -- table assignment does not need or use the local keyword
         if name:find("%.") or name:find("%[") then
             value[1] = ("%s = %s"):format(name, valstart)
             return value
@@ -22,16 +26,7 @@ M.assignment_generators = {
 }
 
 ---@type table<string, fun(name: string, value: string[]): string>
-M.name_transformers = {
-    lua = function(name, value)
-        -- table or string literals as arguments to a function need protecting
-        if value[1]:find("^%s*{") or value[1]:find([=[^%s*["']]=]) then
-            return ("(%s)"):format(name)
-        end
-
-        return name
-    end
-}
+M.name_transformers = {}
 
 Jhk.extract_opfunc = function(mode)
     if not last_text then
@@ -45,7 +40,7 @@ Jhk.extract_opfunc = function(mode)
         utils.error("Extract", ("No extractor for '%s'"):format(ft))
         return
     end
-    local name = vim.fn.input("Enter Name: ")
+    local name = vim.fn.input("Name: ")
     local region = operators.get_op_region(mode)
     local lines = operators.get_region("line", region)
     local variable = name
@@ -64,20 +59,41 @@ Jhk.extract_opfunc = function(mode)
         end
     else
         local as_text = table.concat(lines, "\n")
-        local multiline = "\\M" .. table.concat(text, "\n"):gsub("\\", "\\\\"):gsub("%s+", "\\_s\\+")
-        local res = vim.fn.substitute(as_text, multiline, variable, "g")
+        local multiline_regex_builder = {}
+        for _, line in ipairs(text) do
+            if line:match("^%s+") then
+                table.insert(multiline_regex_builder, true)
+            end
+            table.insert(multiline_regex_builder, vim.trim((line:gsub("\\", "\\\\"))))
+            if line:match("%s+$") then
+                table.insert(multiline_regex_builder, true)
+            end
+            table.insert(multiline_regex_builder, true)
+        end
+        local regex = {}
+        for i = 1, #multiline_regex_builder do
+            local el = multiline_regex_builder[i]
+            if el == true and multiline_regex_builder[i + 1] ~= true then
+                table.insert(regex, "\\_s\\+")
+            elseif el ~= true then
+                table.insert(regex, el)
+            end
+        end
+        regex[#regex] = nil
+        local res = vim.fn.substitute(as_text, table.concat(regex), variable, "g")
         replacements = vim.split(res, "\n")
     end
 
     local assignment = M.assignment_generators[ft](name, text)
     if assignment then
-        api.nvim_buf_set_lines(0, region[1][1] - 1, region[1][1] - 1, false, assignment)
-        api.nvim_buf_set_lines(0, region[1][1] + #assignment - 1, region[2][1] + #assignment, false, replacements)
+        api.nvim_buf_set_lines(0, region[1][1] - 1, region[2][1], false, replacements)
+        vim.fn.setreg(reg, assignment)
     end
 end
 
 ---@type config.op.operator_func
 M.extract_to_variable = function(mode, region, extra)
+    reg = vim.v.register
     last_text = operators.get_region(mode, region)
     vim.o.opfunc = "v:lua.Jhk.extract_opfunc"
 

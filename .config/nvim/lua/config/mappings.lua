@@ -869,7 +869,8 @@ end
 operators.map_function("gm", multiply_operator, { hijack_count = true })
 operators.map_function("gM", multiply_operator, { hijack_count = true }, { before = true })
 
-operators.map_function("gX", require("config.operators.extract-to-var").extract_to_variable, {
+-- [y]ou e[x]tract or [y]ank
+operators.map_function("yx", require("config.operators.extract-to-var").extract_to_variable, {
     no_repeated = true,
     desc = "Extract to variable"
 })
