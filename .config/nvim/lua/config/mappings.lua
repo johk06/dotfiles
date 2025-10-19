@@ -868,12 +868,6 @@ end
 -- e.g. 2gmiw -> duplicates the current word twice
 operators.map_function("gm", multiply_operator, { hijack_count = true })
 operators.map_function("gM", multiply_operator, { hijack_count = true }, { before = true })
-
--- [c]hange [o]ut
-operators.map_function("co", require("config.operators.extract-to-var").extract_to_variable, {
-    no_repeated = true,
-    desc = "Extract to variable"
-})
 -- }}}
 
 --[[ Change Directory {{{
