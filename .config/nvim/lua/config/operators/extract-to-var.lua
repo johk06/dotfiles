@@ -44,8 +44,23 @@ M.assignment_generators = {
     sh = sh_assignment_generator,
 }
 
----@type table<string, fun(name: string, value: string[]): string>
+---@type table<string, fun(name: string, value: string[], node: TSNode): string>
 M.name_transformers = {
+    lua = function(name, value, node)
+        -- tables as function arguments need special care
+        if value[1]:find([=[^%s*[{'"]]=]) then
+            local parent = node:parent()
+            if not parent then goto default end
+            local parent_of_parent = parent:parent()
+            if not parent_of_parent then goto default end
+            if parent_of_parent:type() == "function_call" then
+                return ("(%s)"):format(name)
+            end
+        end
+
+        ::default::
+        return name
+    end,
     bash = sh_name_transformer,
     sh = sh_name_transformer
 }
@@ -65,45 +80,60 @@ local node_for_region = function(region)
 end
 
 ---@param node TSNode
----@return string
----@return ([string, string])[]
-local serialize_node = function(node)
-    local ret = {}
+---@param dest table
+local function _serialize_node(node, dest)
     for n, f in node:iter_children() do
-        table.insert(ret, {
-            f, vim.treesitter.get_node_text(n, 0)
-        })
-    end
-
-    return node:type(), ret
-end
-
----@param n1 ([string, string])[]
----@param n2 ([string, string])[]
----@return boolean
-local compare_serial_nodes = function(n1, n2)
-    if #n1 ~= #n2 then
-        return false
-    end
-
-    for i = 1, #n1 do
-        if n1[i][1] ~= n2[i][1] or n1[i][2] ~= n2[i][2] then
-            return false
+        if n:child_count() > 0 then
+            local tbl = { f, n:type() }
+            table.insert(dest, tbl)
+            _serialize_node(n, tbl)
+        else
+            if f then
+                table.insert(dest, {
+                    n:type(), vim.treesitter.get_node_text(n, 0)
+                })
+            end
         end
     end
+end
 
-    return true
+---@param node TSNode
+---@return table
+local serialize_node = function(node)
+    local dest = {}
+    _serialize_node(node, dest)
+    return dest
+end
+
+---@param a any
+---@param b any
+---@return boolean
+local function compare_serial_nodes(a, b)
+    if type(a) == "table" and type(b) == "table" then
+        if #a ~= #b then
+            return false
+        end
+        for i = 1, #a do
+            if not compare_serial_nodes(a[i], b[i]) then
+                return false
+            end
+        end
+        return true
+    else
+        return a == b
+    end
 end
 
 ---@param type string
----@param needle ([string, string])[]
+---@param needle table
 ---@param haystack TSNode
 ---@param dest TSNode[]
 ---@param range Range4
 local function find_matching_nodes(type, needle, haystack, dest, range)
     for n, f in haystack:iter_children() do
-        local t, s = serialize_node(n)
-        if t == type and compare_serial_nodes(s, needle) then
+        local s = serialize_node(n)
+        if n:type() == type and compare_serial_nodes(s, needle) then
+            ---@diagnostic disable-next-line: missing-fields Lua 5.1 allows for this
             if vim.treesitter._range.contains(range, { n:range() }) then
                 table.insert(dest, n)
             end
@@ -118,15 +148,14 @@ end
 ---@param range Range4
 ---@return TSNode[]
 local find_nodes_inside_node = function(needle, haystack, range)
-    local t, s = serialize_node(needle)
+    local s = serialize_node(needle)
     local dest = {}
-    find_matching_nodes(t, s, haystack, dest, range)
+    find_matching_nodes(needle:type(), s, haystack, dest, range)
     return dest
 end
 
 ---@type config.op.operator_func
 local region_selection = function(mode, region, extra)
-    next_phase = "expression"
     if not last_text then
         return
     end
@@ -140,14 +169,14 @@ local region_selection = function(mode, region, extra)
 
     local ft = vim.bo.ft
     local name = vim.fn.input("Name: ")
-    local variable = name
-    if M.name_transformers[ft] then
-        variable = M.name_transformers[ft](name, text)
-    end
 
-    for _, node in ipairs(nodes) do
+    -- avoid disturbing the tree
+    for node in vim.iter(nodes):rev() do
         local srow, scol, erow, ecol = node:range()
-        api.nvim_buf_set_text(0, srow, scol, erow, ecol, { variable })
+        local replacement = M.name_transformers[ft]
+            and M.name_transformers[ft](name, text, node)
+            or name
+        api.nvim_buf_set_text(0, srow, scol, erow, ecol, { replacement })
     end
 
     if M.assignment_generators[ft] then
@@ -189,6 +218,7 @@ local expression_selection = function(mode, region, extra)
     api.nvim_create_autocmd("SafeState", {
         once = true,
         callback = function()
+            next_phase = "expression"
             api.nvim_buf_clear_namespace(0, ns, 0, -1)
         end
     })
