@@ -60,8 +60,8 @@ local function set_signs(buf, status)
             end_col = 0,
             end_line = i - 1,
             virt_text = {
-                { worktree, "OilGitStatusWorktree" .. hl_for_status[worktree] },
-                { index,    "OilGitStatusIndex" .. hl_for_status[index] },
+                { worktree, "OilGit" .. hl_for_status[worktree] },
+                { index,    "OilGit" .. hl_for_status[index] },
                 { " " }
             },
             virt_text_pos = "inline",

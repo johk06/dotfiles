@@ -15,18 +15,41 @@ end
 
 -- Basics {{{
 local colorscheme = {
+
+    -- built in editor highlights
     Normal                      = { fg = pal.fg0, bg = pal.bg0 },
     NormalFloat                 = { fg = pal.fg0, bg = pal.bg0 },
     FloatBorder                 = { fg = pal.bg3 },
     WinSeparator                = { fg = pal.bg2 },
+    LineNr                      = { fg = col.bright_gray },
+    LineNrAbove                 = { fg = blend(col.teal, col.bright_gray, 0.3) },
+    LineNrBelow                 = { fg = blend(col.pink, col.bright_gray, 0.3) },
+    CursorLineNr                = { fg = pal.fg0 },
+    Cursor                      = { reverse = true },
+    MultiCursorCursor           = { bg = pal.bg3 },
+    CursorLine                  = { bg = pal.bg1 },
+    CursorColumn                = { bg = pal.bg1 },
+    ColorColumn                 = { bg = pal.bg01, blend = 90 },
+    Tabline                     = {},
+    StatusLine                  = { bg = pal.bg01 },
+    Folded                      = {},
+    FoldNumber                  = { fg = col.magenta, italic = true },
+    FoldColumn                  = { fg = pal.bg3 },
+    SignColumn                  = { fg = pal.bg3 },
+    EndOfBuffer                 = { fg = pal.bg1 },
+    Visual                      = { bg = pal.bg1 },
+    NonText                     = { fg = col.bright_gray },
+    SpecialKey                  = { link = "NonText" },
+    MatchParen                  = { bg = pal.bg1, fg = col.pink },
 
+    -- related to search &c
     Search                      = { bg = pal.bg1 },
     CurSearch                   = { bg = pal.bg3 },
     IncSearch                   = { bg = col.yellow, fg = pal.inverted },
     Substitute                  = { bg = col.yellow, fg = pal.inverted },
     LeapLabel                   = { fg = pal.inverted, bg = col.yellow, nocombine = true },
 
-    -- my own better find
+    -- sort of an extension from search
     BlinkenFind1                = { bg = col.pink, fg = pal.inverted },
     BlinkenFind2                = { bg = col.purple, fg = pal.inverted },
     BlinkenFind3                = { bg = col.blue, fg = pal.inverted },
@@ -46,31 +69,13 @@ local colorscheme = {
     BlinkenFind8Secondary       = { sp = col.orange, underline = true },
     BlinkenFind9Secondary       = { sp = col.red, underline = true },
 
+    -- spelling
     SpellBad                    = { sp = col.red, undercurl = true },
     SpellRare                   = { sp = col.magenta, undercurl = true },
     SpellLocal                  = { sp = col.pink, undercurl = true },
     SpellCap                    = { sp = col.yellow, undercurl = true },
 
-    LineNr                      = { fg = col.bright_gray },
-    LineNrAbove                 = { fg = blend(col.teal, col.bright_gray, 0.3) },
-    LineNrBelow                 = { fg = blend(col.pink, col.bright_gray, 0.3) },
-    CursorLineNr                = { fg = pal.fg0 },
-    Cursor                      = { reverse = true },
-    CursorLine                  = { bg = pal.bg1 },
-    CursorColumn                = { bg = pal.bg1 },
-    ColorColumn                 = { bg = pal.bg01, blend = 90 },
-    Tabline                     = {},
-    StatusLine                  = { bg = pal.bg01 },
-    Folded                      = {},
-    FoldNumber                  = { fg = col.magenta, italic = true },
-    FoldColumn                  = { fg = pal.bg3 },
-    SignColumn                  = { fg = pal.bg3 },
-    EndOfBuffer                 = { fg = pal.bg1 },
-    Visual                      = { bg = pal.bg1 },
-    NonText                     = { fg = col.bright_gray },
-    SpecialKey                  = { link = "NonText" },
-    MatchParen                  = { bg = pal.bg1, fg = col.pink },
-
+    -- diffs
     Added                       = { fg = col.green },
     Deleted                     = { fg = col.red },
     Removed                     = { link = "Deleted" },
@@ -81,12 +86,14 @@ local colorscheme = {
     DiffDelete                  = { bg = blend(col.red, pal.bg3, 0.3) },
     diffFile                    = { link = "Directory" },
 
+    -- messages
     Question                    = { fg = col.fg0 },
     Warnings                    = { fg = col.orange },
     ErrorMsg                    = { fg = col.red },
     MoreMSg                     = { fg = col.bright_gray },
     ModeMSg                     = { fg = col.bright_gray },
 
+    -- popup menu
     Pmenu                       = { bg = pal.bg1, fg = pal.fg0 },
     PmenuSel                    = { bg = col.teal, fg = pal.inverted },
     PmenuKind                   = { fg = col.magenta },
@@ -96,6 +103,7 @@ local colorscheme = {
     PmenuSbar                   = { fg = pal.fg2 },
     PmenuThumb                  = { fg = pal.fg0 },
 
+    -- quick fix list
     qfFileName                  = { fg = col.light_blue },
     qfLineNr                    = { fg = col.magenta },
     qfSeparator                 = { link = "@punctuation.delimiter" },
@@ -103,67 +111,67 @@ local colorscheme = {
     QuickFixLineNr              = { fg = col.purple },
     QuickFixFilename            = { link = "Identifier" },
 
-    Directory                   = { fg = col.teal },
-    Type                        = { link = "@type" },
-    StorageClass                = { fg = col.light_blue },
-    Structure                   = { link = "@type" },
-    Struct                      = { link = "@type" },
-    Statement                   = { fg = col.light_blue },
-    Character                   = { link = "@character" },
-    String                      = { link = "@string" },
-    Number                      = { link = "@number" },
-    Float                       = { link = "@float" },
-    Constant                    = { link = "@constant" },
+    -- built in syntax
     Boolean                     = { link = "@boolean" },
-    Label                       = { link = "@symbol" },
-    Operator                    = { link = "@operator" },
-    Exception                   = { fg = col.light_blue },
+    Character                   = { link = "@character" },
+    CodeBlock                   = { bg = pal.bg1 },
     Comment                     = { link = "@comment" },
-    SpecialComment              = { link = "@comment.note" },
-    PreProc                     = { fg = col.light_blue },
-    Include                     = { link = "@keyword.import" },
-    Define                      = { link = "@keyword" },
-    Macro                       = { link = "@macro" },
-    Typedef                     = { fg = col.light_blue },
-    PreCondit                   = { fg = col.yellow },
-    Special                     = { fg = pal.fg2 },
-    SpecialChar                 = { fg = col.yellow },
-    Tag                         = { fg = col.fg2 },
-    Delimiter                   = { link = "@punctuation.delimiter" },
-    Debug                       = { fg = col.red },
-    Underlined                  = { fg = col.blue, underline = true },
-    Ignore                      = { fg = pal.bg1 },
-    Todo                        = { link = "@comment.todo" },
     Conceal                     = { bg = pal.bg0 },
-    htmlLink                    = { fg = col.blue, italic = true, underline = true },
-    markdownH1Delimiter         = { fg = col.light_cyan },
-    markdownH2Delimiter         = { fg = col.red },
-    markdownH3Delimiter         = { fg = col.green },
-    Title                       = { link = "@markup.heading" },
+    Conditional                 = { link = "@keyword.conditional" },
+    Constant                    = { link = "@constant" },
+    Dash                        = { fg = col.blue, bold = true },
+    Debug                       = { fg = col.red },
+    Define                      = { link = "@keyword" },
+    Delimiter                   = { link = "@punctuation.delimiter" },
+    Directory                   = { fg = col.teal },
+    Error                       = { fg = col.red, bold = true, underline = true },
+    Exception                   = { fg = col.light_blue },
+    Float                       = { link = "@float" },
+    Function                    = { link = "@keyword.function" },
     htmlH1                      = { link = "@markup.heading.1" },
     htmlH2                      = { link = "@markup.heading.2" },
     htmlH3                      = { link = "@markup.heading.3" },
     htmlH4                      = { link = "@markup.heading.4" },
     htmlH5                      = { link = "@markup.heading.5" },
-    markdownH1                  = { link = "@markup.heading.1" },
-    markdownH2                  = { link = "@markup.heading.2" },
-    markdownH3                  = { link = "@markup.heading.3" },
-    Error                       = { fg = col.red, bold = true, underline = true },
-    Conditional                 = { link = "@keyword.conditional" },
-    Function                    = { link = "@keyword.function" },
+    htmlLink                    = { fg = col.blue, italic = true, underline = true },
     Identifier                  = { fg = col.light_blue },
+    Ignore                      = { fg = pal.bg1 },
+    Include                     = { link = "@keyword.import" },
     Keyword                     = { link = "@keyword" },
-    Repeat                      = { link = "@keyword.repeat" },
+    Label                       = { link = "@symbol" },
+    Macro                       = { link = "@macro" },
+    markdownH1Delimiter         = { fg = col.light_cyan },
+    markdownH1                  = { link = "@markup.heading.1" },
+    markdownH2Delimiter         = { fg = col.red },
+    markdownH2                  = { link = "@markup.heading.2" },
+    markdownH3Delimiter         = { fg = col.green },
+    markdownH3                  = { link = "@markup.heading.3" },
+    Number                      = { link = "@number" },
+    Operator                    = { link = "@operator" },
+    PreCondit                   = { fg = col.yellow },
+    PreProc                     = { fg = col.light_blue },
     Quote                       = { fg = pal.bg2 },
-    CodeBlock                   = { bg = pal.bg1 },
-    Dash                        = { fg = col.blue, bold = true },
+    Repeat                      = { link = "@keyword.repeat" },
+    SpecialChar                 = { fg = col.yellow },
+    SpecialComment              = { link = "@comment.note" },
+    Special                     = { fg = pal.fg2 },
+    Statement                   = { fg = col.light_blue },
+    StorageClass                = { fg = col.light_blue },
+    String                      = { link = "@string" },
+    Struct                      = { link = "@type" },
+    Structure                   = { link = "@type" },
+    Tag                         = { fg = col.fg2 },
+    Title                       = { link = "@markup.heading" },
+    Todo                        = { link = "@comment.todo" },
+    Typedef                     = { fg = col.light_blue },
+    Type                        = { link = "@type" },
+    Underlined                  = { fg = col.blue, underline = true },
 
     IndentBlanklineIndent       = { fg = pal.bg1 },
     IndentBlanklineScope        = { fg = col.bright_gray },
 
     TreesitterContext           = { bg = pal.bg01 },
     TreesitterContextLineNumber = { fg = col.teal },
-    MultiCursorCursor           = { bg = pal.bg3 },
 
     UndotreeTimeStamp           = { fg = col.light_blue },
     UndotreeCurrent             = { fg = col.teal },
@@ -199,6 +207,7 @@ add_with_prefix(colorscheme, "Ufo", {
 -- }}}
 
 -- Treesitter {{{
+-- this is the majority of the actual syntax highlighting
 add_with_prefix(colorscheme, "@", {
     number                           = { fg = col.magenta },
     float                            = { fg = col.magenta },
@@ -216,7 +225,7 @@ add_with_prefix(colorscheme, "@", {
     ["comment.error"]                = { fg = col.red, italic = true, underline = true },
     ["comment.warning"]              = { fg = col.orange, italic = true, underline = true },
     ["comment.note"]                 = { fg = col.light_blue, italic = true, underline = true },
-    -- user names
+    -- user names like `INFO(jo): Some message`
     ["constant.comment"]             = { fg = col.purple, italic = true },
 
     ["string"]                       = { fg = col.green },
@@ -224,7 +233,7 @@ add_with_prefix(colorscheme, "@", {
     ["string.special.path"]          = { fg = col.teal },
     ["string.regex"]                 = { fg = col.orange },
     ["string.escape"]                = { fg = col.yellow },
-    -- separated formats: highlight strings like words
+    -- delimiter based formats: highlight strings like words
     ["string.csv"]                   = { link = "Normal" },
     ["string.psv"]                   = { link = "Normal" },
     ["string.tsv"]                   = { link = "Normal" },
@@ -278,6 +287,7 @@ add_with_prefix(colorscheme, "@", {
     ["tag.builtin"]                  = { fg = col.light_blue },
     ["tag.delimiter"]                = { fg = col.bright_gray },
 
+    -- show headings with underlines
     ["markup.heading"]               = { fg = col.teal, bold = true },
     ["markup.heading.1"]             = { fg = col.yellow, bold = true, underline = true },
     ["markup.heading.2"]             = { fg = col.green, bold = true, underline = true },
@@ -292,7 +302,7 @@ add_with_prefix(colorscheme, "@", {
     ["markup.heading.3.vimdoc"]      = { fg = col.teal, bold = true },
     ["markup.heading.4.vimdoc"]      = { fg = col.light_cyan, bold = true },
 
-    -- why
+    -- I don't want the whole commit message to be colored
     ["markup.heading.gitcommit"]     = {},
 
     ["markup.math"]                  = { italic = true },
@@ -305,6 +315,7 @@ add_with_prefix(colorscheme, "@", {
     ["markup.list.checked"]          = { fg = col.bright_gray },
     ["markup.list.unchecked"]        = { fg = col.yellow, bg = pal.bg1 },
 
+    -- NOTE: those are only defined by my custom printf queries
     ["character.printf"]             = {},
     ["number.printf"]                = { fg = col.magenta, sp = col.magenta, underline = true },
     ["constant.printf"]              = { fg = col.yellow, sp = col.yellow, underline = true },
@@ -324,37 +335,36 @@ add_with_prefix(colorscheme, "@lsp.", {
     ["mod.deprecated"]                = { fg = col.bright_gray, italic = true, strikethrough = true },
 
     -- ["typemod.function.defaultLibrary"] = { link = "@function.builtin" },
-    -- so --HACK etc work
+    -- override what the LSP does so --HACK etc work
     ["type.comment"]                  = {},
     ["typemod.keyword.documentation"] = { fg = col.light_blue },
 })
 -- }}}
 
 -- Bufferline and Statusline {{{
+-- groups beginning with A* are for active sections
+-- I* is inactive
 add_with_prefix(colorscheme, "Sl", {
+    -- buffer types
     AReg        = { bg = pal.bg1, fg = col.light_blue },
     IReg        = { fg = col.light_blue },
     ASpecial    = { bg = pal.bg1, fg = col.magenta },
     ISpecial    = { fg = col.magenta },
     AHelp       = { bg = pal.bg1, fg = col.yellow },
     IHelp       = { fg = col.yellow },
-    ATab        = { bg = pal.bg1, fg = col.pink },
-    ITab        = { fg = col.pink },
     ATerm       = { bg = pal.bg1, fg = col.orange },
     ITerm       = { fg = col.orange },
     IDir        = { fg = col.teal },
     ADir        = { bg = pal.bg1, fg = col.teal },
-    IScratch    = { fg = col.pink },
-    AScratch    = { bg = pal.bg1, fg = col.pink },
     IList       = { fg = col.magenta },
     AList       = { bg = pal.bg1, fg = col.magenta },
     IGit        = { fg = col.green },
     AGit        = { bg = pal.bg1, fg = col.green },
-    AEval       = { bg = pal.bg1, fg = col.light_blue },
-    IEval       = { fg = col.light_blue },
-    AAlt        = { bg = pal.bg1, fg = col.yellow },
-    IAlt        = { fg = col.yellow },
 
+    ATab        = { bg = pal.bg1, fg = col.pink },
+    ITab        = { fg = col.pink },
+
+    -- indicator fields
     AChanged    = { bg = pal.bg1, fg = col.yellow },
     IChanged    = { fg = col.yellow },
     AReadonly   = { bg = pal.bg1, fg = col.bright_gray },
@@ -367,24 +377,28 @@ add_with_prefix(colorscheme, "Sl", {
     IAltText    = { fg = pal.fg0, underline = true, sp = col.bright_gray },
     AAltHidden  = { bg = pal.bg1, fg = col.bright_gray, underline = true },
     IAltHidden  = { fg = col.bright_gray, underline = true },
+    AGrapple    = { bg = pal.bg1, fg = col.magenta },
+    IGrapple    = { fg = col.magenta },
+
+    -- separators
+    Delim       = { fg = col.bright_gray },
     ASL         = { fg = pal.bg1, bg = pal.bg0 },
     ASR         = { fg = pal.bg1, bg = pal.bg0 },
     ISL         = { fg = pal.bg01, bg = pal.bg0 },
     ISR         = { fg = pal.bg01, bg = pal.bg0 },
-    AGrapple    = { bg = pal.bg1, fg = col.magenta },
-    IGrapple    = { fg = col.magenta },
 
-    Delim       = { fg = col.bright_gray },
-
+    -- in the statusline: counts of various things
     Words       = { fg = col.yellow },
     Chars       = { fg = col.green },
     Lines       = { fg = col.teal },
     Bytes       = { fg = col.magenta },
 
+    -- left section of the statusline
     Typed       = { fg = pal.fg0 },
     Macro       = { fg = col.yellow },
     OnSearch    = { bg = pal.bg2, fg = col.yellow },
 
+    -- and the modes
     ModeNormal  = { fg = col.teal },
     ModeInsert  = { fg = col.white },
     ModeCommand = { fg = col.green },
@@ -395,6 +409,7 @@ add_with_prefix(colorscheme, "Sl", {
 
 -- Startscreen {{{
 add_with_prefix(colorscheme, "Dashboard", {
+    -- for the big neovim logo
     Title1    = { fg = col.red },
     Title2    = { fg = col.orange },
     Title3    = { fg = col.yellow },
@@ -405,6 +420,7 @@ add_with_prefix(colorscheme, "Dashboard", {
     Property  = { fg = col.blue, italic = true },
     Message   = { italic = true },
 
+    -- entries
     FindFiles = { fg = col.blue },
     EditFiles = { fg = col.light_blue },
     Agenda    = { fg = col.teal },
@@ -420,8 +436,8 @@ add_with_prefix(colorscheme, "Dashboard", {
 -- }}}
 
 -- Files {{{
+-- this means general metadata attached to files
 add_with_prefix(colorscheme, "File", {
-
     -- use brighter colors for newer files,
     -- they're more relevant most of the time
     TimeLastMinute    = { fg = col.yellow },
@@ -475,6 +491,7 @@ add_with_prefix(colorscheme, "Oil", {
     LinkTarget       = { fg = col.blue, italic = true },
     OrphanLinkTarget = { fg = col.red, italic = true },
 
+    -- columns
     Read             = { fg = col.yellow },
     Write            = { fg = col.orange },
     Exec             = { fg = col.green },
@@ -492,25 +509,16 @@ add_with_prefix(colorscheme, "Oil", {
 })
 
 
-add_with_prefix(colorscheme, "OilGitStatus", {
-    IndexIgnored        = { fg = pal.bg3 },
-    WorktreeIgnored     = { link = "*IndexIgnored" },
-    IndexUntracked      = { fg = pal.fg2 },
-    WorktreeUntracked   = { link = "*IndexUntracked" },
-    IndexAdded          = { fg = col.green },
-    WorktreeAdded       = { link = "*IndexAdded" },
-    IndexCopied         = { fg = col.green },
-    WorktreeCopied      = { link = "*IndexCopied" },
-    IndexDeleted        = { fg = col.red },
-    WorktreeDeleted     = { link = "*IndexDeleted" },
-    IndexModified       = { fg = col.yellow },
-    WorktreeModified    = { link = "*IndexModified" },
-    IndexRenamed        = { fg = col.magenta },
-    WorktreeRenamed     = { link = "*IndexRenamed" },
-    IndexTypeChanged    = { fg = col.orange },
-    WorktreeTypeChanged = { link = "*IndexTypeChanged" },
-    IndexUnmerged       = { fg = pal.fg0 },
-    WorktreeUnmerged    = { link = "*IndexUnmerged" },
+add_with_prefix(colorscheme, "OilGit", {
+    Ignored        = { fg = pal.bg3 },
+    Untracked      = { fg = pal.fg2 },
+    Added          = { fg = col.green },
+    Copied         = { fg = col.green },
+    Deleted        = { fg = col.red },
+    Modified       = { fg = col.yellow },
+    Renamed        = { fg = col.magenta },
+    TypeChanged    = { fg = col.orange },
+    Unmerged       = { fg = pal.fg0 },
 })
 
 -- }}}
