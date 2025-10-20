@@ -5,8 +5,7 @@ return {
     root_markers = { ".luarc.json", ".luarc.jsonc", ".stylua.toml", ".git" },
     settings = {
         Lua = {
-            semantic = {
-            }
+            semantic = {}
         }
     },
     on_init = function(client)
