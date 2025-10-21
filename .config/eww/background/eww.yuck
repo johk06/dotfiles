@@ -1,62 +1,67 @@
-(include "background/poem-of-the-day.yuck")
-
 (defwindow background
     :monitor '["DP-1", "eDP-1", 0]'
     :geometry (geometry
-        :width "100%"
+        :width "1px"
         :height "100%"
-        :anchor "center center")
+        :anchor "left center")
     :stacking "bg"
     :focusable "ondemand"
     :namespace "eww-background"
     (background-window))
 
-(defwidget background-calendar []
-    (calendar
-        :class "background-calendar"
-        :show-details true))
-
+(defvar background-transparent true)
 (defwidget background-window []
-    (centerbox :hexpand true :vexpand true :space-evenly false :class "background-widgets"
-        (box :hexpand true :vexpand true :space-evenly false :orientation "v"
-            :halign "start" :valign "center"
+    (box :hexpand true :vexpand true :space-evenly false :orientation "v" :class "background-widgets"
+        (box :space-evenly false :hexpand true :vexpand true :orientation "v"
             :spacing 40
+            :class "background-content${background-transparent ? "" :"-opaque"}"
             (background-clock)
-            (background-calendar))
-        (box)
-        (box :orientation "v" :valign "center" :halign "end" :hexpand true
-            (background-poem))))
-
-
+            (background-calendar)
+            (background-poem))
+        (box 
+            (background-controls))))
+ 
 (defwidget background-clock []
-    (box :orientation "v" :space-evenly false
-        (box :halign "start" :space-evenly false
+    (box :orientation "v" :space-evenly false :class "background-clock"
+        (box :space-evenly false
             (label :text {formattime(EWW_TIME, "%H:%M")} :class "background-time")
-            (circular-progress
+            (box :hexpand true :halign "end" (circular-progress
                 :class "background-timer"
                 :thickness 6
                 :value {(EWW_TIME % 60) / 0.6}
                 :clockwise true
                 :start-at 75
-                (button 
-                    :onclick "wl-copy ${EWW_TIME}"     
-                    {formattime(EWW_TIME, ":%S")}))
-            (background-timer))
-        (box :halign "start" (label :text {formattime(EWW_TIME, "%A, %d. %B")} :class "background-date"))))
+                (button
+                    :onclick "${EWW_CMD} update background-transparent=${!background-transparent}"
+                    {formattime(EWW_TIME, ":%S")}))))
+        (box :halign "start" (label :text {formattime(EWW_TIME, "%d. %B, %A")} :class "background-date"))))
 
-(defvar timer-time 0)
-(defvar timer-start 0)
 
-(defwidget background-timer []
-    (circular-progress
-        :class "background-timer"
-        :thickness 6
-        :value {100 - (((EWW_TIME - timer-start) / (timer-time - timer-start))) * 100}
-        :clockwise true
-        :start-at 75
-        (button :timeout "4h"
-            :onclick {timer-time != 0 ? "${EWW_CMD} update timer-time=0 timer-start=0; pkill -f set_timer.sh" : "./bin/set_timer.sh"}
-            {timer-time > 0 ?
-                ((timer-time - EWW_TIME > 3600) ? formattime(timer-time - EWW_TIME, "*%H:%M", "UTC")
-                : formattime(timer-time - EWW_TIME, "%M:%S"))
-                : "Timer"})))
+(defwidget background-calendar []
+    (box :class "background-calendar-box" :orientation "v" :space-evenly false
+        (calendar :class "background-calendar")))
+
+(defvar poem-author "")
+(defvar poem-title "")
+(defpoll poem-of-the-day :interval "60m" "bin/poem.sh")
+(defvar update-poem 'eww update poem-of-the-day="$(bin/poem.sh)"')
+(defwidget background-poem []
+    (box :class "poem-content" :space-evenly false :hexpand true :vexpand true
+        (scroll :style "min-height: 40rem" :hexpand true :vexpand true
+            (box :orientation "v" :hexpand true :space-evenly false
+                (label :wrap true :justify "center" :class "poem-title"
+                    :text "${poem-of-the-day.title} 
+by ${poem-of-the-day.author}")
+                (hsep :height 20)
+                (label :wrap true :justify "center" :class "poem-text"
+                    :text {jq(poem-of-the-day.lines, 'join("\\n")')})))))
+
+(defwidget background-controls []
+    (box :space-evenly false :class "background-controls" :hexpand true :vexpand true :orientation "v"
+        (box :space-evenly false :halign "center"
+            (input :class "input"
+                :onchange `${EWW_CMD} update poem-title='{}'`)
+            (label :text "by" :class "poem-by")
+            (input :class "input"
+                :onchange `${EWW_CMD} update poem-author='{}'`)
+            (button :timeout "128s" :onclick {update-poem} :class "button active" "Get Poem"))))

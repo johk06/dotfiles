@@ -1,29 +1,42 @@
 $widget-bg: rgba($bg0, 0.3);
 .background-widgets {
-    margin: 3rem;
+    margin: 4rem;
+    margin-left: 2rem;
+}
+
+.background-content, .background-content-opaque {
+    transition: background-color 0.5s ease, color 0.5s ease;
+    background-color: $widget-bg;
+    border-radius: 12px 12px 0px 0px;
+    color: inherit;
+}
+
+.background-content-opaque {
+    background-color: $bg0;
+    color: $fg0;
 }
 
 .background-time {
-    color: $snow0;
-    font-size: 8rem;
+    color: inherit;
+    font-size: 6rem;
 }
 
 .background-date {
-    color: $snow0;
-    font-size: 5rem;
+    color: inherit;
+    font-size: 4rem;
+}
+
+.background-clock {
+    margin: 4rem;
 }
 
 .background-timer {
     margin-left: 3rem;
-    color: $snow0;
+    color: inherit;
     label {
         min-width: 3rem;
         padding: 2.5rem;
-        font-size: 1.8rem;
-    }
-
-    &.stopwatch {
-        color: $yellow;
+        font-size: 3rem;
     }
 
     > button {
@@ -33,16 +46,18 @@ $widget-bg: rgba($bg0, 0.3);
     }
 }
 
+.background-calendar-box {
+    margin: 2rem 4rem;
+}
 .background-calendar {
-    color: $snow0;
+    color: inherit;
     font-size: 1.3rem;
 
     &.highlight {
-        color: $snow0;
+        color: inherit;
     }
     &.button {
         background-color: unset;
-        color: $snow0;
     }
     &:indeterminate {
         color: rgba($snow0, 0.2);
@@ -56,22 +71,15 @@ $widget-bg: rgba($bg0, 0.3);
     }
 }
 
-.poem-content, .poem-content-opaque {
-    transition: background-color 0.5s ease, color 0.5s ease;
-    background-color: $widget-bg;
-    border-radius: 12px 12px 0px 0px;
-    color: $snow0;
+.poem-content {
+    color: inherit;
     padding: 1rem;
-}
-
-.poem-content-opaque {
-    background-color: $bg0;
-    color: $fg0;
+    margin: 2rem;
 }
 
 .poem-title {
-    color: $fg0;
-    font-size: 1.3rem;
+    color: inherit;
+    font-size: 1.5rem;
     font-style: italic;
 }
 
@@ -79,16 +87,16 @@ $widget-bg: rgba($bg0, 0.3);
     color: inherit;
     font-size: 1rem;
     font-style: italic;
-    font-size: 1.2rem;
+    font-size: 1.3rem;
 }
 
-.poem-controls {
+.background-controls {
     background-color: $bg0;
     border-radius: 0px 0px 12px 12px;
     padding: 1rem;
 }
 
-.poem-by {
-    @extend .text;
+.calendar-title {
+    color: inherit;
     font-size: 1.2rem;
 }
