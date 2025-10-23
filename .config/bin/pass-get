@@ -1,0 +1,21 @@
+#!/bin/bash
+
+account="$1"
+shift
+
+pass show "$account" | {
+    declare -A fields=()
+    read -r pass
+    while IFS=":" read -r field value; do
+        field="${field@L}"
+        fields["$field"]="$value"
+    done
+
+    for k in "$@"; do
+        if [ "$k" == . ]; then
+            echo "$pass"
+        else
+            echo "${fields["$k"]}"
+        fi
+    done | sed 's/^\s*//'
+}

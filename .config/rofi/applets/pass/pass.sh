@@ -12,6 +12,10 @@ print-menu() {
     printf '%s\n' "Type" "Type OTP" "Form" "Form with OTP" "Copy" "Copy OTP" "Show"
 }
 
+error() {
+    notify-send "$1" -i password "$2"
+}
+
 run() {
     ("$@" >/dev/null 2>&1) &
     disown
@@ -37,12 +41,16 @@ clear-clipboard() {
 fill-form() {
     account="$1"
     coproc {
-        user="$(pass show "$account" | awk -F: 'tolower($1) == "user" { sub(/^[ \t]/, "", $2); print $2}')"
-        pass="$(pass show "$account" | head -n 1)"
+        {
+            read -r user
+            read -r pass
+        } < <(pass-get "$account" user .)
 
         if [[ "$2" == "--otp" ]]; then
-            token="$(pass otp "$account")"
-            printf 'type %s\nkey tab\ntype %s\nkey enter\n' "$user" "$pass" 
+            if ! token="$(pass otp "$account")"; then
+                error "No OTP Code" "No OTP code available for $account"
+            fi
+            printf 'type %s\nkey tab\ntype %s\nkey enter\n' "$user" "$pass"
             sleep 2
             printf 'type %s\n' "$token"
         else
@@ -76,7 +84,10 @@ perform-action() {
         ;;
     "Type OTP")
         coproc {
-            dotool <<<"type $(pass otp "$pass")"
+            if ! token="$(pass otp "$account")"; then
+                error "No OTP Code" "No OTP code available for $pass"
+            fi
+            dotool <<<"type $token"
         }
         ;;
     Show)
@@ -85,7 +96,10 @@ perform-action() {
     *)
         coproc {
             read -r field action <<<"$action"
-            match="$(pass show "$pass" | awk -F: -v field="$field" 'tolower($1) == field { sub(/^[ \t]*/, "", $2); print $2; exit }')"
+            match="$(pass-get "$pass" "$field")"
+            if [[ -z "$match" ]]; then
+                error "Missing Field" "No field '$field' in entry '$pass'"
+            fi
             case "$action" in
             typ*)
                 dotool <<<"type $match"
