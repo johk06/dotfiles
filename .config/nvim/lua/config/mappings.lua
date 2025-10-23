@@ -882,13 +882,13 @@ end
 
 -- goto parent
 map("n", cdleader .. "h", function()
-    local dir = fn.getcwd(0, 0)
+    local dir = fn.getcwd(0)
     vim.cmd.lcd(fn.fnamemodify(dir, ":h"))
-end)
+end, { desc = "Directory: Go Down towards Buffer" })
 
 -- go one element right in current files path
 map("n", cdleader .. "l", function()
-    local dir = fn.getcwd(0, 0)
+    local dir = fn.getcwd(0)
     local fpath = get_cur_buf_parent()
     if fpath ~= dir then
         local sdir = vim.split(dir, "/")
@@ -901,29 +901,46 @@ map("n", cdleader .. "l", function()
 
         vim.cmd.lcd("./" .. spath[elem])
     end
-end)
+end, { desc = "Directory: Go Up" })
 
 -- go to current files dir
 map("n", cdleader .. "c", function()
     vim.cmd.lcd(get_cur_buf_parent())
-end)
+end, { desc = "Directory: Goto Buffer Parent" })
 
--- go to project root
-map("n", cdleader .. "r", function()
+local get_best_root = function()
     local root
     local clients = vim.lsp.get_clients { bufnr = api.nvim_get_current_buf() }
+    if #clients == 0 then
+        clients = vim.lsp.get_clients {}
+    end
     if #clients > 0 then
         root = clients[1].root_dir
     end
 
     if not root then
-        root = vim.fs.root(fn.getcwd(0, 0), { ".git", "Makefile" })
+        root = vim.fs.root(fn.getcwd(0), { ".git", "Makefile" })
     end
+
+    return root
+end
+
+-- go to project root
+map("n", cdleader .. "r", function()
+    local root = get_best_root()
 
     if root then
         vim.cmd.lcd(root)
     end
-end)
+end, { desc = "Directory: Goto Project Root" })
+
+-- go to git root
+map("n", cdleader .. "g", function()
+    local root = vim.fs.root(fn.getcwd(0), { ".git" })
+    if root then
+        vim.cmd.lcd(root)
+    end
+end, { desc = "Directory: Goto Git Root" })
 -- }}}
 
 -- Table of Content {{{
