@@ -16,9 +16,8 @@ error() {
     notify-send "$1" -i password "$2"
 }
 
-run() {
-    ("$@" >/dev/null 2>&1) &
-    disown
+error-otp() {
+    error "No OTP Code" "No OTP Code for $1"
 }
 
 notify-on-copy() {
@@ -47,11 +46,12 @@ fill-form() {
         } < <(pass-get "$account" user .)
 
         if [[ "$2" == "--otp" ]]; then
-            if ! token="$(pass otp "$account")"; then
-                error "No OTP Code" "No OTP code available for $account"
-            fi
             printf 'type %s\nkey tab\ntype %s\nkey enter\n' "$user" "$pass"
             sleep 2
+            if ! token="$(pass otp "$account")"; then
+                error-otp "$account"
+                exit
+            fi
             printf 'type %s\n' "$token"
         else
             printf 'type %s\nkey tab\ntype %s' "$user" "$pass"
@@ -65,7 +65,9 @@ perform-action() {
     case "$action" in
     Copy)
         notify-on-copy "Password"
-        run pass -c "$pass"
+        coproc {
+            pass -c "$pass"
+        }
         ;;
     Type)
         coproc {
@@ -79,19 +81,26 @@ perform-action() {
         fill-form "$pass" --otp
         ;;
     "Copy OTP")
-        notify-on-copy "OTP Code"
-        run pass otp -c "$pass"
+        coproc {
+            pass otp -c "$pass" || {
+                error-otp "$pass"
+                exit
+            }
+            notify-on-copy "OTP Code"
+        }
         ;;
     "Type OTP")
         coproc {
             if ! token="$(pass otp "$account")"; then
-                error "No OTP Code" "No OTP code available for $pass"
+                error-otp "$pass"
             fi
             dotool <<<"type $token"
         }
         ;;
     Show)
-        run pass show "$pass"
+        pass show "$pass" | while read -r line; do
+            true
+        done
         ;;
     *)
         coproc {
@@ -105,7 +114,7 @@ perform-action() {
                 dotool <<<"type $match"
                 ;;
             *)
-                run wl-copy "$match"
+                wl-copy "$match"
                 notify-on-copy "Field: '$field'"
                 clear-clipboard 45
                 ;;
