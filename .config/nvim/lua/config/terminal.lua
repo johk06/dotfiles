@@ -48,6 +48,9 @@ osc_handlers["8"] = function(ev)
     ---@type [integer, integer]
     local cursor = ev.data.cursor
 
+    if not M.urls_for_buffers[ev.buf] then
+        M.urls_for_buffers[ev.buf] = {}
+    end
     if last_osc8_start then
         table.insert(M.urls_for_buffers[ev.buf], {
             last_osc8_start[1],
@@ -132,8 +135,8 @@ utils.autogroup("config.terminal_mode", {
                     return
                 end
             end
-            return "gf"
-        end, { expr = true })
+            vim.cmd.normal { bang = true, "gf" }
+        end)
         map("t", "<M-p>", split_path)
         map("t", "<M-i>", function()
             operate_on_urls(ev.buf, function(res)
