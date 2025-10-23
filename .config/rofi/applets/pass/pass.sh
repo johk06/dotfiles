@@ -91,7 +91,7 @@ perform-action() {
         ;;
     "Type OTP")
         coproc {
-            if ! token="$(pass otp "$account")"; then
+            if ! token="$(pass otp "$pass")"; then
                 error-otp "$pass"
             fi
             dotool <<<"type $token"
