@@ -114,8 +114,8 @@ opts.defaults = {
             ["M"]     = "move_to_middle",
             ["H"]     = "move_to_top",
 
-            ["$"]     = "smart_send_to_qflist",
-            ["#"]     = "smart_send_to_loclist",
+            ["\\q"]   = "smart_send_to_qflist",
+            ["\\l"]   = "smart_send_to_loclist",
 
             ["q"]     = "close",
             ["<esc>"] = "close",
@@ -291,4 +291,3 @@ end
 -- }}}
 
 return M
-

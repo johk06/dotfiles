@@ -143,7 +143,7 @@ end
 local MAX_FILENAME_WIDTH = 32
 local MAX_SYMBOL_WIDTH = 30
 local MAX_FILEPARENT_WIDTH = 24
-local ROW_COL_WIDTH = 11
+local ROW_COL_WIDTH = 7
 
 -- Path Highlighting {{{
 M.path_display = function(opts, path)
@@ -209,9 +209,9 @@ end
 local line_and_column_display = t_entry_display.create {
     separator = " ",
     items = {
+        { width = 4 },
         { width = 40 },
         { width = MAX_FILENAME_WIDTH * 0.9 },
-        { width = ROW_COL_WIDTH },
         { remaining = true }
     }
 }
@@ -225,10 +225,10 @@ M.line_and_column_entries = function(line)
             local tail, parentdir, filename_highlight = get_names_and_hl(filename)
 
             return line_and_column_display {
+                { ("%d"):format(row), "LineNrBelow" },
                 { vim.trim(text) },
-                { tail,                       filename_highlight },
-                { ("%d:%d"):format(row, col), "Number" },
-                { parentdir,                  "NonText" },
+                { tail,               filename_highlight },
+                { parentdir,          "NonText" },
             }
         end,
         ordinal = string.format("%s:%s:%d", text, filename, row),
