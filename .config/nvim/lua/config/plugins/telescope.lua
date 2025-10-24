@@ -146,7 +146,6 @@ local MAX_FILEPARENT_WIDTH = 24
 local ROW_COL_WIDTH = 11
 
 -- Path Highlighting {{{
-
 M.path_display = function(opts, path)
     local tail = fn.fnamemodify(path, ":t")
     local parendir = fn.pathshorten(fn.fnamemodify(path, ":~:.:h"), 6)
@@ -252,9 +251,9 @@ local file_display = t_entry_display.create {
 
 local file_entry_display = function(entry)
     local value = entry.value
+    local st = entry.st
 
     local tail, parentdir, filename_highlight = get_names_and_hl(value)
-    local st = vim.uv.fs_stat(entry.value)
     local mtime, timehl
     if not st then
         mtime = ""
@@ -274,6 +273,7 @@ end
 M.file_entries = function(entry)
     return {
         value = entry,
+        st = entry.value and vim.uv.fs_stat(entry.value),
         display = file_entry_display,
         filename = entry.value,
         ordinal = entry,

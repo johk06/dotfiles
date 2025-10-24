@@ -16,8 +16,13 @@ M = {
         })
     end,
     dependencies = {
-        "johk06/orgmode-eval",
-        opts = {},
+        {
+            "johk06/orgmode-eval",
+            opts = {},
+        },
+        {
+            "nvim-orgmode/telescope-orgmode.nvim"
+        }
     }
 }
 
@@ -154,6 +159,7 @@ M.config = function()
     local utils = require("config.utils")
     local custom = require("config.plugins.orgmode")
     local eval = require("orgmode-eval")
+    require("telescope").load_extension("orgmode")
 
     opts.ui.menu = { handler = custom.menu }
     opts.org_custom_exports = {

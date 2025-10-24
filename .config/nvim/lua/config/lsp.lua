@@ -118,6 +118,11 @@ local lsp_mappings = {
         { desc = "LSP: List References" }
     },
     {
+        "n", "glR",
+        function() lsp.buf.references(nil, {}) end,
+        { desc = "LSP: List References" }
+    },
+    {
         "n", "gli",
         function() lsp.buf.implementation { loclist = true } end,
         { desc = "LSP: List Implementations" }

@@ -222,7 +222,7 @@ end
 M.init = function()
     require("config.utils").user_autogroup("config.treesitter", {
         TSUpdate = function()
-            require("nvim-treesitter.parsers").mail = {
+            package.loaded["nvim-treesitter.parsers"].mail = {
                 install_info = {
                     url = "https://github.com/stevenxxiu/tree-sitter-mail",
                     queries = "queries",

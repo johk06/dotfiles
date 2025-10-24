@@ -719,7 +719,7 @@ add_with_prefix(colorscheme, "Telescope", {
 add_with_prefix(colorscheme, "GrugFar", {
     InputLabel         = { fg = col.teal, italic = true },
     ResultsPath        = { link = "Directory" },
-    ResultsMatch       = { bg = pal.bg01 },
+    ResultsMatch       = { bg = pal.bg01, fg = col.yellow, italic = true },
     ResultsNumberLabel = { link = "Label" },
 })
 -- }}}

@@ -14,3 +14,5 @@
   name: (expr) @_name
   value: (value) @markup.heading @spell
   (#eq? @_name "title"))
+
+(expr "$" @bold)

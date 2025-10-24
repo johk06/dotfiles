@@ -2,7 +2,7 @@
 ---@type LazySpec
 local M = {
     "MagicDuck/grug-far.nvim",
-    cmd = { "GrugFar", "GrugFarWithin" }
+    cmd = { "GrugFar", "GrugFarWithin" },
 }
 
 ---@type grug.far.OptionsOverride
@@ -19,17 +19,23 @@ M.opts = {
     icons = {
         enabled = false
     },
+    showEngineInfo = false,
     resultLocation = {
         numberLabelPosition = "right_align",
         numberLabelFormat = " %d",
     },
-    resultsSeparatorLineChar = "─",
+    visualSelectionUsage = "operate-within-range",
+    resultsSeparatorLineChar = " ",
     keymaps = {},
     windowCreationCommand = "Split",
 }
 
 M.init = function()
     Jhk.ensure_program("ast-grep")
+    local utils = require("config.utils")
+    utils.map({ "n", "v" }, "<space>G", function()
+        require("grug-far").open()
+    end)
 end
 
 return M
