@@ -7,7 +7,7 @@ set $mainS DP-1
 set $leftS DP-3
 set $eww ~/.config/eww
 
-set $floating "floating enable, resize set width 800px height 600px"
+set $floating "floating enable; resize set width 800px height 600px"
 
 # emulate spiral layout
 # for_window [app_id=".*"] split toggle
@@ -79,6 +79,7 @@ exec sleep 10 && goimapnotify
 
 # handle effects for rofi in the compositor, much nicer and more consistent
 layer_effects "rofi" shadows enable; corner_radius 18; blur disable
+# layer_effects "eww-background" blur enable; blur_ignore_transparent enable
 # layer_effects "notifications" shadows enable; corner_radius 18; blur disable
 # layer_effects "eww-bar" shadow disable
 

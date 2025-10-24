@@ -167,6 +167,11 @@
         background-color: fade($red);
     }
 }
+.alert-on-hover {
+    &:hover {
+        background-color: fade($red);
+    }
+}
 .warn {
     background-color: $yellow;
     color: $inv;
