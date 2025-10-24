@@ -273,9 +273,9 @@ end
 M.file_entries = function(entry)
     return {
         value = entry,
-        st = entry.value and vim.uv.fs_stat(entry.value),
+        st = entry and vim.uv.fs_stat(entry) or nil,
         display = file_entry_display,
-        filename = entry.value,
+        filename = entry,
         ordinal = entry,
     }
 end
