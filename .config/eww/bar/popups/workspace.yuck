@@ -1,5 +1,4 @@
 (defvar ws-overview-reveal false)
-(defvar overview-cut-win 0)
 
 (defvar overview-ws-width 193)
 (defvar overview-ws-height 109)
@@ -11,15 +10,13 @@
         margin-right: -${round((win.rect.x + win.rect.width) * overview-ws-width, 0)}px;
         margin-bottom: -${round((win.rect.y + win.rect.height) * overview-ws-height, 0)}px;
         "
-        :class "overview-window${win.focused ? " active" : ""} ${win.float ? "float" : ""} ${overview-cut-win == win.id ? "cut" : ""}"
+        :class "overview-window${win.focused ? " active" : ""} ${win.float ? "float" : ""}"
         :hexpand false
         :vexpand false
         :halign "start"
         :valign "start"
         (eventbox
             :onclick "swaymsg [con_id=${win.id}] focus >/dev/null&"
-            :onrightclick "${EWW_CMD} update overview-cut-win=${win.id == overview-cut-win ? 0 : win.id}"
-            :onmiddleclick "swaymsg [con_id=${overview-cut-win}] move to workspace ${ws}; ${EWW_CMD} update overview-cut-win=0"
             (image
                 :path {win.icon}
                 :valign "center"
@@ -31,7 +28,6 @@
 (defwidget ws-box [ws]
     (box :class "workspace ${ws.focused ? "active" : ""}"
         (eventbox
-            :onmiddleclick "swaymsg [con_id=${overview-cut-win}] move to workspace ${ws.ws} >/dev/null; ${EWW_CMD} update overview-cut-win=0"
             :onclick "swaymsg workspace ${ws.ws} >/dev/null"
             (box :orientation "vertical" :space-evenly false
                 (box :space-evenly false :vexpand true (for win in {ws.wins} (ws-win :win win :ws {ws.ws})))

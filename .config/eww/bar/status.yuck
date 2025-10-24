@@ -1,12 +1,40 @@
 (defvar recording false)
-(defvar recording-info '{"start": 0, "pid": 0, "path": ""}')
-(defvar bat-discharging '[ "󰂎", "󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹" ]' )
-(defvar bat-charging '[ "󰢟", "󰢜", "󰂆", "󰂇", "󰂈", "󰢝", "󰂉", "󰢞", "󰂊", "󰂋", "󰂅" ]' )
+(defvar recording-info '{
+    "start": 0,
+    "pid": 0,
+    "path": ""
+}')
+(defvar bat-discharging '[
+    "󰂎",
+    "󰁺",
+    "󰁻",
+    "󰁼",
+    "󰁽",
+    "󰁾",
+    "󰁿",
+    "󰂀",
+    "󰂁",
+    "󰂂",
+    "󰁹"
+]' )
+(defvar bat-charging '[
+    "󰢟",
+    "󰢜",
+    "󰂆",
+    "󰂇",
+    "󰂈",
+    "󰢝",
+    "󰂉",
+    "󰢞",
+    "󰂊",
+    "󰂋",
+    "󰂅"
+]' )
 
 (deflisten batteries "bin/batteries.sh")
 
 (defwidget status-valent [dev]
-    (button 
+    (button
         :class {dev != "" ? "" : "inactive"}
         :tooltip {dev != "" ?
             "Connected to ${dev.name}, ${dev?.battery?.percentage}% - ${dev.battery.charging ? "Charing" : "Discharging"}"
@@ -23,21 +51,30 @@
 ${formattime(dev.to_empty, "%H:%M left")}" : ""}${dev.to_full != "null" ? "
 ${formattime(dev.to_full, "%H:%M until full")}" : ""}${dev.rate != "null" ? "
 ${dev.rate}W" : ""}"
-                :text 
-                    "${dev.charging 
-                    ? (bat-charging[(dev.value - dev.value % 10)/10]) 
+                :text
+                    "${dev.charging
+                    ? (bat-charging[(dev.value - dev.value % 10)/10])
                     : (bat-discharging[(dev.value - dev.value % 10)/10])}${dev.internal ? "   ${dev.value}%": ""}"))))
+
+(defvar numen-state "off") ;; off | suspended | listening
+(defwidget status-numen []
+    (button
+        :class "tiny-button ${numen-state == "listening" ? "active" : (numen-state == "off" ? "inactive" : "" )}"
+        :onclick "~/.config/sway/scripts/toggle-numen" :timeout "128s"
+        :tooltip "Numen is ${numen-state}"
+        :onrightclick "killall numen; ${EWW_CMD} update numen-state=off"
+        {numen-state == "listening" ? "" : "󰩅"}))
 
 (defwidget status []
     (box :class "button" :space-evenly false :spacing 8
         (button
-            :class {audio.out.mute ? "inactive" : ""}
+            :class "tiny-button ${audio.out.mute ? "inactive" : ""}"
             :onclick "pamixer -t"
             :tooltip "${audio.out.name}: ${audio.out.vol}%"
-            {audio.out.mute ? "󰸈" 
+            {audio.out.mute ? "󰸈"
                 : (audio.out.vol > 70 ? "󰕾" : (audio.out.vol > 20 ? "󰖀" : "󰕿"))})
-        (button 
-            :class {audio.in.mute ? "inactive" : ""}
+        (button
+            :class "tiny-button ${audio.in.mute ? "inactive" : ""}"
             :onclick "pamixer -t --default-source"
             :tooltip "${audio.in.name}: ${audio.in.vol}%"
             {audio.in.mute ? "󰍭" : "󰍬"})
@@ -45,9 +82,9 @@ ${dev.rate}W" : ""}"
             :class {!bt-meta.powered ? "inactive" : ""}
             :text {bt-meta.powered ? "󰂯" : "󰂲"})
         (status-valent :dev {valent.connected?.[0] ?: ""})
-        (button 
+        (button
+            :class "tiny-button ${vpn.active ? "" : "inactive"}"
             :onclick {vpn.active ? "nmcli connection down '${vpn.name}'" : "nmcli connection up '${default-vpn}'"}
-            :class {!vpn.active ? "inactive" : ""}
             :tooltip "${vpn.active ? "Connected via `${vpn.name}`" : "No VPN active"}"
             "󰒄")
         (label
@@ -58,16 +95,17 @@ ${dev.rate}W" : ""}"
                 : (wifi.signal > 40 ? "󰤢"
                 : (wifi.signal > 20 ? "󰤟" : "󰤯")))) : (wifi.powered  ? "󰤫" : "󰤮")})
         (status-batteries)
+        (status-numen)
         (label :style "margin-left: .2rem;"
             :tooltip "Screen Brightness: ${brightness}%"
-            :text {brightness < 10 ? "󰃛" 
-                : (brightness < 20 ? "󰃜" 
+            :text {brightness < 10 ? "󰃛"
+                : (brightness < 20 ? "󰃜"
                 : (brightness < 40 ? "󰃝"
                 : (brightness < 60 ? "󰃞"
                 : (brightness < 80 ? "󰃟"
                 : "󰃠"))))})
         (revealer :reveal recording :transition "slideright" :visible recording
-            (button :class "red" :style "min-width: 4rem; margin-left: .5rem;"
+            (button :class "tiny-button active" :style "min-width: 6rem; margin-left: .5rem;"
                 :onclick "kill ${recording-info.pid}"
                 :tooltip "Recording to ${recording-info.path}"
-                "󰑊  ${formattime(EWW_TIME - recording-info.start, "%M:%S", "UTC")}"))))
+                "rec:  ${formattime(EWW_TIME - recording-info.start, "%M:%S", "UTC")}"))))

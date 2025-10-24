@@ -108,16 +108,11 @@
     }
 }
 
-.inline-button {
+.text-button {
     @extend .button;
     background-color: unset;
-    margin: unset;
-    padding: 0.09rem .85rem 0.2rem 0.45rem;
-    min-height: unset;
-    margin-top: .2rem;
-    margin-bottom: .2rem;
     &:hover {
-        background-color: $bg2;
+        background-color: $bg1;
     }
 }
 
@@ -138,7 +133,31 @@
 }
 
 .inactive {
-    color: $polar4;
+    color: $bright-gray;
+}
+
+
+.tiny-button {
+    color: $fg0;
+    transition: color 0.1s ease;
+    &:hover {
+        color: fade($fg0);
+    }
+
+    &.inactive {
+        color: $bright-gray;
+        &:hover {
+            color: mix($fg2, $bright-gray);
+        }
+    }
+
+    &.active {
+        background-color: unset;
+        color: $accent;
+        &:hover {
+            color: fade($accent);
+        }
+    }
 }
 
 .alert {

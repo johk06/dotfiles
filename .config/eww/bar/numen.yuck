@@ -1,7 +1,0 @@
-(defvar numen-state "off") ;; off | suspended | listening
-
-(defwidget numen-status []
-    (button 
-        :class "button ${numen-state == "listening" ? "active" : ""}"
-        :onclick "~/.config/sway/scripts/toggle-numen" :timeout "128s"
-        { numen-state == "listening" ? "󰍬" : ( numen-state == "suspended" ? "󰍮" :  "󰍭")} ))

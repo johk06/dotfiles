@@ -1,6 +1,5 @@
 (include "./bar/popups/center.yuck")
 (include "./bar/workspace.yuck")
-(include "./bar/numen.yuck")
 (include "./bar/window.yuck")
 (include "./bar/status.yuck")
 (include "./bar/mode.yuck")
@@ -35,9 +34,8 @@
             (workspace-list))
         (notifications))
     (box :space-evenly false :halign "end"
-        (systray-expander)
-        (numen-status)
         (mpris-current)
+        (systray-expander)
         (status)
         (clock))))
 

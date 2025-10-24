@@ -1,5 +1,11 @@
+(defvar current-window-expanded false)
+
 (defwidget active-window []
-    (box :space-evenly false :style "margin-left: 1rem;" :visible {mode.change == "default"}
-        (label :class "text" :style "margin-left: .4rem;"
+    (box :space-evenly false :visible {mode.change == "default"}
+        (revealer :reveal current-window-expanded
+            :transition "slideleft"
+            (label :text "hey"))
+        (button :class "text-button"
             :limit-width 56
-            :text {sway.active == "null" ? "[Empty]" : sway.active.name})))
+            :onclick `${EWW_CMD} update current-window-expanded=${!current-window-expanded}`
+            {sway.active == "null" ? "[Empty]" : sway.active.name})))
