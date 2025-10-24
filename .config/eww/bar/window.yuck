@@ -2,9 +2,13 @@
 
 (defwidget active-window []
     (box :space-evenly false :visible {mode.change == "default"}
-        (revealer :reveal current-window-expanded
+        (revealer :reveal {current-window-expanded && sway.active != "null"}
             :transition "slideleft"
-            (label :text "hey"))
+            (button :class "text-button alert-on-hover"
+                :tooltip "Right-Click for SIGKILL"
+                :onclick "kill ${sway.active.pid}" 
+                :onrightclick "kill -9 ${sway.active.pid}" 
+                "Kill ${sway.active.pid}"))
         (button :class "text-button"
             :limit-width 56
             :onclick `${EWW_CMD} update current-window-expanded=${!current-window-expanded}`
