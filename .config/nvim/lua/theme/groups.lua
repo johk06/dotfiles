@@ -696,7 +696,7 @@ add_with_prefix(colorscheme, "Telescope", {
     PromptPrefix          = { fg = col.teal },
     SelectionCaret        = { bg = pal.bg1 },
     MultiSelection        = { bg = pal.bg01 },
-    MultiIcon             = { bg = col.yellow, fg = col.yellow },
+    MultiIcon             = { bg = col.yellow, fg = pal.inverted },
     Matching              = { fg = col.yellow, underline = true },
 
     PreviewExecute        = { link = "OilExec" },

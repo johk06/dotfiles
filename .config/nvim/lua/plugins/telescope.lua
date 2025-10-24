@@ -97,6 +97,7 @@ opts.defaults = {
         n = {
             ["<tab>"] = "toggle_selection",
             ["<cr>"]  = custom "select_all_or_one",
+            ["V"]     = custom "multi_select_visible",
 
             ["t"]     = "select_tab",
             ["e"]     = "file_edit",
@@ -142,7 +143,7 @@ opts.defaults = {
     results_title = false,
     selection_caret = " ",
     entry_prefix = " ",
-    multi_icon = "+",
+    multi_icon = "#",
     prompt_prefix = ":e ",
 }
 
@@ -290,3 +291,4 @@ end
 -- }}}
 
 return M
+

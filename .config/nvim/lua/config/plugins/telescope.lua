@@ -601,18 +601,30 @@ M.select_register = function(buf)
     api.nvim_feedkeys("\"" .. reg, "n")
 end
 
+-- Open all selected files
 M.select_all_or_one = function(buf)
+    ---@type Picker
     local picker = t_action_state.get_current_picker(buf)
     local multi = picker:get_multi_selection()
     if not vim.tbl_isempty(multi) then
         t_actions.close(buf)
-        for _, entry in pairs(multi) do
-            if entry.filename then
-                vim.cmd.edit(entry.filename)
-            end
+        local first = multi[1]
+        vim.cmd.edit(first.value)
+        for i = 2, #multi do
+            vim.cmd.Split(multi[i].value)
         end
     else
         t_actions.select_default(buf)
+    end
+end
+
+M.multi_select_visible = function(buf)
+    ---@type Picker
+    local picker = t_action_state.get_current_picker(buf)
+    local visible = picker.manager.info.displayed
+    for i = 1, visible do
+        local index = picker:get_index(i)
+        picker:toggle_selection(index)
     end
 end
 
