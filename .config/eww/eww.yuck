@@ -8,4 +8,3 @@
 
 (include "menu/menu.yuck")
 (include "bar/bar.yuck")
-(include "background/eww.yuck")

@@ -1,5 +1,5 @@
 (defvar mode-names '{
-"default": "Insert",
+"default": "Window",
 "media": "Media",
 "screenshot": "Print",
 "clipboard":"Clip",

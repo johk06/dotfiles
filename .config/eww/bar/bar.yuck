@@ -26,7 +26,6 @@
 (defwidget top-bar []
     (centerbox :class "top-bar"
     (box :space-evenly false
-        (numen-status)
         (mode-symbol)
         (mode-hints)
         (active-window))
@@ -37,6 +36,7 @@
         (notifications))
     (box :space-evenly false :halign "end"
         (systray-expander)
+        (numen-status)
         (mpris-current)
         (status)
         (clock))))
