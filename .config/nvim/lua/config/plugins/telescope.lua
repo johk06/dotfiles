@@ -608,10 +608,13 @@ M.select_all_or_one = function(buf)
     local multi = picker:get_multi_selection()
     if not vim.tbl_isempty(multi) then
         t_actions.close(buf)
-        local first = multi[1]
-        vim.cmd.edit(first.value)
-        for i = 2, #multi do
-            vim.cmd.Split(multi[i].value)
+        for i, file in ipairs(multi) do
+            if file.filename then
+                local cmd = (i == 1 and "edit " or "Split ") .. (file.lnum
+                    and ("+%d %s"):format(file.lnum, file.filename)
+                    or file.filename)
+                vim.cmd(cmd)
+            end
         end
     else
         t_actions.select_default(buf)

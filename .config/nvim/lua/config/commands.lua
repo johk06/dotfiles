@@ -62,6 +62,7 @@ command("Zcd", zcd_func, zcd_args)
 -- }}}
 
 -- Automatic Split {{{
+---@param args vim.api.keyset.create_user_command.command_args
 local function smart_split(args)
     local height = vim.api.nvim_win_get_height(0)
     local width = vim.api.nvim_win_get_width(0)
@@ -73,17 +74,12 @@ local function smart_split(args)
         cmd = "vsplit"
     end
 
-    local split_args = {
-        range = {
-            math.floor((cmd == "split" and height or width) / 2)
-        }
-    }
-
-    if args.args ~= "" then
-        split_args[1] = args.args
-    end
-
-    vim.cmd[cmd](split_args)
+    local to_execute = ("%d%s %s"):format(
+            math.floor((cmd == "split" and height or width) / 2),
+            cmd,
+            args.args
+    )
+    vim.cmd(to_execute)
 end
 
 ---@type vim.api.keyset.user_command
