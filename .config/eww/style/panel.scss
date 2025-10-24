@@ -2,7 +2,7 @@
 .battery-circle-low { @extend .circle; color: $orange; }
 .battery-circle-medium { @extend .circle; color: $yellow; }
 .battery-circle-high { @extend .circle; color: $green; }
-.wifi-circle { 
+.wifi-circle {
     @extend .circle; 
     color: $teal; 
     label {

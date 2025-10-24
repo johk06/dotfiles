@@ -12,7 +12,7 @@
 
 window {
     decoration {
-        box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 6px;
+        box-shadow: rgba(0, 0, 0, 0.3) 0px 4px 6px;
 
         background-clip: padding-box;
         margin: 1rem;
@@ -43,7 +43,7 @@ menu {
     }
     > menuitem {
         transition: background-color 0.3s ease, color 0.3s ease;
-        border-radius: 12;
+        border-radius: 8px;
         padding: 0.07rem 1.15rem 0.07rem 0.85rem;
         min-height: 1rem;
         color: $fg0;

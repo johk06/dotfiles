@@ -11,13 +11,6 @@
     &:hover { background-color: fade($purple); }
 }
 
-.mode-normal {
-    @extend .mode;
-    color: $inv;
-    background-color: $accent;
-    &:hover { background-color: fade($green); }
-}
-
 .mode-screenshot {
     @extend .mode;
     background-color: $lblue;

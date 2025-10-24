@@ -129,23 +129,6 @@
     }
 }
 
-.rbutton {
-    @extend .button;
-    border-radius: 50%;
-    padding: 6px 14px;
-}
-
-.tiny-button {
-    color: $fg0;
-    border-radius: 50%;
-    padding: 0.07rem 0.6rem 0rem 0.65rem;
-    margin-left: .1rem;
-    margin-right: .1rem;
-    &:hover {
-        background-color: $bg2;
-    }
-}
-
 .active {
     background-color: $accent;
     color: $inv;
@@ -180,22 +163,6 @@
     }
 }
 
-.special {
-    background-color: $purple;
-    color: $inv;
-    &:hover {
-        background-color: fade($purple);
-    }
-}
-
-.stack {
-    background-color: $pink;
-    color: $inv;
-    &:hover {
-        background-color: fade($pink);
-    }
-}
-
 .text {
     color: $fg0;
 }
@@ -214,12 +181,6 @@
 
 .orange {
     color: $orange;
-}
-
-.bar-text {
-    @extend .text;
-    padding-left: 1rem;
-    padding-right: 1rem;
 }
 
 .cbutton {
@@ -309,19 +270,11 @@ tooltip{
     background-color: $bg0;
     box-shadow: rgba(0, 0, 0, 0.3) 0px 4px 6px;
     border-radius: 12px;
-    padding: 0.2rem;
+    padding: 0.3rem;
     margin: 0.4rem;
     &:drop(active) {
         background-color: $bg1;
     }
-}
-
-.row {
-    background-color: $bg0;
-    box-shadow: rgba(0, 0, 0, 0.3) 0px 4px 6px;
-    border-radius: 6px;
-    padding: 0.2rem;
-    margin: 0.4rem;
 }
 
 .popup-win {
@@ -352,16 +305,6 @@ tooltip{
     label {
         margin: 1.2rem 1.2rem 1.2rem 1.4rem;
         font-size: 1.5rem;
-    }
-}
-
-.side-button {
-    background-color: $fg0;
-    min-height: 4rem;
-    min-width: 4px;
-    border-radius: 12px;
-    &:hover {
-        background-color: $fg2;
     }
 }
 
@@ -430,7 +373,6 @@ tooltip{
 @import "./panel.scss";
 @import "./workspace.scss";
 @import "./center_popup.scss";
-@import "./background.scss";
 
 check {
     border-radius: 4px;
