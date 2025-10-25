@@ -14,7 +14,8 @@ KEYPATH = (
 with open(KEYPATH) as f:
     KEY = f.read().strip()
 
-HEADERS = {"Content-Type": "application/json", "Authorization": f"DeepL-Auth-Key {KEY}"}
+AUTH = f"DeepL-Auth-Key {KEY}"
+HEADERS = {"Content-Type": "application/json", "Authorization": AUTH}
 
 
 def request_translation(text: list[str], params: dict) -> tuple[str, str] | str:
@@ -101,6 +102,9 @@ if __name__ == "__main__":
         action="store_true",
         help="Show used/available characters on account",
     )
+    parser.add_argument(
+        "-l", "--list-languages", action="store_true", help="Print available languages"
+    )
     parser.add_argument("input_files", nargs="*", type=argparse.FileType("r"))
     args = parser.parse_args()
 
@@ -114,6 +118,12 @@ if __name__ == "__main__":
                 "of",
                 as_json["character_limit"],
             )
+        sys.exit(0)
+    elif args.list_languages:
+        response = requests.get(APIURL + "languages", headers={"Authorization": AUTH})
+        if response.ok:
+            for entry in response.json():
+                print(entry["language"], entry["name"])
         sys.exit(0)
 
     params = {
