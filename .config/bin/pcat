@@ -1,0 +1,13 @@
+#!/bin/sh
+
+# Run a process and cache result in a file
+# If already cached, return the file's content
+# Useful to experiment with e.g. web requests
+
+FILE="$1"
+shift
+if [ -f "$FILE" ]; then
+    cat "$FILE"
+else
+    "$@" | tee "$FILE"
+fi

@@ -1,0 +1,6 @@
+#compdef pcat
+_pcat() {
+    _arguments\
+        '1:file:_files'\
+        '*::: : _normal'
+}
