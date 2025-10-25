@@ -341,9 +341,9 @@ end
 local quickfix_entry_display = t_entry_display.create {
     separator = " ",
     items = {
+        { width = 4 },
+        { width = 40 },
         { width = MAX_FILENAME_WIDTH },
-        { width = MAX_FILEPARENT_WIDTH },
-        { width = ROW_COL_WIDTH },
         { remaining = true },
     }
 }
@@ -361,10 +361,10 @@ M.quickfix_entries = function(entry)
         display = function()
             local tail, parentdir, filename_highlight = get_names_and_hl(filename)
             return quickfix_entry_display {
-                { tail,                                    filename_highlight },
-                { parentdir,                               "NonText" },
-                { ("%d:%d"):format(entry.lnum, entry.col), "Number" },
+                { ("%d"):format(entry.lnum), "LineNrBelow" },
                 { entry.text },
+                { tail,                      filename_highlight },
+                { parentdir,                 "NonText" },
             }
         end
     }
