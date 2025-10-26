@@ -1,11 +1,16 @@
 --[[
- My *third* attempt at a handcrafted dashboard
+My *third* attempt at a handcrafted dashboard
+This mostly allows me to quickly open a previous file or project
+with [count](o|p), and quickly perform other common tasks.
+
+Additionally, and perhaps more importantly, it's also pretty eye candy.
 ]]
 
 -- Configuration Variables {{{
 local MAX_OLDFILES = 32
 local MAX_PROJECTS = 8
 local MESSAGES = {
+    ":%s/emacs/vim/g",
     ":3 is a valid ex command, and you're valid too 🏳️‍⚧️",
     ":find is often faster than :e",
     "All your issues are in the :cwindow",
@@ -13,6 +18,82 @@ local MESSAGES = {
     "It is our duty to keep computing gay, we owe that to Turing",
     "Never :q me for emacs",
     "Tired? Just <C-z>",
+}
+---@type ({[1]: string, desc: string, key: string, on_click: function, hl: string})[]
+local ACTIONS = {
+    {
+        "Edit new File",
+        desc = "New File",
+        key = "e",
+        on_click = vim.cmd.enew,
+        hl = "EditFile"
+    },
+    {
+        "Search/Grep",
+        desc = "Search by file content",
+        key = "s",
+        on_click = function()
+            require("telescope.builtin").live_grep()
+        end,
+        hl = "GrepFiles"
+    },
+    {
+        "Find Files",
+        desc = "Search by file name",
+        key = "f",
+        on_click = function()
+            require("telescope.builtin").find_files()
+        end,
+        hl = "FindFiles"
+    },
+    {
+        "View Filesystem",
+        desc = "Edit filesystem as buffer",
+        key = "v",
+        on_click = function()
+            require("oil").open()
+        end,
+        hl = "EditFiles"
+    },
+    {
+        "Agenda",
+        desc = "Show current org agenda",
+        key = "a",
+        on_click = function()
+            Org.agenda.a()
+        end,
+        hl = "Agenda"
+    },
+    {
+        "Capture",
+        desc = "Capture note using org",
+        key = "w",
+        on_click = function()
+            Org.capture()
+        end,
+        hl = "Capture"
+    },
+    {
+        "Plugins",
+        desc = "Use Lazy",
+        key = "L",
+        on_click = vim.cmd.Lazy,
+        hl = "Lazy"
+    },
+    {
+        "Packages",
+        desc = "Manage using Mason",
+        key = "M",
+        on_click = vim.cmd.Mason,
+        hl = "Mason"
+    },
+    {
+        "Quit NeoVIM",
+        desc = "Goodbye, yes it's possible",
+        key = "q",
+        on_click = vim.cmd.quit,
+        hl = "Quit"
+    }
 }
 -- }}}
 
@@ -259,67 +340,7 @@ local ActionSection = {
     items = {}
 }
 do
-    local actions = {
-        {
-            "Find Files",
-            desc = "Search by file name",
-            key = "F",
-            on_click = function()
-                require("telescope.builtin").find_files()
-            end,
-            hl = "FindFiles"
-        },
-        {
-            "List Files",
-            desc = "Edit filesystem as buffer",
-            key = "f",
-            on_click = function()
-                require("oil").open()
-            end,
-            hl = "EditFiles"
-        },
-        {
-            "Agenda",
-            desc = "Show current org agenda",
-            key = "a",
-            on_click = function()
-                Org.agenda.a()
-            end,
-            hl = "Agenda"
-        },
-        {
-            "Capture",
-            desc = "Capture note using org",
-            key = "w",
-            on_click = function()
-                Org.capture()
-            end,
-            hl = "Capture"
-        },
-        {
-            "Plugins",
-            desc = "List, update & debug",
-            key = "L",
-            on_click = vim.cmd.Lazy,
-            hl = "Lazy"
-        },
-        {
-            "Packages",
-            desc = "List, update & install",
-            key = "M",
-            on_click = vim.cmd.Mason,
-            hl = "Mason"
-        },
-        {
-            "Quit NeoVIM",
-            desc = "Goodbye",
-            key = "q",
-            on_click = vim.cmd.quit,
-            hl = "Quit"
-        }
-    }
-
-    for _, action in ipairs(actions) do
+    for _, action in ipairs(ACTIONS) do
         table.insert(ActionSection.items, {
             map = action.key,
             left = { { " " .. action.key .. " ", "SpecialChar" }, { action[1], "Dashboard" .. action.hl } },
@@ -539,8 +560,7 @@ M.show = function()
         end
     })
 
-    vim.keymap.set("n", "<cr>", function()
-        local row = api.nvim_win_get_cursor(0)[1]
+    local select_item = function(row)
         for i = #State.sections, 1, -1 do
             local section = State.sections[i]
             if section[1] < row then
@@ -549,6 +569,13 @@ M.show = function()
                 return
             end
         end
+    end
+    vim.keymap.set("n", "<cr>", function()
+        select_item(api.nvim_win_get_cursor(0)[1])
+    end, { buffer = buf })
+    vim.keymap.set("n", "<LeftMouse>", function()
+        local pos = vim.fn.getmousepos()
+        select_item(pos.line)
     end, { buffer = buf })
 
     do_resize()

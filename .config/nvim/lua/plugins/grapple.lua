@@ -8,6 +8,7 @@ Builtin neovim marks just don't cut it anymore
 Grapple makes everything a *lot* nicer
 }}} ]]
 
+---@param window grapple.window
 local on_window_open = function(window)
     local actions = require("grapple.tag_actions")
     local app = require("grapple").app()

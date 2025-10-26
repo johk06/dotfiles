@@ -421,6 +421,8 @@ add_with_prefix(colorscheme, "Dashboard", {
     Message   = { italic = true },
 
     -- entries
+    EditFile  = { fg = col.pink },
+    GrepFiles = { fg = col.purple },
     FindFiles = { fg = col.blue },
     EditFiles = { fg = col.light_blue },
     Agenda    = { fg = col.teal },
@@ -429,7 +431,7 @@ add_with_prefix(colorscheme, "Dashboard", {
     Mason     = { fg = col.orange },
     Quit      = { fg = col.red },
 
-    Actions   = { fg = col.purple, bg = pal.bg01, italic = true },
+    Actions   = { fg = col.white, bg = pal.bg01, italic = true },
     Projects  = { fg = col.light_blue, bg = pal.bg01, italic = true },
     Recents   = { fg = col.green, bg = pal.bg01, italic = true },
 })
@@ -510,15 +512,15 @@ add_with_prefix(colorscheme, "Oil", {
 
 
 add_with_prefix(colorscheme, "OilGit", {
-    Ignored        = { fg = pal.bg3 },
-    Untracked      = { fg = pal.fg2 },
-    Added          = { fg = col.green },
-    Copied         = { fg = col.green },
-    Deleted        = { fg = col.red },
-    Modified       = { fg = col.yellow },
-    Renamed        = { fg = col.magenta },
-    TypeChanged    = { fg = col.orange },
-    Unmerged       = { fg = pal.fg0 },
+    Ignored     = { fg = pal.bg3 },
+    Untracked   = { fg = pal.fg2 },
+    Added       = { fg = col.green },
+    Copied      = { fg = col.green },
+    Deleted     = { fg = col.red },
+    Modified    = { fg = col.yellow },
+    Renamed     = { fg = col.magenta },
+    TypeChanged = { fg = col.orange },
+    Unmerged    = { fg = pal.fg0 },
 })
 
 -- }}}
