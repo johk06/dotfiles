@@ -1,5 +1,5 @@
-#compdef pcat
-_pcat() {
+#compdef crun
+_crun() {
     _arguments\
         '1:file:_files'\
         '*::: : _normal'

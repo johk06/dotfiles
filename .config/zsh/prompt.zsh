@@ -75,7 +75,7 @@ PROMPT+="%(2V.%F{8} /%(7V.%F{green}+%7v .)%(8V.%F{red}-%8v .)%F{white}%2v%(5V. %
 PROMPT+="%F{8} |%(1j. %F{12}&%j.) %f%1v%F{8}, %F{%10v}%11v"
 # prompt symbol
 PROMPT+="
-%F{cyan}%#%f "
+%F{cyan}ρ%f "
 PROMPT+=$'%{\e]133;B\a%}' # OSC133 end
 
 # #history-number Jan 1 00:00
