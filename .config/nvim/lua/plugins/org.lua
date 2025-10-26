@@ -155,6 +155,28 @@ opts.mappings.org = {
     ---@diagnostic enable
 }
 
+---@type table<string, fun(file: OrgFile, value: string|string[])>
+local custom_opts = {
+    spell = function(file, value)
+        vim.wo[0][0].spell = true
+        if type(value) == "string" then
+            vim.bo[file.buf].spelllang = value
+        else
+            vim.bo[file.buf].spelllang = table.concat(value, ",")
+        end
+    end
+}
+
+---@param file OrgFile
+local handle_custom_opts = function(file)
+    for name, cb in pairs(custom_opts) do
+        local val = file:get_directive(name)
+        if val then
+            cb(file, val)
+        end
+    end
+end
+
 M.config = function()
     local utils = require("config.utils")
     local custom = require("config.plugins.orgmode")
@@ -192,6 +214,8 @@ M.config = function()
 
                 -- Mimic markdown
                 map("n", "gO", custom.table_of_contents)
+
+                handle_custom_opts(orgmode.files:get(vim.api.nvim_buf_get_name(ev.buf)))
             end
         }
     })
