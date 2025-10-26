@@ -1,11 +1,5 @@
-.weather-hot, .weather-warm, .weather-temperate, .weather-cool, .weather-cold, .weather-description, .weather-wind {
+.weather-description {
     @extend .text;
     font-size: 1.2rem;
     margin-right: 1rem;
 }
-
-.weather-hot { color: $orange; }
-.weather-warm { color: $yellow; }
-.weather-temperate { color: $green; }
-.weather-cool { color: $teal; }
-.weather-cold { color: $lblue; }

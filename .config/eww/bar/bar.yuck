@@ -1,6 +1,7 @@
 (include "./bar/popups/center.yuck")
 (include "./bar/workspace.yuck")
 (include "./bar/window.yuck")
+(include "./bar/marks.yuck")
 (include "./bar/status.yuck")
 (include "./bar/mode.yuck")
 (include "./bar/mpris.yuck")
