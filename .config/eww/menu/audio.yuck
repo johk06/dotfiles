@@ -9,7 +9,6 @@
 (defpoll audio-sources :interval "16s" :run-while audio-in-revealed "./bin/audio_list.sh sources")
 (defpoll audio-source-outputs :interval "2s" "bin/audio_streams.sh source-outputs")
 
-
 (defwidget audio-device-selector [devices type] 
     (box :space-evenly false :orientation "v"
         (for dev in devices

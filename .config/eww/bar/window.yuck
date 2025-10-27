@@ -13,6 +13,6 @@
         (revealer :reveal {current-window-expanded && sway.active != "null"}
             :transition "slideleft" (window-context-menu))
         (button :class "text-button"
-            :limit-width 56
             :onclick `${EWW_CMD} update current-window-expanded=${!current-window-expanded}`
-            {sway.active == "null" ? "[Empty]" : sway.active.name})))
+            (label :limit-width 72
+                :text {sway.active == "null" ? "[Empty]" : sway.active.name}))))
