@@ -164,6 +164,11 @@ local custom_opts = {
         else
             vim.bo[file.buf].spelllang = table.concat(value, ",")
         end
+    end,
+    width = function(file, value)
+        if type(value) == "string" then
+            vim.bo[file.buf].textwidth = tonumber(value) or 0
+        end
     end
 }
 

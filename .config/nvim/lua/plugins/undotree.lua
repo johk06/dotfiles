@@ -1,6 +1,6 @@
 ---@type LazySpec
 local M = {
-    "mbbill/undotree"
+    "mbbill/undotree",
 }
 
 M.config = function()

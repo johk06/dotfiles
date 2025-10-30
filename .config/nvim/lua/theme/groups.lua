@@ -174,6 +174,7 @@ local colorscheme = {
     TreesitterContextLineNumber = { fg = col.teal },
 
     UndotreeTimeStamp           = { fg = col.light_blue },
+    UndotreeNode                = { fg = col.bright_gray },
     UndotreeCurrent             = { fg = col.teal },
     UndotreeNext                = { fg = col.yellow },
     UndotreeHead                = { fg = col.blue },

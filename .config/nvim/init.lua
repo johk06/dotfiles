@@ -63,9 +63,10 @@ o.showbreak = ""
 o.splitright = true
 o.splitbelow = true
 
-opt.shortmess:append("S") -- hide search count
-opt.shortmess:append("s") -- hide search hit x
-opt.shortmess:append("q") -- hide macro
+local shm = opt.shortmess
+shm:append("S") -- hide search count
+shm:append("s") -- hide search hit x
+shm:append("q") -- hide macro
 
 -- Characters {{{
 opt.fillchars = {

@@ -201,7 +201,6 @@ M.floating_notif_put = function(id, text)
         virt_text_pos = obj.opts.align == "right" and "eol_right_align" or nil,
     })
 end
-M.shown_floating_notifs = M.shown_floating_notifs - 1
 
 M.floating_notif_hide = function(id)
     local obj = M.floating_notifs[id]

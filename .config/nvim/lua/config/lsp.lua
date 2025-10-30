@@ -312,7 +312,7 @@ end
 
 -- Enable all configured servers
 local servers = {}
-for _, file in pairs(api.nvim_get_runtime_file("lsp/*.lua", true)) do
+for _, file in ipairs(api.nvim_get_runtime_file("lsp/*.lua", true)) do
     local server = fn.fnamemodify(file, ":t:r")
     table.insert(servers, server)
 end

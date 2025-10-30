@@ -13,11 +13,12 @@ local MESSAGES = {
     ":%s/emacs/vim/g",
     ":3 is a valid ex command, and you're valid too 🏳️‍⚧️",
     ":find is often faster than :e",
-    "All your issues are in the :cwindow",
+    "All your issues are only in your :cwindow",
     "Enjoy your day!",
     "It is our duty to keep computing gay, we owe that to Turing",
     "Never :q me for emacs",
     "Tired? Just <C-z>",
+    "Gæð á wyrd swá heó sċeall"
 }
 ---@type ({[1]: string, desc: string, key: string, on_click: function, hl: string})[]
 local ACTIONS = {
