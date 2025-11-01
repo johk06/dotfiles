@@ -13,6 +13,11 @@ _G.Jhk = {}
 
 vim.cmd.colorscheme("mynord")
 
+-- Environment {{{
+-- make sure that any child processes use the parent neovim
+vim.env.EDITOR = "nvr"
+vim.env.GIT_EDITOR = "nvr -cc Sp -c 'se bufhidden=delete' --remote-wait"
+-- }}}
 
 -- only open the welcome screen if stdin is empty
 -- and there are no command line arguments

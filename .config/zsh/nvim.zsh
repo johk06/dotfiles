@@ -32,7 +32,5 @@ function getbuf {
     nvr --remote-expr "join(nvim_buf_get_lines($1, ${2:-0}, ${3:--1}, 1), \"\n\")"
 }
 
-EDITOR=nvr
 # make sure the buffer gets closed on q, so that the process exits
-export GIT_EDITOR="nvr -cc Sp -c 'se bufhidden=delete' --remote-wait"
 ZVM_VI_EDITOR=(nvr -cc Sp -c 'se bufhidden=delete' --remote-wait)
