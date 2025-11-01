@@ -34,6 +34,11 @@ end
 M.expand_home = expand_home
 
 local buf_list_type = {}
+---@param buf integer
+---@param short boolean?
+---@return string? name
+---@return string kind
+---@return boolean should_show_modified
 function M.format_buf_name(buf, short)
     local term_title = vim.b[buf].term_title
     if term_title then

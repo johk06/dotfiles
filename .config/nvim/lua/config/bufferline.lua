@@ -73,7 +73,7 @@ local function update_buflist()
             if kind == "git" then
                 name = ("δ %d"):format(seen_names[name])
             else
-                -- add another part of the name as a prefix
+                -- TODO: add another part of the name as a prefix
             end
         elseif name then
             seen_names[name] = count
