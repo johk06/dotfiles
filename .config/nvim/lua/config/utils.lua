@@ -34,9 +34,6 @@ end
 M.expand_home = expand_home
 
 local buf_list_type = {}
----@return string? name
----@return string kind
----@return boolean show_modified
 function M.format_buf_name(buf, short)
     local term_title = vim.b[buf].term_title
     if term_title then
@@ -294,13 +291,7 @@ end
 ---@alias nvim_mode_char "n"|"i"|"c"|"v"|"x"|"s"|"o"|"t"
 ---@alias nvim_mode nvim_mode_char | nvim_mode_char[]
 
----@param mode nvim_mode
----@param keys string
----@param action string|function
----@param opts vim.keymap.set.Opts|nil
-function M.map(mode, keys, action, opts)
-    vim.keymap.set(mode, keys, action, opts or {})
-end
+M.map = vim.keymap.set
 
 ---@param mode nvim_mode
 ---@param keys string

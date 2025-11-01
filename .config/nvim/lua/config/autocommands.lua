@@ -6,7 +6,7 @@ local utils = require("config.utils")
 -- change the title in a more intelligent way
 autocmd({ "BufEnter", "BufReadPost", "BufNewFile", "VimEnter" }, {
     callback = function()
-        local name, _, _ = utils.format_buf_name(api.nvim_get_current_buf(), true)
+        local name, _, _ = utils.format_buf_name(api.nvim_get_current_buf(), false)
 
         vim.o.titlestring = "nv: " .. (name or "[-]")
     end
