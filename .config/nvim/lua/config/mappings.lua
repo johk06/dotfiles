@@ -259,6 +259,10 @@ map("n", "<C-s>", "<cmd>b #<cr>")
 map("n", bufleader .. "j", "<cmd>bnext<cr>", { desc = "Buffer: Next" })
 map("n", bufleader .. "k", "<cmd>bprev<cr>", { desc = "Buffer: Prev" })
 
+-- same for tabs
+map("n", bufleader .. "J", "gt", { desc = "Tab: Next" })
+map("n", bufleader .. "K", "gT", { desc = "Tab: Prev" })
+
 local function get_buf_idx()
     local target
     local count = vim.v.count
@@ -377,8 +381,42 @@ local function indexed_tab_command(cmd)
     vim.cmd(cmd .. " " .. target)
 end
 
-map("n", bufleader .. '"', function() indexed_tab_command("norm! gt") end, { desc = "Tab: Show" })
-map("n", bufleader .. "D", function() indexed_tab_command("tabclose") end, { desc = "Tab: Delete" })
+local function get_tab_idx()
+    local target
+    local count = vim.v.count
+    if count == 0 then
+        target = api.nvim_get_current_tabpage()
+    else
+        target = Tabs_for_idx[count]
+    end
+    if not target or not api.nvim_tabpage_is_valid(target) then
+        utils.error("Mappings", "No Tab #" .. count)
+        return
+    end
+
+    return target
+end
+
+map("n", bufleader .. "H", function() indexed_tab_command("tabclose") end, { desc = "Tab: Hide" })
+map("n", bufleader .. "D", function()
+    local tab = get_tab_idx()
+    if not tab then
+        return
+    end
+
+    local seen = {}
+    local bufs = vim.tbl_filter(function(buf)
+        local keep = not seen[buf]
+        seen[buf] = true
+        return keep and api.nvim_buf_is_valid(buf)
+    end, vim.tbl_map(function(win)
+        return api.nvim_win_get_buf(win)
+    end, api.nvim_tabpage_list_wins(tab)))
+
+    for _, buf in ipairs(bufs) do
+        delete_buffer(buf)
+    end
+end, { desc = "Tab: Delete recursively" })
 -- }}}
 
 -- Improve Builtin Mappings {{{

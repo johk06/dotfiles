@@ -173,14 +173,15 @@ local colorscheme = {
     TreesitterContext           = { bg = pal.bg01 },
     TreesitterContextLineNumber = { fg = col.teal },
 
-    UndotreeTimeStamp           = { fg = col.light_blue },
+    UndotreeSeq                 = { fg = col.fg },
     UndotreeNode                = { fg = col.bright_gray },
-    UndotreeCurrent             = { fg = col.teal },
-    UndotreeNext                = { fg = col.yellow },
-    UndotreeHead                = { fg = col.blue },
-    UndotreeBranch              = { fg = col.magenta },
+    UndotreeTimeStamp           = { fg = col.light_blue },
+    UndotreeBranch              = { fg = col.purple },
+    UndotreeCurrent             = { fg = col.teal, bold = true },
+    UndotreeNext                = { fg = col.yellow, underline = true },
+    UndotreeHead                = { fg = col.orange, underline = true },
     UndotreeSavedSmall          = { fg = col.green },
-    UndotreeSavedBig            = { fg = col.green, bg = pal.bg3 },
+    UndotreeSavedBig            = { fg = col.green, bold = true },
 
     Yanked                      = { bg = pal.bg1 },
 

@@ -47,12 +47,11 @@ local map_on_git_buffer = function(buf)
 
     -- use fugitive cause its just better :(
     map("n", "d", "<cmd>rightbelow Gvdiffsplit<cr>", { desc = "Git: Diff with head" })
-    map("n", "D", "<cmd>rightbelow Gvdiffsplit !<cr>", { desc = "Git: Diff with last commit" })
+    map("n", "D", "<cmd>rightbelow Gvdiffsplit !^<cr>", { desc = "Git: Diff with last commit" })
 
     map("n", "b", gitsigns.blame_line, { desc = "Git: Blame line" })
     map("n", "B", gitsigns.blame, { desc = "Git: Blame buffer" })
 
-    map("n", "H", "<cmd>G difftool .<cr>", { desc = "Git: Hunks to qflist" })
     map("n", "h", gitsigns.setloclist, { desc = "Git: Hunks to loclist" })
 
     map("n", "l", "<cmd>0Gllog<cr>", { desc = "Git: Log to loclist" })
@@ -96,6 +95,10 @@ local map_global_maps = function()
     map("n", "o", "<cmd>Git log --oneline<cr>", { desc = "Git: Log to buffer, oneline" })
     map("n", "c", "<cmd>silent Git commit<cr>", { desc = "Git: Commit" })
     map("n", "p", "<cmd>Git push<cr>", { desc = "Git: Push" })
+
+    -- ! means don't jump automatically
+    map("n", "H", "<cmd>G! difftool .<cr>", { desc = "Git: Hunks to qflist" })
+    map("n", "<C-h>", "<cmd>G difftool -y .<cr>", { desc = "Git: Diff all in tabs" })
 
     map("n", "g", function()
         git_relative_buf = vim.api.nvim_get_current_buf()

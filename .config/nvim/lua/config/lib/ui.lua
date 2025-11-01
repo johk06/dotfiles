@@ -180,6 +180,10 @@ end
 ---@param id integer
 ---@param text ([string, string])[]
 M.floating_notif_put = function(id, text)
+    if not api.nvim_buf_is_valid(id) then
+        M.floating_notifs[id] = nil
+        return
+    end
     api.nvim_buf_clear_namespace(id, ns, 0, 1)
     local obj = M.floating_notifs[id]
     if not obj.win then
@@ -204,8 +208,11 @@ end
 
 M.floating_notif_hide = function(id)
     local obj = M.floating_notifs[id]
+    if not obj then
+        return
+    end
     if obj.win then
-        api.nvim_win_close(obj.win, true)
+        pcall(api.nvim_win_close, obj.win, true)
         obj.win = nil
         M.shown_floating_notifs = M.shown_floating_notifs - 1
     end

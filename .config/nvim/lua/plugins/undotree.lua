@@ -15,7 +15,7 @@ M.config = function()
     g.undotree_DiffAutoOpen = true
     g.undotree_HelpLine = false
     g.undotree_TreeNodeShape = "│"
-    g.undotree_TreeVertShape = "╷"
+    g.undotree_TreeVertShape = "¦"
     g.undotree_TreeSplitShape = "⟋"
     g.undotree_TreeReturnShape = "⟍"
 

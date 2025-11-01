@@ -54,6 +54,7 @@ local function update_buflist()
         buf_wincounts[buf] = (buf_wincounts[buf] or 0) + 1
     end
 
+    local seen_names = {}
     for _, b in ipairs(buffers) do
         local bo = vim.bo[b]
 
@@ -65,6 +66,18 @@ local function update_buflist()
         local current = b == active_buf
         local wincount = buf_wincounts[b] or 0
         local name, kind, show_modified = getbufname(b, true)
+
+        -- avoid duplicated names like the plague
+        if seen_names[name] then
+            -- for git diffs, show which buffer they're diffing
+            if kind == "git" then
+                name = ("δ %d"):format(seen_names[name])
+            else
+                -- add another part of the name as a prefix
+            end
+        elseif name then
+            seen_names[name] = count
+        end
         name = name and name:gsub("%%", "%%%%")
 
         local hlprefix = current and "SlA" or "SlI"
