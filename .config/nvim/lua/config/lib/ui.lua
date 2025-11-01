@@ -198,7 +198,7 @@ M.floating_notif_put = function(id, text)
             focusable = false,
             mouse = false
         })
-        vim.wo[obj.win].winblend = 100
+        vim.wo[obj.win].winblend = 20
         M.shown_floating_notifs = M.shown_floating_notifs + 1
     end
     api.nvim_buf_set_extmark(id, ns, 0, 0, {
