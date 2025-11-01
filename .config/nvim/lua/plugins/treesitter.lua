@@ -1,31 +1,4 @@
-local ensure_installed = {
-    "asm",
-    "awk",
-    "bash",
-    "c",
-    "comment",
-    "cpp",
-    "css",
-    "gitcommit",
-    "jq",
-    "json",
-    "jsonc",
-    "latex",
-    "lua",
-    "luadoc",
-    "luap",
-    "mail",
-    "markdown",
-    "markdown_inline",
-    "printf",
-    "python",
-    "query",
-    "regex",
-    "scss",
-    "vim",
-    "vimdoc",
-}
-
+-- Textobjects {{{
 local textobjects = {
     -- function declarations
     ["af"] = "@function.outer",
@@ -195,6 +168,7 @@ local ts_context = {
         max_lines = 0,
     }
 }
+--- }}}
 
 ---@type LazySpec
 local M = {
@@ -206,6 +180,37 @@ local M = {
         ts_context,
     },
 }
+
+-- Parsers I always want {{{
+local ensure_installed = {
+    "asm",
+    "awk",
+    "bash",
+    "c",
+    "comment",
+    "cpp",
+    "css",
+    "gitcommit",
+    "jq",
+    "json",
+    "jsonc",
+    "latex",
+    "lua",
+    "luadoc",
+    "luap",
+    "mail",
+    "qin",
+    "markdown",
+    "markdown_inline",
+    "printf",
+    "python",
+    "query",
+    "regex",
+    "scss",
+    "vim",
+    "vimdoc",
+}
+-- }}}
 
 local attach = function(buf, language)
     if not vim.treesitter.language.add(language) then
@@ -229,6 +234,12 @@ M.init = function()
                     branch = "master",
                 },
                 filetype = "mail",
+            }
+            package.loaded["nvim-treesitter.parsers"].qin = {
+                install_info = {
+                    url = "~/ws/qin/tree-sitter-qin/",
+                },
+                filetype = "qin"
             }
         end
     })
