@@ -1,0 +1,18 @@
+[user]
+email = jhk06@mailbox.org
+name = jhk
+
+[init]
+defaultbranch = main
+
+[interactive]
+singleKey = true
+
+[color "interactive"]
+prompt = italic cyan
+help = italic white
+
+[color "diff"]
+meta = brightblue
+frag = bold brightmagenta
+func = bold white
