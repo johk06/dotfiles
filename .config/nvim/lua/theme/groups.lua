@@ -83,7 +83,9 @@ local colorscheme = {
     DiffChange                  = { bg = pal.bg1 },
     DiffAdd                     = { bg = pal.bg1, fg = col.green, italic = true },
     DiffText                    = { bg = pal.bg1, fg = col.yellow, italic = true },
+    DiffSubname                 = { fg = pal.fg, bold = true },
     DiffDelete                  = { bg = blend(col.red, pal.bg3, 0.3) },
+    DiffLine                    = { fg = col.purple },
     diffFile                    = { link = "Directory" },
 
     -- messages
