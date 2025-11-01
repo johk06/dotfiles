@@ -99,6 +99,7 @@ local map_global_maps = function()
     -- ! means don't jump automatically
     map("n", "H", "<cmd>G! difftool .<cr>", { desc = "Git: Hunks to qflist" })
     map("n", "<C-h>", "<cmd>G difftool -y .<cr>", { desc = "Git: Diff all in tabs" })
+    map("n", "<C-s>", "<cmd>Git add -p .<cr>", { desc = "Git: Stage interactively" })
 
     map("n", "g", function()
         git_relative_buf = vim.api.nvim_get_current_buf()

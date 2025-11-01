@@ -104,9 +104,35 @@ osc_handlers["133"] = function(ev)
 end
 -- }}}
 
+---@param ev vim.api.keyset.create_autocmd.callback_args
+local set_is_interactive = function(ev)
+    local pid = ev.file:match("term://.-//(%d+):")
+    if pid then
+        vim.uv.fs_open(("/proc/%d/cmdline"):format(pid), "r", 0, function(err, fd)
+            if err then
+                return
+            end
+
+            local cmdline, err = vim.uv.fs_read(fd, 4096, 0)
+            vim.uv.fs_close(fd)
+            if not cmdline or err then
+                return
+            end
+
+            -- automatically close interactive git add buffers
+            if cmdline:match("git\0.-add\0%-p") then
+                vim.schedule(function()
+                    vim.b[ev.buf].term_autoclose = true
+                end)
+            end
+        end)
+    end
+end
+
 utils.autogroup("config.terminal_mode", {
     -- saner options
     TermOpen = function(ev)
+        set_is_interactive(ev)
         vim.wo[0][0].number = false
         vim.wo[0][0].relativenumber = false
         vim.wo[0][0].statuscolumn = ""
