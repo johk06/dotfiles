@@ -151,18 +151,30 @@
       <attribute name="tool" type="string" value="hand"/>
     </data>
     <data name="right">
-      <attribute name="tool" type="string" value="none"/>
+      <attribute name="color" type="hex" value="ffb48ead"/>
+      <attribute name="drawingType" type="string" value="default"/>
+      <attribute name="size" type="string" value="medium"/>
+      <attribute name="tool" type="string" value="highlighter"/>
     </data>
     <data name="stylus">
-      <attribute name="tool" type="string" value="none"/>
+      <attribute name="color" type="hex" value="ffb48ead"/>
+      <attribute name="drawingType" type="string" value="default"/>
+      <attribute name="size" type="string" value="medium"/>
+      <attribute name="tool" type="string" value="highlighter"/>
     </data>
     <data name="stylus2">
-      <attribute name="tool" type="string" value="none"/>
+      <attribute name="color" type="hex" value="ffb48ead"/>
+      <attribute name="drawingType" type="string" value="default"/>
+      <attribute name="size" type="string" value="medium"/>
+      <attribute name="tool" type="string" value="highlighter"/>
     </data>
     <data name="touch">
       <attribute name="device" type="string" value=""/>
       <attribute name="disableDrawing" type="boolean" value="false"/>
-      <attribute name="tool" type="string" value="none"/>
+      <attribute name="color" type="hex" value="ffb48ead"/>
+      <attribute name="drawingType" type="string" value="default"/>
+      <attribute name="size" type="string" value="medium"/>
+      <attribute name="tool" type="string" value="highlighter"/>
     </data>
   </data>
   <data name="deviceClasses">
