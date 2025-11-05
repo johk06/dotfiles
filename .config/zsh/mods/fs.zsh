@@ -11,14 +11,10 @@ if [[ "$1" == "unload" ]]; then
 
     unalias md ft bft zcp zln
 
-    zmodload -u zsh/mapfile
-
     unfunction zmv
 
     return
 fi
-
-zmodload zsh/mapfile
 
 alias md="mkdir -p"
 
@@ -33,22 +29,6 @@ compdef mcd=mkdir
 
 alias ft="file --mime-type -F$'\t'"
 alias bft="file --brief --mime-type -N"
-
-# ripgrep files
-function rgf {
-    local search_term="$1"
-    local search_path
-    if [[ -z "$2" ]] {
-        search_path="$PWD"
-        shift 1
-    } else {
-        search_path="$2"
-        shift 2
-    }
-    local flags="$@"
-
-    rg --color=never --files-with-matches $flags "$search_term" "$search_path"
-}
 
 # better realpath
 function rp {
