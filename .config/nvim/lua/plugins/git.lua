@@ -168,12 +168,17 @@ M[2].config = function()
                 ok = vim.fn.search(name) ~= 0
             end
 
+            local searched = vim.fn.getcwd()
+            if vim.startswith(searched, gitdir) then
+                searched = searched:sub(#gitdir + 1)
+            end
             if not ok then
-                local cwd = vim.fn.getcwd()
-                if vim.startswith(cwd, gitdir) then
-                    cwd = cwd:sub(#gitdir + 1)
-                end
-                ok = vim.fn.search(cwd) ~= 0
+                ok = vim.fn.search(searched) ~= 0
+            end
+
+            -- Leave the search in the search register so I can hit nN to move between relevant files
+            if ok then
+                vim.fn.setreg("/", searched)
             end
             git_relative_buf = nil
             vim.cmd.normal("0zz")
