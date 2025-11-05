@@ -27,12 +27,17 @@ element {
     background-color: @bg0;
     color: @fg0;
 }
-element selected.normal {
+element selected.normal, element selected.active {
     background-color: @selected;
+}
+element selected.active, element active {
+    background-color: @accent;
+    color: @invert;
 }
 
 element-text {
-    color: @fg0;
+    color: inherit;
+    font: inherit;
     background-color: transparent;
 }
 element-icon {

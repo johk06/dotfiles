@@ -63,7 +63,7 @@ mode "media" {
     Shift+H exec playerctl previous
     Shift+L exec playerctl next
 
-    Q exec rofi -show queue:~/.config/rofi/applets/mpd/select-in-queue; mode "default"
+    Q exec ~/.config/rofi/applets/mpd/run.sh; mode "default"
     P exec $sc/mpd-play.sh; mode "default"
 
     Shift+M exec ~/.config/rofi/applets/mute/run.sh; mode "default"
