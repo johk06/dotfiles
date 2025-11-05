@@ -906,6 +906,10 @@ end
 -- e.g. 2gmiw -> duplicates the current word twice
 operators.map_function("gm", multiply_operator, { hijack_count = true })
 operators.map_function("gM", multiply_operator, { hijack_count = true }, { before = true })
+
+-- [y]ou [c]onvert
+local convert = require("config.operators.conversion")
+operators.map_function("yc", convert.operator, { normal_only = true })
 -- }}}
 
 --[[ Change Directory {{{
