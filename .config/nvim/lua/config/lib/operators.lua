@@ -63,7 +63,7 @@ M.set_region = function(mode, region, replacement)
 end
 
 ---@alias config.op.extra {saved: table, repeated: boolean, args: table, hijacked_count: integer}
----@alias config.op.operator_func fun(mode: string, region: config.region, extra: config.op.extra)
+---@alias config.op.operator_func fun(mode: "char"|"line", region: config.region, extra: config.op.extra)
 
 ---@param name string
 ---@param cb config.op.operator_func
