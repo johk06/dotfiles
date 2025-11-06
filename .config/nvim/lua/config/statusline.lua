@@ -252,6 +252,9 @@ local function update_filetype()
     local _enc = vim.bo.fileencoding
     local enc = _enc and _enc ~= "" and _enc or "utf-8"
 
+    local _tw = vim.bo.textwidth
+    local tw = _tw == 0 and "" or ("tw:%d "):format(_tw)
+
     local indent = vim.bo.expandtab
         and ("sw:%d"):format(vim.bo.shiftwidth)
         or "tab"
@@ -266,12 +269,13 @@ local function update_filetype()
     end
 
     local conceallevel = vim.wo.conceallevel
-    local conceal = conceallevel > 0 and ("conceal:%s "):format(concealcursor) or ""
+    local conceal = conceallevel > 0 and ("hide:%s "):format(concealcursor) or ""
 
-    return delim .. string.format("%%*%s %s %s %s%s%s",
+    return delim .. string.format("%%*%s %s %s %s%s%s%s",
         enc,
         vim.bo.fileformat,
         indent,
+        tw,
         conceal,
         spell,
         ft
@@ -381,7 +385,7 @@ redraw_on({ "TextChanged", "TextChangedI" }, {
 })
 
 redraw_on("OptionSet", {
-    pattern = { "spell", "spellang", "shiftwidth", "expandtab", "conceallevel", "concealcursor", "filetype" },
+    pattern = { "spell", "spellang", "shiftwidth", "expandtab", "conceallevel", "concealcursor", "filetype", "textwidth" },
     callback = vim.schedule_wrap(function()
         local mode = api.nvim_get_mode().mode:sub(1, 1)
         if not (mode == "n" or mode == "c") then
