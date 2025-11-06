@@ -10,8 +10,6 @@ local ftpref = require("config.lib.ftpref")
 local abbrev = utils.abbrev
 local map = utils.map
 local unmap = utils.unmap
-local ui = require("config.lib.ui")
-local hlns = ui.ns
 
 local mov = utils.mode_motion
 local obj = utils.mode_object
@@ -246,20 +244,6 @@ map("n", "'l", function() require("quicker").toggle { min_height = 8, loclist = 
 - zt: place it at the top of the screen
 the j is required so that this applies when on the fold start ]]
 map("n", "<Tab>", "zMzOj[zzt", { remap = true --[[ is required so ufo applies ]] })
-
--- Move between toplevel folds
---[[ focus next fold
-- zj: move unto it
-- zo: open it
-- zt: at top of screen
-]]
--- map("n", "<Cr>", "zmzjzozt", { remap = true })
--- -- and the opposite for k
--- map("n", "<S-Cr>", "zmzkzozb", { remap = true })
---
--- -- return to top of current fold
--- map("n", "<Bs>", "zm[zzz", { remap = true })
--- map("n", "<S-Bs>", "zm]zzz", { remap = true })
 -- }}}
 
 -- Buffers & Windows {{{
@@ -484,76 +468,6 @@ end
 
 map("n", "<<space>", function() insert_spaces(-1) end)
 map("n", "><space>", function() insert_spaces(1) end)
-
--- show marks before jumping
-map("n", "`", function()
-    local marks = vim.tbl_map(function(m)
-        return {
-            m.mark:sub(2),
-            m.pos[2],
-            { api.nvim_buf_get_lines(m.pos[1], m.pos[2] - 1, m.pos[2], false)[1] or "" }
-        }
-        ---@diagnostic disable-next-line: param-type-mismatch "" Is a valid argument
-    end, fn.getmarklist(""))
-
-    vim.list_extend(marks, vim.tbl_map(function(m)
-        local name, parent, hl = utils.format_filepath(m.file, 4)
-        return {
-            m.mark:sub(2),
-            m.pos[2],
-            { parent, "NonText" },
-            { name,   hl }
-        }
-    end, fn.getmarklist()))
-
-    local buf = api.nvim_create_buf(false, true)
-    local win = api.nvim_open_win(buf, false, {
-        style = "minimal",
-        anchor = "SW",
-        relative = "laststatus",
-        height = #marks + 1,
-        width = 60,
-        row = 0,
-        col = 0,
-    })
-
-    api.nvim_buf_set_extmark(buf, hlns, 0, 0, {
-        virt_lines_above = true,
-        virt_lines = vim.tbl_map(function(m)
-            return {
-                { m[1],                 "Identifier" },
-                { "    " },
-                { ("%3d"):format(m[2]), "Number" },
-                { " " },
-                m[3],
-                m[4]
-            }
-        end, marks)
-    })
-    api.nvim_buf_set_lines(buf, 0, 0, false, { "" })
-    api.nvim_buf_set_extmark(buf, hlns, 1, -1, {
-        virt_text_pos = "inline",
-        virt_text = {
-            { "Mark Row Content/File", "Title" },
-        }
-    })
-
-
-    vim.cmd.redraw()
-    local reg = fn.getcharstr(-1, { cursor = "hide" })
-
-    api.nvim_win_close(win, true)
-
-    local ok, err = pcall(api.nvim_cmd, {
-        cmd = "normal",
-        bang = true,
-        args = { "'" .. reg },
-    }, {})
-
-    if not ok then
-        utils.error("Marks", err, true)
-    end
-end)
 
 ---@param char string
 local is_ascii_lower = function(char)
