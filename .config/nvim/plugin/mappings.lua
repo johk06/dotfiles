@@ -64,7 +64,7 @@ unmap({ "i", "s" }, "<Tab>")   -- snippet
 unmap({ "i", "s" }, "<S-Tab>") -- snippet
 -- }}}
 
---[[ qflist / loclist {{{
+--[[ Quickfix- & Location list {{{
 Navigate faster with the lists
 The qflist is generally used for workspace wide things
 The loclist per each buffer/window
@@ -235,7 +235,7 @@ map("n", "'q", function() require("quicker").toggle { min_height = 8 } end)
 map("n", "'l", function() require("quicker").toggle { min_height = 8, loclist = true } end)
 -- }}}
 
--- Navigation {{{
+-- Folds {{{
 
 --[[ focus the current fold
 - zM: close all folds
@@ -417,7 +417,7 @@ map("n", bufleader .. "D", function()
 end, { desc = "Tab: Delete recursively" })
 -- }}}
 
--- Improve Builtin Mappings {{{
+-- Improved Builtin Mappings {{{
 -- stop {} from polluting the jumplist
 
 -- make them wait until I press another key
@@ -442,20 +442,6 @@ map(mov, "H", "^")
 -- keep the old ones around though
 map(mov, "gL", "L")
 map(mov, "gH", "H")
-
--- % is annoying to press
--- [m]atching, this takes some inspiration from helix
-map(obj, "m", "<plug>(matchup-%)")
-map(obj, "im", "<plug>(matchup-i%)")
-map(obj, "am", "<plug>(matchup-a%)")
-
--- turn the *Ncgn pattern into a nice and small textobject
-map("o", "*", function()
-    return "\x1b*N" .. vim.v.operator .. "gn"
-end, { expr = true })
-map("o", "#", function()
-    return "\x1b#N" .. vim.v.operator .. "gn"
-end, { expr = true })
 
 -- like (now-default) []<space>, but for characters inside a line, e.g. to separate words
 local insert_spaces = function(direction)
@@ -596,7 +582,7 @@ map("n", "q", function()
 end)
 -- }}}
 
--- Abbrevs {{{
+-- Abbreviations {{{
 
 -- I probably never will actually use :file
 -- If I need it, i can survive typing the full name
@@ -647,22 +633,6 @@ end)
 -- exit terminal mode with a single chord instead of 2
 map("t", "<M-Esc>", "<C-\\><C-n>")
 map("t", "<M-C-w>", "<C-\\><C-n><C-w>")
-
-map("n", termleader .. "p", function()
-    local termbuf = vim.b[0].terminal_buffer or terminal.last_term
-    if not termbuf then
-        return
-    end
-    local outputs = terminal.command_output_for_buffers[termbuf]
-    local selected = #outputs - vim.v.count
-    local region = outputs[selected]
-    if region then
-        api.nvim_paste(
-            table.concat(api.nvim_buf_get_lines(termbuf, region[1], region[2] - 1, false), "\n"),
-            false, -1
-        )
-    end
-end, { desc = "Terminal: Paste command output" })
 -- }}}
 
 -- Insert Mode {{{
@@ -676,10 +646,15 @@ map("i", "<S-Del>", "<c-o>\"_dw")
 -- navigation further than that needs normal mode anyways
 map("i", "<C-f>", "<C-o>f", { remap = true })
 map("i", "<C-b>", "<C-o>F", { remap = true })
+
 -- quick way to trigger things like ]a in insert mode
 -- useful example: <C-.>a to go to the next argument
 map("i", "<C-.>", "<C-o>]", { remap = true })
 map("i", "<C-,>", "<C-o>[", { remap = true })
+
+-- the same thing for the repetition keys
+map("i", "<C-.><C-.>", ";", { remap = true})
+map("i", "<C-,><C-,>", ",", { remap = true})
 
 
 -- leftover keys looking for a mapping
@@ -694,7 +669,23 @@ map({ "n", "s", "i" }, "<M-space>", function() vim.snippet.jump(1) end)
 map({ "n", "s", "i" }, "<C-space>", function() vim.snippet.jump(-1) end)
 -- }}}
 
--- Additional Textobjects {{{
+-- Textobjects & Motions {{{
+
+-- % is annoying to press
+-- [m]atching, this takes some inspiration from helix
+map(obj, "m", "<plug>(matchup-%)")
+map(obj, "im", "<plug>(matchup-i%)")
+map(obj, "am", "<plug>(matchup-a%)")
+
+-- turn the *Ncgn pattern into a nice and small textobject
+-- operators that don't invalidate the match require n afterwards to move the cursor
+map("o", "*", function()
+    return "\x1b*N" .. vim.v.operator .. "gn"
+end, { expr = true })
+map("o", "#", function()
+    return "\x1b#N" .. vim.v.operator .. "gN"
+end, { expr = true })
+
 -- less annoying to type
 map(obj, "iq", [[i"]])
 map(obj, "aq", [[a"]])
@@ -835,6 +826,8 @@ end
 operators.map_function("gm", multiply_operator, { hijack_count = true })
 operators.map_function("gM", multiply_operator, { hijack_count = true }, { before = true })
 
+--[[ TODO: evaluate whether this is a good idea
+- Especially the popup-menu design ]]
 -- [c]onvert [d]ata
 -- local convert = require("config.operators.conversion")
 -- operators.map_function("cd", convert.operator, { normal_only = true })
