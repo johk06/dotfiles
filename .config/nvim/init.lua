@@ -236,14 +236,7 @@ vim.diagnostic.config {
 -- }}}
 
 -- Load Config {{{
-require("config.treesitter")   -- custom treesitter features
-require("config.autocommands") -- set autocommands that don't fit anywhere else
-require("config.mappings")     -- set all the mappings
-require("config.commands")     -- global custom commands
-require("config.statusline")   -- at bottom of screen
-require("config.bufferline")   -- at the top
 require("config.lsp")          -- language servers
-require("config.spell")        -- automatically install spelling languages
 
 -- load UI components
 local ui = require("config.lib.ui")
