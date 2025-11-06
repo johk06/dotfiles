@@ -246,6 +246,20 @@ map("n", "'l", function() require("quicker").toggle { min_height = 8, loclist = 
 - zt: place it at the top of the screen
 the j is required so that this applies when on the fold start ]]
 map("n", "<Tab>", "zMzOj[zzt", { remap = true --[[ is required so ufo applies ]] })
+
+-- Move between toplevel folds
+--[[ focus next fold
+- zj: move unto it
+- zo: open it
+- zt: at top of screen
+]]
+-- map("n", "<Cr>", "zmzjzozt", { remap = true })
+-- -- and the opposite for k
+-- map("n", "<S-Cr>", "zmzkzozb", { remap = true })
+--
+-- -- return to top of current fold
+-- map("n", "<Bs>", "zm[zzz", { remap = true })
+-- map("n", "<S-Bs>", "zm]zzz", { remap = true })
 -- }}}
 
 -- Buffers & Windows {{{
@@ -910,6 +924,9 @@ operators.map_function("gM", multiply_operator, { hijack_count = true }, { befor
 -- [y]ou [c]onvert
 local convert = require("config.operators.conversion")
 operators.map_function("yc", convert.operator, { normal_only = true })
+
+local sort_operator = require("config.operators.sort").operator
+operators.map_function("g=", sort_operator)
 -- }}}
 
 --[[ Change Directory {{{
