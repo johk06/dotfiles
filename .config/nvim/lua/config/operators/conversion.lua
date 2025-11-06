@@ -85,13 +85,14 @@ local numbers = function(text, kind, to)
         return
     end
 
-    if to == "d" then return { ("%d"):format(parsed) } end
-    if to == "x" then return { ("0x%x"):format(parsed) } end
-    if to == "X" then return { ("0x%X"):format(parsed) } end
-    if to == "o" then return { ("0o%o"):format(parsed) } end
-
-    -- TODO: binary, roman
-    utils.error("Convert/Number", "Not yet implemented")
+    if to == "r" or to == "R" then
+        return { utils.format_roman(parsed, to == "R") }
+    elseif to == "b" then
+        return { utils.format_bin(parsed) }
+    else
+        -- doxX
+        return { ("%" .. to):format(parsed) }
+    end
 end
 -- }}}
 

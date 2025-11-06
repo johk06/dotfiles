@@ -1,6 +1,8 @@
 local M = {}
 local api = vim.api
 local fn = vim.fn
+local bit = require("bit")
+local string_buffer = require("string.buffer")
 -- Reusable code for my entire config
 
 -- format buffer title {{{
@@ -152,8 +154,8 @@ local extension_highlights = {
     ["go"]      = "Code",
     ["gz"]      = "Archive",
     ["h"]       = "Header",
-    ["hh"]       = "Header",
-    ["hpp"]       = "Header",
+    ["hh"]      = "Header",
+    ["hpp"]     = "Header",
     ["hs"]      = "Code",
     ["html"]    = "Markup",
     ["ini"]     = "Config",
@@ -711,6 +713,18 @@ M.format_roman = function(num, upper)
 
     local out = res:tostring()
     return upper and out:upper() or out
+end
+
+M.format_bin = function(n)
+    local buf = string_buffer.new(16)
+    buf:put("0b")
+    local nbits = math.max(1, select(2, math.frexp(n)))
+    for i = nbits, 1, -1 do
+        local b = bit.band(n, bit.lshift(1, i - 1))
+        buf:put(b == 0 and "0" or "1")
+    end
+
+    return tostring(buf)
 end
 
 -- }}}
