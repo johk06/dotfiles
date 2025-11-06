@@ -921,9 +921,9 @@ end
 operators.map_function("gm", multiply_operator, { hijack_count = true })
 operators.map_function("gM", multiply_operator, { hijack_count = true }, { before = true })
 
--- [y]ou [c]onvert
+-- [c]onvert [d]ata
 local convert = require("config.operators.conversion")
-operators.map_function("yc", convert.operator, { normal_only = true })
+operators.map_function("cd", convert.operator, { normal_only = true })
 
 local sort_operator = require("config.operators.sort").operator
 operators.map_function("g=", sort_operator)
