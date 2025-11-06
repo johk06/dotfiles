@@ -75,7 +75,7 @@ local numbers = function(text, kind, to)
         return
     end
 
-    if not verify_to_specifier("Number", "bdxXorR", to) then
+    if not verify_to_specifier("Number", "bdxXorReE", to) then
         return
     end
 

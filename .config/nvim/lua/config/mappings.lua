@@ -451,7 +451,7 @@ map(obj, "m", "<plug>(matchup-%)")
 map(obj, "im", "<plug>(matchup-i%)")
 map(obj, "am", "<plug>(matchup-a%)")
 
--- turn the *Ncgn pattern into nice and small textobject
+-- turn the *Ncgn pattern into a nice and small textobject
 map("o", "*", function()
     return "\x1b*N" .. vim.v.operator .. "gn"
 end, { expr = true })
