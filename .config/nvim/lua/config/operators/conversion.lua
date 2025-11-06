@@ -25,11 +25,15 @@ local colors = {
         { key = "P", desc = "plain RGBA" },
     },
     normalize = function(from, _text)
+        if #_text > 1 then
+            return nil, "Only single line supported"
+        end
+
         local text = _text[1]
         if text:sub(1, 1) == "#" then
             local digits = { text:match("#(%x%x)(%x%x)(%x%x)(%x?%x?)") }
             if not digits then
-                return "Not a valid hex color"
+                return nil, "Not a valid hex color"
             end
             return {
                 tonumber(digits[1], 16),
@@ -38,7 +42,7 @@ local colors = {
                 (tonumber(digits[4], 16) or 255) / 255,
             }
         elseif text:match("^rgba?") then
-            local digits = { text:match("^rgba?%(%s*(%d+)%s*,%s*(%d+)%s*,%s*(%d+)%s*,?%s*([%d.]*)%s*%)")}
+            local digits = { text:match("^rgba?%(%s*(%d+)%s*,%s*(%d+)%s*,%s*(%d+)%s*,?%s*([%d.]*)%s*%)") }
             return vim.tbl_map(tonumber, digits)
         end
     end,
@@ -62,6 +66,51 @@ local colors = {
 }
 -- }}}
 
+-- Numbers {{{
+---@type config.op.conversion_menu
+local numbers = {
+    name = "Numbers",
+    menu = {
+        { key = "d", desc = "Decimal" },
+        { key = "x", desc = "Hex" },
+        { key = "X", desc = "HEX" },
+        { key = "b", desc = "Binary" },
+        { key = "o", desc = "Octal" },
+        { key = "r", desc = "Roman" },
+        { key = "R", desc = "ROMAN" },
+    },
+    normalize = function(from, _text)
+        if #_text > 1 then
+            return nil, "Only single line supported"
+        end
+        local text = _text[1]
+
+        local number
+        number = tonumber(text)
+        if not number and text:match("0o") then
+            number = tonumber(text:sub(3), 8)
+        end
+        if not number then
+            return nil, "Invalid number"
+        end
+
+        return number
+    end,
+    on_done = function(to, value)
+        if to == "b" then
+            return { utils.format_bin(value) }
+        elseif to == "r" or to == "R" then
+            return { utils.format_roman(value, to == "R") }
+        else
+            return { ("%s%" .. to):format(
+                to ~= "d" and
+                "0" .. to:lower()
+                or "", value) }
+        end
+    end
+}
+-- }}}
+
 ---@type config.op.operator_func
 M.operator = function(mode, region, extra)
     local menu, action
@@ -73,7 +122,7 @@ M.operator = function(mode, region, extra)
     if not menu then
         menu = ui.select("Convert", {
             { key = "c", desc = "Color",  value = colors },
-            { key = "n", desc = "Number", value = "n" },
+            { key = "n", desc = "Number", value = numbers },
             { key = "d", desc = "Date",   value = "d" }
         })
     end
