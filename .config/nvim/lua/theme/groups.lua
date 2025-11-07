@@ -217,7 +217,7 @@ add_with_prefix(colorscheme, "@", {
     float                            = { fg = col.magenta },
     macro                            = {},
     character                        = { fg = col.green },
-    boolean                          = { fg = col.teal },
+    boolean                          = { fg = col.purple },
     property                         = { fg = col.blue },
     constructor                      = { link = "*function" },
     operator                         = { fg = col.teal },
@@ -247,14 +247,14 @@ add_with_prefix(colorscheme, "@", {
     ["variable.builtin"]             = { fg = pal.fg0, italic = true },
     ["variable.parameter.builtin"]   = { fg = col.light_blue, italic = true },
 
-    ["constant"]                     = { fg = col.fg3 },
+    ["constant"]                     = { fg = col.fg2 },
     ["constant.builtin"]             = { fg = col.fg3 },
 
     ["type"]                         = { fg = col.magenta },
     ["type.builtin"]                 = { fg = col.purple },
 
     ["function"]                     = { fg = col.light_blue },
-    ["function.builtin"]             = { fg = col.light_cyan },
+    ["function.builtin"]             = { fg = blend(col.light_blue, pal.fg0, 0.8) },
 
     ["punctuation.bracket"]          = { fg = col.bright_gray },
     ["punctuation.special"]          = { fg = col.light_cyan },
@@ -264,13 +264,14 @@ add_with_prefix(colorscheme, "@", {
     ["attribute"]                    = { fg = col.yellow },
     ["attribute.builtin"]            = { fg = col.yellow },
 
-    ["keyword"]                      = { fg = col.light_blue },
-    ["keyword.return"]               = { fg = col.light_blue, italic = true },
-    ["keyword.import"]               = { fg = col.light_blue },
-    ["keyword.repeat"]               = { fg = col.light_blue, italic = true },
-    ["keyword.conditional"]          = { fg = col.light_blue, italic = true },
-    ["keyword.function"]             = { link = "*function" },
+    ["keyword"]                      = { fg = col.bright_gray },
+    ["keyword.return"]               = { fg = col.teal, italic = true },
+    ["keyword.repeat"]               = { fg = col.bright_gray, italic = true },
+    ["keyword.conditional"]          = { fg = col.bright_gray, italic = true },
+    ["keyword.function"]             = { fg = blend(col.light_blue, col.bright_gray, 0.5), italic = true },
     ["keyword.operator"]             = { link = "*operator" },
+
+    ["keyword.gitcommit"]            = { fg = col.teal },
 
     ["text"]                         = { fg = pal.fg2 },
     ["text.reference"]               = { fg = col.magenta },
@@ -286,7 +287,7 @@ add_with_prefix(colorscheme, "@", {
     ["diff.minus"]                   = { fg = col.red },
     ["diff.delta"]                   = { fg = col.yellow },
 
-    ["tag"]                          = { link = "*keyword" },
+    ["tag"]                          = { fg = col.light_blue },
     ["tag.attribute"]                = { fg = pal.fg0 },
     ["tag.builtin"]                  = { fg = col.light_blue },
     ["tag.delimiter"]                = { fg = col.bright_gray },
@@ -331,17 +332,17 @@ add_with_prefix(colorscheme, "@", {
 
 -- LSP semantic highlights {{{
 add_with_prefix(colorscheme, "@lsp.", {
-    ["type.macro"]                    = { link = "@macro" },
-    ["type.enum"]                     = { fg = col.yellow, },
-    ["type.escape"]                   = { link = "@string.escape" },
-    ["type.delim"]                    = { link = "@punctuation.delimiter" },
+    ["type.macro"]                      = { link = "@macro" },
+    ["type.enum"]                       = { fg = col.yellow, },
+    ["type.escape"]                     = { link = "@string.escape" },
+    ["type.delim"]                      = { link = "@punctuation.delimiter" },
 
-    ["mod.deprecated"]                = { fg = col.bright_gray, italic = true, strikethrough = true },
+    ["mod.deprecated"]                  = { fg = col.bright_gray, italic = true, strikethrough = true },
 
-    -- ["typemod.function.defaultLibrary"] = { link = "@function.builtin" },
+    ["typemod.function.defaultLibrary"] = { link = "@function.builtin" },
     -- override what the LSP does so --HACK etc work
-    ["type.comment"]                  = {},
-    ["typemod.keyword.documentation"] = { fg = col.light_blue },
+    ["type.comment"]                    = {},
+    ["typemod.keyword.documentation"]   = { fg = col.light_blue },
 })
 -- }}}
 
