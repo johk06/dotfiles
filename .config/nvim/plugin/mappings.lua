@@ -1,5 +1,5 @@
 --[[ Information {{{
-All mappings that are general purpose and active regardless of opened plugins
+ All mappings that are general purpose and active regardless of opened plugins
 }}} ]]
 
 -- Declarations {{{
@@ -65,18 +65,18 @@ unmap({ "i", "s" }, "<S-Tab>") -- snippet
 -- }}}
 
 --[[ Quickfix- & Location list {{{
-Navigate faster with the lists
-The qflist is generally used for workspace wide things
-The loclist per each buffer/window
+ Navigate faster with the lists
+ The qflist is generally used for workspace wide things
+ The loclist per each buffer/window
 ]]
 
--- qflist: more mappings, larger lists
+-- Quickfix: more mappings, larger lists
 map("n", "<C-j>", cmd_with_count("cnext"))
 map("n", "<C-k>", cmd_with_count("cprev"))
 map("n", "<space>0", "<cmd>cfirst<cr>")
 map("n", "<space>$", "<cmd>clast<cr>")
 
--- loclist: optimized for much smaller lists
+-- Location: optimized for much smaller lists, usually only containing elements from a single file
 map("n", "<M-j>", cmd_with_count("lnext"))
 map("n", "<M-k>", cmd_with_count("lprev"))
 
@@ -95,10 +95,6 @@ map("n", "<space>qn", cmd_with_count("cnewer"), { desc = "Qflist: Newer" })
 map("n", "<space>qo", cmd_with_count("colder"), { desc = "Qflist: Older" })
 map("n", "<space>ln", cmd_with_count("lnewer"), { desc = "Loclist: Newer" })
 map("n", "<space>lo", cmd_with_count("lolder"), { desc = "Loclist: Older" })
-
--- error numbers
-map("n", "<space>Q", cmd_with_count("cc"))
-map("n", "<space>L", cmd_with_count("ll"))
 
 -- vertical view
 map("n", "<space>qv", function()
@@ -131,10 +127,11 @@ map("n", "<space>lv", function()
     vim.wo[locwin][0].number = true
 end, { desc = "Loclist: Vertical" })
 
--- Reuse [g]o [l]ist prefix, Uppercase for qflist
--- set lists to diagnostics
+-- Reuse [g]o [l]ist prefix, Uppercase for qflist, for more uses see ./lua/config/lsp.lua
+-- Diagnostics
 map("n", "glE", function() vim.diagnostic.setqflist { open = true } end, { desc = "Qflist: Diagnostics ([E]rrors)" })
 map("n", "gle", function() vim.diagnostic.setloclist { open = true } end, { desc = "Loclist: Diagnostics ([E]rrors)" })
+
 -- list all TODOs, only when followed by a description
 map("n", "glT", [[<cmd>silent grep '\b(TODO\|HACK\|FIXME):'|cwin<cr>]], { desc = "Qflist: List TODOs" })
 map("n", "glt", [[<cmd>silent lvimgrep /\<\%(TODO\|HACK\|FIXME\):/ %|lwin<cr>]], { desc = "Loclist: List TODOs" })
@@ -194,10 +191,12 @@ local get_spelling_errors = function()
     return entries
 end
 
+-- list spelling errors in the current file
 map("n", "gls", function()
     fn.setloclist(0, get_spelling_errors())
 end, { desc = "Loclist: Spelling" })
 
+-- and for all buffers
 map("n", "glS", function()
     local errors = {}
     for _, b in ipairs(api.nvim_list_bufs()) do
@@ -218,9 +217,11 @@ map("n", "glS", function()
     fn.setqflist(errors)
 end, { desc = "Qflist: Spelling" })
 
+-- reload them, should only rarely be necessary
 map("n", "<space>qr", function() require("quicker").refresh(nil, { keep_diagnostics = true }) end)
 map("n", "<space>lr", function() require("quicker").refresh(0, { keep_diagnostics = true }) end)
 
+-- run :make
 map("n", "<space>m", function()
     vim.cmd [[
     write
@@ -230,7 +231,7 @@ map("n", "<space>m", function()
     require("quicker").refresh()
 end, { desc = "Make" })
 
--- toggle them
+-- toggle the lists, like other buffer mappings
 map("n", "'q", function() require("quicker").toggle { min_height = 8 } end)
 map("n", "'l", function() require("quicker").toggle { min_height = 8, loclist = true } end)
 -- }}}
@@ -238,22 +239,26 @@ map("n", "'l", function() require("quicker").toggle { min_height = 8, loclist = 
 -- Folds {{{
 
 --[[ focus the current fold
-- zM: close all folds
-- zO: open the current one, recursively
-- [z: move to the top of it
-- zt: place it at the top of the screen
-the j is required so that this applies when on the fold start ]]
+ - zM: close all folds
+ - zO: open the current one, recursively
+ - [z: move to the top of it
+ - zt: place it at the top of the screen
+ the j is required so that this applies when on the fold start ]]
 map("n", "<Tab>", "zMzOj[zzt", { remap = true --[[ is required so ufo applies ]] })
 -- }}}
 
 -- Buffers & Windows {{{
-local bufleader = "'"
 
 -- there still is ` for marks, ' is on the home row, soooo nice
+local bufleader = "'"
+
+-- make sure that it waits
 map("n", bufleader, "<nop>")
 
 -- faster alternate file, mnemonic: [s]econd, also allows remapping <C-6>
 map("n", "<C-s>", "<cmd>b #<cr>")
+
+-- move linearly
 map("n", bufleader .. "j", "<cmd>bnext<cr>", { desc = "Buffer: Next" })
 map("n", bufleader .. "k", "<cmd>bprev<cr>", { desc = "Buffer: Prev" })
 
@@ -396,6 +401,9 @@ local function get_tab_idx()
 end
 
 map("n", bufleader .. "H", function() indexed_tab_command("tabclose") end, { desc = "Tab: Hide" })
+
+--[[ Fully delete all of a tab's buffers
+Useful for things like <space>g<C-h> from ./lua/plugins/git.lua ]]
 map("n", bufleader .. "D", function()
     local tab = get_tab_idx()
     if not tab then
@@ -637,8 +645,8 @@ map("t", "<M-C-w>", "<C-\\><C-n><C-w>")
 
 -- Insert Mode {{{
 --[[ Why would I want to do smth so un-vimmy?
-Well, on my keyboard tapping L/R Shift yields BS/Del,
-so tapping one shift key while holding the other makes sense ]]
+ Well, on my keyboard tapping L/R Shift yields BS/Del,
+ so tapping one shift key while holding the other makes sense ]]
 map("i", "<S-BS>", "<C-w>")
 map("i", "<S-Del>", "<c-o>\"_dw")
 
@@ -653,8 +661,8 @@ map("i", "<C-.>", "<C-o>]", { remap = true })
 map("i", "<C-,>", "<C-o>[", { remap = true })
 
 -- the same thing for the repetition keys
-map("i", "<C-.><C-.>", ";", { remap = true})
-map("i", "<C-,><C-,>", ",", { remap = true})
+map("i", "<C-.><C-.>", "<C-o>;", { remap = true})
+map("i", "<C-,><C-,>", "<C-o>,", { remap = true})
 
 
 -- leftover keys looking for a mapping
@@ -669,16 +677,23 @@ map({ "n", "s", "i" }, "<M-space>", function() vim.snippet.jump(1) end)
 map({ "n", "s", "i" }, "<C-space>", function() vim.snippet.jump(-1) end)
 -- }}}
 
--- Textobjects & Motions {{{
+--[[ Textobjects & Motions {{{
+ Textobjects and motions are the heart of Vim, so it makes sense to optimize them more than almost everything else.
+ This section has both abbreviations for, as well as new, motions and textobjects(mostly). ]]
 
 -- % is annoying to press
--- [m]atching, this takes some inspiration from helix
+-- [m]atching, this may take some inspiration from helix :)
 map(obj, "m", "<plug>(matchup-%)")
 map(obj, "im", "<plug>(matchup-i%)")
 map(obj, "am", "<plug>(matchup-a%)")
 
--- turn the *Ncgn pattern into a nice and small textobject
--- operators that don't invalidate the match require n afterwards to move the cursor
+--[[ turn the *Ncgn pattern into a nice and small textobject
+ Operators that don't invalidate the match require `n` afterwards to move the cursor.
+ So anything that deletes, changes etc is best.
+ Then continue hitting `.` to apply or `n` to go to the next match.
+ This way this can work almost like :%s///c, but for arbitrary operations 
+ Examples:
+ - gs* to replace each occurrence with register. ]]
 map("o", "*", function()
     return "\x1b*N" .. vim.v.operator .. "gn"
 end, { expr = true })
@@ -692,8 +707,10 @@ map(obj, "aq", [[a"]])
 map(obj, "iQ", [[i']])
 map(obj, "aQ", [[a']])
 
--- target the area of a diagnostic with a textobject
--- <id> matches every type
+--[[ target the area of a diagnostic with a textobject
+ `id` matches every type
+ Examples:
+ - cid_<esc> to change an "unused variable" ]]
 map(obj, "id", textobjs.diagnostic)
 map(obj, "iDe", textobjs.diagnostic_error)
 map(obj, "iDw", textobjs.diagnostic_warn)
@@ -724,7 +741,7 @@ map(obj, "az", textobjs.foldmarker_outer)
 map(obj, "io", textobjs.create_pattern_obj("([-+*/%%]%s*)[%w_%.]+()"))
 map(obj, "ao", textobjs.create_pattern_obj("()[-+*/%%]%s*[%w_%.]+()"))
 
--- snake_case or kebab-case word
+-- snake_case or kebab-case sub-word
 map(obj, "i-", textobjs.create_pattern_obj("([-_]?)%w+([-_]?)"))
 map(obj, "a-", textobjs.create_pattern_obj("()[-_]?%w+[-_]?()"))
 
@@ -746,11 +763,14 @@ map(obj, "gG", textobjs.entire_buffer)
 map("o", "=", textobjs.variable_value)
 -- }}}
 
--- Custom Operators {{{
--- Command in Region
--- open a cmdline in a region specified by a textobject or motion
--- allows me to repeat commands like they're regular mappings
--- mostly useful with things like :g and :s
+--[[ Custom Operators {{{
+ Operators are important as well 
+ This section mostly has operators where no plugin has managed to satisfy me (yet)]]
+
+--[[ Command in Region
+ Open a cmdline in a region specified by a textobject or motion
+ Allows repeating commands like they're regular mappings
+ mostly useful with things like :g and :s ]]
 ---@diagnostic disable-next-line: unused-local
 operators.map_function("g:", function(mode, region, extra)
     if extra.repeated then
@@ -820,9 +840,17 @@ local multiply_operator = function(mode, region, extra)
     end
 end
 
--- [g]o [m]ultiply
--- uses the first count as an indication of how often to multiply
--- e.g. 2gmiw -> duplicates the current word twice
+--[[ Duplicate elements
+ [g]o [m]ultiply
+ uses the first count as an indication of how often to multiply
+ e.g. 2gmiw -> duplicates the current word twice
+ If the object to multiply is an inline word and does not have a separator,
+ a space will be added.
+ The capital version puts the duplicate before the cursor instead of after it.
+ Examples:
+ - gmaa to duplicate an argument to a function, e.g. type `NULL` once and then gmaa it
+ - gmm followed by an edit to create a slightly different copy of the current line
+   As many people correctly pointed out, yyp not leaving the cursor in place makes this more difficult with builtins ]]
 operators.map_function("gm", multiply_operator, { hijack_count = true })
 operators.map_function("gM", multiply_operator, { hijack_count = true }, { before = true })
 
@@ -837,8 +865,8 @@ operators.map_function("g=", sort_operator)
 -- }}}
 
 --[[ Change Directory {{{
-Sometimes I need a quicker way to change directory than :cd, :lcd etc
-This may benefit from being turned into a sub mode sometime (e.g. using hydra) ]]
+ Sometimes I need a quicker way to change directory than :cd, :lcd etc
+ This may benefit from being turned into a sub mode sometime (e.g. using hydra) ]]
 local cdleader = "<space>."
 
 local function get_cur_buf_parent()
@@ -909,9 +937,9 @@ map("n", cdleader .. "g", function()
 end, { desc = "Directory: Goto Git Root" })
 -- }}}
 
--- Table of Content {{{
--- like the one in a help buffer
--- based on folds, so it works for most filetypes
+--[[ Table of Content {{{
+ like the one in a help buffer
+ based on folds, so it works for most filetypes ]]
 map("n", "gO", function()
     local ufo = require("ufo")
     local buf = api.nvim_get_current_buf()
@@ -981,8 +1009,9 @@ map("n", "gO", function()
     quicker.open { loclist = true }
 end)
 
--- view information in manpage or help
--- this is also meant to be overridden if necessary, which is why it's here
+--[[ view information in manpage or help
+ Since built in vim K is shadowed by the LSP in most cases
+ this is also meant to be overridden if necessary, which is why it's here ]]
 map({ "v", "n" }, "gK", function()
     local cmd
     if vim.startswith(vim.fn.expand("%:p"), vim.fn.stdpath("config")) then
