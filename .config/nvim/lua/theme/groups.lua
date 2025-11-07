@@ -235,7 +235,7 @@ add_with_prefix(colorscheme, "@", {
     ["string"]                       = { fg = col.green },
     ["string.documentation"]         = { link = "*comment" },
     ["string.special.path"]          = { fg = col.teal },
-    ["string.regex"]                 = { fg = col.orange },
+    ["string.regexp"]                = { fg = col.green },
     ["string.escape"]                = { fg = col.yellow },
     -- delimiter based formats: highlight strings like words
     ["string.csv"]                   = { link = "Normal" },
@@ -256,10 +256,10 @@ add_with_prefix(colorscheme, "@", {
     ["function"]                     = { fg = col.light_blue },
     ["function.builtin"]             = { fg = blend(col.light_blue, pal.fg0, 0.8) },
 
-    ["punctuation.bracket"]          = { fg = col.bright_gray },
+    ["punctuation.bracket"]          = { fg = col.light_gray },
     ["punctuation.special"]          = { fg = col.light_cyan },
     ["punctuation.special.markdown"] = { fg = col.light_gray },
-    ["punctuation.delimiter"]        = { fg = col.bright_gray },
+    ["punctuation.delimiter"]        = { fg = col.light_gray },
 
     ["attribute"]                    = { fg = col.yellow },
     ["attribute.builtin"]            = { fg = col.yellow },
@@ -271,7 +271,8 @@ add_with_prefix(colorscheme, "@", {
     ["keyword.function"]             = { fg = blend(col.light_blue, col.bright_gray, 0.5), italic = true },
     ["keyword.operator"]             = { link = "*operator" },
 
-    ["keyword.gitcommit"]            = { fg = col.teal },
+    ["keyword.directive"]            = { link = "*operator" },
+    ["keyword.gitcommit"]            = { link = "*keyword.directive" },
 
     ["text"]                         = { fg = pal.fg2 },
     ["text.reference"]               = { fg = col.magenta },

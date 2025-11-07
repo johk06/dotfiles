@@ -3,6 +3,8 @@ local api = vim.api
 local esc = api.nvim_replace_termcodes("<esc>", true, false, true)
 local ftpref = require("config.lib.ftpref")
 
+local MAX_LINES_FORWARD = 20
+
 --[[ Information {{{
 see https://github.com/chrisgrieser/nvim-various-textobjs
 
@@ -228,7 +230,6 @@ local function pattern_obj(pos, lcount, opts)
     local curline = pos[1]
     local curcol = pos[2]
     local patterns = type(opts.patterns) == "string" and { opts.patterns } or opts.patterns
-    vim.print(patterns)
 
     local line = getline(curline)
 
@@ -242,9 +243,10 @@ local function pattern_obj(pos, lcount, opts)
         startpos, endpos, g1, g2 = find_any(line, patterns, startpos)
     until not startpos or (endpos and endpos > curcol)
 
+    local count = 1
     -- not found in first line
     if not startpos then
-        while true do
+        while count < MAX_LINES_FORWARD do
             if curline > lcount then
                 return
             end
@@ -254,6 +256,7 @@ local function pattern_obj(pos, lcount, opts)
             if startpos then
                 break
             end
+            count = count + 1
         end
     end
 

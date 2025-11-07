@@ -1,7 +1,7 @@
 ; extends
 
 ; Type casts are not mere punctuation that may be ignored
-; It's an operator
+; They're an operator
 (cast_expression
   [
     "("
