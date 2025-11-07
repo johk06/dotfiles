@@ -76,9 +76,9 @@
         ""))
 
 (defwidget status-batteries []
-    (box :space-evenly false
+    (box :space-evenly false :spacing 12 :style "margin-left: .5rem;"
         (for dev in {batteries}
-            (label :style "margin-right: .5rem; margin-left: .5rem;"
+            (label
                 :class {dev.charging ? "" : (dev.value < 20 ? "red" : "")}
                 :tooltip "${dev.name}: ${dev.value}%${dev.to_empty != "null" ? "
 ${formattime(dev.to_empty, "%H:%M left")}" : ""}${dev.to_full != "null" ? "
