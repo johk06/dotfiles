@@ -7,9 +7,10 @@ print_devices() {
     busctl --json=short call $BUSNAME $BASE $BUSNAME EnumerateDevices | jq '.data[0][]' -r |
         while read -r dev; do
             busctl --json=short get-property $BUSNAME "$dev" $BUSNAME.Device \
-            Percentage Model State TimeToFull TimeToEmpty PowerSupply EnergyRate
-        done | jq -rMcs '[ . as $a | range(0; length; 7) | (if $a[.+1].data == "" then empty else {
+            Percentage Model State TimeToFull TimeToEmpty PowerSupply EnergyRate Type
+        done | jq -rMcs '[ . as $a | range(0; length; 8) | (if $a[.+1].data == "" then empty else {
             name: (if $a[.+5].data == true then "Internal" else $a[.+1].data end),
+            type: $a[.+7].data,
             internal: $a[.+5].data,
             value: $a[.].data,
             charging: $a[.+2].data == 1,
