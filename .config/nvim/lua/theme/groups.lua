@@ -217,7 +217,7 @@ add_with_prefix(colorscheme, "@", {
     float                            = { fg = col.magenta },
     macro                            = {},
     character                        = { fg = col.green },
-    boolean                          = { fg = col.purple },
+    boolean                          = { fg = col.light_cyan },
     property                         = { fg = col.blue },
     constructor                      = { link = "*function" },
     operator                         = { fg = col.teal },
