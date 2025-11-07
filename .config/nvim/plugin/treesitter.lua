@@ -1,18 +1,16 @@
---[[
-Custom predicates and directives for Treesitter
+--[[ Custom predicates and directives for Treesitter
+ Mostly to avoid expensive operations within treesitter-scheme itself or as an
+ escape hatch to do things treesitter wasn't made to do (e.g. selecting characters).
 
-Mostly to avoid expensive operations within treesitter-scheme itself or as an
-escape hatch to do things treesitter wasn't made to do (e.g. selecting characters).
+ All predicates and directives should have a jhk- prefix
+ to avoid collisions with those added by e.g. nvim-treesitter. ]]
 
-All predicates and directives should have a jhk- prefix
-to avoid collisions with those added by e.g. nvim-treesitter.
-]]
 local M = {}
 
 
 --[[ Conceal Symbol Names in Typst
-This makes for much nicer writing of math mainly
-]]
+ This makes for much nicer writing of math mainly ]]
+
 local typst_symbol_names = {
     -- greek alphabet
     Alpha              = "Α",

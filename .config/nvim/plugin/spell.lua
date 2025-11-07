@@ -1,5 +1,6 @@
 local utils = require "config.utils"
 --[[ Replacement for spellfile.vim {{{
+TODO: remove this once the new neovim ships
 Partially replicate what spellfile.vim does, just in a more modern way
 
 Why? spellfile.vim relies on netrw, is written in vimscript and is not that readable
