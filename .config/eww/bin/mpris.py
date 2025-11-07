@@ -12,9 +12,8 @@ from gi.repository import GLib, Playerctl, Gtk
 
 PLAYER_POSITIONS = {}
 
-NAME_OVERRIDES = {
-    "gapless": "com.github.neithern.g4music"
-}
+NAME_OVERRIDES = {"gapless": "com.github.neithern.g4music"}
+
 
 def get_icon(icon_name, size=48, fallback="multimedia-video-player"):
     if not icon_name:
@@ -26,7 +25,9 @@ def get_icon(icon_name, size=48, fallback="multimedia-video-player"):
     else:
         return get_icon(None)
 
+
 def get_art(player):
+    art_path = None
     try:
         art_url = player.props.metadata["mpris:artUrl"]
         if art_url.startswith("file://"):
@@ -40,9 +41,10 @@ def get_art(player):
 
     return art_path
 
+
 def do_meta(pl, *_):
     out = {}
-    
+
     props = pl.props
     meta = props.metadata
     name = props.player_name
@@ -58,8 +60,7 @@ def do_meta(pl, *_):
 
     out["art"] = get_art(pl)
 
-
-    if (length and position):
+    if length and position:
         out["has_progress"] = True
         out["length"] = int(length / 1000000)
         out["position"] = int(position / 1000000)
@@ -94,12 +95,14 @@ def do_meta(pl, *_):
 def on_play_pause(player, *_):
     do_meta(player)
 
+
 def assert_not_none(man):
     if not len(man.props.player_names):
         sys.stdout.write(json.dumps({"has_player": False, "playing": False}) + "\n")
         sys.stdout.flush()
         return False
     return True
+
 
 def on_new_or_disappear(man, name):
     if assert_not_none(man):
