@@ -9,10 +9,9 @@ local textobjects = {
     -- read: inside/around argument
     ["ia"] = "@parameter.inner",
     ["aa"] = "@parameter.outer",
-    -- value
-    ["iv"] = "@assignment.rhs",
     -- name
-    ["in"] = "@assignment.lhs",
+    ["i="] = "@assignment.lhs",
+    ["a="] = "@assignment.outer",
     -- comment
     ["ic"] = "@comment.inner",
     ["ac"] = "@comment.outer",

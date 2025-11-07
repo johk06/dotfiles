@@ -213,12 +213,22 @@ end, {})
 -- }}}
 
 -- Patterns {{{
+local find_any = function(text, patterns, startpos)
+    for _, pattern in ipairs(patterns) do
+        local start, stop, g1, g2 = text:find(pattern, startpos)
+        if start then
+            return start, stop, g1, g2
+        end
+    end
+end
 -- search for a pattern, use capture group to specify what to match
 -- two capture groups are necessary: an optional prefix and suffix
 -- if you don't need prefix and suffix, use ()
 local function pattern_obj(pos, lcount, opts)
     local curline = pos[1]
     local curcol = pos[2]
+    local patterns = type(opts.patterns) == "string" and { opts.patterns } or opts.patterns
+    vim.print(patterns)
 
     local line = getline(curline)
 
@@ -229,7 +239,7 @@ local function pattern_obj(pos, lcount, opts)
 
     repeat
         startpos = startpos + 1
-        startpos, endpos, g1, g2 = line:find(opts.pattern, startpos)
+        startpos, endpos, g1, g2 = find_any(line, patterns, startpos)
     until not startpos or (endpos and endpos > curcol)
 
     -- not found in first line
@@ -240,7 +250,7 @@ local function pattern_obj(pos, lcount, opts)
             end
             curline = curline + 1
             line = getline(curline)
-            startpos, endpos, g1, g2 = line:find(opts.pattern)
+            startpos, endpos, g1, g2 = find_any(line, patterns)
             if startpos then
                 break
             end
@@ -256,8 +266,8 @@ local function pattern_obj(pos, lcount, opts)
     return { { curline, obj_start - 1 }, { curline, obj_end - 1 } }, "char"
 end
 
-function M.create_pattern_obj(pattern)
-    return M.create_textobj(pattern_obj, { pattern = pattern })
+function M.create_pattern_obj(patterns)
+    return M.create_textobj(pattern_obj, { patterns = patterns })
 end
 
 -- }}}

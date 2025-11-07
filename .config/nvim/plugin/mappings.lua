@@ -661,8 +661,8 @@ map("i", "<C-.>", "<C-o>]", { remap = true })
 map("i", "<C-,>", "<C-o>[", { remap = true })
 
 -- the same thing for the repetition keys
-map("i", "<C-.><C-.>", "<C-o>;", { remap = true})
-map("i", "<C-,><C-,>", "<C-o>,", { remap = true})
+map("i", "<C-.><C-.>", "<C-o>;", { remap = true })
+map("i", "<C-,><C-,>", "<C-o>,", { remap = true })
 
 
 -- leftover keys looking for a mapping
@@ -691,7 +691,7 @@ map(obj, "am", "<plug>(matchup-a%)")
  Operators that don't invalidate the match require `n` afterwards to move the cursor.
  So anything that deletes, changes etc is best.
  Then continue hitting `.` to apply or `n` to go to the next match.
- This way this can work almost like :%s///c, but for arbitrary operations 
+ This way this can work almost like :%s///c, but for arbitrary operations
  Examples:
  - gs* to replace each occurrence with register. ]]
 map("o", "*", function()
@@ -751,9 +751,27 @@ map(obj, "a-", textobjs.create_pattern_obj("()[-_]?%w+[-_]?()"))
 map(obj, "i.", textobjs.create_pattern_obj("()[%w._]+()"))
 map(obj, "a.", textobjs.create_pattern_obj("()%s*[%w._]+%s*()"))
 
--- path component, NOTE: around does only includes final slashes
-map(obj, "i/", textobjs.create_pattern_obj("()[^/]+()"))
-map(obj, "a/", textobjs.create_pattern_obj("()[^/]+()/*"))
+-- path component, last / is optional
+map(obj, "i/", textobjs.create_pattern_obj("(/)[^/]+(/?)"))
+map(obj, "a/", textobjs.create_pattern_obj("/()[^/]+()/?"))
+
+
+--[[ Numbers
+Inner variant preserves the sign of the number as well as any potential type prefix (0x) etc ]]
+map(obj, "in", textobjs.create_pattern_obj {
+    "([+-]?0x)%x+()",    -- decimal int
+    "([+-]?0b)[01]+()",  -- binary int
+    "([+-]?0o)[0-7]+()", -- octal int
+    "([+-]?)%d+%.%d*()", -- decimal float
+    "([+-]?)%d+()",      -- decimal int
+})
+map(obj, "an", textobjs.create_pattern_obj {
+    "()[+-]?0x%x+()",    -- decimal int
+    "()[+-]?0b[01]+()",  -- binary int
+    "()[+-]?0o[0-7]+()", -- octal int
+    "()[+-]?%d+%.%d*()", -- decimal float
+    "()[+-]?%d+()",      -- decimal int
+})
 
 -- entire buffer, mirroring the motions that would achieve the same thing: VgG
 map(obj, "gG", textobjs.entire_buffer)
@@ -764,7 +782,7 @@ map("o", "=", textobjs.variable_value)
 -- }}}
 
 --[[ Custom Operators {{{
- Operators are important as well 
+ Operators are important as well
  This section mostly has operators where no plugin has managed to satisfy me (yet)]]
 
 --[[ Command in Region
