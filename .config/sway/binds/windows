@@ -32,7 +32,8 @@ bindsym $mod+X resize shrink width 64px; resize shrink height 64px
 
 
 # suspend a windows underlying process
-bindsym $mod+Ctrl+Z exec $sc/stop-or-continue.sh
+bindsym $mod+Ctrl+Z exec $sc/signal-window.sh
+bindsym $mod+Mod1+Z exec $sc/stop-or-continue.sh
 
 bindsym $mod+Z focus mode_toggle
 
