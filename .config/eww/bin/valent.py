@@ -61,7 +61,6 @@ class ValentDevice:
 
     def update_actions(self, *args):
         self.battery = self.getaction("battery.state")[2][0]
-        self.network = self.getaction("connectivity_report.state")[2][0]
 
         do_reprint()
 
@@ -75,12 +74,6 @@ class ValentDevice:
             "name": self.name,
             "connected": self.is_connected(),
             "state": self.state,
-            "network": {
-                "strength": self.network["signal-strengths"]["1"]["signal-strength"]
-                / 5,
-                "name": self.network["title"],
-                "type": self.network["signal-strengths"]["1"]["network-type"],
-            },
             "battery": {
                 "charging": bool(self.battery["charging"]),
                 "percentage": self.battery["percentage"],
