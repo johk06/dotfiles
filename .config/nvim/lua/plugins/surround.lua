@@ -23,10 +23,11 @@ M.opts = {
         ["v"] = generic_pair("${", "}"),
         -- subshell expansion
         ["x"] = generic_pair("$(", ")"),
-        -- lua table key
+        -- general associative array key
         ["k"] = generic_pair('["', '"]'),
     },
     aliases = {
+        -- mirror the {a,i}m textobject (which aliases {i,a}%)
         m = { "}", "]", ")", ">", '"', "'", "`"  }
     }
 }
