@@ -1,5 +1,9 @@
 --[[ Information {{{
  All mappings that are general purpose and active regardless of opened plugins
+ This is pretty much the core of my configuration and pulls in lots of other modules
+
+ It's grouped into rough sections based on the type of keymap or its use case(s),
+ each of those should be a foldmarker section as well.
 }}} ]]
 
 -- Declarations {{{

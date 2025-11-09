@@ -7,9 +7,10 @@ local M = {
 }
 
 ---@type blink.cmp.Config
-M.opts = {}
+local opts = {}
+M.opts = opts
 
-M.opts.keymap = {
+opts.keymap = {
     preset    = "none",
     ["<C-p>"] = { "show", "select_prev", "fallback" },
     ["<C-n>"] = { "show", "select_next", "fallback" },
@@ -18,14 +19,14 @@ M.opts.keymap = {
     ["<C-y>"] = { "accept", "fallback" },
 }
 
-M.opts.signature = {
+opts.signature = {
     enabled = true,
     trigger = {
         enabled = true
     }
 }
 
-M.opts.cmdline = {
+opts.cmdline = {
     keymap = {
         -- mapping <left> and <right> is not what I ever want
         preset     = "none",
@@ -54,11 +55,11 @@ for i = 1, 9 do
     }
     local key = ("<C-%d>"):format(i)
 
-    M.opts.keymap[key] = action
-    M.opts.cmdline.keymap[key] = action
+    opts.keymap[key] = action
+    opts.cmdline.keymap[key] = action
 end
 
-M.opts.completion = {
+opts.completion = {
     list = {
         max_items = 96,
     },
@@ -83,7 +84,7 @@ M.opts.completion = {
     },
 }
 
-M.opts.completion.menu.draw.components = {
+opts.completion.menu.draw.components = {
     index = {
         text = function(ctx)
             return ctx.idx > 9 and "" or tostring(ctx.idx)
@@ -108,7 +109,7 @@ M.opts.completion.menu.draw.components = {
     }
 }
 
-M.opts.sources = {
+opts.sources = {
     default = { "lsp", "path", "snippets", "buffer" },
     per_filetype = {
         oil = { "path", "buffer", "snippets" },

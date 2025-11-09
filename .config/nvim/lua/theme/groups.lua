@@ -15,12 +15,11 @@ end
 
 -- Basics {{{
 local colorscheme = {
-
     -- built in editor highlights
     Normal                      = { fg = pal.fg0, bg = pal.bg0 },
     NormalFloat                 = { fg = pal.fg0, bg = pal.bg0 },
-    FloatBorder                 = { fg = pal.bg3 },
-    WinSeparator                = { fg = pal.bg2 },
+    FloatBorder                 = { fg = pal.bg1 },
+    WinSeparator                = { fg = pal.bg1 },
     LineNr                      = { fg = col.bright_gray },
     LineNrAbove                 = { fg = blend(col.teal, col.bright_gray, 0.3) },
     LineNrBelow                 = { fg = blend(col.pink, col.bright_gray, 0.3) },
@@ -196,6 +195,8 @@ local colorscheme = {
 
     manBold                     = { bg = pal.bg0 },
     manReference                = { link = "@markup.link" },
+    manSectionHeading           = { link = "@markup.heading.1" },
+    manSubHeading               = { link = "@markup.heading.3" },
 }
 -- }}}
 
@@ -534,7 +535,7 @@ add_with_prefix(colorscheme, "OilGit", {
 -- Blink {{{
 add_with_prefix(colorscheme, "BlinkCmp", {
     Menu                = { link = "Normal" },
-    MenuBorder          = { fg = pal.bg3 },
+    MenuBorder          = { fg = pal.bg1 },
     MenuSelection       = { bg = pal.bg1 },
     Label               = { link = "Normal" },
     DocBorder           = { link = "*MenuBorder" },
@@ -546,18 +547,18 @@ add_with_prefix(colorscheme, "BlinkCmp", {
     Kind                = { fg = col.yellow },
     KindArray           = { fg = col.light_blue },
     KindBoolean         = { link = "@boolean" },
-    KindClass           = { fg = col.magenta },
-    KindConstant        = { fg = col.yellow },
-    KindConstructor     = { fg = col.magenta },
+    KindClass           = { link = "@type" },
+    KindConstant        = { link = "@constant" },
+    KindConstructor     = { link = "@function"},
     KindEnumMember      = { fg = pal.fg0 },
     KindField           = { fg = pal.fg0 },
     KindFile            = { fg = col.yellow },
     KindFolder          = { fg = col.light_blue },
     KindFunction        = { fg = col.teal },
     KindInterface       = { fg = col.magenta },
-    KindKeyword         = { fg = pal.fg0 },
+    KindKeyword         = { fg = col.bright_gray },
     KindLatex           = { fg = col.green },
-    KindProperty        = { fg = pal.fg0 },
+    KindProperty        = { link = "@property" },
     KindNamespace       = { fg = col.green },
     KindMethod          = { fg = col.teal },
     KindModule          = { fg = col.green },
