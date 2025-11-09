@@ -3,13 +3,13 @@
 list-passwords() {
     local OLDPWD="$PWD"
     cd ~/.password-store || exit 1
-    fd --type=file --format '{.}' . .
+    fd --type=file --format '{.}' . . | tr '\n' '\t'
 }
 
 print-menu() {
     local pass="$1"
-    printf '\0data\x1f%s\n' "$pass"
-    printf '%s\n' "Type" "Type OTP" "Form" "Form with OTP" "Copy" "Copy OTP" "Show"
+    printf '\0data\x1f%s\t' "$pass"
+    printf '%s\t' "Pass" "OTP" "Form" "Form, no OTP" "Copy" "Copy OTP" "Show"
 }
 
 error() {
@@ -59,9 +59,36 @@ fill-form() {
     }
 }
 
+show-entry() {
+    IFS=":" read _ value <<<"$ROFI_DATA"
+    if [[ -z "$value" ]]; then
+        printf '\0data\x1f%s\t' "*entry*:$ROFI_INFO"
+        printf '%s\t' "Type" "Copy"
+    else
+        case "$1" in
+        Type)
+            coproc {
+                dotool <<<"type $value"
+            }
+            ;;
+        Copy)
+            notify-on-copy "Field"
+            coproc {
+                pass -c "$value"
+            }
+            ;;
+        esac
+    fi
+}
+
 perform-action() {
     local pass="$1"
     local action="$2"
+    if [[ "$pass" == "*entry*"* ]]; then
+        show-entry "$action"
+        exit
+    fi
+
     case "$action" in
     Copy)
         notify-on-copy "Password"
@@ -69,16 +96,16 @@ perform-action() {
             pass -c "$pass"
         }
         ;;
-    Type)
+    Pass)
         coproc {
             dotool <<<"type $(pass show "$pass" | head -n 1)"
         }
         ;;
-    "Form")
-        fill-form "$pass"
-        ;;
-    "Form with OTP")
+    Form)
         fill-form "$pass" --otp
+        ;;
+    "Form, no OTP")
+        fill-form "$pass"
         ;;
     "Copy OTP")
         coproc {
@@ -89,7 +116,7 @@ perform-action() {
             notify-on-copy "OTP Code"
         }
         ;;
-    "Type OTP")
+    "OTP")
         coproc {
             if ! token="$(pass otp "$pass")"; then
                 error-otp "$pass"
@@ -98,8 +125,15 @@ perform-action() {
         }
         ;;
     Show)
-        pass show "$pass" | while read -r line; do
-            true
+        printf '\0data\x1f*entry*\t'
+        pass show "$pass" | while IFS=": " read -r field value; do
+            if [[ "$field" == "otpauth" ]]; then
+                printf 'OTP-Code\n%s\0info\x1f%s\t' "$field:$value" "$field:$value"
+            elif [[ -z "$value" ]]; then
+                printf 'Password\n%s\0info\x1f%s\t' "$field" "$field"
+            else
+                printf '%s\n%s\0info\x1f%s\t' "$field" "$value" "$value"
+            fi
         done
         ;;
     *)
@@ -131,5 +165,6 @@ if ((ROFI_RETV != 0)); then
         perform-action "$ROFI_DATA" "$1"
     fi
 else
+    echo -en "\0delim\x1f\t\n"
     list-passwords
 fi
