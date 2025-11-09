@@ -74,7 +74,7 @@ show-entry() {
         Copy)
             notify-on-copy "Field"
             coproc {
-                pass -c "$value"
+                wl-copy <<< "$value"
             }
             ;;
         esac
