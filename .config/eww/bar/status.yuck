@@ -68,11 +68,12 @@
 
 (defwidget status-valent [dev]
     (button
-        :class {dev != "" ? "" : "inactive"}
+        :class "tiny-button ${dev != "" ? "" : "inactive"}"
         :tooltip {dev != "" ?
             "Connected to ${dev.name}, ${dev?.battery?.percentage}% - ${dev.battery.charging ? "Charing" : "Discharging"}"
             : "No Devices Connected"}
         :onclick `${valent-call} ${dev.path} org.gtk.Actions Activate 'sava{sv}' share.text 1 s "$(wl-paste)" 0`
+        :onrightclick `${valent-call} ${dev.path} org.gtk.Actions Activate 'sava{sv}' share.uri 1 s "$(wl-paste)" 0`
         ""))
 
 (defwidget status-batteries []
