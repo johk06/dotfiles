@@ -4,4 +4,4 @@
             :onclick "bin/popup.sh settings-panel settings-panel-shown open"
             :timeout "16s"
             :class "button"
-            {formattime(EWW_TIME, "%m/%d - %H:%M")})))
+            {formattime(EWW_TIME, "%a %m-%d, %H:%M")})))
