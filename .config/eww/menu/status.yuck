@@ -97,8 +97,7 @@
 (defvar power-current-img "")
 (defwidget power-confirmation-dialog []
     (box :class "section" :orientation "v" :space-evenly false
-        (label :class "title" :text "${power-current-question}?")
-        (label :class "text" :text {formattime(EWW_TIME - boottime, "up for %H hours, %M minutes", "UTC")})
+        (uptime-time :title  "${power-current-question}?")
         (hsep :height 20)
         (box :space-evenly false :vexpand true :hexpand true
             (box :style "margin-left: 1rem;" (themed-icon :name {power-current-img} :width 40 :height 40))
@@ -151,10 +150,16 @@
             :height 32))
 )
 
+(defwidget uptime-time [title] (button 
+    :class "button-box"
+    :onclick "${EWW_CMD} update agenda-revealed=${!agenda-revealed}" 
+    (box :orientation "v" :space-evenly false
+        (label :class "title" :text title)
+        (label :class "text" :text {formattime(EWW_TIME - boottime, "up for %H hours, %M minutes", "UTC")}))))
+
 (defwidget status-weather []
     (box :space-evenly false :orientation "vertical" :class "section" :hexpand true
-        (label :class "title" :text "${formattime(EWW_TIME, "%H:%M:%S")}")
-        (label :class "text" :text {formattime(EWW_TIME - boottime, "up for %H hours, %M minutes", "UTC")})
+        (uptime-time :title "${formattime(EWW_TIME, "%H:%M:%S")}")
         (hsep :height 20)
         (box :space-evenly false
             (themed-icon

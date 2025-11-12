@@ -1,6 +1,6 @@
 .agenda-calendar {
     color: inherit;
-    font-size: 1.3rem;
+    font-size: 1.1rem;
     &.highlight {
         color: inherit;
     }
@@ -23,14 +23,13 @@
 }
 
 .agenda-calendar-section {
-    padding: 2rem;
-    padding-right: 7rem;
-    padding-left: 7rem;
+    @extend .section;
+    padding: 1rem;
 }
 
 .agenda-todo-section {
-    padding-left: 4rem;
-    padding-right: 4rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
 }
 
 .todo-title {
@@ -39,17 +38,11 @@
 }
 
 .todo-task {
-    padding: .6rem;
-    margin: 0.2rem;
-    background-color: $bg1;
-    border-radius: 12px;
+    @extend .section;
 }
 
 .todo-new {
-    padding: .6rem;
-    margin: 0.2rem;
-    background-color: $bg1;
-    border-radius: 12px;
+    @extend .section;
 }
 
 .todo-heading {

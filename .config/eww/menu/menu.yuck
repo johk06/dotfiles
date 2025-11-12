@@ -16,6 +16,8 @@
 (defvar vpn-revealed false)
 (defvar valent-revealed false)
 
+(defvar agenda-revealed true)
+
 (defvar pref-mpris-shown true)
 
 (defwidget battery-circle [percentage charging]
@@ -23,8 +25,8 @@
         :tooltip "${percentage}% - ${charging ? "Charging" : "Discharging"}"
         :class "battery-circle-${percentage < 20 ? "critical" 
             : (percentage < 40 ? "low" 
-            : (percentage < 80 ? "medium" : "high"))}"
-            (label :text {charging ? bat-charging[(percentage - percentage % 10) / 10] : bat-discharging[(percentage - percentage % 10) / 10]})))
+                : (percentage < 80 ? "medium" : "high"))}"
+        (label :text {charging ? bat-charging[(percentage - percentage % 10) / 10] : bat-discharging[(percentage - percentage % 10) / 10]})))
 
 (defwidget qmenu [] (eventbox :onhoverlost "./bin/popup.sh settings-panel settings-panel-shown close&"
     (revealer 
@@ -33,6 +35,11 @@
         (box (box :class "right-panel" 
             :orientation "h" 
             :space-evenly false
+            (revealer 
+                :reveal {agenda-revealed} 
+                :transition "slideleft"
+                (box :space-evenly false :vexpand true
+                    (agenda-section)))
             (box :orientation "v" :space-evenly false
                 (status-panel)
                 (audio-panel)
@@ -48,7 +55,8 @@
                     (vpn-toggle-button)
                     (valent-toggle-button))
                 (revealer :reveal {valent-revealed} :transition "slidedown" (valent-panel))
-                (revealer :reveal {vpn-revealed} :transition "slidedown" (vpn-panel))))))))
+                (revealer :reveal {vpn-revealed} :transition "slidedown" (vpn-panel)))
+        )))))
 
 (defwindow settings-panel 
     :monitor '["DP-1", "eDP-1", 0]'

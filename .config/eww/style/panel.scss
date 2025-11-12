@@ -16,3 +16,10 @@
     margin-top: 2rem;
     border-radius: 18px;
 }
+
+.button-box {
+    border-radius: 12px;
+    &:hover {
+        background-color: $bg2;
+    }
+}

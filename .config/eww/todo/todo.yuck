@@ -9,21 +9,8 @@
 
 (defvar todo-date "")
 
-(defwindow agenda
-    :monitor '["DP-1", "eDP-1", 0]'
-    :geometry (geometry
-        :x "20px"
-        :y "0px"
-        :width "20%"
-        :height "90%"
-        :anchor "center left")
-    :stacking "bg"
-    :namespace "eww-agenda"
-    :focusable "ondemand"
-    (agenda-window))
-
-(defwidget agenda-window []
-    (box :class "popup-win" :orientation "v" :space-evenly false :vexpand true
+(defwidget agenda-section []
+    (box :orientation "v" :space-evenly false :vexpand true
         (agenda-calendar-section)
         (agenda-todo-section)))
 
@@ -58,13 +45,13 @@
         (label :class "todo-heading" :text "Agenda")
         (agenda-todo-controls))
     (agenda-new)
-    (box :hexpand true (scroll :vscroll true :vexpand true :style "min-height: 24rem;"
+    (box :vexpand true (scroll :vscroll true :vexpand true :style "min-height: 12rem;"
         (box :orientation "v" :space-evenly false
             (for item in todo-active
                 (todo-task :item item)))))
     (box :space-evenly false :hexpand true
         (label :class "todo-heading" :text "Completed"))
-    (scroll :vscroll true :style "min-height: 16rem;"
+    (scroll :vscroll true :style "min-height: 8rem;"
         (box :orientation "v" :space-evenly false
             (for item in todo-done
                 (todo-done-task :item item))))))

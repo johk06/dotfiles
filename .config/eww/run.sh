@@ -5,4 +5,3 @@ sleep 1
 eww daemon
 eww open bar
 eww open qmenu-edge
-eww open agenda
