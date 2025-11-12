@@ -1,0 +1,59 @@
+.agenda-calendar {
+    color: inherit;
+    font-size: 1.3rem;
+    &.highlight {
+        color: inherit;
+    }
+    &.button {
+        background-color: unset;
+    }
+    &:indeterminate {
+        color: $polar3;
+    }
+    &:selected {
+        background-color: $accent;
+        color: $inv;
+        border-radius: 12px;
+    }
+    &.header {
+    }
+    :hover {
+        color: $bg2;
+    }
+}
+
+.agenda-calendar-section {
+    padding: 2rem;
+    padding-right: 7rem;
+    padding-left: 7rem;
+}
+
+.agenda-todo-section {
+    padding-left: 4rem;
+    padding-right: 4rem;
+}
+
+.todo-title {
+    font-size: 1.3rem;
+    color: $fg0;
+}
+
+.todo-task {
+    padding: .6rem;
+    margin: 0.2rem;
+    background-color: $bg1;
+    border-radius: 12px;
+}
+
+.todo-new {
+    padding: .6rem;
+    margin: 0.2rem;
+    background-color: $bg1;
+    border-radius: 12px;
+}
+
+.todo-heading {
+    font-size: 1.6rem;
+    margin-bottom: .2rem;
+    margin-top: 1rem;
+}

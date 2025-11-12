@@ -8,3 +8,4 @@
 
 (include "menu/menu.yuck")
 (include "bar/bar.yuck")
+(include "todo/todo.yuck")

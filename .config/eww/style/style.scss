@@ -18,6 +18,10 @@
         background-color: $accent;
         color: $inv;
     }
+
+    &.l1 {
+        background-color: $bg2;
+    }
 }
 
 .button {
@@ -186,6 +190,13 @@
         background-color: fade($green);
     }
 }
+.info {
+    background-color: $lblue;
+    color: $inv;
+    &:hover {
+        background-color: fade($lblue);
+    }
+}
 
 .text {
     color: $fg0;
@@ -205,6 +216,10 @@
 
 .orange {
     color: $orange;
+}
+
+.hidden {
+    color: $bright-gray;
 }
 
 .cbutton {
@@ -392,6 +407,7 @@ tooltip{
 @import "./modes.scss";
 @import "./tray.scss";
 @import "./weather.scss";
+@import "./agenda.scss";
 @import "./performance.scss";
 @import "./mpris.scss";
 @import "./panel.scss";
