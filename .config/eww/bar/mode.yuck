@@ -44,6 +44,7 @@
     {"keys": "<M-*>", "action": "Operate on Selection"},
     {"keys": "p", "action": "Print"},
     {"keys": "y", "action": "Copy other"},
+    {"keys": "x", "action": "Exchange"},
     {"keys": "e", "action": "Edit"},
     {"keys": "t", "action": "Translate"},
     {"keys": "s", "action": "Speak"},
