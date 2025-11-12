@@ -51,7 +51,7 @@
                 (todo-task :item item)))))
     (box :space-evenly false :hexpand true
         (label :class "todo-heading" :text "Completed"))
-    (scroll :vscroll true :style "min-height: 8rem;"
+    (scroll :vscroll true :style "min-height: 7rem;"
         (box :orientation "v" :space-evenly false
             (for item in todo-done
                 (todo-done-task :item item))))))
