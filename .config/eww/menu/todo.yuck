@@ -125,7 +125,7 @@
 (defvar todo-syncing false)
 (defvar todo-reloading false)
 (defwidget agenda-todo-controls []
-    (box :space-evenly false :style "margin-left: 2rem;" :halign "end" :hexpand true
+    (box :space-evenly false :halign "end" :hexpand true
         (button :class "button"
             :timeout "356s"
             :onclick `${EWW_CMD} update ${formattime(EWW_TIME, "_todo-day=%d _todo-month=%m _todo-year=%Y")}`
