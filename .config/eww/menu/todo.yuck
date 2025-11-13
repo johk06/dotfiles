@@ -110,7 +110,7 @@
                 (button
                     :class "sbutton active"
                     :timeout "128s"
-                    :onclick "todo new -l Tasks -d ${agenda-new-due} '${agenda-new-text}'; ${todo-reload}"
+                    :onclick "todo new -l Tasks -d '${agenda-new-due}' -s '${agenda-new-start}' '${agenda-new-text}'; ${todo-reload}"
                     "Add")
                 (input :class "input l1"
                     :onchange "${EWW_CMD} update agenda-new-text='{}'")
