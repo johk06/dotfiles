@@ -45,16 +45,15 @@
         (label :class "todo-heading" :text "Agenda")
         (agenda-todo-controls))
     (agenda-new)
-    (box :vexpand true (scroll :vscroll true :vexpand true :style "min-height: 12rem;"
+    (scroll :vscroll true :vexpand true (box :orientation "v" :space-evenly false
         (box :orientation "v" :space-evenly false
             (for item in todo-active
-                (todo-task :item item)))))
-    (box :space-evenly false :hexpand true
-        (label :class "todo-heading" :text "Completed"))
-    (scroll :vscroll true :style "min-height: 7rem;"
+                (todo-task :item item)))
+        (box :space-evenly false :hexpand true
+            (label :class "todo-heading" :text "Completed"))
         (box :orientation "v" :space-evenly false
             (for item in todo-done
-                (todo-done-task :item item))))))
+                (todo-done-task :item item)))))))
 
 (defwidget todo-level-editor [level id] (box :valign "center" 
         (box :space-evenly false 
@@ -69,8 +68,7 @@
             (button :class "button tiny-circle ${level > 7 && level <= 10 ? "green" : ""}"
                 :timeout "256s"
                 :onrightclick "todo edit ${id} --priority=none; ${todo-reload}"
-                :onclick "todo edit ${id} --priority=low; ${todo-reload}")
-    )))
+                :onclick "todo edit ${id} --priority=low; ${todo-reload}"))))
 
 (defwidget todo-task [item]
     (box :class "todo-task" :orientation "v" :space-evenly false
@@ -82,7 +80,8 @@
             (button :class "button"
                 :onclick "${EWW_CMD} update agenda-expanded-todo=${agenda-expanded-todo == item.id ? 0 : item.id}"
                 {agenda-expanded-todo == item.id ? "" : "" })
-            (box :hexpand true :halign "start" (label :class "todo-title" :text {item.summary} :limit-width 20))
+            (box :hexpand true :halign "start" 
+                (label :tooltip {item.summary} :class "todo-title" :text {item.summary} :limit-width 20))
             (todo-date :time {item.start} :if-none "No Start")
             (todo-date :time {item.due} :if-none "No Due Date"))
         (revealer :reveal {item.id == agenda-expanded-todo} :transition "slidedown"
