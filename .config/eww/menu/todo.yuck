@@ -56,12 +56,29 @@
             (for item in todo-done
                 (todo-done-task :item item))))))
 
+(defwidget todo-level-editor [level id] (box :valign "center" 
+        (box :space-evenly false 
+            (button :class "button tiny-circle ${level != 0 && level <= 4 ? "red" : ""}"
+                :timeout "256s"
+                :onrightclick "todo edit ${id} --priority=none; ${todo-reload}"
+                :onclick "todo edit ${id} --priority=high; ${todo-reload}")
+            (button :class "button tiny-circle ${level > 4 && level <= 7 ? "yellow" : ""}"
+                :timeout "256s"
+                :onrightclick "todo edit ${id} --priority=none; ${todo-reload}"
+                :onclick "todo edit ${id} --priority=medium; ${todo-reload}")
+            (button :class "button tiny-circle ${level > 7 && level <= 10 ? "green" : ""}"
+                :timeout "256s"
+                :onrightclick "todo edit ${id} --priority=none; ${todo-reload}"
+                :onclick "todo edit ${id} --priority=low; ${todo-reload}")
+    )))
+
 (defwidget todo-task [item]
     (box :class "todo-task" :orientation "v" :space-evenly false
         (box :space-evenly false
             (button :class "sbutton"
                 :timeout "128s"
-                :onclick "todo done ${item.id}; ${todo-reload}" "Done")
+                :onclick "todo done ${item.id}; ${todo-reload}" "󰄬")
+            (todo-level-editor :level {item.priority} :id {item.id})
             (button :class "button"
                 :onclick "${EWW_CMD} update agenda-expanded-todo=${agenda-expanded-todo == item.id ? 0 : item.id}"
                 {agenda-expanded-todo == item.id ? "" : "" })
