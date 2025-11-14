@@ -50,7 +50,12 @@ end
 local map_select_operator = function(keys, capture, field, desc)
     require("config.lib.operators").map_function(keys, function(mode, region, extra)
         require("multicursor-nvim").action(function(ctx)
-            cursor_for_ts_node(ctx, capture, { region[1][1] - 1, region[1][2], region[2][1] - 1, region[2][2] })
+            cursor_for_ts_node(ctx, capture, {
+                region[1][1] - 1,
+                region[1][2],
+                region[2][1] - 1,
+                mode == "line" and #vim.api.nvim_buf_get_lines(0, region[2][1]-1, region[2][1], false)[1] or region[2][2]
+            })
         end)
     end, { desc = desc })
 end
