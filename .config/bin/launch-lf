@@ -1,3 +1,4 @@
 #!/usr/bin/env bash
 
-kitty --directory "$*" zsh -ic lf
+file="${*//file:\/\//}"
+kitty --directory "$file" zsh -ic lf
