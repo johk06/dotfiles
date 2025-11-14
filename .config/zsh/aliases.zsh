@@ -4,6 +4,7 @@ alias \
     svim="sudoedit" \
     sv="sudoedit" \
     nv="nvim" \
+    vi="nvim" \
     yay="yay --editmenu --devel" \
     mpv="mpv --hwdec=auto" \
     q="exit" \

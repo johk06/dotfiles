@@ -4,9 +4,11 @@
 # all of those functions are necessary since nvr with no arguments
 # does not use stdin like neovim
 unalias nv
+unalias vi
 function nv {
     nvr "${@:--}"
 }
+alias vi=nv
 
 function sp {
     nvr -o "${@:--}"

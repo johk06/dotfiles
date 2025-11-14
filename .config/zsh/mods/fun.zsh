@@ -199,7 +199,7 @@ function tfilter {
 # join every $1 lines together with $2
 function interlace {
     local numcols="${1:-2}"
-    local sep="${2:-" "}"
+    local sep="${2:-' '}"
 
     local -a buf
     local count=1

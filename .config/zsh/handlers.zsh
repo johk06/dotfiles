@@ -14,7 +14,8 @@ function command_not_found_handler {
         { for entry in "${entries[@]}"; do
             (
                 local -a fields=(${(s:/:)entry})
-                IFS=$'\n' local -a desc=($(expac -Ss '%d' -- "^${fields[2]}$"))
+                local -a desc
+                IFS=$'\n' desc=($(expac -Ss '%d' -- "^${fields[2]}$"))
                 print -P "%B%F{magenta}${fields[1]}%f/${fields[2]}%b\t${desc[1]}"
             )&
         done } | column -ts$'\t' >&2
