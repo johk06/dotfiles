@@ -6,6 +6,17 @@ local M = {
     keys = {},
 }
 
+M.init = function()
+    -- Don't save everything
+    vim.opt.sessionoptions = {
+        "buffers",
+        "curdir",
+        "tabpages",
+        "terminal",
+        "winsize",
+    }
+end
+
 M.config = function()
     require("projections").setup {
         workspaces = {
