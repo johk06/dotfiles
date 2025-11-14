@@ -225,7 +225,7 @@ M.line_and_column_entries = function(line)
             local tail, parentdir, filename_highlight = get_names_and_hl(filename)
 
             return line_and_column_display {
-                { ("%d"):format(row), "LineNrBelow" },
+                { ("%d"):format(row), "LineNr" },
                 { vim.trim(text) },
                 { tail,               filename_highlight },
                 { parentdir,          "NonText" },
@@ -361,7 +361,7 @@ M.quickfix_entries = function(entry)
         display = function()
             local tail, parentdir, filename_highlight = get_names_and_hl(filename)
             return quickfix_entry_display {
-                { ("%d"):format(entry.lnum), "LineNrBelow" },
+                { ("%d"):format(entry.lnum), "LineNr" },
                 { entry.text },
                 { tail,                      filename_highlight },
                 { parentdir,                 "NonText" },

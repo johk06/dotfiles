@@ -75,9 +75,9 @@ local function smart_split(args)
     end
 
     local to_execute = ("%d%s %s"):format(
-            math.floor((cmd == "split" and height or width) / 2),
-            cmd,
-            args.args
+        math.floor((cmd == "split" and height or width) / 2),
+        cmd,
+        args.args
     )
     vim.cmd(to_execute)
 end

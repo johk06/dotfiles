@@ -61,7 +61,7 @@ end
 
 opts.completion = {
     list = {
-        max_items = 96,
+        max_items = 20,
     },
     documentation = {
         auto_show = true,
