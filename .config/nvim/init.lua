@@ -243,6 +243,9 @@ vim.diagnostic.config {
 -- Load Config {{{
 require("config.lsp")          -- language servers
 
+-- make sure filetype abbreviations work
+require("config.ftabbrev").setup()
+
 -- load UI components
 local ui = require("config.lib.ui")
 vim.ui.input = ui.nvim_input

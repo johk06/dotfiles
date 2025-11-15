@@ -668,10 +668,8 @@ map("i", "<C-,>", "<C-o>[", { remap = true })
 map("i", "<C-.><C-.>", "<C-o>;", { remap = true })
 map("i", "<C-,><C-,>", "<C-o>,", { remap = true })
 
-
 -- leftover keys looking for a mapping
 -- <C-l>
--- <C-z>
 -- <C-j>, <C-m> maybe, may conflict with <cr>
 -- }}}
 
