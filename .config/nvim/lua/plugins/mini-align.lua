@@ -1,6 +1,6 @@
 ---@type LazySpec
 local M = {
-    "echasnovski/mini.align",
+    "nvim-mini/mini.align",
     keys = { "ga", "gA" },
     opts = {}
 }
