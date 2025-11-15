@@ -31,12 +31,13 @@ local textobjects = {
     ["i<space>"] = "@block.inner",
     ["a<space>"] = "@block.outer",
 }
+
 local brackets = {
     goto_next_start = {
         ["]a"] = "@parameter.inner",
         ["]f"] = "@function.outer",
         ["]m"] = "@method.outer",
-        ["]C"] = "@comment.outer",
+        ["]n"] = "@comment.outer",
         ["]k"] = "@class.outer",
         ["]v"] = "@assignment.lhs",
         ["]l"] = "@loop.outer",
@@ -45,7 +46,7 @@ local brackets = {
         ["[a"] = "@parameter.inner",
         ["[f"] = "@function.outer",
         ["[m"] = "@method.outer",
-        ["[C"] = "@comment.outer",
+        ["[n"] = "@comment.outer",
         ["[k"] = "@class.outer",
         ["[v"] = "@assignment.lhs",
         ["[l"] = "@loop.outer",
@@ -62,6 +63,7 @@ local brackets = {
         ["[M"] = "@method.outer",
     },
 }
+
 local swaps = {
     swap_next = {
         [">,"] = "@parameter.inner",

@@ -53,6 +53,11 @@ o.smartcase = true
 o.title = true
 o.undofile = true
 o.winborder = "rounded"
+vim.filetype.add{
+    extension = {
+        psv = "psv"
+    }
+}
 -- }}}
 
 -- Wrapping {{{
