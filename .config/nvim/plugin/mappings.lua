@@ -668,9 +668,13 @@ map("i", "<C-,>", "<C-o>[", { remap = true })
 map("i", "<C-.><C-.>", "<C-o>;", { remap = true })
 map("i", "<C-,><C-,>", "<C-o>,", { remap = true })
 
+-- imitate what mini.snippets does
+map("i", "<C-j>", require("config.snippets").expand)
+
 -- leftover keys looking for a mapping
 -- <C-l>
--- <C-j>, <C-m> maybe, may conflict with <cr>
+-- <C-z>
+-- <C-m> maybe, may conflict with <cr>
 -- }}}
 
 -- Snippets {{{
