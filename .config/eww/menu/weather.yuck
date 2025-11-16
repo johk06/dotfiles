@@ -54,30 +54,17 @@
 (defvar weather-city "Graz")
 (defpoll weather :interval "30m" "bin/weather.sh")
 
-(defwidget agenda-weather-section [] (box :orientation "v" :space-evenly false
-    :class "agenda-todo-section" :vexpand true))
-(defwidget weather-for-hour [day hour]
-    (box :hexpand true :space-evenly false :class "sbutton"
-        :visible {day == todo-date && (day != formattime(EWW_TIME, "%Y-%m-%d") || hour.time >= formattime(EWW_TIME, "%H00"))}
-        :tooltip "${day} ${replace(hour.time, "00$", "")}:00
-${hour.weatherDesc[0].value}
-Rain: ${hour.chanceofrain}%"
-        (label :class "text" :text "${replace(hour.time, "00$", "")}:   ")
-        (label :class "text" :text "${hour.tempC}°C")
-        (vsep :width 6)
-        (themed-icon :name {weather-icons[hour.weatherCode]}
-            :width 32
-            :height 32)))
-
 (defwidget status-weather [weather]
     (box :space-evenly false :orientation "vertical" :class "section" :hexpand true
         (uptime-time :title "${formattime(EWW_TIME, "%H:%M:%S")}")
         (hsep :height 10)
         (box :space-evenly false
-            (themed-icon
-                :name {weather-icons[weather.weatherCode]}
-                :width 64
-                :height 64)
+            (button :class "button-box"
+                :onclick "${EWW_CMD} update agenda-revealed=${!agenda-revealed}" 
+                (themed-icon
+                    :name {weather != "" ? weather-icons[weather.weatherCode] : "sidebar-show-symbolic"}
+                    :width 64
+                    :height 64))
 
             (box :orientation "vertical" :space-evenly false :halign "start" :style "margin-left: 1rem;"
                 (label :halign "start" :class "weather-title"

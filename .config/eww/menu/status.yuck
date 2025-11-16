@@ -43,7 +43,7 @@
 (defvar power-current-img "")
 (defwidget power-confirmation-dialog []
     (box :class "section" :orientation "v" :space-evenly false
-        (uptime-time :title  "${power-current-question}?")
+        (uptime-time :title "${power-current-question}?")
         (hsep :height 20)
         (box :space-evenly false :vexpand true :hexpand true
             (box :style "margin-left: 1rem;" (themed-icon :name {power-current-img} :width 40 :height 40))
@@ -81,12 +81,10 @@
 
 (defvar status-top-left-widget 0)
 
-(defwidget uptime-time [title] (button 
-    :class "button-box"
-    :onclick "${EWW_CMD} update agenda-revealed=${!agenda-revealed}" 
+(defwidget uptime-time [title]
     (box :orientation "v" :space-evenly false
         (label :class "title" :text title)
-        (label :class "text" :text {formattime(EWW_TIME - boottime, "up for %H hours, %M minutes", "UTC")}))))
+        (label :class "text" :text {formattime(EWW_TIME - boottime, "up for %H hours, %M minutes", "UTC")})))
 
 (defwidget status-panel []
     (box :space-evenly false :orientation "vertical" :hexpand true
