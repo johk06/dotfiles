@@ -10,6 +10,12 @@ CACHEDIR="$XDG_CACHE_HOME/command"
 
 # Example: cache - curl wttr.in
 
+if [ $# -lt 2 ]; then
+    echo "Usage: cache FILE COMMAND"
+    echo "Run COMMAND and cache output in FILE"
+    exit 1
+fi
+
 FILE="$1"
 shift
 
