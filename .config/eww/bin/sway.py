@@ -21,6 +21,7 @@ TERM_OVERRIDES = [
     ("^btm$", "preferences-system-performance"),
     ("^pms$", "multimedia-audio-player"),
     ("^ncmpcpp:", "multimedia-audio-player"),
+    ("^aerc$", "email"),
 ]
 
 CLASS_OVERRIDES = {

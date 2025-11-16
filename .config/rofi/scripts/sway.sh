@@ -24,6 +24,7 @@ if ((ROFI_RETV == 0)); then
             lf:*) icon="file-manager" ;;
             ncmpcpp:*) icon="multimedia-audio-player" ;;
             qalc) icon="qalculator" ;;
+            aerc) icon=email ;;
             esac
         fi
         printf "%s\n%s$ICON%s$INFO%s\t" "$name" "$class" "$icon" "$id"
