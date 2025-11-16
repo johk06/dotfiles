@@ -1,0 +1,64 @@
+#
+# my aerc styleset
+#
+
+*.default = true
+*.normal = true
+
+title.fg = yellow
+title.bold = true
+header.fg = teal
+header.bold = true
+
+border.fg = #3B4252
+tab.fg = white
+tab.bg = black
+tab.selected.bg = #3B4252
+tab.selected.fg = white
+
+dirlist_unread.fg = yellow
+dirlist.selected.bg = #3B4252
+
+completion_default.bg = #3B4252
+completion_description.bg = #3B4252
+completion_default.selected.bg = teal
+completion_default.selected.fg = black
+
+part_switcher.bg = #353c4a
+part_filename.bg = #353c4a
+part_mimetype.bg = #353c4a
+part_filename.fg = teal
+part_mimetype.selected.underline = true
+part_filename.selected.underline = true
+
+msglist_default.selected.bg = #434C5E
+msglist_marked.bg = #3B4252
+msglist_marked.selected.bg = #434C5E
+msglist_flagged.fg = teal
+msglist_forwarded.italic = true
+
+msglist_unread.fg = yellow
+
+msglist_answered.fg = #616E88
+msglist_answered.italic = true
+
+selector_focused.bg = teal
+selector_focused.fg = black
+
+
+[viewer]
+header.bold = false
+url.fg = 4
+signature.italic = true
+url.underline = true
+diff_chunk_func.fg = yellow
+quote_1.italic = true
+quote_1.fg = #D8DEE9
+
+[user]
+date.fg = fuchsia
+status.fg = green
+status.italic = true
+sep.fg = #353c4a
+directory.fg = teal
+unread.fg = yellow
