@@ -2,13 +2,16 @@ configurations:
   - host: imap.mailbox.org
     tls: true
     port: 993
-    username: jhk06@mailbox.org
-    passwordCMD: pass mail/mailbox.org | head -n 1
-    onNewMail: ~/.config/goimapnotify/event.sh mailbox new
-    onChangedMail: ~/.config/goimapnotify/event.sh mailbox
-    onDeletedMail: ~/.config/goimapnotify/event.sh mailbox
+    usernameCMD: pass-get mail/mailbox.org user
+    passwordCMD: pass-get mail/mailbox.org .
     boxes:
       - mailbox: INBOX
-        onNewMail: ~/.config/goimapnotify/event.sh mailbox-inbox new
-        onChangedMail: ~/.config/goimapnotify/event.sh mailbox-inbox
-        onDeletedMail: ~/.config/goimapnotify/event.sh mailbox-inbox
+        onNewMail: ~/.config/goimapnotify/event.sh private '{{.Alias}}' '{{.Reason}}' '{{.ExistingEmail}}'
+  - hostCMD: pass-get uni/1 imap
+    tls: true
+    port: 993
+    usernameCMD: pass-get uni/1 user
+    passwordCMD: pass-get uni/1 .
+    boxes:
+      - mailbox: INBOX
+        onNewMail: ~/.config/goimapnotify/event.sh uni '{{.Alias}}' '{{.Reason}}' '{{.ExistingEmail}}'
