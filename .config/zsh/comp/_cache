@@ -1,5 +1,5 @@
-#compdef crun
-_crun() {
+#compdef cache
+_cache() {
     _arguments\
         '1:file:_files'\
         '*::: : _normal'
