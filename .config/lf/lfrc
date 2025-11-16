@@ -82,7 +82,10 @@ map Pi clip-info
 
 map cm push :chmod<space>
 map co push :chown<space>
-map cn :rename
+map ci :rename; cmd-home
+map ca :rename; cmd-end
+map cn :rename; cmd-delete-home
+map ce :rename; cmd-end; cmd-delete-word-back
 
 # some dirs etc
 map gh set hidden!
@@ -108,10 +111,11 @@ map st :set sortby time; set info 'time'
 map sd :set sortby natural; set info size
 map si :set reverse!
 map sT :set sortby time; set reverse!;top;set info 'time'
+map se :set sortby ext; set info
 
 # selections
 map <space>
-map <space>F fzf-select
+map <space>f fzf-select
 map <space>/ rg-select
 map . :toggle
 map <gt> :toggle;down
@@ -150,7 +154,14 @@ map <c-space> fzf-select
 map U disk-usage
 # info
 map Im info-mimetype
-map Iu disk-usage
+map Id disk-usage
+map It :set info "time"
+map Is :set info "size"
+map Ia :set info "atime"
+map Ib :set info "btime"
+map Ic :set info "ctime"
+map Iu :set info "user:group"
+map Ip :set info "user:perm"
 
 map az push :zip<space>
 map at push :tar<space>
