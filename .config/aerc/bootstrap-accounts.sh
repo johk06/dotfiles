@@ -5,7 +5,9 @@ if [ -f "$ACCOUNT_CONF" ] && [ "$1" != "reload" ]; then
     exit
 fi
 
-pass mail/accounts | while IFS="|" read -r name realname address imapserver smtpserver pass default_folder; do
+pass mail/accounts | while IFS="|" read -r name realname address \
+imapserver smtpserver \
+pass default_folder copy_to; do
     {
         read -r user
         read -r password
@@ -15,6 +17,7 @@ pass mail/accounts | while IFS="|" read -r name realname address imapserver smtp
     printf "source = $imapserver\n" "$user" "$password"
     printf "outgoing = $smtpserver\n" "$user" "$password"
     echo "default = $default_folder"
+    echo "copy-to = $copy_to"
     echo
 done >"$ACCOUNT_CONF"
 chmod 600 "$ACCOUNT_CONF"
