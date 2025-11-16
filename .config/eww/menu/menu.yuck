@@ -6,7 +6,7 @@
 (include "menu/audio.yuck")
 (include "menu/performance.yuck")
 (include "menu/valent.yuck")
-(include "menu/todo.yuck")
+(include "menu/calendar.yuck")
 
 (defvar settings-panel-shown false)
 ;; (defvar settings-section 0)

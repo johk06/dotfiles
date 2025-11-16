@@ -1,3 +1,5 @@
+(include "menu/weather.yuck")
+
 (defpoll todo-active :interval "30m" "todo --porcelain list | jq 'sort_by(.start//.due//infinite)'")
 (defpoll todo-done :interval "30m" "todo --porcelain list --sort=completed_at --status=COMPLETED")
 
@@ -12,7 +14,7 @@
 (defwidget agenda-section []
     (box :orientation "v" :space-evenly false :vexpand true
         (agenda-calendar-section)
-        (agenda-todo-section)))
+        (agenda-list-section)))
 
 (defwidget agenda-calendar-section []
     (box :orientation "v" :class "agenda-calendar-section" :valign "start"
@@ -22,8 +24,7 @@
             :year {_todo-year}
             :show-week-numbers true
             :timeout "600s"
-            :onclick "${EWW_CMD} update todo-date={2}-$(({1}+1))-{0}"
-        )))
+            :onclick "${EWW_CMD} update todo-date={2}-$(({1}+1))-{0}")))
 
 (defwidget todo-date [time if-none ?no-hl]
     (box :space-evenly false
@@ -39,21 +40,27 @@
                 :text "${time != "null" ? formattime(time, "%a, %d %b") : if-none}"))))
 
 (defvar agenda-expanded-todo 0)
-(defwidget agenda-todo-section [] (box :orientation "v" :space-evenly false
-    :class "agenda-todo-section" :vexpand true
-    (box :space-evenly false :hexpand true
-        (label :class "todo-heading" :text "Agenda")
-        (agenda-todo-controls))
-    (agenda-new)
-    (scroll :vscroll true :vexpand true (box :orientation "v" :space-evenly false
-        (box :orientation "v" :space-evenly false
-            (for item in todo-active
-                (todo-task :item item)))
-        (box :space-evenly false :hexpand true
-            (label :class "todo-heading" :text "Completed"))
-        (box :orientation "v" :space-evenly false
-            (for item in todo-done
-                (todo-done-task :item item)))))))
+(defvar agenda-selected-list 0)
+(defwidget agenda-list-section [] 
+    (box :orientation "v" :space-evenly false :class "agenda-list-section" :vexpand true
+        (agenda-list-controls)
+        (stack :selected {agenda-selected-list} :tramsition "slideright" :same-size true :vexpand true
+            (agenda-todo-list)
+            (agenda-weather-list))))
+
+(defwidget agenda-todo-list []
+    (box :orientation "v" :space-evenly false
+        (agenda-todo-new)
+        (scroll :vscroll true :vexpand true
+            (box :orientation "v" :space-evenly false
+                (box :orientation "v" :space-evenly false
+                    (for item in todo-active
+                        (todo-task :item item)))
+                (box :space-evenly false :hexpand true
+                    (label :class "agenda-heading" :text "Completed"))
+                (box :orientation "v" :space-evenly false
+                    (for item in todo-done
+                        (todo-done-task :item item)))))))
 
 (defwidget todo-level-editor [level id] (box :valign "center" 
         (box :space-evenly false 
@@ -119,7 +126,7 @@
 (defvar agenda-new-text "")
 (defvar agenda-new-start "")
 (defvar agenda-new-due "")
-(defwidget agenda-new []
+(defwidget agenda-todo-new []
     (box :class "todo-new" :space-evenly false :orientation "v"
         (box :space-evenly false
             (box :space-evenly false :hexpand true
@@ -140,17 +147,25 @@
 
 (defvar todo-syncing false)
 (defvar todo-reloading false)
-(defwidget agenda-todo-controls []
-    (box :space-evenly false :halign "end" :hexpand true
-        (button :class "button"
-            :timeout "356s"
-            :onclick `${EWW_CMD} update ${formattime(EWW_TIME, "_todo-day=%d _todo-month=%m _todo-year=%Y")}`
-            "Today")
-        (button :class "button ${todo-reloading ? "active" :""}"
-            :timeout "356s"
-            :onclick "${todo-reload}"
-            {todo-syncing ? "Reloading..." : "Reload"})
-        (button :class "button ${todo-syncing ? "active" :""}"
-            :timeout "356s"
-            :onclick "${EWW_CMD} update todo-syncing=true;pimsync sync; ${todo-reload};${EWW_CMD} update todo-syncing=false"
-            {todo-syncing ? "Syncing..." : "Sync"}) ))
+(defwidget agenda-list-controls []
+    (box :space-evenly false :hexpand true
+        (box 
+            (button :class "button ${agenda-selected-list == 0 ? "active" : ""}"
+                :onclick "${EWW_CMD} update agenda-selected-list=0"
+                "Agenda")
+            (button :class "button ${agenda-selected-list == 1 ? "active" : ""}"
+                :onclick "${EWW_CMD} update agenda-selected-list=1"
+                "Weather"))
+        (box :halign "end" :hexpand true
+            (button :class "button"
+                :timeout "356s"
+                :onclick `${EWW_CMD} update ${formattime(EWW_TIME, "_todo-day=%d _todo-month=%m _todo-year=%Y")}`
+                "Today")
+            (button :class "button ${todo-reloading ? "active" :""}"
+                :timeout "356s"
+                :onclick "${todo-reload}"
+                {todo-syncing ? "Reloading..." : "Reload"})
+            (button :class "button ${todo-syncing ? "active" :""}"
+                :timeout "356s"
+                :onclick "${EWW_CMD} update todo-syncing=true;pimsync sync; ${todo-reload};${EWW_CMD} update todo-syncing=false"
+                {todo-syncing ? "Syncing..." : "Sync"}) )))

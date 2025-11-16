@@ -1,6 +1,6 @@
 .agenda-calendar {
     color: $fg0;
-    font-size: 1rem;
+    font-size: 1.1rem;
     &.highlight {
         color: inherit;
     }
@@ -27,7 +27,7 @@
     padding: 1rem;
 }
 
-.agenda-todo-section {
+.agenda-list-section {
     padding-left: 1rem;
     padding-right: 1rem;
 }
@@ -45,7 +45,7 @@
     @extend .section;
 }
 
-.todo-heading {
+.agenda-heading {
     color: $fg0;
     font-size: 1.6rem;
     margin-bottom: .2rem;

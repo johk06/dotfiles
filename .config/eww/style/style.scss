@@ -13,14 +13,24 @@
     padding: .8rem;
     caret-color: $fg0;
     border-radius: 12px;
-    margin: 0.4rem;
+    margin: 0.3rem;
+    border: 1.4px solid $bg1;
     selection {
         background-color: $accent;
         color: $inv;
     }
 
+    &:focused {
+            border-color: $accent;
+    }
+
     &.l1 {
         background-color: $bg2;
+    }
+
+    &.inline {
+        padding: .4rem;
+        background-color: inherit;
     }
 }
 

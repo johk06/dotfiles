@@ -1,58 +1,4 @@
-
 (defpoll boottime :interval "200m" "awk '/btime/ {print $2}' /proc/stat")
-
-;; Icons {{{
-(defvar weather-icons '{
-"113": "weather-clear",
-"116": "weather-clouds",
-"119": "weather-clouds",
-"122": "weather-clouds",
-"143": "weather-fog",
-"176": "weather-showers",
-"179": "weather-showers",
-"182": "weather-showers",
-"185": "weather-showers",
-"200": "weather-storm",
-"227": "weather-snow-scattered",
-"230": "weather-snow",
-"248": "weather-fog",
-"260": "weather-fog",
-"263": "weather-showers-scattered",
-"266": "weather-showers-scattered",
-"281": "weather-showers-scattered",
-"284": "weather-showers-scattered",
-"293": "weather-showers-scattered",
-"296": "weather-showers-scattered",
-"299": "weather-showers",
-"302": "weather-showers",
-"305": "weather-showers",
-"308": "weather-showers",
-"311": "weather-showers-scattered",
-"314": "weather-showers-scattered",
-"317": "weather-showers-scattered",
-"320": "weather-snow-scattered",
-"323": "weather-snow-scattered",
-"326": "weather-snow-rain",
-"329": "weather-snow",
-"332": "weather-snow",
-"335": "weather-snow-rain",
-"338": "weather-snow",
-"350": "weather-showers-scattered",
-"353": "weather-showers-scattered",
-"356": "weather-showers",
-"359": "weather-showers",
-"362": "weather-showers-scattered",
-"365": "weather-showers-scattered",
-"368": "weather-snow-scattered",
-"371": "weather-snow",
-"374": "weather-showers-scattered",
-"377": "weather-showers-scattered",
-"386": "weather-storm",
-"389": "weather-storm",
-"392": "weather-storm",
-"395": "weather-snow"
-}')
-;; }}}
 
 (defwidget status-mpris []
     (revealer :reveal {pref-mpris-shown && mpris.has_player} :transition "slidedown"
@@ -135,21 +81,6 @@
 
 (defvar status-top-left-widget 0)
 
-(defvar weather-city "Graz")
-(defpoll weather :interval "30m" "bin/weather.sh")
-
-(defwidget weather-for-hour [hour]
-    (box :hexpand true :space-evenly false :class "sbutton"
-        :visible {hour.time >= formattime(EWW_TIME, "%H00")}
-        :tooltip {hour.weatherDesc[0].value}
-        (label :class "text" :text "${replace(hour.time, "00$", "")}:   ")
-        (label :class "text" :text "${hour.tempC}°C")
-        (vsep :width 6)
-        (themed-icon :name {weather-icons[hour.weatherCode]}
-            :width 32
-            :height 32))
-)
-
 (defwidget uptime-time [title] (button 
     :class "button-box"
     :onclick "${EWW_CMD} update agenda-revealed=${!agenda-revealed}" 
@@ -157,39 +88,11 @@
         (label :class "title" :text title)
         (label :class "text" :text {formattime(EWW_TIME - boottime, "up for %H hours, %M minutes", "UTC")}))))
 
-(defwidget status-weather []
-    (box :space-evenly false :orientation "vertical" :class "section" :hexpand true
-        (uptime-time :title "${formattime(EWW_TIME, "%H:%M:%S")}")
-        (hsep :height 20)
-        (box :space-evenly false
-            (themed-icon
-                :name {weather-icons[weather.current_condition[0].weatherCode]}
-                :width 64
-                :height 64)
-
-            (box :orientation "vertical" :space-evenly false :halign "start" :style "margin-left: 1rem;"
-                (label :halign "start" :class "weather-description"
-                    :text "󰔏   ${weather.current_condition[0].temp_C}°C")
-                (label :halign "start" :class "weather-description"
-                    :text "󱪉   ${weather.current_condition[0].windspeedKmph} km/h")
-                (label :halign "start" :class "weather-description"
-                    :limit-width 14
-                    :text "󰋼   ${weather.current_condition[0].weatherDesc[0].value}"))
-            (box :vexpand false :hexpand true :valign "start" :halign "end"
-                (button :class "sbutton" 
-                    :timeout "60s"
-                    :tooltip "${weather-city}"
-                    :onclick `${EWW_CMD} update weather-city=$(zenity --title=weather --entry --text="Chose Location" --entry-text=${weather-city} || echo ${weather-city}) && ${EWW_CMD} poll weather`
-                    "")))
-       (scroll :class "scrollbar" :hexpand true :style "min-height: 3.3rem;" :vscroll false (box :space-evenly false
-            (for hour in {weather.weather[0].hourly}
-                (weather-for-hour :hour {hour}))))))
-
 (defwidget status-panel []
     (box :space-evenly false :orientation "vertical" :hexpand true
         (box :hexpand true :space-evenly false
             (stack :selected {status-top-left-widget} :hexpand true :transition "slideup" :same-size true
-                (status-weather)
+                (status-weather :weather {weather.current_condition[0]})
                 (power-confirmation-dialog))
             (status-logout))
         (status-mpris)))

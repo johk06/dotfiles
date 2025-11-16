@@ -1,5 +1,19 @@
+.weather-title {
+    @extend .title;
+    margin-top: .1rem;
+    margin-bottom: .4rem;
+}
+
 .weather-description {
     @extend .text;
     font-size: 1.2rem;
+    margin-top: .1rem;
+    margin-bottom: .1rem;
     margin-right: 1rem;
+}
+
+.weather-hour {
+    background-color: $bg2;
+    padding: .3rem;
+    border-radius: 12px;
 }

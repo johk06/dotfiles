@@ -105,8 +105,7 @@ ${dev.rate}W" : ""}"
             :class "tiny-button ${audio.out.mute ? "inactive" : (center-popup-reveal && center-popup-layer == 0 && audio-popup-kind == "out" ? "active" : "")}"
             :onclick "pamixer -t"
             :tooltip "${audio.out.name}: ${audio.out.vol}%"
-            {audio.out.mute ? "󰸈"
-                : (audio.out.vol > 70 ? "󰕾" : (audio.out.vol > 20 ? "󰖀" : "󰕿"))})
+            {audio.out.mute ? "󰸈" : (audio.out.vol > 70 ? "󰕾" : (audio.out.vol > 20 ? "󰖀" : "󰕿"))})
         (button
             :class "tiny-button ${audio.in.mute ? "inactive" : (center-popup-reveal && center-popup-layer == 0 && audio-popup-kind == "in" ? "active" : "")}"
             :onclick "pamixer -t --default-source"
