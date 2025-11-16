@@ -26,30 +26,30 @@ IMAGE_SIZE="800x600"
 function display_image {
     [[ "$TERM" != "xterm-kitty" ]]&&exit 1
     kitten icat --silent --stdin no --transfer-mode memory \
-        --align "${3:-center}" --place "${W}x$[H-${2:-0}]@${X}x$[Y+${2:-0}]" \
+        --align "${3:-center}" --place "${W}x$((H - ${2:-0}))@${X}x$((Y + ${2:-0}))" \
         "$1" < /dev/null > /dev/tty
 }
 
 function info {
-    print -P "%F{cyan}%B# $1\e[0m\n"
+    print -P "%F{cyan}%B# ${1}\e[0m\n"
     ((H-=2))
     ((Y+=2))
 }
 
 function title {
-    print -P "%F{cyan}%B# $1\e[0m"
+    print -P "%F{cyan}%B# ${1}\e[0m"
     ((H--))
     ((Y++))
 }
 
 function error {
-    print -P "\n%F{red}%B! $1%f%b\n$2"
+    print -P "\n%F{red}%B! ${1}%f%b\n$2"
     ((H-=2))
     ((Y+=2))
 }
 
 function hint {
-    print -P "%F{12}%B! $1%f%b\n$2"
+    print -P "%F{12}%B! ${1}%f%b\n$2"
     ((H--))
     ((Y++))
 }
@@ -58,7 +58,7 @@ function prop {
     if [[ -z "$2" || "$2" == [[:space:]] ]]; then
         return
     fi
-    print -P "%F{blue}$1%F{8}: %F{${3:-green}}$2\e[0m"
+    print -P "%F{blue}$1%F{8}: %F{${3:-green}}${2}\e[0m"
     ((H--))
     ((Y++))
 }
@@ -76,8 +76,7 @@ function section {
 # $out: reply
 # $return: whether the files need to be initialized
 function create_cache {
-    local id="$(stat -c "%m.%i.%Y" -- "$1")"
-    id="${id//\//@}"
+    local id="$(stat -c "%m.%i.%Y" -- "$1" | sed 's/\//@')"
 
     for ((i=2; i <= $#; i++)); do
         reply[$i-1]="$CACHEDIR/${id}${argv[$i]}"
@@ -99,10 +98,10 @@ MIMETYPE="$(file --dereference --brief --mime-type -- "$FILE")"
 # Video {{{
 function preview_video {
     if create_cache "${1}" .png .desc; then
-        (
+        {
             IFS=$'\t' read -r audio_format audio_bitrate video_format video_bitrate video_resolution video_framerate video_duration < <(mediainfo --output=JSON "$1" \
-                | jq -r '([.media.track|.[]|select(."@type" == "Video")][0]) as $video 
-                    | ([.media.track|.[]|select(."@type" == "Audio")][0]) as $audio 
+                | jq -r '([.media.track|.[]|select(."@type" == "Video")][0]) as $video
+                    | ([.media.track|.[]|select(."@type" == "Audio")][0]) as $audio
                     | "\($audio.Format)\t\($audio.BitRate)\t\($video.Format)\t\($video.BitRate)\t\($video.Width)x\($video.Height)\t\($video.FrameRate // "variable ")\t\($video.Duration)"'
             )
             seconds="${video_duration%.*}"
@@ -121,7 +120,7 @@ function preview_video {
             fi
             print "$audio\t$video_format\t$video_bitrate\t$video_resolution\t$video_framerate\t$hours\t$minutes\t$seconds" \
                 > "${reply[2]}"
-        )&
+        }&
         ffmpegthumbnailer -s 512 -m -i "$1" -o "${reply[1]}"&
         wait
     fi
@@ -132,7 +131,7 @@ function preview_video {
     prop "Video" "$video_format ($video_bitrate)" yellow
     prop "Resolution" "$video_resolution" magenta
     prop "Framerate " "${video_framerate}fps" magenta
-    prop "Runtime" "$hours:$minutes:$seconds" magenta
+    prop "Runtime" "${hours}:${minutes}:${seconds}" magenta
     display_image "${reply[1]}" 1
 }
 # }}}
@@ -142,7 +141,7 @@ function preview_image {
     if [[ "$2" == "image/svg+xml" ]]; then
         info "Scalable Vector Graphic"
         if create_cache "$1" .png; then
-            magick -background none -size 400x400 "$1" "${reply[1]}" 
+            magick -background none -size 400x400 "$1" "${reply[1]}"
         fi
     else
         if create_cache "${1}" .png .desc; then
@@ -165,9 +164,9 @@ function preview_image {
 # Audio {{{
 function preview_audio {
     if create_cache "${1}" .png .desc; then
-        mediainfo --output=JSON "$1" | jq -r '.media.track as $tracks 
+        mediainfo --output=JSON "$1" | jq -r '.media.track as $tracks
             | $tracks[] | select(."@type" == "General") as $meta
-            | $tracks[] | select(."@type" == "Audio") as $audio 
+            | $tracks[] | select(."@type" == "Audio") as $audio
             | [
                 $meta.Title // " ",
                 $meta.Album // " ",
@@ -199,7 +198,7 @@ function preview_audio {
 
 # Executables and object files {{{
 function preview_elf {
-    case "$2" in 
+    case "$2" in
         application/x-pie-executable|application/x-executable)
             name="Executable"
             ;;
@@ -235,17 +234,7 @@ function preview_object {
             B) globals+="$symbol";;
         esac
     done <<< "$(nm -g --format=posix "$1")"
-    print -P -- "%F{12}Functions: $#funcs\e[0m
-${(j:, :)funcs}
-
-%F{green}Variables: $#vars\e[0m
-${(j:, :)vars}
-
-%F{yellow}Globals: $#globals\e[0m
-${(j:, :)globals}
-
-%F{red}Undefined: $#undef\e[0m
-${(j:, :)undef}" | fmt -sw $((W-4))
+    print -P -- "%F{12}Functions: $#funcs\e[0m\n${(j:, :)funcs}\n\n%F{green}Variables: $#vars\e[0m\n${(j:, :)vars}\n\n%F{yellow}Globals: $#globals\e[0m\n${(j:, :)globals}\n\n%F{red}Undefined: $#undef\e[0m\n${(j:, :)undef}" \\n| fmt -sw $((W-4))
 }
 
 # }}}
@@ -288,10 +277,10 @@ Zwölf Boxkämpfer jagen Viktor quer über den großen Sylter Deich."
     fi
     IFS=$'\t' read name family psname style < "${reply[2]}"
 
-    prop "Name" "  $name"
+    prop "Name" "$name"
     prop "PSName" "$psname" 12
     prop "Family" "$family" 13
-    prop "Style" " $style" yellow
+    prop "Style" "$style" yellow
     display_image "${reply[1]}" 1 left
 }
 # }}}
@@ -310,24 +299,24 @@ function bsdtar_list {
         fi
         local ftype="${perms:0:1}"
         case "$ftype" in
-            d) 
+            d)
                 if ((lastwasdir)); then
-                    print -P "%F{cyan}%B󰉋 ${name%*/}/\e[0m"
+                    print -P "%F{cyan}%B${name%*/}/\e[0m"
                 else
-                    print -P "\n%F{cyan}%B󰉋 ${name%*/}/\e[0m"
+                    print -P "\n%F{cyan}%B${name%*/}/\e[0m"
                 fi
                 lastwasdir=1
                 lastdir="$name"
                 ;;
-            l) 
+            l)
                 lastwasdir=0
                 IFS=">" read -r name target <<< "$name"
                 name="${name:t}"
-                print -P "%F{blue}󰌷 ${name%* -}%F{white} ->%F{blue}${target}\e[0m"
+                print -P "%F{blue}${name%* -}%F{white} ->%F{blue}${target}\e[0m"
                 ;;
-            -) 
+            -)
                 if [[ "${name}" != "${name:h1}" && "${lastdir}" == "" ]]; then
-                    print -P "%F{cyan}%B󰉋 ${name:h1}/\e[0m"
+                    print -P "%F{cyan}%B${name:h1}/\e[0m"
                     lastdir="${name:h1}/"
                 fi
                 lastwasdir=0
@@ -348,14 +337,14 @@ function preview_rar {
     | LC_ALL=C sort | while read size date time bits file; do
             if [[ "${bits:1:1}" == "D" ]]; then
                 if ((lastwasdir)); then
-                    print -P "%F{cyan}%B󰉋 $file/\e[0m"
+                    print -P "%F{cyan}%B$file/\e[0m"
                 else
-                    print -P "\n%F{cyan}%B󰉋 $file/\e[0m"
+                    print -P "\n%F{cyan}%B$file/\e[0m"
                 fi
                 lastwasdir=1
             else
                 lastwasdir=0
-                print "󰈔 ${file:t}"
+                print "${file:t}"
             fi
     done
 }
@@ -392,8 +381,8 @@ function preview_sqlite {
             *) color="green";;
         esac
         prop "$column" "$type" "$color"
-    done < <(sqlite3 "$1" 'SELECT m.name, p.name, p.type 
-    FROM sqlite_master m 
+    done < <(sqlite3 "$1" 'SELECT m.name, p.name, p.type
+    FROM sqlite_master m
     left outer join pragma_table_info((m.name)) p
         on m.name <> p.name
         order by m.name, p.name;' 2> >(while read -r err; do print "*Error|$err"; done) || return)
@@ -404,12 +393,12 @@ function preview_sqlite {
 function preview_binary {
     info "Binary"
     # HACK: the ultimate WTF, i hope xxd comes up with a way to change the colors some day
-    # this (in order): 
+    # this (in order):
     # removes bold, changes white to gray
     # changes red to light blue, makes lines that just have '*' gray, and makes the addresses magenta in all other places
     if create_cache "$1" .dump; then
         xxd -a -R always  -c 12 -u "$1" | head -n 80 | sed -e 's/1;//g' -e 's/37m/90m/g' \
-            -e 's/31m/94m/g' -e $'s/^*/\e[90m*/g' -e 's/^\(.*\):/'$'\e[35m''\1'$'\e[90m'':/g' \
+            -e 's/31m/94m/g' -e $'s/^*/\e[90m*/g' -e 's/^\(.*\):/\x1b[35m\1\x1b[90m:/g' \
             | tee "${reply[1]}"
     else
         head -n$[H-1] "${reply[1]}"
@@ -422,7 +411,7 @@ function preview_text {
 # }}}
 
 case "$MIMETYPE" in
-    application/pdf) 
+    application/pdf)
         preview_pdf "$FILE" "$MIMETYPE";;
     *opendocument*|application/vnd.openxmlformats-officedocument.*)
         preview_office "$FILE" "$MIMETYPE" ;;
@@ -434,16 +423,16 @@ case "$MIMETYPE" in
     audio/*) preview_audio "$FILE" "$MIMETYPE";;
     video/*) preview_video "$FILE" "$MIMETYPE";;
 
-    application/x-pie-executable|application/x-executable|application/x-sharedlib) 
+    application/x-pie-executable|application/x-executable|application/x-sharedlib)
         preview_elf "$FILE" "$MIMETYPE";;
-    application/x-object) 
+    application/x-object)
         preview_object "$FILE" "$MIMETYPE";;
 
     *x-iso9660-image)
         bsdtar_list "$FILE" "ISO Disk Image"
         ;;
     application/x-archive|application/x-cpio|application/x-tar|application/x-bzip2|application/gzip|application/x-lzip|application/x-lzma|application/x-xz|application/x-7z-compressed|application/vnd.android.package-archive|application/vnd.debian.binary-package|application/java-archive|application/x-gtar|application/zip)
-        type="${MIMETYPE//application\//}"
+        type="${MIMETYPE#application/}"
         bsdtar_list "$FILE" "${type#*x-} Archive"
         ;;
     application/vnd.rar)
@@ -461,7 +450,7 @@ case "$MIMETYPE" in
         ;;
 
     # essentially all special cases
-    inode/x-empty|application/x-empty) 
+    inode/x-empty|application/x-empty)
         print -P "%SEmpty\e[0m"
         ;;
     *octet-stream)
