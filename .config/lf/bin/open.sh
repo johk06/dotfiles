@@ -41,6 +41,7 @@ image/*)
     else
         imv-msg "$imv_pid" close all
         imv-msg "$imv_pid" open "$fx"
+        imv-msg "$imv_pid" next
     fi
     ;;
 text/* | application/json | inode/x-empty | application/javascript | application/x-wine-extension-ini)

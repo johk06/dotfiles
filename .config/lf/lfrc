@@ -129,7 +129,7 @@ map gl follow-link
 map md push :mkdir<space>
 map mf push :make-file<space>
 map ml push :link<space>
-map mD push :mkodt<space>""<left>
+map mL push :hard-link<space>
 map ~ backup
 
 # move to bg
@@ -155,6 +155,7 @@ map U disk-usage
 # info
 map Im info-mimetype
 map Id disk-usage
+map Ii %stat -c "%i" "$f"
 map It :set info "time"
 map Is :set info "size"
 map Ia :set info "atime"

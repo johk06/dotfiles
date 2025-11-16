@@ -76,7 +76,7 @@ function section {
 # $out: reply
 # $return: whether the files need to be initialized
 function create_cache {
-    local id="$(stat -c "%m.%i.%Y" -- "$1" | sed 's/\//@')"
+    local id="$(stat -c "%m.%i.%Y" -- "$1" | sed 's/\//@/g')"
 
     for ((i=2; i <= $#; i++)); do
         reply[$i-1]="$CACHEDIR/${id}${argv[$i]}"
