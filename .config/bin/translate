@@ -28,7 +28,7 @@ def request_translation(text: list[str], params: dict) -> tuple[str, str] | str:
         as_json = res.json()["translations"][0]
         return as_json["detected_source_language"], as_json["text"]
     else:
-        return res.text
+        return res.json()["message"]
 
 
 FORMALITIES = {
@@ -39,45 +39,11 @@ FORMALITIES = {
     "prefer_less",
 }
 
-LANGUAGES = {
-    "AR",
-    "BG",
-    "CS",
-    "DA",
-    "DE",
-    "EL",
-    "EN",
-    "ES",
-    "ET",
-    "FI",
-    "FR",
-    "HU",
-    "ID",
-    "IT",
-    "JA",
-    "KO",
-    "LT",
-    "LV",
-    "NB",
-    "NL",
-    "PL",
-    "PT",
-    "RO",
-    "RU",
-    "SK",
-    "SL",
-    "SV",
-    "TR",
-    "UK",
-    "ZH",
-}
-
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "-s",
         "--source",
-        choices=LANGUAGES,
         metavar="LANGUAGE",
         type=str,
         dest="source",
@@ -86,7 +52,6 @@ if __name__ == "__main__":
     parser.add_argument(
         "-t",
         "--target",
-        choices=LANGUAGES,
         metavar="LANGUAGE",
         type=str,
         dest="target",
@@ -139,8 +104,9 @@ if __name__ == "__main__":
     for file in args.input_files:
         while chunk := file.read():
             translation = request_translation([chunk], params)
-            if translation is str:
-                sys.stderr.write(translation)
+            if type(translation) is str:
+                sys.stderr.write(translation + "\n")
+                exit(1)
             else:
                 if args.print_header:
                     print(f"{translation[0]} -> {args.target}:")
