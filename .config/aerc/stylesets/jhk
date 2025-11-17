@@ -37,11 +37,6 @@ msglist_marked.selected.bg = #434C5E
 msglist_flagged.fg = teal
 msglist_forwarded.italic = true
 
-msglist_unread.fg = yellow
-
-msglist_answered.fg = #616E88
-msglist_answered.italic = true
-
 selector_focused.bg = teal
 selector_focused.fg = black
 
@@ -54,6 +49,10 @@ url.underline = true
 diff_chunk_func.fg = yellow
 quote_1.italic = true
 quote_1.fg = #D8DEE9
+quote_2.italic = true
+quote_2.fg = #C0C7D5
+quote_3.italic = true
+quote_3.fg = #616E88
 
 [user]
 date.fg = fuchsia
@@ -61,4 +60,12 @@ status.fg = green
 status.italic = true
 sep.fg = #353c4a
 directory.fg = teal
+
 unread.fg = yellow
+unread.bold = true
+
+flag_attachment.fg = green
+flag_replied.fg = #616E88
+flag_fold.fg = teal
+address.fg = #D8DEE9
+bright_gray.fg = #616E88
