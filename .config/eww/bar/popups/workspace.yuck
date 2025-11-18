@@ -32,7 +32,7 @@
             (box :orientation "vertical" :space-evenly false
                 (box :space-evenly false :vexpand true (for win in {ws.wins} (ws-win :win win :ws {ws.ws})))
                 (box :halign "start" :valign "end"
-                    (label :class "workspace-name" :text {ws.ws}))))))
+                    (label :class "workspace-name" :text {ws.icon}))))))
 
 (defwidget ws-overview []
     (eventbox

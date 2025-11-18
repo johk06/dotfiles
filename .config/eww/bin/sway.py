@@ -112,6 +112,11 @@ def sort_by_name(ws):
     else:
         return int(name)
 
+def wsicon(name):
+    if name[0] == "s":
+        return chr(ord("α") + int(name[1:]) - 1)
+    else:
+        return str(name)
 
 def update(i3, e):
     root = i3.get_tree()
@@ -131,6 +136,7 @@ def update(i3, e):
                 "focused": workspace.focused or is_active,
                 "wsnum": workspace.num,
                 "ws": workspace.name,
+                "icon": wsicon(workspace.name),
                 "is_virtual": False,
             }
             workspaces.append(ws)
@@ -138,12 +144,15 @@ def update(i3, e):
     sorted_ws = sorted(workspaces, key=sort_by_name)
 
     if len(sorted_ws[-1]["wins"]) != 0:
+        new_number = sorted_ws[-1]["wsnum"] + 1
+        as_str = str(new_number)
         sorted_ws.append(
             {
                 "wins": [],
                 "focused": False,
-                "wsnum": sorted_ws[-1]["wsnum"] + 1,
-                "ws": str(sorted_ws[-1]["wsnum"] + 1),
+                "icon": as_str,
+                "wsnum": new_number,
+                "ws": as_str,
                 "is_virtual": True,
             }
         )
