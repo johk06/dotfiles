@@ -35,7 +35,7 @@ M.config = function()
     local remote = require("leap.remote")
     map("o", "r", remote.action)
 
-    --[[ (u)sing, this primarily allows for edits to regions that are not visible
+    --[[ [u]sing, this primarily allows for edits to regions that are not visible
         this is usually *not* a replacement for :s
         If the first search result is not the right one, first question your life choices
         (why did you not just move normally...).

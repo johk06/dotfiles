@@ -12,11 +12,10 @@ M.opts = opts
 
 opts.keymap = {
     preset    = "none",
-    ["<C-p>"] = { "show", "select_prev", "fallback" },
-    ["<C-n>"] = { "show", "select_next", "fallback" },
-    ["<C-e>"] = { "cancel", "fallback" },
-    ["<cr>"]  = { "accept", "fallback" },
-    ["<C-y>"] = { "accept", "fallback" },
+    ["<C-p>"] = { "show", "select_prev", "fallback" }, -- [p]revious
+    ["<C-n>"] = { "show", "select_next", "fallback" }, -- [n]ext
+    ["<C-l>"] = { "accept", "fallback" },              -- mirror command line
+    ["<C-e>"] = { "cancel", "fallback" },              -- [e]xit
 }
 
 opts.signature = {
@@ -110,16 +109,19 @@ opts.completion.menu.draw.components = {
 }
 
 opts.sources = {
-    default = { "lsp", "path", "snippets", "buffer" },
+    default = { "lsp", "path", "jhk_snippets", "buffer" },
     per_filetype = {
-        oil = { "path", "buffer", "snippets" },
-        org = { "orgmode", "snippets", "buffer"},
+        oil = { "path", "buffer", "jhk_snippets" },
+        org = { "orgmode", "jhk_snippets", "buffer" },
         Input = { "omni" },
     },
     providers = {
         orgmode = {
             module = "orgmode.org.autocompletion.blink",
             fallbacks = { "buffer" },
+        },
+        jhk_snippets = {
+            module = "config.lib.blink.snippets"
         },
         path = {
             opts = {
