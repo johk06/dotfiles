@@ -12,10 +12,11 @@ M.opts = opts
 
 opts.keymap = {
     preset    = "none",
-    ["<C-p>"] = { "show", "select_prev", "fallback" }, -- [p]revious
-    ["<C-n>"] = { "show", "select_next", "fallback" }, -- [n]ext
-    ["<C-l>"] = { "accept", "fallback" },              -- mirror command line
     ["<C-e>"] = { "cancel", "fallback" },              -- [e]xit
+    ["<C-j>"] = { "show", "select_next", "fallback" }, -- really nice and quick directly under my index finger
+    ["<C-l>"] = { "accept", "show", "fallback" },      -- mirror command line
+    ["<C-n>"] = { "show", "select_prev", "fallback" }, -- [n]ext
+    ["<C-p>"] = { "show", "select_prev", "fallback" }, -- [p]revious
 }
 
 opts.signature = {
@@ -31,6 +32,7 @@ opts.cmdline = {
         preset     = "none",
 
         ["<Tab>"]  = { "show_and_insert", "select_next" },
+        ["<C-j>"]  = { "select_next", "fallback" },
         ["<C-n>"]  = { "select_next", "fallback" },
         ["<C-p>"]  = { "select_prev", "fallback" },
         ["<C-e>"]  = { "cancel" },
@@ -52,7 +54,7 @@ for i = 1, 9 do
             cmp.accept { index = i }
         end
     }
-    local key = ("<C-%d>"):format(i)
+    local key = ("<M-%d>"):format(i)
 
     opts.keymap[key] = action
     opts.cmdline.keymap[key] = action
