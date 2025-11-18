@@ -1,0 +1,29 @@
+{
+    "function": {
+        "body": [
+            "function($1)",
+            "\t$0",
+            "end"
+        ]
+    },
+    "local": {
+        "body": [
+            "local $1 = $0"
+        ]
+    },
+    "true": {
+        "body": [
+            "true"
+        ]
+    },
+    "false": {
+        "body": [
+            "false"
+        ]
+    },
+    "return": {
+        "body": [
+            "return"
+        ]
+    }
+}

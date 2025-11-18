@@ -109,19 +109,16 @@ opts.completion.menu.draw.components = {
 }
 
 opts.sources = {
-    default = { "lsp", "path", "jhk_snippets", "buffer" },
+    default = { "lsp", "path", "snippets", "buffer" },
     per_filetype = {
-        oil = { "path", "buffer", "jhk_snippets" },
-        org = { "orgmode", "jhk_snippets", "buffer" },
+        oil = { "path", "buffer", "snippets" },
+        org = { "orgmode", "snippets", "buffer" },
         Input = { "omni" },
     },
     providers = {
         orgmode = {
             module = "orgmode.org.autocompletion.blink",
             fallbacks = { "buffer" },
-        },
-        jhk_snippets = {
-            module = "config.lib.blink.snippets"
         },
         path = {
             opts = {
