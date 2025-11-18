@@ -7,7 +7,7 @@ local utils = require("config.utils")
 -- Layouts {{{
 local t_layout = require("telescope.pickers.layout")
 
--- Helpers {{{1
+-- Helpers {{{
 local make_win = function(enter, opts)
     local buf = api.nvim_create_buf(false, true)
     local winopts = vim.tbl_extend("force", {
@@ -51,7 +51,7 @@ local get_layout = function(value, full, percentage, min, max)
 end
 -- }}}
 
--- Bottom Pane, Similar to Ivy {{{1
+-- Bottom Pane, Similar to Ivy {{{
 M.bottom_pane_layout = function(picker)
     return t_layout {
         picker = picker,
@@ -142,7 +142,6 @@ end
 
 local MAX_FILENAME_WIDTH = 32
 local MAX_SYMBOL_WIDTH = 30
-local MAX_FILEPARENT_WIDTH = 24
 local ROW_COL_WIDTH = 7
 
 -- Path Highlighting {{{
@@ -181,9 +180,9 @@ M.path_display = function(opts, path)
 end
 -- }}}
 
--- Entry Makers {{{
+-- Helpers {{{
 local t_entry_display = require("telescope.pickers.entry_display")
--- Helpers {{{1
+
 local get_names_and_hl = function(path)
     local tail, parentdir, filename_highlight
     if vim.startswith(path, "oil://") then
@@ -205,7 +204,7 @@ local get_names_and_hl = function(path)
 end
 -- }}}
 
--- Grep-Style {{{1
+-- Grep-Style {{{
 local line_and_column_display = t_entry_display.create {
     separator = " ",
     items = {
@@ -239,7 +238,7 @@ M.line_and_column_entries = function(line)
 end
 -- }}}
 
--- Plain File Names {{{1
+-- Plain File Names {{{
 local file_display = t_entry_display.create {
     separator = " ",
     items = {
@@ -281,7 +280,7 @@ M.file_entries = function(entry)
 end
 -- }}}
 
--- LSP Symbols {{{1
+-- LSP Symbols {{{
 local lsp_entry_display = t_entry_display.create {
     separator = " ",
     items = {
@@ -337,7 +336,7 @@ M.lsp_symbol_entries = function(entry)
 end
 -- }}}
 
--- Quickfix List {{{1
+-- Quickfix List {{{
 local quickfix_entry_display = t_entry_display.create {
     separator = " ",
     items = {
@@ -371,7 +370,7 @@ M.quickfix_entries = function(entry)
 end
 -- }}}
 
--- Buffer List {{{1
+-- Buffer List {{{
 local buffer_entry_display = t_entry_display.create {
     separator = " ",
     items = {
@@ -434,7 +433,7 @@ M.buffer_entries = function(entry)
 end
 -- }}}
 
--- Diagnostics {{{1
+-- Diagnostics {{{
 local diagnostics_display = t_entry_display.create {
     separator = " ",
     items = {
@@ -472,9 +471,8 @@ M.diagnostics_entries = function(entry)
         end,
     }
 end
--- }}}
 
--- Registers {{{1
+-- Registers {{{
 local register_display = t_entry_display.create {
     separator = " ",
     items = {
@@ -513,7 +511,7 @@ M.register_entries = function(entry)
 end
 -- }}}
 
--- Treesitter {{{1
+-- Treesitter {{{
 local treesitter_display = t_entry_display.create {
     separator = " ",
     items = {

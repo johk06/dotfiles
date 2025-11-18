@@ -303,10 +303,6 @@ M.opts.keymaps = {
     ["<S-CR>"]         = "actions.select_split",
     ["<C-CR>"]         = "actions.select_vsplit",
 
-    ["es"]             = "actions.select_split",
-    ["ev"]             = "actions.select_vsplit",
-    ["gx"]             = "actions.open_external",
-
     -- goto repository
     ["gr"]             = { goto_git_ancestor, mode = "n" },
 
@@ -328,9 +324,13 @@ M.opts.keymaps = {
     ["<localleader>t"] = function() toggle_column("time") end,
     ["<localleader>u"] = function() toggle_column("user") end,
     ["<localleader>q"] = "actions.add_to_qflist",
+    ["<localleader>o"] = "actions.select_split",
+    ["<localleader>v"] = "actions.select_vsplit",
+    ["<localleader>x"] = "actions.open_external",
 
-    ["<space>gs"]      = function() git_command("add") end,
-    ["<space>gu"]      = function() git_command("reset --") end,
+    -- mirror the commands in lua/plugins/git.lua
+    ["<space>gs"] = function() git_command("add") end,
+    ["<space>gu"] = function() git_command("reset --") end,
 }
 -- }}}
 
