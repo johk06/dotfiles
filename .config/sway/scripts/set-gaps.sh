@@ -21,6 +21,6 @@ if ((has_target)); then
     inner=$DEFAULT_INNER
 else
     outer=$target
-    inner=$target
+    inner=$(echo "$target 0.621 / p" | dc)
 fi
 swaymsg "gaps outer current set $outer; gaps inner current set $inner"
