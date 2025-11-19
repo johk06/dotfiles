@@ -1,4 +1,8 @@
 # vim: ft=swayconfig
+
+# Bindings for window management
+# Not including ./binds/workspaces
+
 bindsym $mod+Q kill
 
 # [D]etach
@@ -13,11 +17,17 @@ bindsym $mod+Shift+H move left
 bindsym $mod+Shift+J move down
 bindsym $mod+Shift+K move up
 bindsym $mod+Shift+L move right
+
 # Much smarter resize
 bindsym $mod+Ctrl+H nop resize left 32
 bindsym $mod+Ctrl+J nop resize down 32
 bindsym $mod+Ctrl+K nop resize up 32
 bindsym $mod+Ctrl+L nop resize right 32
+
+bindsym $mod+Mod1+H exec $sc/swap.sh left
+bindsym $mod+Mod1+J exec $sc/swap.sh down
+bindsym $mod+Mod1+K exec $sc/swap.sh up
+bindsym $mod+Mod1+L exec $sc/swap.sh right
 
 bindsym $mod+S splitv
 bindsym $mod+V splith
@@ -38,7 +48,7 @@ bindsym $mod+Mod1+Z exec $sc/stop-or-continue.sh
 bindsym $mod+Z focus mode_toggle
 
 # TODO: make sure it exits with empty input
-# may a --exec option?
+# maybe a --exec option?
 
 # Like VIM
 bindsym $mod+Apostrophe exec $sc/on-mark.sh initial focus
