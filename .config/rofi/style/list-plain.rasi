@@ -47,21 +47,19 @@ element-icon {
 entrybox {
     expand: false;
     background-color: inherit;
-    orientation: horizontal;
     children: [prompt, entry];
 }
 
 prompt {
-    padding: 0em 0em 0em 1em;
+    expand: false;
+    padding: 0em 1em 0em 1em;
     color: @fg3;
     background-color: @bg0;
-    horizontal-align: 0.5;
-    vertical-align: 0.5;
 }
 
 entry {
     background-color: @bg0;
-    padding: 12px;
+    padding: 1em 1em 1em 1em;
     text-color: @fg0;
     cursor: text;
 }
