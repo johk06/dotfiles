@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-if ! out="$(yad --form --field=Track --field=Artist --field=Album --field=Genre --field=Shuffle:CHK --field=Append:CHK \
+if ! out="$(yad --title="Play from MPD" --form --field=Track --field=Artist --field=Album --field=Genre --field=Shuffle:CHK --field=Append:CHK \
     '' '' '' '' 'TRUE' 'FALSE' --buttons-layout=edge --button=Play:0 --button=Abort:1)"; then
     exit
 fi

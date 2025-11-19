@@ -4,7 +4,7 @@ mode "clipboard" {
     bindsym Escape mode "default"
     bindsym Y exec wl-paste -p | wl-copy; mode "default"
     bindsym Mod1+Y exec wl-paste | wl-copy -p; mode "default"
-    bindsym X exec $sc/exchange-clipboard.sh
+    bindsym X exec $sc/exchange-clipboard.sh; mode "default"
     bindsym E exec $sc/edit-clipboard.sh; mode "default"
     bindsym Mod1+E exec $sc/edit-clipboard.sh -p; mode "default"
     bindsym C exec wl-copy ""; mode "default"

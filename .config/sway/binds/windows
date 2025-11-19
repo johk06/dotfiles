@@ -24,7 +24,7 @@ bindsym $mod+V splith
 
 bindsym $mod+F fullscreen
 # only hide gaps around window
-bindsym $mod+Shift+F exec $sc/fake-fullscreen.sh
+bindsym $mod+Shift+F exec $sc/set-gaps.sh 0
 
 # Like vim for numbers
 bindsym $mod+A resize grow width 64px; resize grow height 64px

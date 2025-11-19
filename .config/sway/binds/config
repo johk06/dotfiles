@@ -11,6 +11,8 @@ mode "config" {
 
     bindsym R exec '~/.config/background/wallpaper.sh both "$(find ~/.config/background/img -type f -print0 | shuf -z -n 1)"'
 
+    bindsym G exec $sc/set-gaps.sh "$(wayinput -n -l -1 -t "Set Gaps")"; mode "default"
+
     bindsym K exec $sc/brightness.sh set +5
     bindsym J exec $sc/brightness.sh set -5
     bindsym Shift+K exec $sc/brightness.sh set +20
