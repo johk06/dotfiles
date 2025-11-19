@@ -17,6 +17,7 @@ configuration {
     kb-row-down: "Down,Alt+j";
     kb-row-up: "Up,Alt+k";
     kb-accept-alt: "";
+    kb-accept-custom: "Alt+Return";
     kb-custom-1: "Shift+Return";
     line-margin: 10;
     modes: [drun,sway,marks,sys];
