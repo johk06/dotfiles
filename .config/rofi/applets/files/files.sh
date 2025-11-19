@@ -39,8 +39,14 @@ parse_flags() {
         '<'*)
             FLAGS="$FLAGS --changed-before ${flag:1}"
             ;;
-        *)
+        -*)
             FLAGS="$FLAGS ${flag}"
+            ;;
+        /)
+            FLAGS="$FLAGS -p"
+            ;;
+        *)
+            FLAGS="$FLAGS --and ${flag}"
             ;;
         esac
     done
