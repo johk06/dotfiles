@@ -1,7 +1,7 @@
 :root {
     /* Generic */
-    --tridactyl-font-family: cantarell;
-    --tridactyl-font-family-sans: cantarell;
+    --tridactyl-font-family: "Fira Code";
+    --tridactyl-font-family-sans: "Fira Code";
     --tridactyl-font-size: 11pt;
     --tridactyl-small-font-size: 12pt;
     --tridactyl-bg: #2e3440;
@@ -9,15 +9,22 @@
     --tridactyl-logo: url("moz-extension://__MSG_@@extension_id__/static/logo/Tridactyl_64px.png");
     --tridactyl-scrollbar-color: #eceff4;
 
+    --tridactyl-color-blue: #5e81ac;
+    --tridactyl-color-turquoise: #8fbcbb;
+    --tridactyl-color-green: #a3be8c;
+    --tridactyl-color-yellow: #ebcb8b;
+    --tridactyl-color-orange: #d08870;
+    --tridactyl-color-red: #bf616a;
+    --tridactyl-color-pink: #c6b6cb;
+    --tridactyl-color-purple: #b48ead;
+
     /* Mode indicator */
-    --tridactyl-status-bg: #4c566a;
+    --tridactyl-status-bg: #2e3440;
     --tridactyl-status-fg: #eceff4;
-    --tridactyl-status-border: 1px solid #8fbcbb;
     --tridactyl-status-font-size: 24;
-    --tridactyl-status-border-radius: 8px 0px 8px 0px;
     --tridactyl-status-margin: 8px;
     /* Search highlight */
-    --tridactyl-search-highlight-color: #88c0d0;
+    --tridactyl-search-highlight-color: var(--tridactyl-color-yellow);
 
     /* Hinting */
 
@@ -26,12 +33,10 @@
     --tridactyl-hintspan-font-size: var(--tridactyl-small-font-size);
     --tridactyl-hintspan-font-weight: bold;
     --tridactyl-hintspan-fg: var(--tridactyl-bg);
-    --tridactyl-hintspan-bg: #8fbcbb;
-    --tridactyl-hintspan-border-color: ButtonShadow;
-    --tridactyl-hintspan-border-width: 0px;
-    --tridactyl-hintspan-border-style: solid;
-    --tridactyl-hintspan-js-background: rgba(76, 86, 106, 0);
-
+    --tridactyl-hintspan-bg: var(--tridactyl-color-yellow);
+    --tridactyl-hintspan-border-color: unset;
+    --tridactyl-hintspan-border-width: unset;
+    --tridactyl-hintspan-border-style: unset;
     /* Element highlights */
     --tridactyl-hint-active-fg: var(--tridactyl-fg);
     --tridactyl-hint-active-bg: none;
@@ -57,7 +62,6 @@
     --tridactyl-cmplt-fg: var(--tridactyl-fg);
     --tridactyl-cmplt-bg: var(--tridactyl-bg);
     --tridactyl-cmplt-font-size: 10pt;
-    --tridactyl-cmplt-font-family: monospace;
     /* i don't think 0.5px is redered */
     --tridactyl-cmplt-border-top: 0px;
 
@@ -122,4 +126,17 @@
     --tridactyl-container-color-purple: #b48ead;
 
     --tridactyl-externaledit-bg: var(--tridactyl-logo) no-repeat center;
+}
+
+.TridactylStatusIndicator {
+    margin: 1rem !important;
+    box-shadow: 0 0 12px rgba(0,0,0,0.5) !important;
+    border-radius: 12px !important;
+    background-color: var(--tridactyl-bg) !important;
+    padding: .8rem !important;
+    border: unset !important;
+}
+
+span.TridactylHint {
+    border-width: unset !important;
 }

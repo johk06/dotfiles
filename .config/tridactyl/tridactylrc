@@ -1,17 +1,23 @@
+# vim: ft=conf
 set searchurls.google https://www.google.com/search?client=firefox-b-d&q=%s
-set searchurls.g https://www.google.com/search?client=firefox-b-d&q=%s
 set searchurls.scholar https://scholar.google.com/scholar?hl=en&as_sdt=0%2C5&q=%s&btnG=
-set searchurls.gs https://scholar.google.com/scholar?hl=en&as_sdt=0%2C5&q=%s&btnG=
-set searchurls.y https://www.youtube.com/results?search_query=%s
 set searchurls.youtube https://www.youtube.com/results?search_query=%s
-set modeindicator false
+set searchurls.github https://github.com/search?q=%s
+set searchurls.wiktionary https://en.wiktionary.org/w/index.php?search=%s
+set searchurls.wikipedia https://en.wikipedia.org/w/index.php?search=%s
+
+set modeindicator true
 set editorcmd kitty -- nvim %f +%l 
-colorscheme nord
+set hintuppercase false
+
+colorscheme jhk
+
 bind J tabnext
 bind K tabprev
 bind m tabmove +1
 bind M tabmove -1
 bind I focusinput -I
+
 unbind <C-c>
 unbind <C-[>
 unbind <F1>
@@ -30,4 +36,4 @@ unbind <C-f>
 bind / fillcmdline find
 unbind d
 bind dd tabclose
-bind --mode=input <C-i> editor
+bind --mode=input <C-x> editor
