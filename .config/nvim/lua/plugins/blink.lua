@@ -47,11 +47,11 @@ opts.cmdline = {
     }
 }
 
--- quick accept with <C-number>
-for i = 1, 9 do
+-- quick accept with <M-number>
+for i = 0, 9 do
     local action = {
         function(cmp)
-            cmp.accept { index = i }
+            cmp.accept { index = i + 1 }
         end
     }
     local key = ("<M-%d>"):format(i)
@@ -88,7 +88,7 @@ opts.completion = {
 opts.completion.menu.draw.components = {
     index = {
         text = function(ctx)
-            return ctx.idx > 9 and "" or tostring(ctx.idx)
+            return ctx.idx > 10 and "" or tostring(ctx.idx - 1)
         end,
         highlight = "BlinkCmpIndex",
     },
