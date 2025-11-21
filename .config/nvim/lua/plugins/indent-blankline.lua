@@ -29,6 +29,7 @@ M.opts = {
     exclude = {
         filetypes = {
             "undotree",
+            "blink"
         }
     }
 }
