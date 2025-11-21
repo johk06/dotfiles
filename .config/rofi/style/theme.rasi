@@ -83,7 +83,19 @@ entrybox {
     expand: false;
     background-color: transparent;
     orientation: horizontal;
-    children: [entry, message];
+    children: [entry, message, num-filtered-rows, num-rows];
+}
+
+num-filtered-rows {
+    background-color: inherit;
+    padding: 0em 1em 0em 0em;
+    color: @accent;
+}
+
+num-rows {
+    background-color: inherit;
+    padding: 0em 1em 0em 0em;
+    color: @fg3;
 }
 entry {
     expand: true;

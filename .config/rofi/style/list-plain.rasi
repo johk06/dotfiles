@@ -47,17 +47,37 @@ element-icon {
 entrybox {
     expand: false;
     background-color: inherit;
-    children: [prompt, entry];
+    children: [promptbox, entry];
+}
+
+promptbox {
+    orientation: horizontal;
+    background-color: inherit;
+    children: [prompt, num-filtered-rows, num-rows];
+}
+
+num-filtered-rows {
+    background-color: inherit;
+    padding: 0em 1em 0em 0em;
+    color: @accent;
+}
+
+num-rows {
+    background-color: inherit;
+    padding: 0em 1em 0em 0em;
+    color: @fg3;
 }
 
 prompt {
-    expand: false;
+    expand: true;
     padding: 0em 1em 0em 1em;
+    background-color: inherit;
     color: @fg3;
     background-color: @bg0;
 }
 
 entry {
+    expand: false;
     background-color: @bg0;
     padding: 1em 1em 1em 1em;
     text-color: @fg0;
