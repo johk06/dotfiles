@@ -33,7 +33,7 @@ local function cmd_with_count(cmd)
             }
         }, { output = false })
         if not ok then
-            utils.error("Map/" .. cmd, err:gsub("^Vim:E%d+:%s*", ""))
+            utils.error("Map/" .. cmd, err, true)
         end
     end
 end
@@ -47,7 +47,7 @@ local function run_cmd(cmd, args)
     }, { output = false })
 
     if not ok then
-        utils.error("Map/" .. cmd, err:gsub("^Vim:E%d+:%s*", ""))
+        utils.error("Map/" .. cmd, err, true)
     end
 end
 -- }}}
