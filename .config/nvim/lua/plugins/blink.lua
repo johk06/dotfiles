@@ -15,7 +15,7 @@ opts.keymap = {
     ["<C-e>"] = { "cancel", "fallback" },              -- [e]xit
     ["<C-j>"] = { "show", "select_next", "fallback" }, -- really nice and quick directly under my index finger
     ["<C-l>"] = { "accept", "show", "fallback" },      -- mirror command line
-    ["<C-n>"] = { "show", "select_prev", "fallback" }, -- [n]ext
+    ["<C-n>"] = { "show", "select_next", "fallback" }, -- [n]ext
     ["<C-p>"] = { "show", "select_prev", "fallback" }, -- [p]revious
 }
 
