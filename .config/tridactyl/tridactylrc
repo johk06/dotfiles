@@ -1,21 +1,30 @@
 # vim: ft=conf
 set searchurls.google https://www.google.com/search?client=firefox-b-d&q=%s
+set searchurls.g google
 set searchurls.scholar https://scholar.google.com/scholar?hl=en&as_sdt=0%2C5&q=%s&btnG=
+set searchurls.gs scholar
 set searchurls.youtube https://www.youtube.com/results?search_query=%s
+set searchurls.yt youtube
 set searchurls.github https://github.com/search?q=%s
+set searchurls.gh github
 set searchurls.wiktionary https://en.wiktionary.org/w/index.php?search=%s
+set searchurls.wd wiktionary
 set searchurls.wikipedia https://en.wikipedia.org/w/index.php?search=%s
+set searchurls.wk wikipedia
 
 set modeindicator true
 set editorcmd kitty -- nvim %f +%l 
 set hintuppercase false
+set hintautoselect true
+
+# somehow ironic given that I do not use those keys in vim
+bind --mode=normal ' gobble 1 markjump
+bind --mode=normal m gobble 1 markadd
 
 colorscheme jhk
 
 bind J tabnext
 bind K tabprev
-bind m tabmove +1
-bind M tabmove -1
 bind I focusinput -I
 
 unbind <C-c>
@@ -33,7 +42,6 @@ bind L forward
 bind n findnext 1
 bind N findnext -1
 unbind <C-f>
-bind / fillcmdline find
 unbind d
 bind dd tabclose
 bind --mode=input <C-x> editor

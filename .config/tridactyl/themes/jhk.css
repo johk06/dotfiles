@@ -34,6 +34,7 @@
     --tridactyl-hintspan-font-weight: bold;
     --tridactyl-hintspan-fg: var(--tridactyl-bg);
     --tridactyl-hintspan-bg: var(--tridactyl-color-yellow);
+    --tridactyl-hintspan-js-background: var(--tridactyl-color-pink);
     --tridactyl-hintspan-border-color: unset;
     --tridactyl-hintspan-border-width: unset;
     --tridactyl-hintspan-border-style: unset;
