@@ -10,11 +10,8 @@ M.opts = {
         signcolumn = "no",
     },
     keys = {
-        { ">", function()
-            require("quicker").expand()
-        end },
-        { "<", function()
-            require("quicker").collapse()
+        { "+", function()
+            require("quicker").toggle_expand()
         end },
     },
     type_icons = {
@@ -29,15 +26,15 @@ M.opts = {
         vert = " ",
 
         strong_header = "─",
-        strong_cross = "┼",
+        strong_cross = "─",
         strong_end = "┤",
 
         soft_header = "─",
-        soft_cross = "┼",
+        soft_cross = "─",
         soft_end = "┤",
     },
     max_filename_width = function()
-        return math.floor(math.min(40, vim.o.columns / 4))
+        return math.floor(math.min(24, vim.o.columns / 4))
     end
 }
 
