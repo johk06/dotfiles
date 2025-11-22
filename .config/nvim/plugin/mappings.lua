@@ -1008,7 +1008,7 @@ map("n", "gO", function()
 
     local indent_max = (
         ftpref[ft].toc_indent
-        or at_first_level > 20 and 0 or 1 -- show more detail in shorter files
+        or at_first_level < 8 and 1 or 0 -- show more detail in shorter files
     ) * vim.bo.shiftwidth
 
     folds = vim.tbl_filter(function(fold)

@@ -246,7 +246,7 @@ end
 
 local lsp_status_notif = ui.floating_notif_new {
     align = "right",
-    max_width = 60,
+    max_width = 30,
     name = "LSP"
 }
 
