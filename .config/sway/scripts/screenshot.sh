@@ -22,7 +22,7 @@ function notify {
     case "$response" in
     open) xdg-open "$2" ;;
     del) rm "$2" ;;
-    edit) swappy -f "$2" -o "$2" ;;
+    edit) satty -f "$2" -o "$2" ;;
     esac
 }
 

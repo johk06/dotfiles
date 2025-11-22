@@ -1,0 +1,21 @@
+[general]
+initial-tool = "blur"
+no-window-decoration = true
+
+[color-palette]
+palette = [
+    "#8FBCBB",
+    "#A3BE8c",
+    "#EBCB8B",
+    "#D08770",
+    "#BF616A",
+    "#B48EAD",
+    "#9A8AAC",
+    "#5E81AC",
+    "#81A1C1",
+    "#eceff4",
+    "#2e3440",
+]
+
+[font]
+family = "Fira Code"
