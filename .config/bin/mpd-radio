@@ -1,0 +1,46 @@
+#!/usr/bin/env bash
+
+CACHEDIR="$XDG_CACHE_HOME/mpd-radio"
+
+if [[ ! -d "$CACHEDIR" ]]; then
+    mkdir -p "$CACHEDIR"
+fi
+
+usage() {
+    echo "Usage: $0 NAME [-l LANGUAGE] [-c COUNTRY] [-d DESCRIPTION]" >&2
+    exit 1
+}
+
+if [[ $# -lt 1 ]]; then
+    usage
+fi
+NAME="$1"
+QUERY="name=$1"
+shift
+
+while getopts ":l:c:d:" o; do
+    case "$o" in
+    "l")
+        QUERY="$QUERY&language=$OPTARG"
+        ;;
+    "c")
+        QUERY="$QUERY&countrycode=$OPTARG"
+        ;;
+    "d")
+        QUERY="$QUERY&description=$OPTARG"
+        ;;
+    *) usage ;;
+    esac
+done
+
+url="api.radio-browser.info"
+read -r url < <(dig +short all.api.radio-browser.info | shuf -n 1)
+
+FILE="$CACHEDIR/$NAME.m3u"
+
+curl --silent --header "User-Agent: script/1.0" \
+    "http://${url:-1}/json/stations/search?$QUERY" |
+    jq -r 'max_by(.bitrate)|"#EXTM3U", "#EXTINF:0,Radio: \(.name)", .url' \
+        >"$FILE"
+
+mpc --host="$XDG_RUNTIME_DIR/mpd/socket" load "$FILE"
