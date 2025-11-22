@@ -10,3 +10,7 @@
 
 (change
   kind: (deleted) @diff.minus)
+
+; TODO: evaluate what capture to use here
+(change
+  kind: (renamed) @type)
