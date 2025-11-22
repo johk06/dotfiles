@@ -174,7 +174,7 @@ end
 
 local function default_is_hidden(name, bufnr)
     if name then
-        return name:sub(1, 1) == "." and not (name:sub(2, 2) == ".")
+        return name:sub(1, 1) == "."
     else
         return false
     end
@@ -287,7 +287,7 @@ M.opts = {
         is_hidden_file = default_is_hidden,
 
         is_always_hidden = function(name, bufnr)
-            return name == "."
+            return name == "." or name == ".."
         end,
         natural_order = true,
         sort = sort,
@@ -323,14 +323,27 @@ M.opts.keymaps = {
     ["<localleader>s"] = function() toggle_column("size") end,
     ["<localleader>t"] = function() toggle_column("time") end,
     ["<localleader>u"] = function() toggle_column("user") end,
-    ["<localleader>q"] = "actions.add_to_qflist",
+    ["<localleader>q"] = {
+        "actions.send_to_qflist",
+        opts = {
+            target = "qflist",
+            only_matching_search = true
+        }
+    },
+    ["<localleader>l"] = {
+        "actions.send_to_qflist",
+        opts = {
+            target = "loclist",
+            only_matching_search = true
+        }
+    },
     ["<localleader>o"] = "actions.select_split",
     ["<localleader>v"] = "actions.select_vsplit",
     ["<localleader>x"] = "actions.open_external",
 
     -- mirror the commands in lua/plugins/git.lua
-    ["<space>gs"] = function() git_command("add") end,
-    ["<space>gu"] = function() git_command("reset --") end,
+    ["<space>gs"]      = function() git_command("add") end,
+    ["<space>gu"]      = function() git_command("reset --") end,
 }
 -- }}}
 
