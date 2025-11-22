@@ -21,7 +21,9 @@
 <Multi_key> <asciitilde> <space> : "̂"
 <Multi_key> <minus> <space> : "̄"
 <Multi_key> <underscore> <space> : "̅"
+<Multi_key> <comma> <space> : "̨"
 <Multi_key> <b> <space> : "̆"
-<Multi_key> <colon> <space> : "̈"
 <Multi_key> <o> <space> : "̊"
+<Multi_key> <period> <space> : "̇"
+<Multi_key> <exclam> <space> : "̣"
 # }}}

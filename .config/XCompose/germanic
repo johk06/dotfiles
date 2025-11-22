@@ -1,38 +1,17 @@
 # vim: ft=xcompose
 
-# some tweaks/additions to the regular german
-# why tf is it only " usually?, also for the non german ones
-<Multi_key> <colon> <a> : "ä"
-<Multi_key> <colon> <e> : "ë"
-<Multi_key> <colon> <i> : "ï"
-<Multi_key> <colon> <o> : "ö"
-<Multi_key> <colon> <u> : "ü"
-<Multi_key> <colon> <y> : "ÿ"
-
-<Multi_key> <colon> <A> : "Ä"
-<Multi_key> <colon> <E> : "Ë"
-<Multi_key> <colon> <I> : "Ï"
-<Multi_key> <colon> <O> : "Ö"
-<Multi_key> <colon> <U> : "Ü"
-<Multi_key> <colon> <Y> : "Ÿ"
-
 # old english
 
 # idk why there is no other way to type long ǣsċ
 <Multi_key> <a> <minus> <e> : "ǣ"
 <Multi_key> <A> <minus> <e> : "Ǣ"
 <Multi_key> <A> <minus> <E> : "Ǣ"
-<Multi_key> <a> <minus> <E> : "Ǣ"
 
 # ƿynn, going of the shape
 <Multi_key> <p> <w> : "ƿ"
 <Multi_key> <P> <w> : "Ƿ"
 <Multi_key> <P> <W> : "Ƿ"
 <Multi_key> <p> <W> : "Ƿ"
-
-# uppercase þorn and eð
-<Multi_key> <T> <h> : "Þ"
-<Multi_key> <D> <h> : "Ð"
 
 # ȝogh, technically not old english
 <Multi_key> <g> <h> : "ȝ"
