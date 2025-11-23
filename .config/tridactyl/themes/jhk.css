@@ -23,8 +23,6 @@
     --tridactyl-status-fg: #eceff4;
     --tridactyl-status-font-size: 24;
     --tridactyl-status-margin: 8px;
-    /* Search highlight */
-    --tridactyl-search-highlight-color: var(--tridactyl-color-yellow);
 
     /* Hinting */
 
@@ -39,10 +37,10 @@
     --tridactyl-hintspan-border-width: unset;
     --tridactyl-hintspan-border-style: unset;
     /* Element highlights */
-    --tridactyl-hint-active-fg: var(--tridactyl-fg);
-    --tridactyl-hint-active-bg: none;
 
-    --tridactyl-hint-bg: rgba(129, 161, 193, 0);
+    --tridactyl-hint-active-fg: var(--tridactyl-fg);
+    --tridactyl-hint-bg: none;
+    --tridactyl-hint-active-bg: none;
 
     /* :viewsource */
     --tridactyl-vs-bg: var(--tridactyl-bg);

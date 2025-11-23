@@ -1,4 +1,8 @@
 # vim: ft=conf
+
+# make sure this config file is the only thing that matters
+sanitise tridactyllocal tridactylsync
+
 set searchurls.google https://www.google.com/search?client=firefox-b-d&q=%s
 set searchurls.g google
 set searchurls.scholar https://scholar.google.com/scholar?hl=en&as_sdt=0%2C5&q=%s&btnG=
@@ -16,6 +20,10 @@ set modeindicator true
 set editorcmd kitty -- nvim %f +%l 
 set hintuppercase false
 set hintautoselect true
+set smoothscroll true
+
+bind j scrolline 5
+bind k scrolline -5
 
 # somehow ironic given that I do not use those keys in vim
 bind --mode=normal ' gobble 1 markjump
@@ -31,6 +39,12 @@ unbind <C-c>
 unbind --mode=visual <C-c>
 unbind <C-[>
 unbind <F1>
+
+bind / fillcmdline find
+bind ? fillcmdline find -?
+bind n findnext 1
+bind n findnext -1
+bind <C-l> nohlsearch
 
 bind --mode=input <C-c> composite unfocus | mode normal
 bind --mode=ex <C-c> ex.hide_and_clear
