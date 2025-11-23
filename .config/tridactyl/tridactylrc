@@ -28,19 +28,23 @@ bind K tabprev
 bind I focusinput -I
 
 unbind <C-c>
+unbind --mode=visual <C-c>
 unbind <C-[>
 unbind <F1>
+
 bind --mode=input <C-c> composite unfocus | mode normal
 bind --mode=ex <C-c> ex.hide_and_clear
-unbind --mode=visual <C-c>
 bind --mode=hint <C-c> hint.reset
 bind --mode=normal * tabduplicate
+
 unbind H
 unbind L
 bind H back
 bind L forward
+
 bind n findnext 1
 bind N findnext -1
+
 unbind <C-f>
 unbind d
 bind dd tabclose
