@@ -7,8 +7,9 @@
 
 .mode-media {
     @extend .mode;
-    background-color: $purple;
-    &:hover { background-color: fade($purple); }
+    background-color: $accent;
+    color: $inv;
+    &:hover { background-color: fade($accent); }
 }
 
 .mode-screenshot {
@@ -21,8 +22,8 @@
 .mode-config {
     @extend .mode;
     color: $inv;
-    background-color: $yellow;
-    &:hover { background-color: fade($yellow); }
+    background-color: $green;
+    &:hover { background-color: fade($green); }
 }
 
 .mode-clipboard {

@@ -2,7 +2,7 @@
 "default": "Window",
 "media": "Media",
 "screenshot": "Print",
-"clipboard":"Clip",
+"clipboard":"Clipboard",
 "config":"Options"
 }')
 
@@ -34,6 +34,7 @@
     {"keys": "[jk]", "action": "Brightness"},
     {"keys": "[nN]", "action": "Nighlight"},
     {"keys": "m", "action": "Mirror Screen"},
+    {"keys": "g", "action": "Gaps"},
     {"keys": "t", "action": "Theme"},
     {"keys": "w", "action": "Wallpaper"},
     {"keys": "r", "action": "Random Wallpaper"},

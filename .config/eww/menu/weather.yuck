@@ -83,11 +83,10 @@
         (centerbox
             (label :halign "start" :class "todo-title" :text {label})
             (label :class "text" :text "󱩷   ${weather.astronomy[0].sunrise} to ${weather.astronomy[0].sunset}")
-            (label :halign "end" :class "text" :text "From ${weather.mintempC}°C to ${weather.maxtempC}°C")
+            (label :halign "end" :class "text" :text "${weather.mintempC}°C to ${weather.maxtempC}°C")
         )
-        (box :orientation "v" :space-evenly false :halign "start")
         (scroll :class "slider" :hscroll true :hexpand true :style "min-height: 8rem; margin-top: 1rem;"
-            (box :spacing 12 (for hour in {weather.hourly} (box :space-evenly false :orientation "v" :class "weather-hour"
+            (box :spacing 12 (for hour in {jq(weather.hourly, ".[2:]")} (box :space-evenly false :orientation "v" :class "weather-hour"
                 (label :text "${replace(hour.time, "00$", "")}:00" :class "text" :vexpand true)
                 (themed-icon :name {weather-icons[hour.weatherCode]} :width 32 :height 32)
                 (label :text "${hour.weatherDesc[0].value}" :class "text" :limit-width 12)
@@ -101,4 +100,3 @@
             (weather-for-day :weather {weather.weather[1]} :label "Tomorrow")
             (weather-for-day :weather {weather.weather[2]} :label "Overmorrow")
     )))
-

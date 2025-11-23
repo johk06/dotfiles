@@ -8,12 +8,12 @@
         background-color: unset;
     }
     &:indeterminate {
-        color: $polar3;
+        color: $polar4;
     }
     &:selected {
         background-color: $accent;
         color: $inv;
-        border-radius: 12px;
+        border-radius: 6px;
     }
     &.header {
     }
@@ -25,6 +25,8 @@
 .agenda-calendar-section {
     @extend .section;
     padding: 1rem;
+    padding-left: 2rem;
+    padding-right: 2rem;
 }
 
 .agenda-list-section {
@@ -33,8 +35,19 @@
 }
 
 .todo-title {
+    transition: text-decoration 0.3s ease, color 0.3s ease;
     font-size: 1.3rem;
     color: $fg0;
+    label {
+        font-size: inherit;
+        color: inherit;
+    }
+    &:hover {
+        > label {
+            text-decoration: line-through;
+            color: $polar4;
+        }
+    }
 }
 
 .todo-task {

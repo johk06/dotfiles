@@ -17,12 +17,11 @@
         (agenda-list-section)))
 
 (defwidget agenda-calendar-section []
-    (box :orientation "v" :class "agenda-calendar-section" :valign "start"
+    (box :orientation "h" :class "agenda-calendar-section" :valign "center"
         (calendar :class "agenda-calendar"
             :day {_todo-day}
             :month {_todo-month}
             :year {_todo-year}
-            :show-week-numbers true
             :timeout "600s"
             :onclick "${EWW_CMD} update todo-date={2}-$(({1}+1))-{0}")))
 
@@ -41,7 +40,7 @@
 
 (defvar agenda-expanded-todo 0)
 (defvar agenda-selected-list 0)
-(defwidget agenda-list-section [] 
+(defwidget agenda-list-section []
     (box :orientation "v" :space-evenly false :class "agenda-list-section" :vexpand true
         (agenda-list-controls)
         (stack :selected {agenda-selected-list} :tramsition "slideright" :same-size true :vexpand true
@@ -62,38 +61,41 @@
                     (for item in todo-done
                         (todo-done-task :item item)))))))
 
-(defwidget todo-level-editor [level id] (box :valign "center" 
-        (box :space-evenly false 
-            (button :class "button tiny-circle ${level != 0 && level <= 4 ? "red" : ""}"
-                :timeout "256s"
-                :onrightclick "todo edit ${id} --priority=none; ${todo-reload}"
-                :onclick "todo edit ${id} --priority=high; ${todo-reload}")
-            (button :class "button tiny-circle ${level > 4 && level <= 7 ? "yellow" : ""}"
-                :timeout "256s"
-                :onrightclick "todo edit ${id} --priority=none; ${todo-reload}"
-                :onclick "todo edit ${id} --priority=medium; ${todo-reload}")
-            (button :class "button tiny-circle ${level > 7 && level <= 10 ? "green" : ""}"
-                :timeout "256s"
-                :onrightclick "todo edit ${id} --priority=none; ${todo-reload}"
-                :onclick "todo edit ${id} --priority=low; ${todo-reload}"))))
+(defwidget todo-level-editor [level id] (box :valign "center" :style "padding: .6rem;"
+    (box :space-evenly false
+        (button :class "button tiny-circle ${level != 0 && level <= 4 ? "red" : ""}"
+            :timeout "256s"
+            :onrightclick "todo edit ${id} --priority=none; ${todo-reload}"
+            :onclick "todo edit ${id} --priority=high; ${todo-reload}")
+        (button :class "button tiny-circle ${level > 4 && level <= 7 ? "yellow" : ""}"
+            :timeout "256s"
+            :onrightclick "todo edit ${id} --priority=none; ${todo-reload}"
+            :onclick "todo edit ${id} --priority=medium; ${todo-reload}")
+        (button :class "button tiny-circle ${level > 7 && level <= 10 ? "green" : ""}"
+            :timeout "256s"
+            :onrightclick "todo edit ${id} --priority=none; ${todo-reload}"
+            :onclick "todo edit ${id} --priority=low; ${todo-reload}"))))
 
 (defwidget todo-task [item]
     (box :class "todo-task" :orientation "v" :space-evenly false
         (box :space-evenly false
-            (button :class "sbutton"
-                :timeout "128s"
-                :onclick "todo done ${item.id}; ${todo-reload}" "󰄬")
-            (todo-level-editor :level {item.priority} :id {item.id})
             (button :class "button"
                 :onclick "${EWW_CMD} update agenda-expanded-todo=${agenda-expanded-todo == item.id ? 0 : item.id}"
                 {agenda-expanded-todo == item.id ? "" : "" })
-            (box :hexpand true :halign "start" 
-                (label :tooltip {item.summary} :class "todo-title" :text {item.summary} :limit-width 20))
+            (box :hexpand true :halign "start"
+                (button :tooltip {item.summary} :class "todo-title"
+                    :timeout "128s"
+                    :onclick "todo done ${item.id}; ${todo-reload}"
+                    (label :text {item.summary} :limit-width 20)))
             (todo-date :time {item.start} :if-none "No Start")
             (todo-date :time {item.due} :if-none "No Due Date"))
         (revealer :reveal {item.id == agenda-expanded-todo} :transition "slidedown"
             (box :orientation "v" :space-evenly false
-                (label :class "text" :text {item.description})
+                (todo-level-editor :level {item.priority} :id {item.id})
+                (input :class "input"
+                    :value {item.description}
+                    :timeout "128s"
+                    :onaccept `echo -n '{}' | todo edit -r ${item.id}; ${todo-reload}`)
                 (box :space-evenly false
                     (button :class "sbutton alert-on-hover"
                         :timeout "128s"
@@ -114,13 +116,13 @@
 (defwidget todo-done-task [item]
     (box :class "todo-task" :orientation "v" :space-evenly false
         (box :space-evenly false
-            (button :class "sbutton" :timeout "128s"
+            (button :class "button" :timeout "128s"
                 :onclick `sed -e 's/^STATUS:COMPLETED/STATUS:NEEDS-ACTION/' -e '/^COMPLETED:/d' -e '/^PERCENT-COMPLETE/d' -i "$(todo path ${item.id})";${todo-reload}`
-                "󰕌    Undo")
-            (button :class "sbutton alert-on-hover" :timeout "128s"
-                :onclick "todo delete --yes ${item.id};${todo-reload}" "󰆴   Delete")
+                "󰕌")
             (box :hexpand true :halign "start" :style "margin-left: .5rem;"
                 (label :class "todo-title" :text {item.summary} :limit-width 20))
+            (button :class "sbutton alert-on-hover" :timeout "128s"
+                :onclick "todo delete --yes ${item.id};${todo-reload}" "󰆴")
             (todo-date :time {item.completed_at} :if-none "Nope" :no-hl true))))
 
 (defvar agenda-new-text "")
@@ -129,27 +131,28 @@
 (defwidget agenda-todo-new []
     (box :class "todo-new" :space-evenly false :orientation "v"
         (box :space-evenly false
-            (box :space-evenly false :hexpand true
-                (button
-                    :class "sbutton active"
-                    :timeout "128s"
-                    :onclick "todo new -l Tasks -d '${agenda-new-due}' -s '${agenda-new-start}' '${agenda-new-text}'; ${todo-reload}"
-                    "Add")
-                (input :class "input l1"
-                    :onchange "${EWW_CMD} update agenda-new-text='{}'")
-                (input :class "input l1"
-                    :value {todo-date}
-                    :onchange "${EWW_CMD} update agenda-new-start='{}'"))
-            (box :space-evenly false
-                (input :class "input l1"
-                    :value {todo-date}
-                    :onchange "${EWW_CMD} update agenda-new-due='{}'")))))
+            (button
+                :class "sbutton active"
+                :timeout "128s"
+                :onclick "todo new -l Tasks -d '${agenda-new-due}' -s '${agenda-new-start}' '${agenda-new-text}'; ${todo-reload}"
+                "Add")
+            (input :class "input l1"
+                :value {todo-date}
+                :onchange "${EWW_CMD} update agenda-new-start='{}'")
+            (input :class "input l1"
+                :value {todo-date}
+                :onchange "${EWW_CMD} update agenda-new-due='{}'"))
+        (box :space-evenly false :hexpand true
+            (input :class "input l1" :hexpand true
+                :onaccept "todo new -l Tasks -d '${agenda-new-due}' -s '${agenda-new-start}' '${agenda-new-text}'; ${todo-reload}"
+                :timeout "128s"
+                :onchange "${EWW_CMD} update agenda-new-text='{}'"))))
 
 (defvar todo-syncing false)
 (defvar todo-reloading false)
 (defwidget agenda-list-controls []
     (box :space-evenly false :hexpand true
-        (box 
+        (box
             (button :class "button ${agenda-selected-list == 0 ? "active" : ""}"
                 :onclick "${EWW_CMD} update agenda-selected-list=0"
                 "Agenda")
