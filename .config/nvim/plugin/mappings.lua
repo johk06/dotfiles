@@ -566,7 +566,7 @@ local getmacroreg = function()
     local r = vim.v.register
     return r ~= '"' and r or "q"
 end
-map({ "n", "x" }, "Q", function()
+map({ "n", "x" }, "<C-q>", function()
     if fn.reg_recording() ~= "" then
         return "q"
     else
