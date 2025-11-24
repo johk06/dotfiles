@@ -22,8 +22,8 @@ set hintuppercase false
 set hintautoselect true
 set smoothscroll true
 
-bind j scrolline 5
-bind k scrolline -5
+bind j scrollline 5
+bind k scrollline -5
 
 # somehow ironic given that I do not use those keys in vim
 bind --mode=normal ' gobble 1 markjump
