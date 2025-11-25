@@ -25,9 +25,10 @@
             :timeout "600s"
             :onclick "${EWW_CMD} update todo-date={2}-$(({1}+1))-{0}")))
 
-(defwidget todo-date [time if-none ?no-hl]
+(defwidget todo-date [time if-none ?no-hl ?start]
     (box :space-evenly false
-        (button :class "sbutton ${(time == "null" || (no-hl?:false)) ? "" : (time - EWW_TIME < 0 ? "alert" : (
+        (button :class "sbutton ${(time == "null" || (no-hl?:false)) ? "" : (time - EWW_TIME < 0 ? 
+            (start?:false ? "current" : "alert") : (
             time - EWW_TIME < 86400 ? "warn" :  ; next day
             time - EWW_TIME < 345600 ? "info" : "" ; next half-ish week
         ))}"
@@ -87,7 +88,7 @@
                     :timeout "128s"
                     :onclick "todo done ${item.id}; ${todo-reload}"
                     (label :text {item.summary} :limit-width 20)))
-            (todo-date :time {item.start} :if-none "No Start")
+            (todo-date :time {item.start} :if-none "No Start" :start true)
             (todo-date :time {item.due} :if-none "No Due Date"))
         (revealer :reveal {item.id == agenda-expanded-todo} :transition "slidedown"
             (box :orientation "v" :space-evenly false

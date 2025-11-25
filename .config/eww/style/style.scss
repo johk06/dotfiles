@@ -207,6 +207,13 @@
         background-color: fade($lblue);
     }
 }
+.current {
+    background-color: $magenta;
+    color: $inv;
+    &:hover {
+        background-color: fade($magenta);
+    }
+}
 
 .text {
     color: $fg0;
