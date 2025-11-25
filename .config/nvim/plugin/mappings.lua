@@ -923,6 +923,11 @@ map("n", cdleader .. "c", function()
     vim.cmd.lcd(get_cur_buf_parent())
 end, { desc = "Directory: Goto Buffer Parent" })
 
+-- go to current files dir
+map("n", cdleader .. "p", function()
+    vim.cmd.lcd(fn.fnamemodify(get_cur_buf_parent(), ":h"))
+end, { desc = "Directory: Goto Directory Parent" })
+
 local get_best_root = function()
     local root
     local clients = vim.lsp.get_clients { bufnr = api.nvim_get_current_buf() }
