@@ -7,7 +7,7 @@ mode "config" {
     bindsym Shift+N exec $sc/set-gamma.sh; mode "default"
     bindsym T exec $eww/bin/color.sh; mode "default"
     bindsym M exec $sc/mirror.sh; mode "default"
-    bindsym B exec eww open --toggle bar; mode "default"
+    bindsym B exec $sc/toggle-border.sh; mode "default"
 
     bindsym R exec '~/.config/background/wallpaper.sh both "$(find ~/.config/background/img -type f -print0 | shuf -z -n 1)"'
 
