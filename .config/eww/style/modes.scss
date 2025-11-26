@@ -39,6 +39,13 @@
     margin-right: .6rem;
 }
 
+.mode-mod {
+    color: $orange;
+    /* font-style: italic; */
+    margin-right: .6rem;
+}
+
+
 .mode-action {
     @extend .text;
 }
