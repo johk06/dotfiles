@@ -38,34 +38,39 @@ bindsym $mod+Shift+M exec ~/.config/rofi/applets/mute/run.sh
 mode "media" {
     bindsym {
     Escape mode "default" 
+
     Space exec playerctl play-pause
 
-    K exec $audio DEFAULT_SINK raise 3
-    J exec $audio DEFAULT_SINK lower 3
-    Shift+K exec $audio DEFAULT_SINK raise 10
-    Shift+J exec $audio DEFAULT_SINK lower 10
-    N       exec $sc/pulse-cycle.sh sink next
-    Shift+N exec $sc/pulse-cycle.sh sink prev
-    M       exec $audio DEFAULT_SINK mute
+    # Output
+    K       exec $audio             DEFAULT_SINK raise 3
+    J       exec $audio             DEFAULT_SINK lower 3
+    Shift+K exec $audio             DEFAULT_SINK raise 10
+    Shift+J exec $audio             DEFAULT_SINK lower 10
+    M       exec $audio             DEFAULT_SINK mute
+    N       exec $sc/pulse-cycle.sh sink         next
+    Shift+N exec $sc/pulse-cycle.sh sink         prev
 
-    Mod1+K exec $audio DEFAULT_SOURCE raise 3
-    Mod1+J exec $audio DEFAULT_SOURCE lower 3
-    Mod1+Shift+K exec $audio DEFAULT_SOURCE raise 10
-    Mod1+Shift+J exec $audio DEFAULT_SOURCE lower 10
-    Mod1+N       exec $sc/pulse-cycle.sh source next
-    Mod1+Shift+N exec $sc/pulse-cycle.sh source prev
-    Mod1+M       exec $audio DEFAULT_SOURCE mute
+    # Input
+    Mod1+K       exec $audio             DEFAULT_SOURCE raise 3
+    Mod1+J       exec $audio             DEFAULT_SOURCE lower 3
+    Mod1+Shift+K exec $audio             DEFAULT_SOURCE raise 10
+    Mod1+Shift+J exec $audio             DEFAULT_SOURCE lower 10
+    Mod1+M       exec $audio             DEFAULT_SOURCE mute
+    Mod1+N       exec $sc/pulse-cycle.sh source         next
+    Mod1+Shift+N exec $sc/pulse-cycle.sh source         prev
 
-
-    S exec playerctl position 0
-    H exec playerctl position 5-
-    L exec playerctl position 5+
+    # Seek
+    S       exec playerctl position 0
+    H       exec playerctl position 5-
+    L       exec playerctl position 5+
     Shift+H exec playerctl previous
     Shift+L exec playerctl next
 
-    Q exec ~/.config/rofi/applets/mpd/run.sh; mode "default"
+    # Interact with mpd
     P exec $sc/mpd-play.sh; mode "default"
+    Q exec ~/.config/rofi/applets/mpd/run.sh; mode "default"
 
+    # Mute interactively 
     Shift+M exec ~/.config/rofi/applets/mute/run.sh; mode "default"
 
     # Mappings for number keys {{{

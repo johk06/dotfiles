@@ -1,5 +1,16 @@
 # vim: ft=swayconfig
 
+# Operations
+# Mod+NR                -> Select
+# Mod+Shift+NR          -> Move to
+# Mod+Ctrl+NR           -> Move to and Select
+
+# Workspaces
+# 1-10                  -> Primary Monitor
+# Left, Down, Right, Up -> Secondary Monitor (Projector)
+# []                    -> Previous/Next on current
+# ~                     -> Scratchpad
+
 bindsym $mod+Grave scratchpad show
 bindsym $mod+Shift+Grave move window to scratchpad
 
@@ -92,5 +103,6 @@ bindsym $mod+Shift+Bracketright exec $sc/in-order.sh move next
 bindsym $mod+Shift+Bracketleft  exec $sc/in-order.sh move prev
 bindsym $mod+Ctrl+Bracketright exec $sc/in-order.sh push next
 bindsym $mod+Ctrl+Bracketleft  exec $sc/in-order.sh push prev
+
 bindsym $mod+N workspace next
 bindsym $mod+Shift+N workspace prev

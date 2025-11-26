@@ -1,21 +1,36 @@
 # vim: ft=swayconfig
 
+# manage various aspects related to the clipboard
+# generally anything under <M-* is related to the primary selectio
+
 mode "clipboard" {
     bindsym Escape mode "default"
-    bindsym Y exec wl-paste -p | wl-copy; mode "default"
-    bindsym Mod1+Y exec wl-paste | wl-copy -p; mode "default"
-    bindsym X exec $sc/exchange-clipboard.sh; mode "default"
-    bindsym E exec $sc/edit-clipboard.sh; mode "default"
-    bindsym Mod1+E exec $sc/edit-clipboard.sh -p; mode "default"
-    bindsym C exec wl-copy ""; mode "default"
-    bindsym Mod1+C exec wl-copy -p ""; mode "default"
+
+    # Print, stay in the mode so that another operation can be specified
     bindsym P exec $sc/print-clipboard.sh
     bindsym Mod1+P exec $sc/print-clipboard.sh -p
+
+    # Copy the other clipboard
+    bindsym Y exec wl-paste -p | wl-copy; mode "default"
+    bindsym Mod1+Y exec wl-paste | wl-copy -p; mode "default"
+
+    # Exchange them
+    bindsym X exec $sc/exchange-clipboard.sh; mode "default"
+    # And print the one specified
+    bindsym Mod1+X exec $sc/exchange-clipboard.sh; mode "default"; exec $sc/print-clipboard.sh -p
+    bindsym Shift+X exec $sc/exchange-clipboard.sh; mode "default"; exec $sc/print-clipboard.sh
+
+    # Edit the clipboard
+    bindsym E exec $sc/edit-clipboard.sh; mode "default"
+    bindsym Mod1+E exec $sc/edit-clipboard.sh -p; mode "default"
+
+    # Clear
+    bindsym C exec wl-copy ""; mode "default"
+    bindsym Mod1+C exec wl-copy -p ""; mode "default"
+
+    # Make up for the lack of pipes in graphical environments
     bindsym T exec $sc/translate.sh; mode "default"
     bindsym Mod1+T exec $sc/translate.sh -p; mode "default"
-    bindsym S exec $sc/speak-clipboard.sh; mode "default"
-    bindsym Mod1+S exec $sc/speak-clipboard.sh -p; mode "default"
-    bindsym Exclam exec $sc/exec-with --pid kitty $floating kitten @ --to unix:/tmp/kitty-%p send-text "wl-paste "; mode "default"
 }
 
 bindsym $mod+Y mode "clipboard"

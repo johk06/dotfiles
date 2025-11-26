@@ -24,31 +24,32 @@ bindsym $mod+Ctrl+J nop resize down 32
 bindsym $mod+Ctrl+K nop resize up 32
 bindsym $mod+Ctrl+L nop resize right 32
 
+# Exchange windows
 bindsym $mod+Mod1+H exec $sc/swap.sh left
 bindsym $mod+Mod1+J exec $sc/swap.sh down
 bindsym $mod+Mod1+K exec $sc/swap.sh up
 bindsym $mod+Mod1+L exec $sc/swap.sh right
 
+# Rarely needed, TODO: make sure I really need this
 bindsym $mod+S splitv
 bindsym $mod+V splith
 
+# "real" fullscreen
 bindsym $mod+F fullscreen
-# only hide gaps around window
+# only hide gaps around window, see ./config for different gaps
 bindsym $mod+Shift+F exec $sc/set-gaps.sh 0
 
 # Like vim for numbers
 bindsym $mod+A resize grow width 64px; resize grow height 64px
 bindsym $mod+X resize shrink width 64px; resize shrink height 64px 
 
-
-# suspend a windows underlying process
-bindsym $mod+Ctrl+Z exec $sc/signal-window.sh
-bindsym $mod+Mod1+Z exec $sc/stop-or-continue.sh
-
+# Like the vim z* family of commands
 bindsym $mod+Z focus mode_toggle
 
-# TODO: make sure it exits with empty input
-# maybe a --exec option?
+# Suspend a window's underlying process
+bindsym $mod+Mod1+Z exec $sc/stop-or-continue.sh
+# Send an arbitrary signal
+bindsym $mod+Ctrl+Z exec $sc/signal-window.sh
 
 # Like VIM
 bindsym $mod+Apostrophe exec $sc/on-mark.sh initial focus
@@ -62,4 +63,5 @@ bindsym $mod+Shift+G exec $sc/on-mark.sh search move workspace current
 bindsym $mod+T exec swaymsg mark $(wayinput -l -1 -t "Mark")
 bindsym $mod+U exec $sc/unmark.sh
 
+# Select-Based resize
 bindsym --whole-window $mod+Shift+BTN_RIGHT exec $sc/select-float-region.sh
