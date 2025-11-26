@@ -13,6 +13,7 @@
     {"keys": "[jk] [0-9]", "action": "Volume"},
     {"keys": "[mM]", "action": "Mute"},
     {"keys": "[nN]", "action": "Device"},
+    {"keys": "[tT]", "action": "Target"},
     {"keys": "[shl]", "action": "Seek"},
     {"keys": "[HL]", "action": "Track"},
     {"keys": "q", "action": "Queue"},

@@ -65,6 +65,8 @@ mode "media" {
     L       exec playerctl position 5+
     Shift+H exec playerctl previous
     Shift+L exec playerctl next
+    T       exec playerctld shift
+    Shift+T exec playerctld unshift
 
     # Interact with mpd
     P exec $sc/mpd-play.sh; mode "default"
