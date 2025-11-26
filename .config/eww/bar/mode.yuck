@@ -55,11 +55,13 @@
     'swaymsg -t subscribe \'["mode"]\' -m')
 
 (defwidget mode-hints []
-    (box :space-evenly false 
-        (for desc in {mode-descs[mode.change]}
-            (box :space-evenly false :class "mode-box"
-            (label :text "${desc.keys}" :class {desc.mod?:false ? "mode-mod" : "mode-keys"})
-            (label :text "${desc.action}" :class "mode-action")))))
+    (revealer :reveal {mode.change != "default"} 
+        :transition "slideleft" :duration "200ms"
+        (box :space-evenly false :class "mode-hints"
+            (for desc in {mode-descs[mode.change]}
+                (box :space-evenly false :class "mode-box"
+                    (label :text "${desc.keys}" :class {desc.mod?:false ? "mode-mod" : "mode-keys"})
+                    (label :text "${desc.action}" :class "mode-action"))))))
 
 (defwidget mode-symbol []
     (box :space-evenly false

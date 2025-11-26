@@ -1,3 +1,7 @@
+.mode-hints {
+    border-right: 1px solid $bright-gray;
+}
+
 .mode {
     @extend .button;
     padding: 0.07rem 0.85rem 0.07rem 0.85rem;
@@ -44,7 +48,6 @@
     /* font-style: italic; */
     margin-right: .6rem;
 }
-
 
 .mode-action {
     @extend .text;

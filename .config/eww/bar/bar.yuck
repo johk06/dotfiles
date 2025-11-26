@@ -25,20 +25,22 @@
 
 (defwidget top-bar []
     (centerbox :class "top-bar"
-    (box :space-evenly false
-        (mode-symbol)
-        (mode-hints)
-        (active-window))
-    (box :space-evenly false
-        (box :space-evenly false
-            (mark-list)
-            (workspace-list))
-        (notifications))
-    (box :space-evenly false :halign "end"
-        (mpris-current)
-        (systray-expander)
-        (status)
-        (clock))))
+        (box :space-evenly false 
+            (box :space-evenly false :class "top-bar-left"
+                (mode-symbol)
+                (mode-hints)
+                (active-window)))
+        (box :space-evenly false :class "top-bar-center"
+            (box :space-evenly false
+                (mark-list)
+                (workspace-list))
+            (notifications))
+        (box :space-evenly false :halign "end" 
+            (box :space-evenly false :class "top-bar-right"
+                (mpris-current)
+                (systray-expander)
+                (status)
+                (clock)))))
 
 
 (defvar systray-expanded false)
