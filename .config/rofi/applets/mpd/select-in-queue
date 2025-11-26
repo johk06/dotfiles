@@ -5,7 +5,7 @@ function list-in-queue {
     active="$(mpc -f '%position%' current)"
     while IFS=$'\t' read -r position title artist album; do
         printf "%d %s: %s - %s %s\t" $position "$title" "$artist" "$album"
-    done < <(mpc -f $'%position%\t%title%\t%artist%\t%album%' playlist)
+    done < <(mpc -f $'%position%\t[[%title%]|[%file%]]\t%artist%\t%album%' playlist)
     printf '\0active\x1f%d,\t' "$((active - 1))"
 }
 
@@ -14,5 +14,4 @@ if ((ROFI_RETV != 0)); then
     mpc -q play $position
 else
     list-in-queue
-
 fi
