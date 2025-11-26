@@ -30,6 +30,8 @@ def_key "u"
     remove_selection 
 def_key "V"
     select_range
+def_key "a"
+    add_item_to_playlist
 # }}}
 
 # Search {{{
