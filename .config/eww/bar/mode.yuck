@@ -34,7 +34,7 @@
     {"keys": "[jk]", "action": "Brightness"},
     {"keys": "[nN]", "action": "Nighlight"},
     {"keys": "g", "action": "Gaps"},
-    {"keys": "b", "action": "Border"},
+    {"keys": "[bB]", "action": "Border"},
     {"keys": "m", "action": "Mirror Screen"},
     {"keys": "t", "action": "Theme"},
     {"keys": "[rw]", "action": "(random) Wallpaper"}

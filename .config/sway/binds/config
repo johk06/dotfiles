@@ -1,27 +1,38 @@
 # vim: ft=swayconfig
 
+# Configure various aspects of sway at runtime
+
 mode "config" {
     bindsym Escape mode "default" 
-    bindsym W exec ~/.config/rofi/applets/wallpapers/run.sh; mode "default"
-    bindsym N exec killall gammastep || gammastep -O 3000; mode "default"
-    bindsym Shift+N exec $sc/set-gamma.sh; mode "default"
-    bindsym T exec $eww/bin/color.sh; mode "default"
-    bindsym M exec $sc/mirror.sh; mode "default"
-    bindsym B exec $sc/toggle-border.sh; mode "default"
 
-    bindsym R exec '~/.config/background/wallpaper.sh both "$(find ~/.config/background/img -type f -print0 | shuf -z -n 1)"'
-
-    bindsym G exec $sc/set-gaps.sh "$(wayinput -n -l -1 -t "Set Gaps")"; mode "default"
-
+    # Brightness, similar to audio in ./media
     bindsym K exec $sc/brightness.sh set +5
     bindsym J exec $sc/brightness.sh set -5
     bindsym Shift+K exec $sc/brightness.sh set +20
     bindsym Shift+J exec $sc/brightness.sh set -20
     bindsym Mod4+K exec $sc/brightness.sh set +50
     bindsym Mod4+J exec $sc/brightness.sh set -50
+
+    # Color temperature, N to enter a value in Kelvin
+    bindsym N exec killall gammastep || gammastep -O 3000; mode "default"
+    bindsym Shift+N exec $sc/set-gamma.sh; mode "default"
+
+    # Gaps and Border values
+    bindsym G exec $sc/set-gaps.sh "$(wayinput -n -l -1 -t "Set Gaps")"; mode "default"
+    bindsym B exec $sc/toggle-border.sh; mode "default"
+    bindsym Shift+B exec $sc/toggle-border.sh deco; mode "default"
+
+    # Mirror screen
+    bindsym M exec $sc/mirror.sh; mode "default"
+
+    # Theme
+    bindsym T exec $eww/bin/color.sh; mode "default"
+
+    # Wallpaper, r to randomize
+    bindsym W exec ~/.config/rofi/applets/wallpapers/run.sh; mode "default"
+    bindsym R exec '~/.config/background/wallpaper.sh both "$(find ~/.config/background/img -type f -print0 | shuf -z -n 1)"'
 }
 
-bindsym $mod+Delete mode "config"
 bindsym $mod+C mode "config"
 
 # hack for gtklock sometimes freezing after suspend
