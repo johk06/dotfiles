@@ -39,7 +39,8 @@ mode "media" {
     bindsym {
     Escape mode "default" 
 
-    Space exec playerctl play-pause
+    Space      exec playerctl  play-pause
+    Mod1+Space exec playerctld shift && playerctl play-pause && playerctld unshift
 
     # Output
     K       exec $audio             DEFAULT_SINK raise 3
@@ -60,9 +61,13 @@ mode "media" {
     Mod1+Shift+N exec $sc/pulse-cycle.sh source         prev
 
     # Seek
-    S       exec playerctl position 0
-    H       exec playerctl position 5-
-    L       exec playerctl position 5+
+    S      exec playerctl  position 0
+    H      exec playerctl  position 5-
+    L      exec playerctl  position 5+
+    Mod1+S exec playerctld shift && playerctl position 0  && playerctld unshift
+    Mod1+H exec playerctld shift && playerctl position 5- && playerctld unshift
+    Mod1+L exec playerctld shift && playerctl position 5+ && playerctld unshift
+
     Shift+H exec playerctl previous
     Shift+L exec playerctl next
     T       exec playerctld shift
