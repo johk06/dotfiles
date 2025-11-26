@@ -1,5 +1,6 @@
 # vim: ft=swayconfig
 
-client.focused #2e3440 #2e3440 #eceff4 #8fbcbb #8fbcbb
+client.focused #8fbcbb #2e3440 #eceff4 #8fbcbb #8fbcbb
 client.unfocused #2e3440 #2e3440 #d8dee9 #00000000 #00000000
 client.focused_inactive #2e3440 #2e3440 #d8dee9 #00000000 #00000000
+client.urgent #D08770 #2e3440 #eceff4 #D08770 #D08770
