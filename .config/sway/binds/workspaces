@@ -9,10 +9,12 @@
 # 1-10                  -> Primary Monitor
 # Left, Down, Right, Up -> Secondary Monitor (Projector)
 # []                    -> Previous/Next on current
-# ~                     -> Scratchpad
+# ~/Tab                 -> Scratchpad
 
 bindsym $mod+Grave scratchpad show
 bindsym $mod+Shift+Grave move window to scratchpad
+bindsym $mod+Tab scratchpad show
+bindsym $mod+Shift+Tab move window to scratchpad
 
 # numeric {{{
 bindsym $mod+1 workspace number 1
