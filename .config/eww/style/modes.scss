@@ -1,5 +1,5 @@
 .mode-hints {
-    border-right: 1px solid $bright-gray;
+
 }
 
 .mode {
@@ -54,10 +54,11 @@
 }
 
 .mode-box {
-    background-color: $bg1;
-    padding: 0.07rem 1.15rem 0.07rem 0.85rem;
-    margin: 0.4rem;
-    border-radius: 12px;
+    /* background-color: $bg1; */
+    border-right: 1px solid $bg3;
+    padding: 0rem 1rem 0rem 1rem;
+    margin-top: 0.8rem;
+    margin-bottom: 0.8rem;
 }
 
 .mark {

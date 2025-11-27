@@ -37,7 +37,8 @@
     {"keys": "[bB]", "action": "Border"},
     {"keys": "m", "action": "Mirror Screen"},
     {"keys": "t", "action": "Theme"},
-    {"keys": "[rw]", "action": "(random) Wallpaper"}
+    {"keys": "w", "action": "Wallpaper"},
+    {"keys": "r", "action": "Random"}
 ],
 "clipboard": [
     {"keys": "<M-*", "action": "Selection", "mod": true},
