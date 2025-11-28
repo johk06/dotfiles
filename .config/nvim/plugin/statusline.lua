@@ -289,10 +289,10 @@ local function update_lsp_servers()
 
     ---@param c vim.lsp.Client
     local names = vim.tbl_map(function(c)
-        return " =" .. c.name
+        return c.name
     end, clients)
 
-    return #clients > 0 and table.concat(names, "") or ""
+    return #clients > 0 and (" [%s]"):format(table.concat(names, " ")) or ""
 end
 -- }}}
 
@@ -305,9 +305,9 @@ local indices = {
     diagnostics = 7,
     search      = 8,
 
-    words       = 10,
-    filetype    = 11,
-    lsp         = 12,
+    words       = 11,
+    filetype    = 12,
+    lsp         = 13,
 }
 
 local last_update = 0
@@ -448,23 +448,32 @@ update_timer:start(0, 200, vim.schedule_wrap(function()
 end)
 )
 
+local bracket_left = "%#SlISL#"
+local bracket_right = "%#SlISR#"
+
 -- prefill the line
 -- some will be static, some only updated via autocmd, some via timer
 sections = {
-    "%#SlISL#",
-    update_mode(),                 -- mode
-    "%#SlTyped#%-5(%S%)",          -- current keys
-    "",                            -- macro register
-    "",                            -- title of buffer with modified etc
-    "",                            -- git
-    "",                            -- diagnostics
-    "",                            -- searchcount
+    bracket_left,
+    update_mode(),            -- mode
+    "%#SlTyped#%-5(%S%)",     -- current keys
+    "",                       -- macro register
+    "",                       -- title of buffer with modified etc
+    "",                       -- git
+    "",                       -- diagnostics
+    "",                       -- searchcount
+    delim .. "%*%P %3l,%-3c", -- cursor position
 
-    delim .. "%*%P %3l,%-3c%= %<", -- center: cursor position
-    "",                            -- counts
-    "",                            -- filetype
-    "",                            -- attached LSPs
-    "%#SlISR# ",
+    -- separate the two parts, a bracket on each side
+    bracket_right
+    .. "%#Normal#%=%<"
+    .. bracket_left
+    .. "%*",
+
+    "", -- counts
+    "", -- filetype
+    "", -- attached LSPs
+    bracket_right,
 }
 
 vim.o.laststatus = 3
