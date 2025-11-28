@@ -2,5 +2,9 @@
 return {
     "johk06/nvim-cut-out",
     ---@type cutout.config
-    opts = {}
+    ---@diagnostic disable-next-line: missing-fields
+    opts = {
+        -- more ergonomic to hit, works well with the yanking nature of the plugin
+        keys = "yd"
+    }
 }
