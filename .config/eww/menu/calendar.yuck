@@ -48,6 +48,7 @@
             (agenda-todo-list)
             (agenda-weather-list))))
 
+(defvar agenda-show-done false)
 (defwidget agenda-todo-list []
     (box :orientation "v" :space-evenly false
         (agenda-todo-new)
@@ -57,10 +58,16 @@
                     (for item in todo-active
                         (todo-task :item item)))
                 (box :space-evenly false :hexpand true
-                    (label :class "agenda-heading" :text "Completed"))
-                (box :orientation "v" :space-evenly false
-                    (for item in todo-done
-                        (todo-done-task :item item)))))))
+                    (button :class "text-button" :style "margin-top: 1.4rem;"
+                        :onclick "${EWW_CMD} update agenda-show-done=${!agenda-show-done}"
+                        {agenda-show-done ? "" : ""})
+                    (box :halign "center"
+                        (label :class "agenda-heading" :text "Completed")))
+                (revealer :reveal {agenda-show-done} :transition "slidedown"
+                    (box :orientation "v" :space-evenly false
+                        (hsep :height 20)
+                        (for item in todo-done
+                            (todo-done-task :item item))))))))
 
 (defwidget todo-level-editor [level id] (box :valign "center" :style "padding: .6rem;"
     (box :space-evenly false
