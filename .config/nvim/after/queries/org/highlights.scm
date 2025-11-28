@@ -6,7 +6,7 @@
 
 (block
   (expr) @_name
-  . 
+  .
   (expr) @label
   (#eq? @_name "src"))
 
@@ -15,4 +15,5 @@
   value: (value) @markup.heading @spell
   (#eq? @_name "title"))
 
-(expr "$" @bold)
+(expr
+  "$" @bold)
