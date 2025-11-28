@@ -1,3 +1,5 @@
+Jhk.require_program("gopls")
+
 ---@type vim.lsp.Config
 return {
     cmd = { "gopls"},

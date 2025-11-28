@@ -1,3 +1,5 @@
+Jhk.require_program("typescript-language-server")
+
 ---@type vim.lsp.Config
 return {
     filetypes = { "javascript", "typescript" },

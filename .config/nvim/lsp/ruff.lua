@@ -1,3 +1,5 @@
+Jhk.require_program("ruff")
+
 ---@type vim.lsp.Config
 return {
     filetypes = { "python" },

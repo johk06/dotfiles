@@ -4,18 +4,7 @@ local mason_PATH = vim.fn.stdpath("data") .. "/mason/bin"
 ---@type table<string, string|false>
 ---All the programs that need to be available
 local needed_programs = {
-    ["asm-lsp"] = false,
-    ["bash-language-server"] = false,
-    ["clangd"] = false,
-    ["harper-ls"] = false,
-    ["jedi-language-server"] = false,
-    ["json-lsp"] = false,
-    ["lua-language-server"] = false,
-    ["tinymist"] = false,
-    ["typos-lsp"] = false,
-    ["yaml-language-server"] = false,
-    ["zls"] = false,
-    ["prettypst"] = false,
+    prettypst = false,
 }
 
 ---@param pkg Package
@@ -34,6 +23,11 @@ end
 ---@param program string The executable that needs to be installed
 ---@param package_name string? Alternative package name
 local ensure_program_installed = function(program, package_name)
+    if not package.loaded["mason"] then
+        needed_programs[program] = package_name or false
+        return
+    end
+
     local path = vim.fn.exepath(program)
     -- package is installed via the system, do not touch it
     if path ~= "" and not vim.startswith(path, mason_PATH) then
@@ -51,7 +45,7 @@ local ensure_program_installed = function(program, package_name)
     end
 end
 
-Jhk.ensure_program = ensure_program_installed
+Jhk.require_program = ensure_program_installed
 
 local ensure_all_installed = function()
     for prog, pkg in pairs(needed_programs) do

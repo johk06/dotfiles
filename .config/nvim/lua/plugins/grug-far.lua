@@ -31,7 +31,7 @@ M.opts = {
 }
 
 M.init = function()
-    Jhk.ensure_program("ast-grep")
+    Jhk.require_program("ast-grep")
     local utils = require("config.utils")
     utils.map({ "n", "v" }, "<space>G", function()
         require("grug-far").open()

@@ -1,3 +1,5 @@
+Jhk.require_program("tinymist")
+
 ---@type vim.lsp.Config
 return {
     filetypes = { "typst" },

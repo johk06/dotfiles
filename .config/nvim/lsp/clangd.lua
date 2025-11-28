@@ -1,3 +1,5 @@
+Jhk.require_program("clangd")
+
 ---@type vim.lsp.Config
 return {
     filetypes = { "c", "cpp", "objc", "objcpp", "cuda", "proto" },

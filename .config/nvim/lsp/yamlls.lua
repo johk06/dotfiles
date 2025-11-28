@@ -1,3 +1,5 @@
+Jhk.require_program("yaml-language-server")
+
 ---@type vim.lsp.Config
 return {
     filetypes = { "yaml" },

@@ -1,3 +1,5 @@
+Jhk.require_program("taplo")
+
 ---@type vim.lsp.Config
 return {
     filetypes = { "toml" },

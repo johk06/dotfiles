@@ -1,3 +1,5 @@
+Jhk.require_program("jedi-language-server")
+
 ---@type vim.lsp.Config
 return {
     filetypes = { "python" },

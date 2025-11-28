@@ -22,7 +22,6 @@ M.opts = {
         c     = { "clang-format" },
         go    = { "gofmt" },
         json  = { "jq" },
-        query = { "format-queries" },
         sh    = { "shfmt" },
         toml  = { "taplo" },
         typst = { "prettypst" },

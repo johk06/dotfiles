@@ -1,3 +1,5 @@
+Jhk.require_program("asm-lsp")
+
 ---@type vim.lsp.Config
 return {
     filetypes = { "asm", "vmasm" },

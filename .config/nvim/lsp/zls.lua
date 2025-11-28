@@ -1,3 +1,5 @@
+Jhk.require_program("zls")
+
 ---@type vim.lsp.Config
 return {
     cmd = { "zls" },

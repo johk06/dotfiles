@@ -1,3 +1,5 @@
+Jhk.require_program("lua-language-server")
+
 ---@type vim.lsp.Config
 return {
     filetypes = { "lua" },

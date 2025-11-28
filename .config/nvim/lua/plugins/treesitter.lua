@@ -200,7 +200,6 @@ local ensure_installed = {
     "luadoc",
     "luap",
     "mail",
-    "qin",
     "markdown",
     "markdown_inline",
     "printf",
