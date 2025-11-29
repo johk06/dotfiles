@@ -14,3 +14,6 @@
 ; TODO: evaluate what capture to use here
 (change
   kind: (renamed) @type)
+
+(prefix 
+  "!" @punctuation.destructive)

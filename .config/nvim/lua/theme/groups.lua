@@ -259,6 +259,7 @@ add_with_prefix(colorscheme, "@", {
     ["punctuation.special"]          = { fg = col.light_cyan },
     ["punctuation.special.markdown"] = { fg = col.light_gray },
     ["punctuation.delimiter"]        = { fg = col.light_gray },
+    ["punctuation.destructive"]      = { fg = col.red },
 
     ["attribute"]                    = { fg = col.yellow },
     ["attribute.builtin"]            = { fg = col.yellow },
