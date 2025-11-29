@@ -6,18 +6,47 @@ local M = {
     },
 }
 
+local ufo
 local function merged_provider(providers)
     return function(bufnr)
-        local all = {}
+        ufo = ufo or require("ufo")
+        local merged = {}
 
         for _, provider in ipairs(providers) do
-            local ok, folds = pcall(require("ufo").getFolds, bufnr, provider)
+            local ok, folds = pcall(ufo.getFolds, bufnr, provider)
             if ok then
-                vim.list_extend(all, folds or {})
+                vim.list_extend(merged, folds or {})
             end
         end
 
-        return #all > 0 and all or nil
+        local ordered = {}
+        for i, fold in ipairs(merged) do
+            fold.old_i = i
+            table.insert(ordered, fold)
+        end
+        table.sort(ordered, function(a, b)
+            return a.startLine < b.startLine
+        end)
+
+        --[[ Filter out nodes, that
+            - Start on the same line but close earlier than the next node
+        ]]
+        local final = {}
+        for i, fold in ipairs(ordered) do
+            local next = ordered[i + 1]
+            if next and fold.startLine == next.startLine and fold.endLine < next.endLine
+            then
+            else
+                table.insert(final, fold)
+            end
+        end
+
+        table.sort(final, function(a, b)
+            return a.old_i < b.old_i
+        end)
+
+
+        return #final > 0 and final or nil
     end
 end
 
@@ -32,39 +61,30 @@ end
 ---@param width integer
 ---@param truncate fun(string, integer): string
 ---@return table
-local function fold_formatter(virt_text, row, end_row, width, truncate)
+local function fold_formatter(virt_text, row, end_row, width, truncate, extra)
     local new_text = {}
+    local kind = extra.get_fold_kind(row)
 
-    -- get the actual first text element so i can check that for a foldmarker
-    -- the indent will be kept so it does not look out of place
-    local first_line = ""
-    local first_line_indent = ""
-    for _, chunk in ipairs(virt_text) do
-        if not chunk[1]:match("^%s*$") then
-            first_line = first_line .. chunk[1]
-            break
-        else
-            first_line_indent = first_line_indent .. chunk[1]
-        end
-    end
+    local suffix = {
+        { "{",                                "@punctuation.delimiter", },
+        { ("%d L"):format(end_row - row + 1), "UfoSuffix" },
+        { "}",                                "@punctuation.delimiter", },
+    }
 
-    -- try to find a foldmarker
-    local _, _, title, marker, level = first_line:find(".-%s+(.-)%s+(" .. marker_start() .. ")(%d*)")
-
-    local suffix = ("[%d lines]"):format(end_row - row + 1)
+    local suffix_width = 2 + #suffix[2][1]
 
     -- it's a marked fold, pretty print the marker label and (if it is there) level
-    if marker and title then
+    if kind == "marker" then
+        local _, _, title, marker, level = extra.text:find(".-%s+(.-)%s+(" .. marker_start() .. ")(%d*)")
         title = title:gsub("%s*$", "")
         local hlgroup = "UfoFoldTitle"
 
-        table.insert(new_text, { first_line_indent .. "# " .. title, hlgroup })
+        table.insert(new_text, { "# " .. title, hlgroup })
         if #level > 0 then
-            table.insert(new_text, { " :" .. level, "Number" })
+            table.insert(new_text, { " $" .. level, "Number" })
         end
     else -- otherwise keep the treesitter highlighting
-        local suff_width = vim.fn.strdisplaywidth(suffix)
-        local target_width = width - suff_width
+        local target_width = width - suffix_width
         local cur_width = 0
 
         for _, chunk in ipairs(virt_text) do
@@ -82,11 +102,12 @@ local function fold_formatter(virt_text, row, end_row, width, truncate)
     end
 
     table.insert(new_text, { " ", "" })
-    table.insert(new_text, { suffix, "UfoSuffix" })
+    vim.list_extend(new_text, suffix)
     return new_text
 end
 
-M.opts = {
+---@type UfoConfig
+local opts = {
     open_fold_hl_timeout = 0,
     fold_virt_text_handler = fold_formatter,
     close_fold_kinds_for_ft = {
@@ -104,14 +125,12 @@ M.opts = {
             winblend = 0,
         },
         mappings = {
-            jumpTop = "[",
-            jumpBot = "]",
             switch = "<space>z"
         }
     },
 }
 
-M.config = function(_, opts)
+M.config = function()
     vim.o.foldcolumn = "1"
     vim.o.foldlevel = 99
     vim.o.foldlevelstart = 99
