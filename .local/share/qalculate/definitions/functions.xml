@@ -1,19 +1,19 @@
 <?xml version="1.0"?>
-<QALCULATE version="5.3.0">
-  <function>
-    <names>normdistin</names>
-    <expression>integrate(normdist(x, \x, \y), \z, \a)</expression>
-    <argument type="number" index="1">
-      <title>&#x3BC;</title>
-    </argument>
-    <argument type="number" index="2">
-      <title>&#x3C3;</title>
-    </argument>
-    <argument type="number" index="3">
-      <title>start</title>
-    </argument>
-    <argument type="number" index="4">
-      <title>end</title>
-    </argument>
-  </function>
+<QALCULATE version="5.8.2">
+    <function>
+        <names>basisvec</names>
+        <expression>\x/norm(\x)</expression>
+    </function>
+    <function>
+        <names>trace</names>
+        <argument type="matrix" index="1">
+            <title>matrix</title>
+            <condition>
+                columns(\x) == rows(\x)
+            </condition>
+        </argument>
+        <expression>
+            sum(element(\x, n, n), 1, rows(\x), n)
+        </expression>
+    </function>
 </QALCULATE>
