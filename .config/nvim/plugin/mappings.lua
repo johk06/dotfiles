@@ -740,10 +740,6 @@ map(obj, "aI", textobjs.indent_outer_with_last)
 map(obj, "iz", textobjs.foldmarker_inner)
 map(obj, "az", textobjs.foldmarker_outer)
 
--- operand to arithmetic
-map(obj, "io", textobjs.create_pattern_obj("([-+*/%%]%s*)[%w_%.]+()"))
-map(obj, "ao", textobjs.create_pattern_obj("()[-+*/%%]%s*[%w_%.]+()"))
-
 -- snake_case or kebab-case sub-word
 map(obj, "i-", textobjs.create_pattern_obj("([-_]?)%w+([-_]?)"))
 map(obj, "a-", textobjs.create_pattern_obj("()[-_]?%w+[-_]?()"))

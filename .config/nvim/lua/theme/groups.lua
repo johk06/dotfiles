@@ -548,7 +548,7 @@ add_with_prefix(colorscheme, "BlinkCmp", {
     KindBoolean         = { link = "@boolean" },
     KindClass           = { link = "@type" },
     KindConstant        = { link = "@constant" },
-    KindConstructor     = { link = "@function"},
+    KindConstructor     = { link = "@function" },
     KindEnumMember      = { fg = pal.fg0 },
     KindField           = { fg = pal.fg0 },
     KindFile            = { fg = col.yellow },

@@ -3,15 +3,15 @@ local textobjects = {
     -- function declarations
     ["af"] = "@function.outer",
     ["if"] = "@function.inner",
-    -- function calls
-    ["iF"] = "@call.inner",
-    ["aF"] = "@call.outer",
-    -- read: inside/around argument
+    -- function calls/[u]sage
+    ["iu"] = "@call.inner",
+    ["au"] = "@call.outer",
+    -- inside/around argument
     ["ia"] = "@parameter.inner",
     ["aa"] = "@parameter.outer",
-    -- name
-    ["i="] = "@assignment.lhs",
-    ["a="] = "@assignment.outer",
+    -- variable
+    ["iv"] = "@assignment.lhs",
+    ["av"] = "@assignment.outer",
     -- comment
     ["ic"] = "@comment.inner",
     ["ac"] = "@comment.outer",
@@ -24,9 +24,6 @@ local textobjects = {
     -- [k]lasses/structs
     ["ik"] = "@class.inner",
     ["ak"] = "@class.outer",
-    -- numbers
-    ["i1"] = "@number.inner",
-
     -- blocks
     ["i<space>"] = "@block.inner",
     ["a<space>"] = "@block.outer",

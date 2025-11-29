@@ -5,7 +5,7 @@
   (ident) @label)
 
 (instruction
-  (ident 
+  (ident
     (reg) @variable))
 
 
@@ -16,7 +16,7 @@
   kind: (_) @keyword.return
   (#any-of? @keyword.return "ret" "leave" "syscall"))
 
-(instruction 
+(instruction
   kind: (_) @keyword
   (ident (reg (word) @function))
   (#eq? @keyword "call"))
