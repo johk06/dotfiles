@@ -76,7 +76,8 @@ local function fold_formatter(virt_text, row, end_row, width, truncate, extra)
     -- it's a marked fold, pretty print the marker label and (if it is there) level
     if kind == "marker" then
         local _, _, title, marker, level = extra.text:find(".-%s+(.-)%s+(" .. marker_start() .. ")(%d*)")
-        title = title:gsub("%s*$", "")
+        title = title and title:gsub("%s*$", "") or "***"
+        level = level or ""
         local hlgroup = "UfoFoldTitle"
 
         table.insert(new_text, { "# " .. title, hlgroup })
