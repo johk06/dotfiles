@@ -6,6 +6,8 @@ local M = {
     },
 }
 
+local utils = require("config.utils")
+
 local ufo
 local function merged_provider(providers)
     return function(bufnr)
@@ -75,8 +77,8 @@ local function fold_formatter(virt_text, row, end_row, width, truncate, extra)
 
     -- it's a marked fold, pretty print the marker label and (if it is there) level
     if kind == "marker" then
-        local _, _, title, marker, level = extra.text:find(".-%s+(.-)%s+(" .. marker_start() .. ")(%d*)")
-        title = title and title:gsub("%s*$", "") or "***"
+        local _, _, title, level = extra.text:find(".-%s+(.-)%s*" .. marker_start() .. "(%d*)")
+        title = title and title:gsub("%s*$", "") or "[-]"
         level = level or ""
 
         local hlgroup
@@ -95,9 +97,9 @@ local function fold_formatter(virt_text, row, end_row, width, truncate, extra)
             hlgroup = "UfoFoldTitle"
         end
 
-        table.insert(new_text, { "# " .. title, hlgroup })
+        table.insert(new_text, { "* " .. title, hlgroup })
         if #level > 0 then
-            table.insert(new_text, { " $" .. level, "Number" })
+            table.insert(new_text, { utils.format_raised(level), "Number" })
         end
     else -- otherwise keep the treesitter highlighting
         local target_width = width - suffix_width

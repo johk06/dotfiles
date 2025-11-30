@@ -726,6 +726,22 @@ M.format_bin = function(n)
     return tostring(buf)
 end
 
+M.format_raised = function(num)
+    local chars = {
+        ["0"] = "⁰",
+        ["1"] = "¹",
+        ["2"] = "²",
+        ["3"] = "³",
+        ["4"] = "⁴",
+        ["5"] = "⁵",
+        ["6"] = "⁶",
+        ["7"] = "⁶",
+        ["8"] = "⁷",
+        ["9"] = "⁸",
+    }
+
+    return tostring(num):gsub(".", chars)
+end
 -- }}}
 
 -- Ranges {{{
