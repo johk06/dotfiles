@@ -14,6 +14,9 @@ map g3 set "pages-per-row 3"
 map g4 set "pages-per-row 4"
 map g5 set "pages-per-row 5"
 
+# Annotate
+map A exec "xournalpp $FILE -n $PAGE"
+
 map <Space> snap_to_page
 # }}}
 
