@@ -149,6 +149,7 @@ opts.defaults = {
 
 opts.pickers = {
     lsp_definitions = lsp_config,
+    lsp_type_definitions = lsp_config,
     lsp_references = lsp_config,
     loclist = qfconfig,
     quickfix = qfconfig,
