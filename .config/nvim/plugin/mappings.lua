@@ -1,10 +1,9 @@
---[[ Information {{{
+--[[ Information
  All mappings that are general purpose and active regardless of opened plugins
  This is pretty much the core of my configuration and pulls in lots of other modules
 
  It's grouped into rough sections based on the type of keymap or its use case(s),
- each of those should be a foldmarker section as well.
-}}} ]]
+ each of those should be a foldmarker section as well. ]]
 
 -- Declarations {{{
 local api = vim.api
@@ -667,6 +666,22 @@ map("i", "<C-,>", "<C-o>[", { remap = true })
 -- the same thing for the repetition keys
 map("i", "<C-.><C-.>", "<C-o>;", { remap = true })
 map("i", "<C-,><C-,>", "<C-o>,", { remap = true })
+
+---@param char string
+local toggle_char_at_eol = function(char)
+    local line = api.nvim_get_current_line()
+    local old_char = line:match("(" .. vim.pesc(char) .. "*)$")
+    local lnum = api.nvim_win_get_cursor(0)[1]
+    api.nvim_buf_set_text(0, lnum - 1, #line - #old_char, lnum - 1, #line, {
+        #old_char == 0 and char or ""
+    })
+
+    return false
+end
+
+-- TODO: evaluate whether this even makes sense
+map("i", "<M-;>", function() toggle_char_at_eol(";") end)
+map("i", "<M-,>", function() toggle_char_at_eol(",") end)
 
 -- leftover keys looking for a mapping
 -- <C-l>
