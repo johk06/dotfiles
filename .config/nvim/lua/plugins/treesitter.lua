@@ -217,6 +217,8 @@ local attach = function(buf, language)
 
     vim.treesitter.start(buf, language)
     vim.bo[buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+    -- Treesitter makes sure spell checking is constrained to the relevant parts
+    vim.opt_local.spell = true
 
     return true
 end
