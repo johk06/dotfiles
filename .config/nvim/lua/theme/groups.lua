@@ -206,6 +206,10 @@ add_with_prefix(colorscheme, "Ufo", {
 
     Suffix       = { fg = col.bright_gray, },
     FoldTitle    = { fg = col.teal, bg = pal.bg01 },
+    FoldInfo     = { fg = col.yellow, bg = pal.bg01 },
+    FoldHidden   = { fg = col.bright_gray, bg = pal.bg01 },
+    FoldUtil     = { fg = col.light_blue, bg = pal.bg01 },
+    FoldConfig   = { fg = col.green, bg = pal.bg01 },
 })
 -- }}}
 

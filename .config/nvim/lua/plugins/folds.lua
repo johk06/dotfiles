@@ -78,7 +78,22 @@ local function fold_formatter(virt_text, row, end_row, width, truncate, extra)
         local _, _, title, marker, level = extra.text:find(".-%s+(.-)%s+(" .. marker_start() .. ")(%d*)")
         title = title and title:gsub("%s*$", "") or "***"
         level = level or ""
-        local hlgroup = "UfoFoldTitle"
+
+        local hlgroup
+        if title:find("^Info") or title:find("^Rationale") then
+            hlgroup = "UfoFoldInfo"
+        elseif title:find("^Config") then
+            hlgroup = "UfoFoldConfig"
+        elseif title:find("Unused") or title:find("^Other") then
+            hlgroup = "UfoFoldHidden"
+        elseif title:find("^Util")
+            or title:find("^Helper")
+            or title:find("^[Dd]ecl")
+            or title:find("^[Cc]onst") then
+            hlgroup = "UfoFoldUtil"
+        else
+            hlgroup = "UfoFoldTitle"
+        end
 
         table.insert(new_text, { "# " .. title, hlgroup })
         if #level > 0 then
