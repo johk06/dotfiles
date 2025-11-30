@@ -8,12 +8,15 @@
         <names>trace</names>
         <argument type="matrix" index="1">
             <title>matrix</title>
-            <condition>
-                columns(\x) == rows(\x)
-            </condition>
+            <condition>columns(\x) == rows(\x)</condition>
         </argument>
-        <expression>
-            sum(element(\x, n, n), 1, rows(\x), n)
-        </expression>
+        <expression>sum(element(\x, n, n), 1, rows(\x), n)</expression>
+    </function>
+    <function>
+        <names>dagger,au:&#x2020;</names>
+        <argument type="matrix" index="1">
+            <title>matrix</title>
+        </argument>
+        <expression>transpose(conj(\x))</expression>
     </function>
 </QALCULATE>
