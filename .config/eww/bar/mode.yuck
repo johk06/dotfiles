@@ -3,7 +3,8 @@
 "media": "Media",
 "screenshot": "Print",
 "clipboard":"Clipboard",
-"config":"Options"
+"config":"Options",
+"insert": "Insert"
 }')
 
 (defvar mode-descs '{
@@ -48,6 +49,13 @@
     {"keys": "e", "action": "Edit"},
     {"keys": "c", "action": "Clear"},
     {"keys": "t", "action": "Translate"}
+],
+"insert": [
+    {"keys": "(M-)y", "action": "Clipboard"},
+    {"keys": "[dD]", "action": "Date"},
+    {"keys": "[tT]", "action": "Time"},
+    {"keys": "p", "action": "Password"},
+    {"keys": "[sS]", "action": "Speech"}
 ]
 }')
 

@@ -1,0 +1,21 @@
+# vim: ft=swayconfig
+
+mode "insert" {
+    bindsym Escape mode "default" 
+
+    bindsym S exec $sc/toggle-numen; mode "default"
+    bindsym Shift+S exec killall numen&& eww update numen-state=off; mode "default"
+
+    bindsym D exec date +"type %Y-%m-%d" | dotool; mode "default"
+    bindsym Shift+D exec date +"type %b %d %Y, %H:%M %Z" | dotool; mode "default"
+
+    bindsym T exec date +"type %H:%M" | dotool; mode "default"
+    bindsym Shift+T exec date +"type %s" | dotool; mode "default"
+
+    bindsym P exec ~/.config/rofi/applets/pass/run.sh; mode "default"
+
+    bindsym Y exec wl-paste | $sc/type-lines.sh; mode "default"
+    bindsym Mod1+Y exec wl-paste -p | $sc/type-lines.sh; mode "default"
+}
+
+bindsym $mod+I mode "insert"
