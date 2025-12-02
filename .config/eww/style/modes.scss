@@ -30,6 +30,13 @@
     &:hover { background-color: fade($green); }
 }
 
+.mode-insert {
+    @extend .mode;
+    color: $inv;
+    background-color: $yellow;
+    &:hover { background-color: fade($yellow); }
+}
+
 .mode-clipboard {
     @extend .mode;
     color: $inv;
