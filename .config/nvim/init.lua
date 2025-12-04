@@ -53,7 +53,7 @@ o.smartcase = true
 o.title = true
 o.undofile = true
 o.winborder = "rounded"
-vim.filetype.add{
+vim.filetype.add {
     extension = {
         psv = "psv"
     }
@@ -183,20 +183,19 @@ require("lazy").setup("plugins", {
         pills = false,
         border = "rounded",
         icons = {
-            loaded     = "󰗠",
-            not_loaded = "󰍷",
-            ft         = "󰈔",
-            cmd        = "",
-            event      = "󰍢",
-            lazy       = "󰒲",
-            start      = "󰐥",
-            runtime    = "",
-            list       = {
-                "󱦰",
-                "󱞩",
-                "󱞩",
-                "󱞩",
-            },
+            loaded     = "@",
+            import     = "ι",
+            require    = "ι",
+            plugin     = "μ",
+            not_loaded = "_",
+            ft         = "%",
+            cmd        = ":",
+            event      = "!",
+            lazy       = "…",
+            start      = "^",
+            runtime    = "/",
+            keys       = "κ",
+            list       = { "-", ">", },
         }
     },
     performance = {
@@ -241,7 +240,7 @@ vim.diagnostic.config {
 -- }}}
 
 -- Load Config {{{
-require("config.lsp")          -- language servers
+require("config.lsp") -- language servers
 
 -- load UI components
 local ui = require("config.lib.ui")

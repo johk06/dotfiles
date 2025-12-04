@@ -68,9 +68,9 @@ local function fold_formatter(virt_text, row, end_row, width, truncate, extra)
     local kind = extra.get_fold_kind(row)
 
     local suffix = {
-        { "{",                                "@punctuation.delimiter", },
+        { "[",                                "@punctuation.delimiter", },
         { ("%d L"):format(end_row - row + 1), "UfoSuffix" },
-        { "}",                                "@punctuation.delimiter", },
+        { "]",                                "@punctuation.delimiter", },
     }
 
     local suffix_width = 2 + #suffix[2][1]
@@ -97,7 +97,7 @@ local function fold_formatter(virt_text, row, end_row, width, truncate, extra)
             hlgroup = "UfoFoldTitle"
         end
 
-        table.insert(new_text, { "* " .. title, hlgroup })
+        table.insert(new_text, { "| " .. title, hlgroup })
         if #level > 0 then
             table.insert(new_text, { utils.format_raised(level), "Number" })
         end

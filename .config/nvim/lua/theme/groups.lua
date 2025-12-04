@@ -86,7 +86,7 @@ local colorscheme = {
     diffFile                    = { link = "Directory" },
 
     -- messages
-    Question                    = { fg = col.fg0 },
+    Question                    = { fg = pal.fg0 },
     Warnings                    = { fg = col.orange },
     ErrorMsg                    = { fg = col.red },
     MoreMSg                     = { fg = col.bright_gray },
@@ -159,7 +159,7 @@ local colorscheme = {
     String                      = { link = "@string" },
     Struct                      = { link = "@type" },
     Structure                   = { link = "@type" },
-    Tag                         = { fg = col.fg2 },
+    Tag                         = { fg = pal.fg2 },
     Title                       = { link = "@markup.heading" },
     Todo                        = { link = "@comment.todo" },
     Typedef                     = { fg = col.light_blue },
@@ -172,7 +172,7 @@ local colorscheme = {
     TreesitterContext           = { bg = pal.bg01 },
     TreesitterContextLineNumber = { fg = col.teal },
 
-    UndotreeSeq                 = { fg = col.fg },
+    UndotreeSeq                 = { fg = pal.fg },
     UndotreeNode                = { fg = col.bright_gray },
     UndotreeTimeStamp           = { fg = col.light_blue },
     UndotreeBranch              = { fg = col.purple },
@@ -250,8 +250,8 @@ add_with_prefix(colorscheme, "@", {
     ["variable.builtin"]             = { fg = pal.fg0, italic = true },
     ["variable.parameter.builtin"]   = { fg = col.light_blue, italic = true },
 
-    ["constant"]                     = { fg = col.fg2 },
-    ["constant.builtin"]             = { fg = col.fg3 },
+    ["constant"]                     = { fg = pal.fg2 },
+    ["constant.builtin"]             = { fg = pal.fg3 },
 
     ["type"]                         = { fg = col.magenta },
     ["type.builtin"]                 = { fg = col.purple },
@@ -464,7 +464,7 @@ add_with_prefix(colorscheme, "File", {
 
     SizeNone          = { fg = pal.bg3 },
     SizeTiny          = { fg = col.bright_gray },
-    SizeSmall         = { fg = col.fg0 },
+    SizeSmall         = { fg = pal.fg0 },
     SizeMedium        = { fg = col.pink },
     SizeLarge         = { fg = col.yellow },
     SizeHuge          = { fg = col.orange },

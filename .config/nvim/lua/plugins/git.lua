@@ -168,7 +168,7 @@ M[2].config = function()
                 ok = vim.fn.search(name) ~= 0
             end
 
-            local searched = vim.fn.getcwd()
+            local searched = vim.fn.getcwd() .. "/"
             if vim.startswith(searched, gitdir) then
                 searched = searched:sub(#gitdir + 1)
             end

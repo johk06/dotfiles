@@ -5,7 +5,7 @@ M = {
     "nvim-orgmode/orgmode",
     cmd = { "Org" },
     ft = { "org" },
-    keys = { "<space>A", "<space>w" },
+    keys = { "<space>A" },
     init = function()
         -- HACK: forward requests to the global Org object until it is loaded
         _G.Org = setmetatable({}, {
@@ -67,7 +67,6 @@ opts.org_capture_templates = {}
 opts.mappings = {
     global = {
         org_agenda = "<space>A",
-        org_capture = "<space>w", -- [w]rite about
     },
 }
 
