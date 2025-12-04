@@ -234,6 +234,8 @@ map("n", "<space>m", function()
     require("quicker").refresh()
 end, { desc = "Make" })
 
+map("n", "<space>w", "<cmd>write<cr>")
+
 -- toggle the lists, like other buffer mappings
 map("n", "'q", function() require("quicker").toggle { min_height = 8 } end)
 map("n", "'l", function() require("quicker").toggle { min_height = 8, loclist = true } end)
@@ -885,12 +887,6 @@ end
    As many people correctly pointed out, yyp not leaving the cursor in place makes this more difficult with builtins ]]
 operators.map_function("gm", multiply_operator, { hijack_count = true })
 operators.map_function("gM", multiply_operator, { hijack_count = true }, { before = true })
-
---[[ TODO: evaluate whether this is a good idea
-- Especially the popup-menu design ]]
--- [c]onvert [d]ata
--- local convert = require("config.operators.conversion")
--- operators.map_function("cd", convert.operator, { normal_only = true })
 
 local sort_operator = require("config.operators.sort").operator
 operators.map_function("g=", sort_operator)

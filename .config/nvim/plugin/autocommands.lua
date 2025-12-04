@@ -74,7 +74,6 @@ utils.autogroup("config.chdir", {
 -- }}}
 
 -- auto resize on window resize
--- TODO: add actual heuristics for what to do
 autocmd("VimResized", {
     callback = function()
         vim.cmd.wincmd("=")

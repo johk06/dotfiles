@@ -11,7 +11,6 @@ local utils = require("config.utils")
 local ufo
 local function merged_provider(providers)
     return function(bufnr)
-        ufo = ufo or require("ufo")
         local merged = {}
 
         for _, provider in ipairs(providers) do
@@ -104,6 +103,8 @@ local function fold_formatter(virt_text, row, end_row, width, truncate, extra)
     else -- otherwise keep the treesitter highlighting
         local target_width = width - suffix_width
         local cur_width = 0
+        -- TODO: evaluate if I want this, could be useful
+        -- table.insert(new_text, {"| ", "NonText"})
 
         for _, chunk in ipairs(virt_text) do
             local text = chunk[1]
@@ -154,32 +155,12 @@ M.config = function()
     vim.o.foldlevelstart = 99
     vim.o.foldenable = true
 
-    local utils = require("config.utils")
-    local ufo = require("ufo")
+    ufo = require("ufo")
     ufo.setup(opts)
 
     utils.map("n", "zM", ufo.closeAllFolds)
     utils.map("n", "zR", ufo.openAllFolds)
     utils.map("n", "zm", function() ufo.closeFoldsWith(vim.v.count1) end)
-
-    utils.map("n", "<space>z", function()
-        local winid = ufo.peekFoldedLinesUnderCursor()
-        if winid then
-            --HACK: no better way rn
-            vim.wo[winid].list = false
-            vim.wo[winid].wrap = true
-
-            --HACK: limit the width of the new window to smth sane
-            local parent_width = vim.api.nvim_win_get_width(0)
-            local new_width
-            if parent_width < 90 then
-                new_width = parent_width - 10
-            else
-                new_width = 90
-            end
-            vim.api.nvim_win_set_width(winid, new_width)
-        end
-    end)
 
     --HACK: reset colorscheme
     vim.defer_fn(function()

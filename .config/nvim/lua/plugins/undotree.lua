@@ -35,7 +35,6 @@ M.config = function()
         map("n", "<C-j>", "<plug>UndotreePreviousSavedState")
     end
 
-    -- HACK: I couldn't figure out how to get a funcref from a v:lua call
     -- TODO: Get rid of this vimscript
     vim.cmd [[
     function g:Undotree_CustomMap()

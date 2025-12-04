@@ -15,8 +15,6 @@ local Ctx = {
     extra_data = {},
     was_repeat = {},
     last = nil,
-    -- HACK: preserve last cursor before going into O-pending mode
-    last_cursor = nil,
     last_count = nil,
 }
 
