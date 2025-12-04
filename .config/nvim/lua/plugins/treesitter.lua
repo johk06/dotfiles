@@ -130,8 +130,10 @@ local ts_texobjects = {
         end
 
         local builtin_brackets = {
-            "s", -- spelling errors
-            "z", -- folds
+            { "]s", "[s" },  -- spelling errors
+            { "]z", "[z" },  -- folds
+            { "]c", "[c]" }, -- diffs
+            { "g,", "g;" },  -- changes
         }
         local bracket_with_count = function(command)
             return function()
@@ -146,14 +148,12 @@ local ts_texobjects = {
             end
         end
         for _, key in pairs(builtin_brackets) do
-            local fwd = "]" .. key
-            local bwd = "[" .. key
             local nb, pb = utils.make_mov_pair(
-                bracket_with_count(fwd),
-                bracket_with_count(bwd)
+                bracket_with_count(key[1]),
+                bracket_with_count(key[2])
             )
-            map(modes, fwd, nb)
-            map(modes, bwd, pb)
+            map(modes, key[1], nb)
+            map(modes, key[2], pb)
         end
     end
 }
