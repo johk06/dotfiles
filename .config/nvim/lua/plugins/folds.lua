@@ -67,9 +67,9 @@ local function fold_formatter(virt_text, row, end_row, width, truncate, extra)
     local kind = extra.get_fold_kind(row)
 
     local suffix = {
-        { "[",                                "@punctuation.delimiter", },
-        { ("%d L"):format(end_row - row + 1), "UfoSuffix" },
-        { "]",                                "@punctuation.delimiter", },
+        { "[",                                    "@punctuation.delimiter", },
+        { ("%d Lines"):format(end_row - row + 1), "UfoSuffix" },
+        { "]",                                    "@punctuation.delimiter", },
     }
 
     local suffix_width = 2 + #suffix[2][1]
@@ -103,8 +103,6 @@ local function fold_formatter(virt_text, row, end_row, width, truncate, extra)
     else -- otherwise keep the treesitter highlighting
         local target_width = width - suffix_width
         local cur_width = 0
-        -- TODO: evaluate if I want this, could be useful
-        -- table.insert(new_text, {"| ", "NonText"})
 
         for _, chunk in ipairs(virt_text) do
             local text = chunk[1]

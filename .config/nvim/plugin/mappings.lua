@@ -224,7 +224,12 @@ end, { desc = "Qflist: Spelling" })
 map("n", "<space>qr", function() require("quicker").refresh(nil, { keep_diagnostics = true }) end)
 map("n", "<space>lr", function() require("quicker").refresh(0, { keep_diagnostics = true }) end)
 
--- run :make
+-- toggle the lists, like other buffer mappings
+map("n", "'q", function() require("quicker").toggle { min_height = 8 } end)
+map("n", "'l", function() require("quicker").toggle { min_height = 8, loclist = true } end)
+-- }}}
+
+-- Commands {{{
 map("n", "<space>m", function()
     vim.cmd [[
     write
@@ -234,11 +239,7 @@ map("n", "<space>m", function()
     require("quicker").refresh()
 end, { desc = "Make" })
 
-map("n", "<space>w", "<cmd>write<cr>")
-
--- toggle the lists, like other buffer mappings
-map("n", "'q", function() require("quicker").toggle { min_height = 8 } end)
-map("n", "'l", function() require("quicker").toggle { min_height = 8, loclist = true } end)
+map("n", "<space>w", "<cmd>write<cr>", { desc = "Write Buffer" })
 -- }}}
 
 -- Folds {{{

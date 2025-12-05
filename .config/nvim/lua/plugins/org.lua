@@ -110,7 +110,7 @@ opts.mappings.note = {
 
 opts.mappings.org = {
     org_toggle_heading                      = "<localleader>*",
-    org_store_link                          = "<localleader>s",
+    org_store_link                          = "<localleader>y",
     org_edit_special                        = "<localleader>e",
     org_add_note                            = "<localleader>n",
     org_archive_subtree                     = "<localleader>A",
@@ -144,7 +144,7 @@ opts.mappings.org = {
     org_refile                = "<localleader>r",
 
     org_open_at_point         = "<cr>",
-    org_insert_link           = "<localleader>i",
+    org_insert_link           = "<localleader>p",
 
     ---@diagnostic disable: assign-type-mismatch
     org_insert_todo_heading   = false,
@@ -159,7 +159,7 @@ local custom_opts = {
     spell = function(file, value)
         vim.wo[0][0].spell = true
         if type(value) == "string" then
-            vim.bo[file.buf].spelllang = value
+            vim.bo[file.buf].spelllang = value:gsub("%s*,", ",")
         else
             vim.bo[file.buf].spelllang = table.concat(value, ",")
         end
@@ -204,7 +204,6 @@ M.config = function()
                 local map = utils.local_mapper(ev.buf)
                 map("n", "<localleader>l", "<cmd>Telescope orgmode insert_link<cr>")
                 map("n", "<localleader>/", "<cmd>Telescope orgmode search_headings<cr>")
-                map("i", "<C-l>", "<cmd>Telescope orgmode insert_link<cr>")
 
                 -- The default <cr> mapping is nothing but broken
                 map("i", "<cr>", "<cr>")
