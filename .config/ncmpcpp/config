@@ -14,7 +14,7 @@ startup_screen = playlist
 # }}}
 
 # Visualizer {{{
-visualizer_look = --
+visualizer_look = //
 visualizer_type = ellipse
 visualizer_spectrum_smooth_look = no
 visualizer_color = 5, 13, 15, 7, 3, 4, 4, 10, 2
@@ -23,17 +23,18 @@ visualizer_color = 5, 13, 15, 7, 3, 4, 4, 10, 2
 # Format {{{
 song_list_format = "$(13)%N $(magenta)%l $8{%t}|{%f}$0"
 song_window_title_format = "ncmpcpp: {%a - }{%t}|{%f}"
-song_columns_list_format = "(4f)[13]{NE:Nr} (6f)[magenta]{l:Length} (35)[white]{t|f:Name} (25)[14]{br} (15)[green]{a} (10)[13]{yr}"
-song_status_format = "{%t}|{%f}{$(9) - $3%a $(9)/ $(14)%b}{ $(13)%y}{ %C}$0"
-browser_playlist_prefix = $(12)(list) $9
+song_columns_list_format = "(4f)[13]{NE:Nr} (6f)[magenta]{l:Length} (35)[white]{t|f:Name} (20)[14]{ar} (20)[cyan]{bl} (12f)[13]{yr}"
+song_status_format = "{%t}|{%f}{$(9) : $(14)%a $(9)/ $(cyan)%b}{ $(13)%y}{ %C}$0"
+browser_playlist_prefix = $(12)/ $9
 playlist_display_mode = columns
 browser_display_mode = columns
 search_engine_display_mode = columns
 # }}}
 
 # Colors {{{
-player_state_color = yellow
-statusbar_time_color = magenta
+player_state_color = green:b
+statusbar_time_color = 16:i
+volume_color = 16:i
 progressbar_color = 9
 progressbar_elapsed_color = yellow:b
 progressbar_look = =>-
@@ -42,12 +43,11 @@ state_flags_color = 15
 empty_tag_color = white:i
 empty_tag_marker = -
 main_window_color = white
-volume_color = blue
 window_border_color = 9
 active_window_border = 1
 current_item_prefix = $(white_9)
-color1 = white
-color2 = green
+color1 = blue
+color2 = white:i
 selected_item_prefix = $i
 selected_item_suffix = $/i
 discard_colors_if_item_is_selected = no
