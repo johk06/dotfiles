@@ -1,6 +1,7 @@
 # vim: ft=swayconfig
 
-client.focused   #8fbcbb #eceff4 #2e3440 #8fbcbb #8fbcbb
-client.unfocused #eceff4 #eceff4 #2e3440 #00000000 #00000000
-client.focused_inactive #eceff4 #eceff4 #2e3440 #00000000 #00000000
-client.urgent #D08770 #eceff4 #2e3440 #D08770 #D08770
+#                       Border  Background Text    Indicator Child-Border
+client.focused          #eceff4 #eceff4    #2e3440 #8fbcbb   #8fbcbb
+client.unfocused        #C0C7D5 #eceff4    #616E88 #616E88   #616E88
+client.focused_inactive #C0C7D5 #eceff4    #616E88 #616E88   #616E88
+client.urgent           #D08770 #eceff4    #2e3440 #D08770   #D08770
