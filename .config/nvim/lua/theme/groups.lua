@@ -139,11 +139,11 @@ local colorscheme = {
     Keyword                     = { link = "@keyword" },
     Label                       = { link = "@symbol" },
     Macro                       = { link = "@macro" },
-    markdownH1Delimiter         = { fg = col.light_cyan },
+    markdownH1Delimiter         = { link = "@markup.heading.1" },
     markdownH1                  = { link = "@markup.heading.1" },
-    markdownH2Delimiter         = { fg = col.red },
+    markdownH2Delimiter         = { link = "@markup.heading.2" },
     markdownH2                  = { link = "@markup.heading.2" },
-    markdownH3Delimiter         = { fg = col.green },
+    markdownH3Delimiter         = { link = "@markup.heading.3" },
     markdownH3                  = { link = "@markup.heading.3" },
     Number                      = { link = "@number" },
     Operator                    = { link = "@operator" },
@@ -638,16 +638,6 @@ add_with_prefix(colorscheme, "Mason", {
     MutedBlock                  = { bg = pal.bg1 },
     MutedBlockBold              = { link = "*MutedBlock" },
     Backdrop                    = { link = "Normal" },
-})
--- }}}
-
--- Overrides for vim syntax {{{
-add_with_prefix(colorscheme, "zsh", {
-    Deref       = { link = "@variable" },
-    VariableDef = { link = "@variable" },
-    Function    = { link = "@function" },
-    KSHFunction = { link = "@function" },
-    Operator    = { link = "@operator" },
 })
 -- }}}
 
