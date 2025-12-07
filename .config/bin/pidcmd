@@ -1,0 +1,28 @@
+#!/bin/sh
+
+get_proc_cmd() {
+    if [ -r "/proc/$1/cmdline" ]; then
+        tr '\0' ' ' </proc/"$1"/cmdline
+        echo
+    else
+        echo "[None]"
+    fi
+}
+
+print_on_stdin() {
+    while read -r pid; do
+        get_proc_cmd "$pid"
+    done
+}
+
+if [ $# -eq 0 ]; then
+    print_on_stdin
+else
+    for pid in "$@"; do
+        if [ "$pid" = "-" ]; then
+            print_on_stdin
+        else
+            get_proc_cmd "$pid"
+        fi
+    done
+fi
