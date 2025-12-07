@@ -36,6 +36,7 @@
     {"keys": "[nN]", "action": "Nighlight"},
     {"keys": "g", "action": "Gaps"},
     {"keys": "[bB]", "action": "Border"},
+    {"keys": "[-+]", "action": "Opacity"},
     {"keys": "m", "action": "Mirror Screen"},
     {"keys": "t", "action": "Theme"},
     {"keys": "w", "action": "Wallpaper"},
