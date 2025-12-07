@@ -106,11 +106,11 @@ command("Csh", function(args)
     }, vim.schedule_wrap(function(out)
         if out.code ~= 0 then
             utils.error("Csh",
-                ("%s: %s exited with code %d:\n%s"):format(args.name, vim.inspect(cmd), out.code, out.stderr))
+                ("%s exited with code %d:\n%s"):format(args.args, out.code, out.stderr))
             return
         end
 
-        -- errorfmt is too complex for this, a simple list of names works
+        -- `errorformat` is too complex for this, a simple list of names works just fine
         local items = vim.tbl_map(function(line)
             local path, rest = line:match("([^:]+):?(.*)")
             if not path or path == "" then
