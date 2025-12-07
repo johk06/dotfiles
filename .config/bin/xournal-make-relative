@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+INPUT="$1"
+OUTPUT="${2:-$INPUT}"
+
+PDFNAME="${INPUT%.xopp}.pdf"
+PDFNAME="${PDFNAME##*/}"
+
+TMPFILE="$(mktemp)"
+
+gzip -d <"$INPUT" |
+    sed '/^<background type="pdf" domain="absolute"/ s/filename="[^"]*"/filename="'"$PDFNAME"'"/' |
+    gzip - - >"$TMPFILE"
+
+mv "$TMPFILE" "$OUTPUT"
