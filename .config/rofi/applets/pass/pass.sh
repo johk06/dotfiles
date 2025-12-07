@@ -52,9 +52,9 @@ fill-form() {
                 error-otp "$account"
                 exit
             fi
-            printf 'type %s\n' "$token"
+            printf 'type %s\nkey enter\n' "$token"
         else
-            printf 'type %s\nkey tab\ntype %s' "$user" "$pass"
+            printf 'type %s\nkey tab\ntype %s\n key enter\n' "$user" "$pass"
         fi | dotool
     }
 }
@@ -74,7 +74,7 @@ show-entry() {
         Copy)
             notify-on-copy "Field"
             coproc {
-                wl-copy <<< "$value"
+                wl-copy <<<"$value"
             }
             ;;
         esac
