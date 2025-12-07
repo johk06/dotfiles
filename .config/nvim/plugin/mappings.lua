@@ -432,7 +432,6 @@ end, { desc = "Tab: Delete recursively" })
 -- }}}
 
 -- Improved Builtin Mappings {{{
--- stop {} from polluting the jumplist
 
 -- make them wait until I press another key
 -- most useful for leaders like this
@@ -690,6 +689,58 @@ map("i", "<M-,>", function() toggle_char_at_eol(",") end)
 -- <C-l>
 -- <C-z>
 -- <C-m> maybe, may conflict with <cr>
+-- }}}
+
+--[[ Command Mode {{{
+All of these are just shortcuts for simple text insertions for now
+Some highlights:
+- Fast inserting of common pattern characters in search mode
+]]
+
+---@param keys string
+---@param rhs string|function
+local map_search = function(keys, rhs)
+    map("c", keys, function()
+        local cmdtype = fn.getcmdtype()
+        local cmdline = fn.getcmdline()
+        if cmdtype == "/" or cmdtype == "?"
+            or cmdline:match("^%A*[sgv]") then
+            if type(rhs) == "function" then
+                return rhs()
+            else
+                return rhs
+            end
+        else
+            return keys
+        end
+    end, { expr = true })
+end
+
+map_search("<M-space>", "\\s*")
+map_search("<C-space>", "\\s\\+")
+
+map_search("<M-w>", "\\<\\><Left><Left>")
+map_search("<M-g>", "\\(\\)<Left><Left>")
+map_search("<M-/>", function()
+    local cmdline = fn.getcmdline()
+    local replaced = cmdline:gsub("/*$", "/")
+    fn.setcmdline(replaced, #replaced + 1)
+end)
+
+-- cycle magic: default -> very -> plain -> default
+map_search("<M-m>", function()
+    local cmdline = fn.getcmdline()
+    local replacement
+    local modifier =cmdline:match("^\\([mMvV])")
+    if  not modifier then
+        replacement = "\\v" .. cmdline
+    elseif modifier == "m" or modifier == "v" then
+        replacement = "\\V" .. cmdline:sub(3)
+    else
+        replacement = cmdline:sub(3)
+    end
+    fn.setcmdline(replacement)
+end)
 -- }}}
 
 -- Snippets {{{
