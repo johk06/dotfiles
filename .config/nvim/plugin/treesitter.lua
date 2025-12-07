@@ -6,6 +6,7 @@
  to avoid collisions with those added by e.g. nvim-treesitter. ]]
 
 local M = {}
+local directive = vim.treesitter.query.add_directive
 
 
 --[[ Conceal Symbol Names in Typst
@@ -25,6 +26,7 @@ local typst_symbol_names = {
     Epsilon            = "Ε",
     epsilon            = "ε",
     ["epsilon.alt"]    = "𝜖",
+    ["epsilon.rev"]    = "϶",
     Zeta               = "Ζ",
     zeta               = "ζ",
     Eta                = "Η",
@@ -104,7 +106,7 @@ local typst_symbol_names = {
 -- Maybe a quick way to add a conceal temporarily via a user command
 M.typst_symbol_names = typst_symbol_names
 
-vim.treesitter.query.add_directive("jhk-typst-set-symbol-conceal!", function(match, pattern, source, predicate, metadata)
+directive("jhk-typst-set-symbol-conceal!", function(match, pattern, source, predicate, metadata)
     local id = predicate[2]
     local node = match[id]
     if not node then
@@ -121,7 +123,7 @@ vim.treesitter.query.add_directive("jhk-typst-set-symbol-conceal!", function(mat
 end, {})
 
 -- Only select n initial characters of a node
-vim.treesitter.query.add_directive("jhk-set-length!", function(match, pattern, source, predicate, metadata)
+directive("jhk-set-length!", function(match, pattern, source, predicate, metadata)
     local id = predicate[2]
     local node = match[id]
     if not node then

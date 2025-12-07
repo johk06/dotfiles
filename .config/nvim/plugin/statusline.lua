@@ -292,7 +292,7 @@ local function update_lsp_servers()
         return c.name
     end, clients)
 
-    return #clients > 0 and (" [%s]"):format(table.concat(names, " ")) or ""
+    return #clients > 0 and (" (%s)"):format(table.concat(names, " ")) or ""
 end
 -- }}}
 

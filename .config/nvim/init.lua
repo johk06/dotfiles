@@ -1,5 +1,6 @@
 --[[ Information {{{
-Entry point to *almost* all of my neovim configuration (barring ftplugins and after/)
+Entry point to *almost* all of my neovim configuration 
+(barring ftplugins, plugin/ and after/)
 This file is mainly concerned with setting options
 and doing everything required for startup.
 Once it is done bootstrapping neovim, little if anything remains of it
