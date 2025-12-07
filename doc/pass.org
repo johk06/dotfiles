@@ -1,0 +1,33 @@
+#+title: Passwords and Secrets
+#+author: Jo
+#+width: 120
+#+language: EN
+#+filetags: secrets
+
+* Password Store
+All my passwords that are not local to my system are managed via the [[man:pass(1)][pass(1)]] password manager.
+They're stored in [[~/.password-store]], as is the default.
+
+** File Format
+Pass does not have a standard file format, but I do like
+[[https://www.passwordstore.org#organization][the one suggested by the author]]
+In that very shell-script friendly schema, the first line of the file is reserved for the actual password with all of
+the following lines being ~Key: Value~ pairs that are both human and machine readable.
+Some common keys I use are:
+| Field         | Value                                                                              |
+|---------------+------------------------------------------------------------------------------------|
+| Email         | The Email address associated with the account                                      |
+| Name          | Either the real name of the user or the account (in case the name is doxxy)        |
+| Phone#        | The phone number used for the account, with no spaces and country number prepended |
+| Public        | For an ssh key, the public key                                                     |
+| Type          | Some accounts do not have a traditional password                                   |
+| Used-for      | A list of ~user@domain~ sub-accounts                                               |
+| Username/User | The username                                                                       |
+
+** Extensions
+I also use the [[https://github.com/tadfisher/pass-otp#readme][pass-otp]] extension to pass.
+It allows One Time Passwords (aka OTP codes) to be managed by pass.
+An OTP code is a time-limited secondary authentication measure used by many websites and services.
+Pass-otp looks for a single line of the form ~otpauth://...~ in the password store. I usually put that directly after
+the password line.
+To import an OTP code it is often necessary to scan a QR code, as many websites expect you to use a phone.
