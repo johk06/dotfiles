@@ -196,6 +196,7 @@ M.config = function()
 
     orgmode.links:add_type(custom.line_start_link)
     orgmode.links:add_type(custom.regex_search_link)
+    orgmode.links:add_type(custom.manpage_link)
 
     utils.autogroup("config.orgmode", {
         FileType = {

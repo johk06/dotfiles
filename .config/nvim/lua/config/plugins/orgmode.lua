@@ -173,6 +173,45 @@ M.regex_search_link = {
     end
 }
 
+local complete_manpages = {}
+vim.system({ "apropos", "." }, {
+}, function(out)
+    if out.stdout and out.code == 0 then
+        local lines = vim.split(out.stdout, "\n")
+        for _, l in ipairs(lines) do
+            local name, sect = l:match("^(%S+)%s+(%(%d+%))")
+            if name and sect then
+                table.insert(complete_manpages, "man:" .. name .. sect)
+            end
+        end
+    end
+end)
+---@type OrgLinkType
+M.manpage_link = {
+    get_name = function(self)
+        return "manual"
+    end,
+    follow = function(self, link)
+        if not vim.startswith(link, "man:") then
+            return false
+        end
+
+        vim.cmd.Man(link:gsub("^man:", ""))
+
+        return true
+    end,
+    autocomplete = function(self, link)
+        if not vim.startswith(link.base, "man:") then
+            return { "man:" }
+            -- only complete after having typed two characters
+        elseif #link.base > 5 then
+            return complete_manpages
+        else
+            return {}
+        end
+    end,
+}
+
 ---@type OrgCustomExport
 M.typst_exporter = {
     label = "Export to Typst",
