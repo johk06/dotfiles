@@ -1,6 +1,9 @@
 export VISUAL="nvim"
 export EDITOR="nvim"
 export npm_config_prefix="$HOME/.local"
+export SSH_ASKPASS=/usr/lib/seahorse/ssh-askpass
+export SSH_ASKPASS_REQUIRE=prefer
+export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
 
 path+=("$HOME/.local/bin" "$HOME/.config/bin")
 
@@ -9,7 +12,6 @@ rm -rf $HOME/Tmp $HOME/.cache
 ln -s /tmp/workspaces_$USER $HOME/Tmp
 ln -s /tmp/workspaces_$USER/cache $HOME/.cache
 
-eval $(ssh-agent -s) > /dev/null 2>&1
 if [[ $(tty) == /dev/tty* ]]
 then
     exec $ZDOTDIR/run_session.sh
