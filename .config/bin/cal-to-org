@@ -1,0 +1,73 @@
+#!/usr/bin/env python
+
+from pathlib import Path
+from icalendar import Calendar, Event
+import glob
+import os
+import sys
+from datetime import datetime
+
+CALPATH = os.getenv("HOME") + "/cal/"
+ORGPATH = Path(os.getenv("HOME") + "/org/cal/")
+if not ORGPATH.is_dir():
+    ORGPATH.mkdir()
+
+CALENDARS = [
+    "private",
+    "uni1",
+    "uni2",
+]
+
+NOW = datetime.now()
+
+
+def as_org_date(date: datetime, active) -> str:
+    if active:
+        return date.strftime("<%Y-%m-%d %a %H:%M>")
+    else:
+        return date.strftime("[%Y-%m-%d %a %H:%M]")
+
+
+def as_org_daterange(start: datetime, end: datetime, active) -> str:
+    if start.date() == end.date():
+        return (
+            ("<" if active else "[")
+            + start.strftime("%Y-%m-%d %a %H:%M-")
+            + end.strftime("%H:%M")
+            + (">" if active else "]")
+        )
+    else:
+        return f"{as_org_date(start, active)}--{as_org_date(end, active)}"
+
+
+def as_org_event(ev: Event) -> str:
+    start: datetime = ev.DTSTART
+    end: datetime = ev.DTEND
+    in_the_past = end.timestamp() < NOW.timestamp()
+    date = as_org_daterange(start, end, not in_the_past)
+    return f"""** {"DONE " if in_the_past else ""}{ev["SUMMARY"]}
+{date}
+{ev["DESCRIPTIOn"]}
+"""
+
+
+def export_to_org(cal: Calendar, name: str, path: str):
+    with open(path, "w") as file:
+        file.write(
+            (f"* Calendar '{name}'\n/Last synchronised/: {as_org_date(NOW, False)}\n\n")
+        )
+
+        events = cal.events
+        events.sort(key=lambda e: e.DTSTART)
+        for ev in events:
+            file.write(as_org_event(ev))
+
+
+for name in CALENDARS:
+    dir = Path(CALPATH + name)
+    whole = Calendar()
+    for file in dir.glob("*/*.ics"):
+        cal = Calendar.from_ical(file.read_bytes())
+        if len(cal.events) > 0:
+            whole.add_component(cal.events[0])
+    export_to_org(whole, name, ORGPATH.joinpath(name + ".org"))
