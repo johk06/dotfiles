@@ -5,10 +5,10 @@ MENUFMT="%s\n%s\0icon\x1f%s\x1finfo\x1f%s\x1fmeta\x1f%s\t"
 print-menu() {
     printf "$MENUFMT" \
         Lock "Lock Session" lock session/lock "" \
-        Suspend "Suspend System" sleep session/sleep "sleep" \
+        Suspend "Suspend System" sleep session/suspend "sleep" \
         Logout "Exit Session" system-log-out session/logout "" \
         Reboot "Reboot System" system-reboot session/reboot "restart" \
-        Shutdown "Shut System down" system-shutdown session/poweroff "off" \
+        Shutdown "Shut System down" system-shutdown session/halt "off power" \
         Wallpaper "Change Wallpaper" wallpaper other/wallpaper "background" \
         Schedule "Manage AT Jobs" clock sched/manage ""
 }
@@ -16,6 +16,7 @@ print-menu() {
 power-menu() {
     IFS=/ read -r subitem answer <<<"$1"
     if [[ -z "$answer" ]]; then
+        printf '\0prompt\x1fDo you want to %s?\t' "$subitem"
         printf '%s\0icon\x1f%s\x1finfo\x1f%s\t' \
             Yes dialog-yes "session/$1/yes" \
             No cancel "session/$1/no"
@@ -26,7 +27,7 @@ power-menu() {
 
         case "$subitem" in
         lock) gtklock -d ;;
-        sleep)
+        suspend)
             gtklock -d
             sleep 1
             systemctl suspend
@@ -37,7 +38,7 @@ power-menu() {
             fi
             ;;
         reboot) systemctl reboot ;;
-        poweroff) systemctl poweroff ;;
+        halt) systemctl poweroff ;;
         esac
     fi
 }
@@ -69,7 +70,7 @@ sched-menu() {
     list)
         atq | while read -r id wday month day time year queue user; do
             printf "$MENUFMT" \
-                "$time on $wday $month $day" "by $user in queue $queue" sleep sched/task/"$id" ""
+                "$time on $wday $month $day" "by $user in queue $queue" suspend sched/task/"$id" ""
         done
         ;;
     notify)

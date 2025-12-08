@@ -83,7 +83,7 @@ entrybox {
     expand: false;
     background-color: transparent;
     orientation: horizontal;
-    children: [entry, message, num-filtered-rows, num-rows];
+    children: [entry, prompt, num-filtered-rows, num-rows];
 }
 
 num-filtered-rows {
