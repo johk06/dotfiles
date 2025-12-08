@@ -314,7 +314,7 @@ M.opts.keymaps = {
     ["=i"]             = function() set_sort("invert") end,
     ["=d"]             = function() set_sort("default") end,
 
-    ["<localleader>f"] = filter_items,
+    ["<localleader>/"] = filter_items,
     ["<localleader>p"] = "actions.preview",
     ["<localleader>:"] = function() open_cmd("") end,
     ["<localleader>b"] = function() toggle_column("birthtime") end,

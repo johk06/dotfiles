@@ -70,7 +70,7 @@ o.breakindentopt = "sbr"
 o.showbreak = ""
 -- }}}
 
--- i don't know why this isn't the default, much more intuitive in my opinion
+-- I don't know why this isn't the default, much more intuitive in my opinion
 o.splitright = true
 o.splitbelow = true
 

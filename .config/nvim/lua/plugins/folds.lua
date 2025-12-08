@@ -75,8 +75,8 @@ local function fold_formatter(virt_text, row, end_row, width, truncate, extra)
     local suffix_width = 2 + #suffix[2][1]
 
     -- it's a marked fold, pretty print the marker label and (if it is there) level
-    if kind == "marker" then
-        local _, _, title, level = extra.text:find(".-%s+(.-)%s*" .. marker_start() .. "(%d*)")
+    local _, _, title, level = extra.text:find(".-%s+(.-)%s*" .. marker_start() .. "(%d*)")
+    if kind == "marker" and title then
         title = title and title:gsub("%s*$", "") or "[-]"
         level = level or ""
 

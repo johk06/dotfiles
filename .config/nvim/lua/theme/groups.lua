@@ -470,7 +470,7 @@ add_with_prefix(colorscheme, "File", {
     SizeHuge          = { fg = col.orange },
     SizeTooBig        = { fg = col.red },
 
-    TypeExecutable    = { fg = col.green, bold = true },
+    TypeExecutable    = { fg = col.green, italic = true },
     TypeCode          = { fg = col.light_blue },
     TypeHeader        = { fg = col.yellow },
     TypeMarkup        = { fg = col.magenta },
