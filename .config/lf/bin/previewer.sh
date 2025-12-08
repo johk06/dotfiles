@@ -283,6 +283,23 @@ Zwölf Boxkämpfer jagen Viktor quer über den großen Sylter Deich."
     prop "Style" "$style" yellow
     display_image "${reply[1]}" 1 left
 }
+
+function preview_xopp {
+    if create_cache "${1}" .png .data; then
+        xournalpp-thumbnailer "$1" "${reply[1]}" 2>&1 >/dev/null &
+        gzip -d - < "$1" | xq -r '.xournal.page | length, .[0].background."@filename"' > "${reply[2]}"
+        wait
+    fi
+    {
+        read -r pagecount
+        read -r pdf
+    } < "${reply[2]}"
+
+    info "Xournal++ File"
+    prop "Pages" "$pagecount" magenta
+    prop "PDF File" "$pdf"
+    display_image "${reply[1]}" 1 left
+}
 # }}}
 
 # Archives {{{
@@ -432,8 +449,12 @@ case "$MIMETYPE" in
         bsdtar_list "$FILE" "ISO Disk Image"
         ;;
     application/x-archive|application/x-cpio|application/x-tar|application/x-bzip2|application/gzip|application/x-lzip|application/x-lzma|application/x-xz|application/x-7z-compressed|application/vnd.android.package-archive|application/vnd.debian.binary-package|application/java-archive|application/x-gtar|application/zip)
-        type="${MIMETYPE#application/}"
-        bsdtar_list "$FILE" "${type#*x-} Archive"
+        if [[ "$FILE"  == *.xopp ]]; then
+            preview_xopp "$FILE"
+        else
+            type="${MIMETYPE#application/}"
+            bsdtar_list "$FILE" "${type#*x-} Archive"
+        fi
         ;;
     application/vnd.rar)
         preview_rar "$FILE"
