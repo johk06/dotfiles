@@ -1,15 +1,16 @@
 #!/usr/bin/env bash
 
 mkdir -p ~/cal/{,.}{contacts,private}
+mkdir -p ~/cal/uni/{1,2}
 
-pimsync sync
+pimsync sync "$@"
 
 for dir in ~/cal/.contacts/*; do
     read dispname < "$dir/displayname"
-    ln -s "$dir" ~/cal/contacts/"${dispname// /_}"
+    ln -sT "$dir" ~/cal/contacts/"${dispname// /_}"
 done
 
 for dir in ~/cal/.private/*; do
     read dispname < "$dir/displayname"
-    ln -s "$dir" ~/cal/private/"${dispname// /_}"
+    ln -sT "$dir" ~/cal/private/"${dispname// /_}"
 done
