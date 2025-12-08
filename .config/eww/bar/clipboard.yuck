@@ -6,11 +6,11 @@
             :onclick "xdg-open ${clipboard.data}"
             :onrightclick "wl-copy -c"
             (box :space-evenly false
-                (label :class "text yellow" :text "+")
+                (label :class "text yellow" :text '"+')
                 (stack :selected {clipboard.mime =~ "text/.*" ? 1 : 0 } 
                     :transition "none"
                     :style "margin-left: .5rem" 
-                    (label :class "text" :text "(${clipboard.state == "nil" ? "empty" : clipboard.mime})")
+                    (label :class "text" :text "(${clipboard.state == "nil" ? "Empty" : clipboard.mime})")
                     (box :space-evenly false
                         (label :limit-width 48
                             :text {clipboard.data})
