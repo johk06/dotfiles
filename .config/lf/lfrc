@@ -102,6 +102,8 @@ map g/ cd /
 map gc cd ~/.config
 map gD cd ~/Documents/
 map gw cd ~/ws
+map gm cd-eval /run/media/$USER/
+map gM cd-eval \$XDG_RUNTIME_DIR/gvfs
 map g<space> push :cd<space>
 # }}}
 
@@ -155,16 +157,16 @@ set incfilter true
 
 # Stat {{{
 map U disk-usage
-map Im info-mimetype
-map Id disk-usage
-map Ii %stat -c "%i" "$f"
-map It set info "time"
-map Is set info "size"
-map Ia set info "atime"
-map Ib set info "btime"
-map Ic set info "ctime"
-map Iu set info "user:group"
-map Ip set info "user:perm"
+map im info-mimetype
+map id disk-usage
+map ii %stat -c "%i" "$f"
+map it set info "time"
+map is set info "size"
+map ia set info "atime"
+map ib set info "btime"
+map ic set info "ctime"
+map iu set info "user:group"
+map ip set info "user:perm"
 # }}}
 
 # Archives {{{
@@ -173,6 +175,13 @@ map at push :tar<space>
 map ax push :extract<space>
 # }}}
 
+# Images {{{
+map Is push :image-resize<space>
+map Ir push :image-rotate<space>
+map Im push :image-magick<space>
+# }}}
+
+# Open Externally {{{
 map e
 map ee &~/.config/lf/bin/split.sh none edit "$fx"
 map es &~/.config/lf/bin/split.sh sp edit "$fx"
@@ -185,3 +194,4 @@ map <space>tv &~/.config/lf/bin/split.sh vsp shell "$PWD"
 map <space>ll &~/.config/lf/bin/split.sh none lf "$PWD"
 map <space>ls &~/.config/lf/bin/split.sh sp lf "$PWD"
 map <space>lv &~/.config/lf/bin/split.sh vsp lf "$PWD"
+# }}}
