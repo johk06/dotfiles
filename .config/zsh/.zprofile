@@ -2,7 +2,6 @@ export VISUAL="nvim"
 export EDITOR="nvim"
 export npm_config_prefix="$HOME/.local"
 export SSH_ASKPASS=/usr/lib/seahorse/ssh-askpass
-export SSH_ASKPASS_REQUIRE=prefer
 export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
 
 path+=("$HOME/.local/bin" "$HOME/.config/bin")

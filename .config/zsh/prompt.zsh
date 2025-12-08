@@ -122,7 +122,7 @@ function precmd {
     if ((exitc > 128 && exitc < 256)); then
         local signame="${signals[exitc-127]:l}"
         if [[ -n "$signame" ]]; then
-            psvar[11]="!$signame: $exitc"
+            psvar[11]="!${signame}: $exitc"
         else
             psvar[11]="!$exitc"
         fi
