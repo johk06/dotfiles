@@ -55,18 +55,22 @@ text/* | application/json | inode/x-empty | application/javascript | application
     ;;
 application/x-archive | application/x-cpio | application/x-tar | application/x-bzip2 | application/gzip | application/x-lzip | application/x-lzma | application/x-xz | application/x-7z-compressed | application/vnd.android.package-archive | application/vnd.debian.binary-package | application/java-archive | application/x-gtar | application/zip | application/vnd.rar | application/x-iso9660-image)
 
-    if create_arccache "$f" "#x"; then
-        # create
-        mkdir "$REPLY"
-        case "$MIMETYPE" in
-        *)
-            bsdtar -C "$REPLY" -x -f "$f"
-            ;;
-        esac
+    if [[ "$f" == *.xopp ]]; then
+        xournalpp "$f"
+    else
+        if create_arccache "$f" "#x"; then
+            # create
+            mkdir "$REPLY"
+            case "$MIMETYPE" in
+            *)
+                bsdtar -C "$REPLY" -x -f "$f"
+                ;;
+            esac
 
-        printf "%s\0%s\n" "$f" "$REPLY" >>"$ARCLIST"
+            printf "%s\0%s\n" "$f" "$REPLY" >>"$ARCLIST"
+        fi
+        lf -remote "send $id cd $(printf '%s' "$REPLY" | escape)"
     fi
-    lf -remote "send $id cd $(printf '%s' "$REPLY" | escape)"
 
     ;;
 *)
