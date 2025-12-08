@@ -14,5 +14,5 @@
             :transition "slideleft" (window-context-menu))
         (button :class "text-button"
             :onclick `${EWW_CMD} update current-window-expanded=${!current-window-expanded}`
-            (label :limit-width 72
+            (label :limit-width 40
                 :text {sway.active == "null" ? "[Empty]" : sway.active.name}))))

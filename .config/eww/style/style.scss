@@ -235,6 +235,14 @@
     color: $orange;
 }
 
+.yellow {
+    color: $yellow;
+}
+
+.pink {
+    color: $pink;
+}
+
 .hidden {
     color: $bright-gray;
 }
@@ -482,6 +490,7 @@ check {
     margin-left: 2rem;
     margin-right: 2rem;
     min-height: 2px;
+    min-width: 2px;
 }
 
 .scrollbar slider {

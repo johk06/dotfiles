@@ -1,22 +1,19 @@
-(deflisten secondary "wl-paste -w ~/.config/sway/eww/bin/clipboard.sh")
-(defvar clipicons '{
-"image":"󰋩",
-"file":"󰈔",
-"url":"󰌷",
-"empty":"?",
-"text":""
-}')
+(deflisten clipboard "wl-paste -w bin/clipboard.sh")
 
-(defwidget clipboard-button [clip]
-    (button :class "button"
-        :timeout "96m"
-        :onclick {clip.type == "url" || clip.type == "file" ? "xdg-open '${clip.text}'" : ""}
-        :onrightclick "wl-paste -p|wl-copy"
-        :onmiddleclick "wl-copy ''"
-        :tooltip {clip.type != "image" ? clip.text : "[Image]"}
-        (box :space-evenly false
-            (label :class "cliptype ${clip.type}" :text {clipicons[clip.type]})
-            (label :limit-width 48 :lines 1 :text {clip.type != "image" ? clip.label : "[Image]"}))))
-
-(defwidget clipboard [] (box :visible pref-clipboard-shown
-    (clipboard-button :clip secondary)))
+(defwidget clipboard-info [] 
+    (box :space-evenly false :visible {mode.change == "default" || mode.change == "clipboard"}
+        (button :class "text-button"
+            :onclick "xdg-open ${clipboard.data}"
+            :onrightclick "wl-copy -c"
+            (box :space-evenly false
+                (label :class "text yellow" :text "+")
+                (stack :selected {clipboard.mime =~ "text/.*" ? 1 : 0 } 
+                    :transition "none"
+                    :style "margin-left: .5rem" 
+                    (label :class "text" :text "(${clipboard.state == "nil" ? "empty" : clipboard.mime})")
+                    (box :space-evenly false
+                        (label :limit-width 48
+                            :text {clipboard.data})
+                        (label :class "text hidden"
+                            :visible {clipboard.lines > 0} :style "margin-left: .5rem;"
+                            :text "(+${clipboard.lines} Lines)") ))))))

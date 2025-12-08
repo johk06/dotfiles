@@ -1,6 +1,7 @@
 (include "./bar/popups/center.yuck")
 (include "./bar/workspace.yuck")
 (include "./bar/window.yuck")
+(include "./bar/clipboard.yuck")
 (include "./bar/marks.yuck")
 (include "./bar/status.yuck")
 (include "./bar/mode.yuck")
@@ -29,7 +30,8 @@
             (box :space-evenly false :class "top-bar-left"
                 (mode-symbol)
                 (mode-hints)
-                (active-window)))
+                (active-window)
+                (clipboard-info)))
         (box :space-evenly false :class "top-bar-center"
             (box :space-evenly false
                 (mark-list)

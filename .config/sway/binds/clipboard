@@ -25,8 +25,8 @@ mode "clipboard" {
     bindsym Mod1+E exec $sc/edit-clipboard.sh -p; mode "default"
 
     # Clear
-    bindsym C exec wl-copy ""; mode "default"
-    bindsym Mod1+C exec wl-copy -p ""; mode "default"
+    bindsym C exec wl-copy -c; mode "default"
+    bindsym Mod1+C exec wl-copy -p -c; mode "default"
 
     # Make up for the lack of pipes in graphical environments
     bindsym T exec $sc/translate.sh; mode "default"
