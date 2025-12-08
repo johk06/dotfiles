@@ -7,7 +7,7 @@
 
 title.fg = yellow
 title.bold = true
-header.fg = teal
+header.fg = yellow
 header.bold = true
 
 border.fg = #3B4252
