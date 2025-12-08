@@ -187,11 +187,11 @@ map ee &~/.config/lf/bin/split.sh none edit "$fx"
 map es &~/.config/lf/bin/split.sh sp edit "$fx"
 map ev &~/.config/lf/bin/split.sh vsp edit "$fx"
 
-map <space>tt &~/.config/lf/bin/split.sh none shell "$PWD"
-map <space>ts &~/.config/lf/bin/split.sh sp shell "$PWD"
-map <space>tv &~/.config/lf/bin/split.sh vsp shell "$PWD"
+map rr &~/.config/lf/bin/split.sh none shell "$PWD"
+map rs &~/.config/lf/bin/split.sh sp shell "$PWD"
+map rv &~/.config/lf/bin/split.sh vsp shell "$PWD"
 
-map <space>ll &~/.config/lf/bin/split.sh none lf "$PWD"
-map <space>ls &~/.config/lf/bin/split.sh sp lf "$PWD"
-map <space>lv &~/.config/lf/bin/split.sh vsp lf "$PWD"
+map oo &~/.config/lf/bin/split.sh none lf "$fx"
+map os &~/.config/lf/bin/split.sh sp lf "$fx"
+map ov &~/.config/lf/bin/split.sh vsp lf "$fx"
 # }}}

@@ -103,7 +103,7 @@ lf)
             location=hsplit
             ;;
         none)
-            run_in_tty zsh
+            run_in_tty lf
             exit
             ;;
         esac
