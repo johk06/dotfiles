@@ -19,7 +19,7 @@ core:
 
   executable_file:
     foreground: ansi:green
-    font-style: bold
+    font-style: italic
 
   file_with_capability:
     foreground: ansi:bright_red

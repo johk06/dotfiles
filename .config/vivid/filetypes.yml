@@ -253,6 +253,8 @@ programming:
         - .gemspec
       v:
         - v.mod
+      arch:
+        - PKGBUILD
 
     code-style:
       python:
