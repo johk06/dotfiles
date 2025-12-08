@@ -136,7 +136,6 @@ map sT :set sortby time; set reverse!;top;set info 'time'
 map se :set sortby ext; set info
 # }}}
 
-map <c-l> follow-link
 map gl follow-link
 
 # Make new {{{
