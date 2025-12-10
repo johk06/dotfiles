@@ -658,7 +658,7 @@ map("i", "<S-Del>", "<c-o>\"_dw")
 -- go to basically any character in the line in insert mode
 -- navigation further than that needs normal mode anyways
 map("i", "<C-f>", "<C-o>f", { remap = true })
-map("i", "<C-b>", "<C-o>F", { remap = true })
+map("i", "<C-b>", "<C-o>T", { remap = true })
 
 -- quick way to trigger things like ]a in insert mode
 -- useful example: <C-.>a to go to the next argument
