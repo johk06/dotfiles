@@ -13,8 +13,8 @@ local picker_maps = {
     ["<space>o"] = { "oldfiles", "Telescope: Oldfiles" },
     ["\"<space>"] = { "registers", "Telescope: Registers" },
     ["<space>?"] = { "search_history", "Telescope: Search History" },
-    ["<space>qf"] = { "quickfix", "Qflist: Telescope" },
-    ["<space>lf"] = { "loclist", "Loclist: Telescope" },
+    ["<space>q"] = { "quickfix", "Qflist: Telescope" },
+    ["<space>l"] = { "loclist", "Loclist: Telescope" },
 
     -- git ones, under the same prefix as the fugitive & gitsigns mappings
     ["<space>gf"] = { "git_files", "Git: Search Files" },
