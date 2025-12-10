@@ -51,6 +51,11 @@ local function run_cmd(cmd, args)
 end
 -- }}}
 
+-- Configuration {{{
+-- there still is ` for marks, ' is on the home row, soooo nice
+local bufleader = "'"
+-- }}}
+
 -- Unmap Unused {{{
 map("n", "gQ", "<nop>") -- ex mode is just plain annoying
 
@@ -65,13 +70,15 @@ unmap("n", "gri")              -- implementation
 unmap("n", "grt")              -- type definition
 unmap({ "i", "s" }, "<Tab>")   -- snippet
 unmap({ "i", "s" }, "<S-Tab>") -- snippet
+
+-- make sure that it waits
+map("n", bufleader, "<nop>")
 -- }}}
 
 --[[ Quickfix- & Location list {{{
  Navigate faster with the lists
  The qflist is generally used for workspace wide things
- The loclist per each buffer/window
-]]
+ The loclist per each buffer/window ]]
 
 -- Quickfix: more mappings, larger lists
 map("n", "<C-j>", cmd_with_count("cnext"))
@@ -82,53 +89,6 @@ map("n", "<space>$", "<cmd>clast<cr>")
 -- Location: optimized for much smaller lists, usually only containing elements from a single file
 map("n", "<M-j>", cmd_with_count("lnext"))
 map("n", "<M-k>", cmd_with_count("lprev"))
-
--- clear them
-map("n", "<space>qc", function()
-    fn.setqflist({}, "r")
-    require("quicker").close()
-end, { desc = "Qflist: Clear" })
-map("n", "<space>lc", function()
-    fn.setloclist(0, {}, "r")
-    require("quicker").close { loclist = true }
-end, { desc = "Loclist: Clear" })
-
--- move through the histories
-map("n", "<space>qn", cmd_with_count("cnewer"), { desc = "Qflist: Newer" })
-map("n", "<space>qo", cmd_with_count("colder"), { desc = "Qflist: Older" })
-map("n", "<space>ln", cmd_with_count("lnewer"), { desc = "Loclist: Newer" })
-map("n", "<space>lo", cmd_with_count("lolder"), { desc = "Loclist: Older" })
-
--- vertical view
-map("n", "<space>qv", function()
-    local qfwin = fn.getqflist { winid = true }.winid
-    if qfwin == 0 then
-        require("quicker").open()
-        qfwin = fn.getqflist { winid = true }.winid
-    end
-
-    api.nvim_win_set_config(qfwin, {
-        split = "left",
-        width = 72,
-        vertical = true
-    })
-    vim.wo[qfwin][0].number = true
-end, { desc = "Qflist: Vertical" })
-
-map("n", "<space>lv", function()
-    local locwin = fn.getloclist(0, { winid = true }).winid
-    if locwin == 0 then
-        require("quicker").open { loclist = true }
-        locwin = fn.getloclist(0, { winid = true }).winid
-    end
-
-    api.nvim_win_set_config(locwin, {
-        split = "left",
-        width = 72,
-        vertical = true
-    })
-    vim.wo[locwin][0].number = true
-end, { desc = "Loclist: Vertical" })
 
 -- Reuse [g]o [l]ist prefix, Uppercase for qflist, for more uses see ./lua/config/lsp.lua
 -- Diagnostics
@@ -220,13 +180,52 @@ map("n", "glS", function()
     fn.setqflist(errors)
 end, { desc = "Qflist: Spelling" })
 
--- reload them, should only rarely be necessary
-map("n", "<space>qr", function() require("quicker").refresh(nil, { keep_diagnostics = true }) end)
-map("n", "<space>lr", function() require("quicker").refresh(0, { keep_diagnostics = true }) end)
+-- expand current search to quickfix
+map("n", "gl/", function()
+    local search = fn.getreg("/")
+    run_cmd("lvimgrep", { "/" .. search .. "/gj", "%" })
+end, { desc = "Loclist: List Search" })
+
+map("n", "gl?", function()
+    local search = fn.getreg("/")
+    run_cmd("vimgrep", { "/" .. search .. "/gj", "**" })
+end, { desc = "Qflist: List Search" })
 
 -- toggle the lists, like other buffer mappings
-map("n", "'q", function() require("quicker").toggle { min_height = 8 } end)
-map("n", "'l", function() require("quicker").toggle { min_height = 8, loclist = true } end)
+map("n", bufleader .. "q", function() require("quicker").toggle { min_height = 8 } end)
+map("n", bufleader .. "l", function() require("quicker").toggle { min_height = 8, loclist = true } end)
+
+-- vertical view
+map("n", bufleader .. "Q", function()
+    local qfwin = fn.getqflist { winid = true }.winid
+    if qfwin == 0 then
+        require("quicker").open()
+        qfwin = fn.getqflist { winid = true }.winid
+    end
+
+    api.nvim_win_set_config(qfwin, {
+        split = "left",
+        width = 72,
+        vertical = true
+    })
+    vim.wo[qfwin][0].number = true
+end, { desc = "Qflist: Vertical" })
+
+map("n", bufleader .. "L", function()
+    local locwin = fn.getloclist(0, { winid = true }).winid
+    if locwin == 0 then
+        require("quicker").open { loclist = true }
+        locwin = fn.getloclist(0, { winid = true }).winid
+    end
+
+    api.nvim_win_set_config(locwin, {
+        split = "left",
+        width = 72,
+        vertical = true
+    })
+    vim.wo[locwin][0].number = true
+end, { desc = "Loclist: Vertical" })
+
 -- }}}
 
 -- Commands {{{
@@ -254,13 +253,6 @@ map("n", "<Tab>", "zMzOj[zzt", { remap = true --[[ is required so ufo applies ]]
 -- }}}
 
 -- Buffers & Windows {{{
-
--- there still is ` for marks, ' is on the home row, soooo nice
-local bufleader = "'"
-
--- make sure that it waits
-map("n", bufleader, "<nop>")
-
 -- faster alternate file, mnemonic: [s]econd, also allows remapping <C-6>
 map("n", "<C-s>", "<cmd>b #<cr>")
 
@@ -685,11 +677,10 @@ end
 map("i", "<M-;>", function() toggle_char_at_eol(";") end)
 map("i", "<M-,>", function() toggle_char_at_eol(",") end)
 
--- leftover keys looking for a mapping
--- <C-l>
--- <C-z>
+--[[ Leftover keys looking for a mapping
+- <C-z>
 -- <C-m> maybe, may conflict with <cr>
--- }}}
+}}} ]]
 
 --[[ Command Mode {{{
 All of these are just shortcuts for simple text insertions for now
@@ -731,8 +722,8 @@ end)
 map_search("<M-m>", function()
     local cmdline = fn.getcmdline()
     local replacement
-    local modifier =cmdline:match("^\\([mMvV])")
-    if  not modifier then
+    local modifier = cmdline:match("^\\([mMvV])")
+    if not modifier then
         replacement = "\\v" .. cmdline
     elseif modifier == "m" or modifier == "v" then
         replacement = "\\V" .. cmdline:sub(3)
