@@ -17,7 +17,7 @@
     {"keys": "<M-*", "action": "Other", "mod": true },
     {"keys": "[tT]", "action": "Target"},
     {"keys": "[shl]", "action": "Seek"},
-    {"keys": "[HL]", "action": "Track"},
+    {"keys": "[fb]", "action": "Track"},
     {"keys": "q", "action": "Queue"},
     {"keys": "p", "action": "Play"}
 ],

@@ -68,10 +68,10 @@ mode "media" {
     Mod1+H exec playerctld shift && playerctl position 5- && playerctld unshift
     Mod1+L exec playerctld shift && playerctl position 5+ && playerctld unshift
 
-    Shift+H      exec playerctl previous
-    Shift+L      exec playerctl next
-    Shift+Mod1+H exec playerctld shift && playerctl previous && playerctld unshift
-    Shift+Mod1+L exec playerctld shift && playerctl next && playerctld unshift
+    b      exec playerctl previous
+    f      exec playerctl next
+    Mod1+b exec playerctld shift && playerctl previous && playerctld unshift
+    Mod1+f exec playerctld shift && playerctl next && playerctld unshift
 
     T       exec playerctld shift
     Shift+T exec playerctld unshift
