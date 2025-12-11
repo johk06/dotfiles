@@ -21,8 +21,8 @@ local colorscheme = {
     -- built in editor highlights
     Normal                      = { fg = pal.fg0, bg = pal.bg0 },
     NormalFloat                 = { fg = pal.fg0, bg = pal.bg0 },
-    FloatBorder                 = { fg = pal.bg1 },
-    WinSeparator                = { fg = pal.bg1 },
+    FloatBorder                 = { fg = pal.border },
+    WinSeparator                = { fg = pal.border },
     LineNr                      = { fg = col.light_gray },
     CursorLineNr                = { fg = pal.fg0 },
     Cursor                      = { reverse = true },
@@ -170,7 +170,7 @@ local colorscheme = {
     Underlined                  = { fg = col.blue, underline = true },
 
     IndentBlanklineIndent       = { fg = pal.bg1 },
-    IndentBlanklineScope        = { fg = col.bright_gray },
+    IndentBlanklineScope        = { fg = pal.dimm },
 
     TreesitterContext           = { bg = pal.bg01 },
     TreesitterContextLineNumber = { fg = col.teal },
