@@ -1,7 +1,10 @@
 local theme = require("theme.colors")
 local col = theme.colors
-local pal = theme.palettes.default
 local blend = theme.blend
+theme.palettes.default = vim.o.background == "light"
+    and theme.palettes.light
+    or theme.palettes.dark
+local pal = theme.palettes.default
 
 local function add_with_prefix(to_append, prefix, table)
     for k, v in pairs(table) do
@@ -405,8 +408,8 @@ add_with_prefix(colorscheme, "Sl", {
 
     -- left section of the statusline
     Typed       = { fg = pal.fg0 },
-    Macro       = { fg = col.yellow },
-    OnSearch    = { bg = pal.bg2, fg = col.yellow },
+    Macro       = { fg = col.orange, italic = true },
+    OnSearch    = { fg = col.fg0, underline = true },
 
     -- and the modes
     ModeNormal  = { fg = col.teal },
@@ -509,7 +512,7 @@ add_with_prefix(colorscheme, "Oil", {
     Exec             = { fg = col.green },
     Setuid           = { fg = col.red, bold = true },
     Sticky           = { fg = col.blue, bold = true },
-    NoPerm           = { fg = pal.bg3 },
+    NoPerm           = { fg = col.bright_gray },
     User             = { fg = col.purple },
     Group            = { fg = col.blue },
 
@@ -522,7 +525,7 @@ add_with_prefix(colorscheme, "Oil", {
 
 
 add_with_prefix(colorscheme, "OilGit", {
-    Ignored     = { fg = pal.bg3 },
+    Ignored     = { fg = col.bright_gray },
     Untracked   = { fg = pal.fg2 },
     Added       = { fg = col.green },
     Copied      = { fg = col.green },
@@ -538,7 +541,7 @@ add_with_prefix(colorscheme, "OilGit", {
 -- Blink {{{
 add_with_prefix(colorscheme, "BlinkCmp", {
     Menu                = { link = "Normal" },
-    MenuBorder          = { fg = pal.bg1 },
+    MenuBorder          = { fg = pal.border },
     MenuSelection       = { bg = pal.bg1 },
     Label               = { link = "Normal" },
     DocBorder           = { link = "*MenuBorder" },

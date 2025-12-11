@@ -36,8 +36,23 @@ local named_colors = {
     red           = "#BF616A",
 }
 
+---@class config.theme.palette
+---@field bg0 string
+---@field bg01 string
+---@field bg1 string
+---@field bg2 string
+---@field bg3 string
+---@field fg0 string
+---@field fg1 string
+---@field fg2 string
+---@field fg3 string
+---@field inverted string
+---@field border string
+
+---@type config.theme.palette
 local dark_palette = {
     bg0 = named_colors.black,
+    bg01 = named_colors.darkest_gray,
     bg1 = named_colors.dark_gray,
     bg2 = named_colors.gray,
     bg3 = named_colors.light_gray,
@@ -47,12 +62,14 @@ local dark_palette = {
     fg2 = named_colors.dark_white,
     fg3 = named_colors.darkest_white,
 
-    bg01 = named_colors.darkest_gray,
     inverted = named_colors.black,
+    border = named_colors.dark_gray,
 }
 
+---@type config.theme.palette
 local light_palette = {
     bg0 = named_colors.white,
+    bg01 = named_colors.darker_white,
     bg1 = named_colors.darker_white,
     bg2 = named_colors.dark_white,
     bg3 = named_colors.darkest_white,
@@ -62,8 +79,8 @@ local light_palette = {
     fg2 = named_colors.dark_gray,
     fg3 = named_colors.bright_gray,
 
-    bg01 = named_colors.darker_white,
     inverted = named_colors.black,
+    border = named_colors.darkest_white,
 }
 
 return {
@@ -71,7 +88,6 @@ return {
     palettes = {
         dark = dark_palette,
         light = light_palette,
-        default = dark_palette,
     },
     blend = blend,
 }
