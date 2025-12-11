@@ -3,5 +3,30 @@
         "body": [
             "[[man:${1}][$1]]"
         ]
+    },
+    "example": {
+        "body": [
+            "#+begin_example",
+            "$0",
+            "#+end_example"
+        ]
+    },
+    "src": {
+        "body": [
+            "#+begin_src ${1:lua}",
+            "$0",
+            "#+end_src"
+        ]
+    },
+    "meta": {
+        "body": [
+            "#+title: $1",
+            "#+author: ${2:Jo}",
+            "#+width: ${3:120}",
+            "#+language: ${4:EN}",
+            "#+filetags: $5",
+            "",
+            "$0"
+        ]
     }
 }

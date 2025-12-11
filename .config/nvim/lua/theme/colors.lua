@@ -48,6 +48,7 @@ local named_colors = {
 ---@field fg3 string
 ---@field inverted string
 ---@field border string
+---@field dimm string
 
 ---@type config.theme.palette
 local dark_palette = {
@@ -64,6 +65,7 @@ local dark_palette = {
 
     inverted = named_colors.black,
     border = named_colors.dark_gray,
+    dimm = named_colors.bright_gray
 }
 
 ---@type config.theme.palette
@@ -80,7 +82,8 @@ local light_palette = {
     fg3 = named_colors.bright_gray,
 
     inverted = named_colors.black,
-    border = named_colors.darkest_white,
+    border = named_colors.darker_white,
+    dimm = named_colors.darkest_white
 }
 
 return {
