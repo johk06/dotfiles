@@ -10,30 +10,30 @@ title.bold = true
 header.fg = yellow
 header.bold = true
 
-border.fg = #3B4252
-tab.fg = white
+border.fg = 8
+tab.fg = light black
 tab.bg = black
-tab.selected.bg = #3B4252
-tab.selected.fg = white
+tab.selected.bg = 8
+tab.selected.fg = light black
 
-dirlist_unread.fg = yellow
-dirlist.selected.bg = #3B4252
+dirlist_unread.bold = true
+dirlist.selected.bg = 8
 
-completion_default.bg = #3B4252
-completion_description.bg = #3B4252
+completion_default.bg = 8
+completion_description.bg = 8
 completion_default.selected.bg = teal
 completion_default.selected.fg = black
 
-part_switcher.bg = #353c4a
-part_filename.bg = #353c4a
-part_mimetype.bg = #353c4a
+part_switcher.bg = 8
+part_filename.bg = 8
+part_mimetype.bg = 8
 part_filename.fg = teal
 part_mimetype.selected.underline = true
 part_filename.selected.underline = true
 
-msglist_default.selected.bg = #434C5E
-msglist_marked.bg = #3B4252
-msglist_marked.selected.bg = #434C5E
+msglist_default.selected.bg = 8
+msglist_marked.bg = 8
+msglist_marked.selected.bg = #616E88
 msglist_flagged.fg = teal
 msglist_forwarded.italic = true
 
@@ -48,11 +48,11 @@ signature.italic = true
 url.underline = true
 diff_chunk_func.fg = yellow
 quote_1.italic = true
-quote_1.fg = #D8DEE9
+quote_1.fg = default
 quote_2.italic = true
-quote_2.fg = #C0C7D5
+quote_2.fg = 15
 quote_3.italic = true
-quote_3.fg = #616E88
+quote_3.fg = 8
 
 [user]
 date.fg = fuchsia
@@ -61,10 +61,10 @@ status.italic = true
 sep.fg = #353c4a
 directory.fg = teal
 
-unread.fg = yellow
+unread.bold = true
 
 flag_attachment.fg = green
 flag_replied.fg = #616E88
 flag_fold.fg = teal
-address.fg = #D8DEE9
+address.fg = teal
 bright_gray.fg = #616E88
