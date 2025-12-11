@@ -40,7 +40,7 @@ local map_on_git_buffer = function(buf)
     local function mapboth(keys, fn, desc)
         local tbl = { desc = desc }
         map("n", keys, fn, tbl)
-        map("v", keys, vimap(fn), tbl)
+        map("x", keys, vimap(fn), tbl)
     end
 
     -- use fugitive cause its just better :(

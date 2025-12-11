@@ -15,5 +15,10 @@
   value: (value) @markup.heading @spell
   (#eq? @_name "title"))
 
+(directive
+  name: (expr) @_name
+  value: (value) @constant
+  (#eq? @_name "author"))
+
 (expr
   "$" @bold)

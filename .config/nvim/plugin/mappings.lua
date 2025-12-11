@@ -1088,7 +1088,7 @@ end)
 --[[ view information in manpage or help
  Since built in vim K is shadowed by the LSP in most cases
  this is also meant to be overridden if necessary, which is why it's here ]]
-map({ "v", "n" }, "gK", function()
+map({ "x", "n" }, "gK", function()
     local cmd
     if vim.startswith(vim.fn.expand("%:p"), vim.fn.stdpath("config")) then
         cmd = "help"
