@@ -142,9 +142,10 @@ end
 -- }}}
 -- }}}
 
-local MAX_FILENAME_WIDTH = 32
+local MAX_FILENAME_WIDTH = 30
 local MAX_SYMBOL_WIDTH = 30
 local ROW_COL_WIDTH = 7
+local MAX_CONTEXT_WIDTH = 40
 
 -- Path Highlighting {{{
 M.path_display = function(opts, path)
@@ -211,7 +212,7 @@ local line_and_column_display = t_entry_display.create {
     separator = " ",
     items = {
         { width = 4 },
-        { width = 40 },
+        { width = MAX_CONTEXT_WIDTH },
         { width = MAX_FILENAME_WIDTH * 0.9 },
         { remaining = true }
     }
@@ -343,7 +344,7 @@ local quickfix_entry_display = t_entry_display.create {
     separator = " ",
     items = {
         { width = 4 },
-        { width = 40 },
+        { width = MAX_CONTEXT_WIDTH },
         { width = MAX_FILENAME_WIDTH },
         { remaining = true },
     }

@@ -119,12 +119,14 @@ M.nvim_input = function(opts, callback)
         end
     end
     local cancel = function()
-        callback(nil)
         clean()
+        callback(nil)
     end
     local confirm = function()
         local text = api.nvim_buf_get_lines(buf, 0, -1, false)[1]
-        callback(text)
+        vim.schedule(function()
+            callback(text)
+        end)
         clean()
     end
 
