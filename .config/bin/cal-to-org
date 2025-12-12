@@ -2,9 +2,7 @@
 
 from pathlib import Path
 from icalendar import Calendar, Event
-import glob
 import os
-import sys
 from datetime import datetime
 
 CALPATH = os.getenv("HOME") + "/cal/"
@@ -19,6 +17,24 @@ CALENDARS = [
 ]
 
 NOW = datetime.now()
+
+FILE_HEADING_FMT = """#+title: {title}
+#+filetags: {tags}
+#+author: Exported Automatically
+
+* {title}
+/Last synchronised/: {date}
+[[{other_file}][Corresponding {other_name} Calendar]]
+
+"""
+
+EVENT_HEADING_FMT = """** {keywd}{title}
+{date}
+:PROPERTIES:
+:CUSTOM_ID: {id}
+:END:
+{body}
+"""
 
 
 def as_org_date(date: datetime, active) -> str:
@@ -40,34 +56,68 @@ def as_org_daterange(start: datetime, end: datetime, active) -> str:
         return f"{as_org_date(start, active)}--{as_org_date(end, active)}"
 
 
-def as_org_event(ev: Event) -> str:
+def as_org_event(ev: Event) -> (bool, str):
     start: datetime = ev.DTSTART
     end: datetime = ev.DTEND
     in_the_past = end.timestamp() < NOW.timestamp()
     date = as_org_daterange(start, end, not in_the_past)
-    return f"""** {"DONE " if in_the_past else ""}{ev["SUMMARY"]}
-{date}
-{ev["DESCRIPTIOn"]}
-"""
+    body = []
+    if (url := ev.get("url")) is not None:
+        body.append(f"[[{url}][Url]]")
+    body.append("")
+    body.append(ev["description"])
+    return in_the_past, EVENT_HEADING_FMT.format(
+        keywd="DONE " if in_the_past else "",
+        title=ev["summary"],
+        date=date,
+        body="\n".join(body),
+        id=ev["uid"],
+    )
 
 
 def export_to_org(cal: Calendar, name: str, path: str):
-    with open(path, "w") as file:
-        file.write(
-            (f"* Calendar '{name}'\n/Last synchronised/: {as_org_date(NOW, False)}\n\n")
+    npath = path + ".org"
+    opath = path + "-archive.org"
+    with (
+        open(npath, "w") as nfile,
+        open(opath, "w") as ofile,
+    ):
+        ofile.write(
+            FILE_HEADING_FMT.format(
+                title=f"Archive for '{name}'",
+                date=as_org_date(NOW, False),
+                tags="cal cal-archive",
+                other_file=npath,
+                other_name="Current",
+            )
+        )
+        nfile.write(
+            FILE_HEADING_FMT.format(
+                title=f"Calendar '{name}'",
+                date=as_org_date(NOW, False),
+                tags="cal",
+                other_file=opath,
+                other_name="Archived",
+            )
         )
 
         events = cal.events
         events.sort(key=lambda e: e.DTSTART)
+        print(events[0])
         for ev in events:
-            file.write(as_org_event(ev))
+            past, text = as_org_event(ev)
+            if past:
+                ofile.write(text)
+            else:
+                nfile.write(text)
 
 
-for name in CALENDARS:
-    dir = Path(CALPATH + name)
-    whole = Calendar()
-    for file in dir.glob("*/*.ics"):
-        cal = Calendar.from_ical(file.read_bytes())
-        if len(cal.events) > 0:
-            whole.add_component(cal.events[0])
-    export_to_org(whole, name, ORGPATH.joinpath(name + ".org"))
+if __name__ == "__main__":
+    for name in CALENDARS:
+        dir = Path(CALPATH + name)
+        whole = Calendar()
+        for file in dir.glob("*/*.ics"):
+            cal = Calendar.from_ical(file.read_bytes())
+            if len(cal.events) > 0:
+                whole.add_component(cal.events[0])
+        export_to_org(whole, name, str(ORGPATH.joinpath(name)))
