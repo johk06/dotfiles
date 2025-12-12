@@ -1,10 +1,19 @@
 Jhk.require_program("clangd")
 
+--[[ NOTE: Clangd loves to write tons of pre-parsed library files or whatever to /tmp
+ (See https://github.com/clangd/clangd/issues/1007)
+ That isn't very nice, so create a *special* TMPDIR just for it ]]
+local CACHEPATH = vim.fn.stdpath("cache") .. "/clangd"
+vim.uv.fs_mkdir(CACHEPATH, 420) -- 0644
+
 ---@type vim.lsp.Config
 return {
     filetypes = { "c", "cpp", "objc", "objcpp", "cuda", "proto" },
     cmd = { "clangd" },
     root_markers = { ".clangd", ".clang-tidy", ".clang-format", "compile_commands.json", "Makefile", ".git" },
+    cmd_env = {
+        TMPDIR = CACHEPATH
+    },
     on_attach = function(client, buf)
         local utils = require("config.utils")
         local map = utils.local_mapper(buf, { group = true })
@@ -25,6 +34,6 @@ return {
 
                 vim.cmd.edit(vim.uri_to_fname(res))
             end)
-        end, { desc = "Lsp/Clangd: Switch between header and source"})
+        end, { desc = "Lsp/Clangd: Switch between header and source" })
     end
 }
