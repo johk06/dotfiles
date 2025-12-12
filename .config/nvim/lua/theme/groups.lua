@@ -245,13 +245,13 @@ return function(pal)
         ["string.psv"]                   = { link = "Normal" },
         ["string.tsv"]                   = { link = "Normal" },
 
-        ["variable"]                     = { fg = pal.fg2 },
+        ["variable"]                     = { fg = pal.fg0 },
         ["variable.member"]              = { link = "*property" },
         ["variable.builtin"]             = { fg = pal.fg0, italic = true },
         ["variable.parameter.builtin"]   = { fg = col.light_blue, italic = true },
 
         ["constant"]                     = { fg = pal.fg2 },
-        ["constant.builtin"]             = { fg = pal.fg3 },
+        ["constant.builtin"]             = { fg = pal.fg0, italic = true },
 
         ["type"]                         = { fg = col.magenta },
         ["type.builtin"]                 = { fg = col.purple },
