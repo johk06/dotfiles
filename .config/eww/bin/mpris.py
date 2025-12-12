@@ -14,6 +14,8 @@ PLAYER_POSITIONS = {}
 
 NAME_OVERRIDES = {"gapless": "com.github.neithern.g4music"}
 
+LOOP_STATI = ["none", "track", "list"]
+
 
 def get_icon(icon_name, size=48, fallback="multimedia-video-player"):
     if not icon_name:
@@ -67,6 +69,9 @@ def do_meta(pl, *_):
         out["progress"] = position / length
     else:
         out["has_progress"] = False
+
+    out["loop"] = LOOP_STATI[props.loop_status]
+    out["shuffle"] = props.shuffle
 
     try:
         artists = meta["xesam:artist"]
@@ -122,6 +127,8 @@ def init_player(name):
     player.connect("metadata", do_meta, manager)
     player.connect("playback-status::playing", on_play_pause, manager)
     player.connect("playback-status::paused", on_play_pause, manager)
+    player.connect("loop-status", do_meta, manager)
+    player.connect("shuffle", do_meta, manager)
     manager.manage_player(player)
 
 

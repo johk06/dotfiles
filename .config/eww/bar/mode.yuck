@@ -18,6 +18,8 @@
     {"keys": "[tT]", "action": "Target"},
     {"keys": "[shl]", "action": "Seek"},
     {"keys": "[fb]", "action": "Track"},
+    {"keys": "r", "action": "Repeat"},
+    {"keys": "z", "action": "Shuffle"},
     {"keys": "q", "action": "Queue"},
     {"keys": "p", "action": "Play"}
 ],

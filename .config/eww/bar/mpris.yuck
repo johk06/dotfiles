@@ -1,5 +1,15 @@
 (deflisten mpris "./bin/mpris.py 2>/dev/null")
 
+(defwidget mpris-status []
+    (label :style "margin-right: .6rem;"
+    :text "${mpris.playing ? "≈" : "="}${mpris.shuffle ? "?" : ""}"))
+
+(defwidget mpris-title [text]
+    (label :limit-width 20 :text
+        {mpris.loop == "track" ? "(${text})"
+            : (mpris.loop == "list" ? "[${text}]"
+                : text)}))
+
 (defwidget mpris-current []
     (revealer :reveal {mpris.has_player} :transition "slideright"
         (button :class "text-button ${mpris.playing ? "mpris-playing" : "mpris-paused"}"
@@ -7,9 +17,9 @@
             :onrightclick "playerctld shift"
             :tooltip "${mpris.title} by ${mpris.artist?:"Unknown"}
 Playing in ${mpris.player}"
-            (box :space-evenly false 
-                (label :limit-width 20
-                    :text "${mpris.playing ? "≈" : "="}   ${mpris.title?: "No Player"}")
+            (box :space-evenly false
+                (mpris-status)
+                (mpris-title :text {mpris.title?: "No Player"})
                 (circular-progress :value {mpris.progress * 100} :class "bar-circle"
                     :start-at 75
                     :thickness 2
