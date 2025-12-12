@@ -202,7 +202,7 @@ opts.pickers = {
         prompt_prefix = "\" ",
         layout_config = {
             height = function()
-                return math.min(vim.o.lines - 4, 32)
+                return math.min(vim.o.lines - 4, 16)
             end,
         },
         mappings = {

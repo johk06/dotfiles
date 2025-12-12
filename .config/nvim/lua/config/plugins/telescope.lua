@@ -12,6 +12,8 @@ local make_win = function(enter, opts)
     local buf = api.nvim_create_buf(false, true)
     local winopts = vim.tbl_extend("force", {
         style = "minimal",
+        zindex = 200,
+        anchor = "SW",
         relative = "editor",
     }, opts)
     local win = api.nvim_open_win(buf, enter, winopts)
@@ -68,7 +70,7 @@ M.bottom_pane_layout = function(picker)
             local height = vim.o.lines
             local view_height = get_layout(self.picker.layout_config.height, height - 4, 0.4, 8, 30)
 
-            local row = height - view_height - 4
+            local row = height - 2
 
             self.results, self.preview, self.prompt = make_windows({
                 row = row,
@@ -80,12 +82,12 @@ M.bottom_pane_layout = function(picker)
                 row = row,
                 col = fhalf + 2,
                 width = shalf - 2,
-                height = view_height + 1,
+                height = view_height,
                 border = { "┬", "─", "─", "", "", "", "", "│" },
             }, {
                 width = fhalf,
                 height = 1,
-                row = height - 3,
+                row = height,
                 col = 0,
                 border = "none",
             })
@@ -116,17 +118,17 @@ M.short_layout = function(picker)
             local width = get_layout(picker.layout_config.width, columns, 0.4, 32, 80)
 
             self.results, _, self.prompt = make_windows({
-                row = lines - height - 5,
+                row = lines - 2,
                 col = 0,
                 width = width,
                 height = height,
-                border = { "╭", "─", "╮", "│", "", "", "", "│" },
+                border = { "╭", "─", "╮", "│", "", "", "", "" },
             }, nil, {
-                row = lines - 4,
+                row = lines + 1,
                 col = 0,
                 width = width,
                 height = 1,
-                border = { "│", "", "│", "─", "╯", "─", "╰", "│" },
+                border = "none"
             })
         end,
         unmount = function(self)
