@@ -56,7 +56,7 @@ def as_org_daterange(start: datetime, end: datetime, active) -> str:
         return f"{as_org_date(start, active)}--{as_org_date(end, active)}"
 
 
-def as_org_event(ev: Event) -> (bool, str):
+def as_org_event(ev: Event, calname) -> (bool, str):
     start: datetime = ev.DTSTART
     end: datetime = ev.DTEND
     in_the_past = end.timestamp() < NOW.timestamp()
@@ -71,7 +71,7 @@ def as_org_event(ev: Event) -> (bool, str):
         title=ev["summary"],
         date=date,
         body="\n".join(body),
-        id=ev["uid"],
+        id="cal-" + name + "-" + ev["uid"],
     )
 
 
@@ -103,9 +103,8 @@ def export_to_org(cal: Calendar, name: str, path: str):
 
         events = cal.events
         events.sort(key=lambda e: e.DTSTART)
-        print(events[0])
         for ev in events:
-            past, text = as_org_event(ev)
+            past, text = as_org_event(ev, name)
             if past:
                 ofile.write(text)
             else:
