@@ -6,9 +6,13 @@ M.ns = ns
 local utils = require("config.utils")
 local string_buffer = require("string.buffer")
 
-local cur_completion
+--[[ vim.ui.input implementation {{{
+NOTE: This is *not* 100% what neovim says it should be, instead I add my own private features,
+starting with an underscore:
+- _ts_lang: highlight the buffer using that treesitter language ]]
+local cur_input_completion
 M.nvim_input_omnifunc = function(start, base)
-    local compl = cur_completion
+    local compl = cur_input_completion
     if not compl then
         return start == 1 and 0 or {}
     end
@@ -49,43 +53,54 @@ end
 
 local last_was_insert
 
---[[ vim.ui.input implementation
-WARNING: This is *not* 100% what neovim says it should be, instead I add my own private features,
-starting with an underscore:
-  _ts_lang: highlight the buffer using that treesitter language
-]] --
 ---@param opts {prompt: string?, default: string?, completion: string?, highlight: function, _ts_lang: string?}
 ---@param callback fun(string?)
 M.nvim_input = function(opts, callback)
     last_was_insert = api.nvim_get_mode().mode:find("[it]") and true or false
 
     local buf = api.nvim_create_buf(false, true)
-    local title = opts.prompt and opts.prompt:gsub("%s*:%s*", "") or "Input"
+    local titlebuf = api.nvim_create_buf(false, true)
 
-    if opts.default then
+    if opts.default and opts.default:match("%S") then
         api.nvim_buf_set_lines(buf, 0, 0, false, { opts.default })
+    else
+        api.nvim_buf_set_lines(buf, 0, 0, false, { "" })
     end
+
+    local title = (opts.prompt and opts.prompt:gsub("%s*:%s*", "") or "Input")
+    local titlewidth = math.min(fn.strdisplaywidth(title), 12) + 2
+    api.nvim_buf_set_extmark(titlebuf, ns, 0, 0, {
+        virt_text = { { title, "Identifier" }, { ": ", "NonText" } },
+        virt_text_win_col = 0
+    })
 
     api.nvim_buf_set_name(buf, "[Input]")
     local bo = vim.bo[buf]
     bo.filetype = "Input"
     bo.swapfile = false
     bo.bufhidden = "wipe"
-    bo.omnifunc = "v:lua.require'config.ui'.nvim_input_omnifunc"
-    cur_completion = opts.completion
+    bo.omnifunc = "v:lua.require'config.lib.ui'.nvim_input_omnifunc"
+    cur_input_completion = opts.completion
 
-    local lines = vim.o.lines
     local columns = vim.o.columns
-    local win = api.nvim_open_win(buf, true, {
-        title = title,
-        relative = "editor",
+    ---@type vim.api.keyset.win_config
+    local wincfg = {
+        relative = "laststatus",
         anchor = "SW",
+        zindex = 200, -- see https://github.com/neovim/neovim/discussions/32841#discussioncomment-12466448
         style = "minimal",
-        row = lines - 2,
+        border = "none",
+        row = 2,
         col = 0,
-        width = math.max(40, math.min(16, math.floor(columns * 0.3))),
         height = 1,
-    })
+    }
+
+    wincfg.width = titlewidth
+    local titlewin = api.nvim_open_win(titlebuf, false, wincfg)
+
+    wincfg.width = columns - titlewidth
+    wincfg.col = titlewidth
+    local win = api.nvim_open_win(buf, true, wincfg)
 
     -- HACK: add my own extension
     if opts._ts_lang then
@@ -96,7 +111,7 @@ M.nvim_input = function(opts, callback)
     local clean = function()
         api.nvim_del_augroup_by_id(augroup)
         pcall(api.nvim_win_close, win, true)
-        pcall(api.nvim_buf_delete, win, { force = true })
+        pcall(api.nvim_win_close, titlewin, true)
         if last_was_insert then
             vim.cmd.startinsert()
         else
@@ -113,7 +128,7 @@ M.nvim_input = function(opts, callback)
         clean()
     end
 
-    augroup = utils.autogroup("config.ui.input." .. buf, {
+    augroup = utils.autogroup("config.ui.input.#" .. buf, {
         BufLeave                            = cancel,
         [{ "TextChanged", "TextChangedI" }] = function()
             local txt = api.nvim_buf_get_lines(buf, 0, 1, true)[1]
@@ -135,21 +150,18 @@ M.nvim_input = function(opts, callback)
             end
         end
     }, { buf = buf })
-    local map = function(mode, lhs, rhs, map_opts)
-        map_opts = map_opts or {}
-        map_opts.buffer = buf
-        vim.keymap.set(mode, lhs, rhs, map_opts)
-    end
+    local map = utils.local_mapper(buf)
 
     map({ "i", "n" }, "<cr>", confirm)
-    map({ "n" }, "<esc>", confirm)
+    map({ "n" }, "<esc>", cancel)
+    map({ "i", "n" }, "<C-c>", cancel)
     map({ "i", "s" }, "<Tab>", "<C-n>", { remap = true })
 
     if not opts.default or opts.default:match("^%s*$") then
-        vim.cmd.startinsert()
+        vim.cmd("startinsert!")
     end
 end
-
+-- }}}
 
 ---@class config.ui.notif_opts
 ---@field max_width integer
