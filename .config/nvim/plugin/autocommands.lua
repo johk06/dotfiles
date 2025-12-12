@@ -87,9 +87,9 @@ autocmd("TextYankPost", {
     end
 })
 
--- set the primary selection to the last register on window focus loss
--- saves me from having to go back when I forgot to specify "+
--- when working in more than one terminal window
+--[[ Set the primary selection to the last register on window focus loss
+ This saves me from having to go back when I forgot to specify "+
+ when working in more than one terminal window ]]
 autocmd("FocusLost", {
     callback = function()
         vim.fn.setreg("*", vim.fn.getreg("\""))

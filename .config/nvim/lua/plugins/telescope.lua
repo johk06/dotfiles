@@ -144,7 +144,7 @@ opts.defaults = {
     selection_caret = " ",
     entry_prefix = " ",
     multi_icon = "#",
-    prompt_prefix = ":e ",
+    prompt_prefix = "Edit: ",
 }
 
 opts.pickers = {
@@ -154,7 +154,7 @@ opts.pickers = {
     loclist = qfconfig,
     quickfix = qfconfig,
     spell_suggest = default_config {
-        prompt_prefix = "fix: ",
+        prompt_prefix = "Spell: ",
         create_layout = custom "short_layout",
     },
     lsp_workspace_symbols = default_config {
@@ -224,21 +224,21 @@ opts.pickers = {
         entry_maker = custom "file_entries",
     },
     help_tags = default_config {
-        prompt_prefix = ":h ",
+        prompt_prefix = "Help: ",
         -- create_layout = custom "short_layout",
         -- previewer = false,
     },
     man_pages = default_config {
-        prompt_prefix = ":man ",
+        prompt_prefix = "Man: ",
         sections = { "ALL" },
     },
     command_history = default_config {
         create_layout = custom "short_layout",
-        prompt_prefix = ": ",
+        prompt_prefix = "Command: ",
     },
     search_history = default_config {
         create_layout = custom "short_layout",
-        prompt_prefix = "/ ",
+        prompt_prefix = "Search: ",
     },
     treesitter = default_config {
         entry_maker = custom "treesitter_entries",
@@ -266,7 +266,7 @@ opts.extensions = {
     ["zf-native"] = {},
     ["ui-select"] = {
         create_layout = custom "short_layout",
-        prompt_prefix = ":",
+        prompt_prefix = "Select: ",
         layout_config = {
             height = 4,
         }

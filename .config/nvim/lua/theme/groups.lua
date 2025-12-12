@@ -689,13 +689,11 @@ return function(pal)
 
     -- Telescope {{{
     add_with_prefix(colorscheme, "Telescope", {
-        PromptBorder          = { fg = pal.bg3 },
-        PromptTitle           = { fg = col.teal },
         ResultsBorder         = { fg = pal.bg3 },
         PreviewBorder         = { fg = pal.bg3 },
         ResultsSpecialComment = { fg = col.pink },
         Selection             = { bg = pal.bg1 },
-        PromptPrefix          = { fg = col.teal },
+        PromptPrefix          = { link = "Identifier" },
         SelectionCaret        = { bg = pal.bg1 },
         MultiSelection        = { bg = pal.bg01 },
         MultiIcon             = { bg = col.yellow, fg = pal.inverted },
