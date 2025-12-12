@@ -84,7 +84,7 @@ mode "media" {
     Shift+M exec ~/.config/rofi/applets/mute/run.sh; mode "default"
 
     z exec playerctl shuffle toggle
-    r exec $sc/cycle-mpris-repeat.sh
+    r exec cycle-mpris-repeat
 
     # Mappings for number keys {{{
     1 exec $audio DEFAULT_SINK set 0.1

@@ -1,34 +1,57 @@
 (defpoll boottime :interval "200m" "awk '/btime/ {print $2}' /proc/stat")
 
+(defvar mpris-repeat-icons '{
+"list": "󰑖",
+"track": "󰑘",
+"none": "󰑗"
+}')
+
+(defwidget status-mpris-controls [] (box :orientation "vertical" :space-evenly false :hexpand true
+    (box :orientation "vertical" :space-evenly false
+        :tooltip "${mpris.artist}${mpris.album != "" ? ", ${mpris.album}" : ""} - ${mpris.title}"
+        (label :class "title"
+            :text "${mpris.title}"
+            :limit-width 16)
+        (label :class "text"
+            :text "${mpris.artist}${mpris.album != "" ? " - ${mpris.album}" : ""}"
+            :limit-width 16))
+    (centerbox
+        (button :class "button" :onclick "playerctl previous" 
+            :tooltip "Previous Track"
+            :style "margin-left: unset; margin-right: unset;"
+            "")
+        (button :style "min-width: 4.4rem;" :class "button ${mpris.playing ? "active" : ""}"
+            :tooltip "Play/Pause"
+            :onclick "playerctl play-pause"
+            "${mpris.playing ? "    Pause" : "   Play"}")
+        (box :space-evenly false
+            (button :class "button" :onclick "playerctl next"
+                :tooltip "Next Track"
+                :style "margin-left: unset; margin-right: unset;"
+                "")
+            (button :class "button ${mpris.shuffle ? "" : "inactive"}" :onclick "playerctl shuffle toggle"
+                :tooltip "Shuffle: ${mpris.shuffle ? "On" : "Off"}"
+                {mpris.shuffle ? "󰒝" : "󰒞"})))
+    (box :space-evenly false
+        (button :class "button ${mpris.loop == "none" ? "inactive" : ""}" :onclick "cycle-mpris-repeat"
+            :tooltip "Repeat: ${mpris.loop}"
+            :style "margin-left: unset; margin-right: unset;"
+            {mpris-repeat-icons[mpris.loop]})
+        (scale
+            :onchange `playerctl position $(echo 'scale=0;({}*${mpris.length})/100'|bc)`
+            :timeout "300s"
+            :tooltip "${
+                formattime(mpris.position?:0, (mpris.length?: 0) > 3600 ? "%H:%M:%S" : "%M:%S", "UTC")} / ${
+                formattime(mpris.length?:0, (mpris.length?: 0) > 3600 ? "%H:%M:%S" : "%M:%S", "UTC")}"
+            :class "slider ${(!mpris.has_progress || (mpris.position?:0) > (mpris.length?:0)) ? "disabled" : "with-handle"}"
+            :value {(mpris.progress?:0) * 100} :min 0 :max 100))))
+
 (defwidget status-mpris []
     (revealer :reveal {pref-mpris-shown && mpris.has_player} :transition "slidedown"
-    (box :space-evenly false :class "section"
-        (box :orientation "vertical" :space-evenly false :valign "center"
-            (image :path {matches(mpris.title, "^Netflix") ? "assets/netflix.svg" : mpris.art} :image-width 96 :image-height 96 :style "margin: .8rem;"))
-        (box :orientation "vertical" :space-evenly false :hexpand true
-            (box :orientation "vertical" :space-evenly false
-                :tooltip "${mpris.artist}${mpris.album != "" ? ", ${mpris.album}" : ""} - ${mpris.title}"
-                (label :class "title"
-                    :text "${mpris.title}"
-                    :limit-width 16)
-                (label :class "text"
-                    :text "${mpris.artist}${mpris.album != "" ? " - ${mpris.album}" : ""}"
-                    :limit-width 16))
-            (centerbox
-                (button :class "button" :onclick "playerctl previous" "")
-                (button :style "min-width: 4.4rem;" :class "button ${mpris.playing ? "active" : ""}"
-                    :onclick "playerctl play-pause"
-                    "${mpris.playing ? "    Pause" : "   Play"}")
-                (button :class "button" :onclick "playerctl next" ""))
-            (box
-                (scale
-                    :onchange `playerctl position $(echo 'scale=0;({}*${mpris.length})/100'|bc)`
-                    :timeout "300s"
-                    :tooltip "${
-                        formattime(mpris.position?:0, (mpris.length?: 0) > 3600 ? "%H:%M:%S" : "%M:%S", "UTC")} / ${
-                        formattime(mpris.length?:0, (mpris.length?: 0) > 3600 ? "%H:%M:%S" : "%M:%S", "UTC")}"
-                    :class "slider ${(!mpris.has_progress || (mpris.position?:0) > (mpris.length?:0)) ? "disabled" : "with-handle"}"
-                    :value {(mpris.progress?:0) * 100} :min 0 :max 100))))))
+        (box :space-evenly false :class "section"
+            (box :orientation "vertical" :space-evenly false :valign "center"
+                (image :path {matches(mpris.title, "^Netflix") ? "assets/netflix.svg" : mpris.art} :image-width 96 :image-height 96 :style "margin: .8rem;"))
+            (status-mpris-controls))))
 
 (defwidget power-button [cmd icon desc color img]
     (button :class "sbutton ${color}"
@@ -75,7 +98,7 @@
                 (power-button :icon "" :color "red" :img "system-shutdown"
                     :desc "Halt System"
                     :cmd "systemctl poweroff")
-               (power-button :icon "󰘚" :color "magenta" :img "firmware-manager"
+                (power-button :icon "󰘚" :color "magenta" :img "firmware-manager"
                     :desc "Reboot to Firmware"
                     :cmd "systemctl reboot --firmware-setup")))))
 
