@@ -1,5 +1,6 @@
 [flags]
 basic = true
+hide_k_threads = true
 enable_cache_memory = true
 regex = true
 process_memory_as_value = true
@@ -14,8 +15,8 @@ theme = "nord"
 border_color = "darkgray"
 selected_border_color = "black"
 widget_title = { color = "cyan", bold = true }
-selected_text = { bg_color = "darkgray", color = "white" }
-text = { color = "white" }
+selected_text = { bg_color = "darkgray", color = "gray" }
+text = { color = "gray" }
 
 [styles.tables]
 headers = { color = "cyan" }
