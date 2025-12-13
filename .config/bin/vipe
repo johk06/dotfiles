@@ -4,19 +4,21 @@
 # in addition to the core functionality, this one allows passing additional arguments and the language that the data is
 # written in
 
-TMPFILE="$(mktemp)"
-cat >>"$TMPFILE"
 
 usage() {
-    echo "Usage: $0 [-l LANGUAGE]"
+    echo "Usage: $0 [-l LANGUAGE]" >&2
+    exit 1
 }
 
-while getopts ":l:d" o; do
+while getopts ":l:h" o; do
     case "$o" in
     l) language="$OPTARG" ;;
     *) usage ;;
     esac
 done
+
+TMPFILE="$(mktemp)"
+cat >>"$TMPFILE"
 
 if [ -n "$language" ]; then
     # assume vim compatible

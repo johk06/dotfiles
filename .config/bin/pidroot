@@ -1,0 +1,39 @@
+#!/bin/sh
+
+usage() {
+    printf 'Usage: pidroot [-t] PID1 PID2\nFind the common ancestor of PID1 and PID2\n' >&2
+    exit 1
+}
+
+while getopts ":th" o; do
+    case "$o" in
+    t) trace=yes ;;
+    *) usage ;;
+    esac
+done
+shift $((OPTIND - 1))
+
+if [ ! $# -eq 2 ]; then
+    usage
+fi
+
+read_parent() {
+    read -r _ _ _ $2 _ </proc/$1/stat
+}
+
+pid1=$1
+pid2=$2
+
+while [ $pid2 -gt 1 ]; do
+    while [ $pid1 -lt $pid2 ]; do
+        read_parent $pid2 pid2
+        [ -n "$trace" ] && echo "$pid1 $pid2"
+    done
+
+    [ $pid1 -eq $pid2 ] && break
+    tmp=$pid1
+    pid1=$pid2
+    pid2=$tmp
+done
+
+echo "$pid1"
