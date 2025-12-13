@@ -1,0 +1,29 @@
+#!/bin/sh
+
+# my own clown of the popular utility from moreutils
+# in addition to the core functionality, this one allows passing additional arguments and the language that the data is
+# written in
+
+TMPFILE="$(mktemp)"
+cat >>"$TMPFILE"
+
+usage() {
+    echo "Usage: $0 [-l LANGUAGE]"
+}
+
+while getopts ":l:d" o; do
+    case "$o" in
+    l) language="$OPTARG" ;;
+    *) usage ;;
+    esac
+done
+
+if [ -n "$language" ]; then
+    # assume vim compatible
+    $EDITOR "$TMPFILE" +"setf $language" >/dev/tty </dev/tty
+else
+    $EDITOR "$TMPFILE" >/dev/tty </dev/tty
+fi
+
+cat "$TMPFILE"
+command rm -rf "$TMPFILE"

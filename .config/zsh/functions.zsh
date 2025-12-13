@@ -36,20 +36,6 @@ function lcd {
     cd "$(command lf -print-last-dir "$@")"
 }
 
-# simple clone of the tool with the same name
-function vipe {
-    local tmpfile="$(mktemp)"
-    cat >> "$tmpfile"
-    if [[ -n "$1" && "$EDITOR" == *vim ]]; then
-        $EDITOR "$tmpfile" +"setf $1" > /dev/tty < /dev/tty
-    else
-        $EDITOR "$tmpfile" > /dev/tty < /dev/tty
-    fi
-    cat "$tmpfile"
-    command rm -rf "$tmpfile"
-}
-
-
 function hlcolor {
     while read -r hex; do
         local red=$[ 0x${hex:1:2} ]
