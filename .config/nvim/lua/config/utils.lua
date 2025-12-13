@@ -616,13 +616,12 @@ M.del_autocommand = function(group, event)
 end
 -- }}}
 
--- Format {{{
+-- Format Dates & Times {{{
 M.highlight_time = function(secs)
     local cur_time = os.time()
 
     return M.highlight_timedelta(cur_time - secs)
 end
-
 M.highlight_timedelta = function(secs)
     if secs < 3600 then
         return "FileTimeLastHour"
@@ -646,7 +645,7 @@ local day_fmt = "Tdy %H:%M"   -- Tdy 20:10
 local week_fmt = "%a %H:%M"   -- Mon 10:11
 local month_fmt = "%d. %H:%M" -- 10. 10:11
 local year_fmt = "%b %d'%H"   -- Nov 26'11
-local older_fmt = "%b/%y %d"  -- Oct/24 6
+local older_fmt = "%b/%y %d"  -- Oct/24 06
 
 ---@param secs integer
 ---@return [string, string]
@@ -679,20 +678,10 @@ M.format_time_smart = function(secs)
     return { formatted, hl }
 end
 
-local datefmt = {}
-datefmt.short = "%b %d %H:%M"
-datefmt.fmt_short = function(secs)
-    return os.date(datefmt.short, secs)
-end
-datefmt.short_len = #datefmt.fmt_short(0)
+M.smart_date_len = #day_fmt
+-- }}}
 
-datefmt.long = "%y/%b %d, %H:%M"
-datefmt.fmt_long = function(secs)
-    return os.date(datefmt.long, secs)
-end
-datefmt.long_len = #datefmt.fmt_long(0)
-
-M.datefmt = datefmt
+-- Format numbers {{{
 
 --- Give bigger files scarier colors based on how bad of an idea it would be to open them in Neovim
 ---@param bytes integer
@@ -713,7 +702,9 @@ M.highlight_size = function(bytes)
     end
 end
 
---- Things other than byte sizes, e.g. kilo-lines
+---@param count integer
+---@param size integer? By default a prefix size of 1000 (SI) is used
+---@return string
 M.format_size = function(count, size)
     size = size or 1000
     if count < size then

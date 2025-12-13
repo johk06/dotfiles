@@ -1,7 +1,7 @@
 --[[ Rationale
-Oil allows edits to the filesystem to work the same as text files
+Oil allows edits to the file system to work the same as text files
 Additionally, it's really fast and rock solid
-Exensibility is pretty good too
+Extensibility is pretty good too
 ]]
 
 ---@type LazySpec
@@ -21,12 +21,6 @@ local perms_hlgroups = {
     ["s"] = "OilSetuid",
 }
 
-local datefmt = utils.datefmt.long
-local highlight_date = function(str)
-    local parsed_time = vim.fn.strptime(datefmt, str)
-    return utils.highlight_time(parsed_time)
-end
-
 local oil_columns = {
     permissions = {
         "permissions",
@@ -40,8 +34,6 @@ local oil_columns = {
     },
     time = {
         "smart_time",
-        highlight = highlight_date,
-        format = datefmt,
     },
     size = {
         "size",
@@ -68,7 +60,6 @@ local column_positions = {
 
 local enabled_columns = {
     "time",
-    nil,
     nil,
     nil,
     "user",

@@ -247,10 +247,7 @@ do
                 local st = uv.fs_stat(session.path.path)
                 if st then
                     mtime = st.mtime.sec
-                    local date = utils.datefmt.fmt_short(mtime)
-                    local datehl = utils.highlight_time(mtime)
-
-                    last_access = { date, datehl }
+                    last_access = utils.format_time_smart(mtime)
                 end
             end
 
@@ -310,8 +307,7 @@ do
             end
 
             local mtime = st.mtime.sec
-            local timestring = utils.datefmt.fmt_short(mtime)
-            local timehl = utils.highlight_time(mtime)
+            local time = utils.format_time_smart(mtime)
 
             local tail = fn.fnamemodify(file, ":t")
             local head = utils.expand_home(fn.fnamemodify(file, ":h"), 2)
@@ -322,7 +318,7 @@ do
             table.insert(OldfileSection.items, {
                 data = {},
                 left = { { ("%2d. "):format(index), "Number" }, { head, "NonText" }, { tail, highlight } },
-                right = { { timestring, timehl } },
+                right = { time },
                 callback = function()
                     vim.cmd.edit(file)
                 end

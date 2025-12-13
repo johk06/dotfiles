@@ -246,7 +246,7 @@ local file_display = t_entry_display.create {
     separator = " ",
     items = {
         { width = MAX_FILENAME_WIDTH * 1.4 },
-        { width = utils.datefmt.short_len },
+        { width = utils.smart_date_len },
         { remaining = true,                right_justify = true },
     }
 }
