@@ -471,9 +471,7 @@ return function(pal)
         TypeExecutable    = { fg = col.green, italic = true },
         TypeCode          = { fg = col.light_blue },
         TypeHeader        = { fg = col.yellow },
-        TypeMarkup        = { fg = col.magenta },
         TypeText          = { fg = pal.fg2 },
-        TypeBin           = { fg = col.orange },
         TypeArchive       = { fg = col.orange },
         TypeConfig        = { fg = col.purple },
         TypeMeta          = { fg = col.light_blue, italic = true },
@@ -493,11 +491,12 @@ return function(pal)
 
     -- Oil {{{
     add_with_prefix(colorscheme, "Oil", {
-        Link             = { fg = col.blue, bold = true },
+        Link             = { fg = col.blue },
+        LinkHidden       = { link = "*Link" },
         OrphanLink       = { fg = col.blue },
         Dir              = { fg = col.teal, bold = true },
-        Hidden           = { link = "FileHidden" },
         DirHidden        = { link = "*Dir" },
+        Hidden           = { link = "FileHidden" },
         LinkTarget       = { fg = col.blue, italic = true },
         OrphanLinkTarget = { fg = col.red, italic = true },
 
