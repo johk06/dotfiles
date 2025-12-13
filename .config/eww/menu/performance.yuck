@@ -26,7 +26,6 @@
                 : (temp > 40 ? "normal" 
                 : "cool"))))}")))
 
-
 (defwidget performance-panel []
     (box :hexpand true :space-evenly false :orientation "v"
         (box :orientation "v" :hexpand true :class "section" :space-evenly false

@@ -55,28 +55,9 @@
 (defpoll weather :interval "30m" "bin/weather.sh")
 
 (defwidget status-weather [weather]
-    (box :space-evenly false :orientation "vertical" :class "section" :hexpand true
-        (uptime-time :title "${formattime(EWW_TIME, "%H:%M:%S")}")
-        (hsep :height 10)
-        (box :space-evenly false
-            (button :class "button-box"
-                :onclick "${EWW_CMD} update agenda-revealed=${!agenda-revealed}" 
-                (themed-icon
-                    :name {weather != "" ? weather-icons[weather.weatherCode] : "sidebar-show-symbolic"}
-                    :width 64
-                    :height 64))
-
-            (box :orientation "vertical" :space-evenly false :halign "start" :style "margin-left: 1rem;"
-                (label :halign "start" :class "weather-title"
-                    :limit-width 14
-                    :text "${weather.weatherDesc[0].value}")
-                (label :halign "start" :class "weather-description"
-                    :text "󰔏   ${weather.temp_C}°C ~ ${weather.FeelsLikeC}°C")
-                (label :halign "start" :class "weather-description"
-                    :text "󱪉   ${weather.windspeedKmph} km/h ${weather.winddir16Point}")
-                (input :class "input l1" :value {weather-city}
-                    :timeout "128s"
-                    :onaccept `bin/weather.sh '{}'& disown`)))))
+    (label :class "text" :style "margin: .6rem;"
+        :limit-width 32
+        :text "Weather: ${weather.weatherDesc[0].value} at ${weather.temp_C}°C"))
 
 (defwidget weather-for-day [weather label]
     (box :class "todo-task" :orientation "v" :space-evenly false :style "padding: 1rem;"

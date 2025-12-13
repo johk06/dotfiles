@@ -1,5 +1,3 @@
-(defpoll boottime :interval "200m" "awk '/btime/ {print $2}' /proc/stat")
-
 (defwidget power-button [cmd icon desc color img]
     (button :class "sbutton ${color}"
         :style "min-height: 2.4rem;"
@@ -54,12 +52,24 @@
 (defwidget uptime-time [title]
     (box :orientation "v" :space-evenly false
         (label :class "title" :text title)
-        (label :class "text" :text {formattime(EWW_TIME - boottime, "up for %H hours, %M minutes", "UTC")})))
+        (label :class "text" :text {formattime(EWW_TIME - boottime, "Up for %H hours, %M minutes", "UTC")})))
+
+(defwidget status-user [] (box :class "section" :orientation "v" :space-evenly false
+    (uptime-time :title "Welcome ${USER}!")
+    (label :text {formattime(EWW_TIME, "%H:%M:%S")} :class "text")
+    (hsep :height 20)
+    (label :text "Date: ${formattime(EWW_TIME, "%a, %b %d %Y")}" :class "text")
+    (status-weather :weather {weather.current_condition[0]})
+    (box :space-evenly false :vexpand true :hexpand true :orientation "v"
+        (box :space-evenly false (button :class "sbutton"
+            :onclick "${EWW_CMD} update agenda-revealed=${!agenda-revealed}"
+            :style "min-width: 6.4rem;"
+            "${agenda-revealed ? "Hide" : "Show"} Agenda")))))
 
 (defwidget status-panel []
     (box :space-evenly false :orientation "vertical" :hexpand true
         (box :hexpand true :space-evenly false
             (stack :selected {status-top-left-widget} :hexpand true :transition "slideup" :same-size true
-                (status-weather :weather {weather.current_condition[0]})
+                (status-user)
                 (power-confirmation-dialog))
             (status-logout))))
