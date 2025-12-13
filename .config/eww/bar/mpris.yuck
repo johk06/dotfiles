@@ -1,11 +1,11 @@
 (deflisten mpris "./bin/mpris.py 2>/dev/null")
 
 (defwidget mpris-status []
-    (label :style "margin-right: .6rem;"
+    (label :style "margin-right: .6rem; min-width: 1.5rem;"
     :text "${mpris.playing ? "≈" : "="}${mpris.shuffle ? "?" : ""}"))
 
 (defwidget mpris-title [text]
-    (label :limit-width 20 :text
+    (label :limit-width 30 :text
         {mpris.loop == "track" ? "(${text})"
             : (mpris.loop == "list" ? "[${text}]"
                 : text)}))

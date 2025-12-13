@@ -2,6 +2,7 @@
 import json
 import sys
 from urllib.parse import urlparse, unquote
+from pathlib import Path
 
 import gi
 
@@ -37,7 +38,7 @@ def get_art(player):
     except KeyError:
         art_path = None
 
-    if not art_path:
+    if not art_path or not Path(art_path).is_file():
         plname = player.props.player_name.lower()
         art_path = get_icon(NAME_OVERRIDES.get(plname, plname))
 

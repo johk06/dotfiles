@@ -1,0 +1,52 @@
+(defvar mpris-repeat-icons '{
+"list": "󰑖",
+"track": "󰑘",
+"none": "󰑗"
+}')
+
+(defwidget mpris-panel-controls [] (box :orientation "vertical" :space-evenly false :hexpand true
+    (box :orientation "vertical" :space-evenly false :style "margin: 0px 1rem;"
+        :tooltip "${mpris.artist}${mpris.album != "" ? ", ${mpris.album}" : ""} - ${mpris.title}"
+        (label :class "title"
+            :text "${mpris.title}"
+            :limit-width 16)
+        (label :class "text"
+            :text "${mpris.artist}${mpris.album != "" ? " - ${mpris.album}" : ""}"
+            :limit-width 16))
+    ;; (centerbox
+    ;;     (button :class "button ${mpris.shuffle ? "" : "inactive"}" :onclick "playerctl shuffle toggle"
+    ;;         :tooltip "Shuffle: ${mpris.shuffle ? "On" : "Off"}"
+    ;;         {mpris.shuffle ? "󰒝" : "󰒞"})
+    ;;     (label :text "e")
+    ;;     (button :class "button ${mpris.loop == "none" ? "inactive" : ""}" :onclick "cycle-mpris-repeat"
+    ;;         :tooltip "Repeat: ${mpris.loop}"
+    ;;         {mpris-repeat-icons[mpris.loop]}))
+    (centerbox
+        (button :class "button" :onclick "playerctl previous" 
+            :tooltip "Previous Track"
+            "")
+        (button :style "min-width: 4.4rem;" :class "button ${mpris.playing ? "active" : ""}"
+            :tooltip "Play/Pause"
+            :onclick "playerctl play-pause"
+            "${mpris.playing ? "    Pause" : "   Play"}")
+        (button :class "button" :onclick "playerctl next"
+            :tooltip "Next Track"
+            ""))
+    (box :space-evenly false
+        (scale :hexpand true
+            :onchange `playerctl position $(echo 'scale=0;({}*${mpris.length})/100'|bc)`
+            :timeout "300s"
+            :tooltip "${
+                formattime(mpris.position?:0, (mpris.length?: 0) > 3600 ? "%H:%M:%S" : "%M:%S", "UTC")} / ${
+                formattime(mpris.length?:0, (mpris.length?: 0) > 3600 ? "%H:%M:%S" : "%M:%S", "UTC")}"
+            :class "slider ${(!mpris.has_progress || (mpris.position?:0) > (mpris.length?:0)) ? "disabled" : "with-handle"}"
+            :value {(mpris.progress?:0) * 100} :min 0 :max 100))))
+
+(defwidget mpris-panel []
+    (revealer :reveal {mpris.has_player} :transition "slidedown"
+(box :space-evenly false :class "section" :orientation "v"
+    (box :space-evenly false
+        (box :orientation "vertical" :space-evenly false :valign "center"
+            (rounded-image :path {matches(mpris.title, "^Netflix") ? "assets/netflix.svg" : mpris.art}
+                :width "96px" :height "96px"))
+        (mpris-panel-controls)))))

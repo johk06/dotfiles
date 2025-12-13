@@ -71,10 +71,6 @@
 
 (defwidget tasks-panel []
     (box :space-evenly false :orientation "vertical" :class "section" :style "padding: .8rem;"
-        (pref-toggle
-            :enabled pref-mpris-shown
-            :name "pref-mpris-shown"
-            :text "Media Widget")
         (pid-toggle
             :running service-blueman
             :var "service-blueman"

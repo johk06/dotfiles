@@ -2,7 +2,6 @@
     padding-right: .2rem;
 }
 .mpris-playing {
-    font-style: italic;
     background: linear-gradient(90deg, mix($bg1, $accent), $bg0);
     &:hover {
         background: linear-gradient(90deg, $accent, mix($bg2, $accent) 20%, $bg1);
@@ -10,7 +9,6 @@
 }
 
 .mpris-paused {
-    font-style: italic;
     color: $bright-gray;
 }
 

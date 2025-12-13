@@ -1,12 +1,13 @@
-(include "menu/toggles.yuck")
-(include "menu/bluetooth.yuck")
-(include "menu/wifi.yuck")
-(include "menu/vpn.yuck")
-(include "menu/status.yuck")
 (include "menu/audio.yuck")
-(include "menu/performance.yuck")
-(include "menu/valent.yuck")
+(include "menu/bluetooth.yuck")
 (include "menu/calendar.yuck")
+(include "menu/mpris.yuck")
+(include "menu/performance.yuck")
+(include "menu/status.yuck")
+(include "menu/toggles.yuck")
+(include "menu/valent.yuck")
+(include "menu/vpn.yuck")
+(include "menu/wifi.yuck")
 
 (defvar settings-panel-shown false)
 ;; (defvar settings-section 0)
@@ -18,8 +19,6 @@
 (defvar valent-revealed false)
 
 (defvar agenda-revealed true)
-
-(defvar pref-mpris-shown true)
 
 (defwidget battery-circle [percentage charging]
     (circular-progress :visible {(percentage) > 0} :thickness 6 :value {percentage}
@@ -43,6 +42,7 @@
                     (agenda-section)))
             (box :orientation "v" :space-evenly false
                 (status-panel)
+                (mpris-panel)
                 (audio-panel)
                 (toggle-panel)
                 (revealer :reveal {tasks-revealed} :transition "slidedown" (tasks-panel))

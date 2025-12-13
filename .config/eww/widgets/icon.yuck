@@ -2,3 +2,7 @@
     (box :width {width?:32} :height {height?:32} 
         :class "styled-icon ${class?:""}"
         :style "background-image: -gtk-icontheme('${name}'); background-size: ${width?:32}px ${height?:32}px;"))
+
+(defwidget rounded-image [path ?class ?width ?height ?vexpand]
+    (box :class "rounded-image ${class?:""}" :vexpand {vexpand?:false}
+        :style `background-image: url("${path}"); min-width: ${width?:"32px"}; min-height: ${height?:"32px"};`))

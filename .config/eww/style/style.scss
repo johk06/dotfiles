@@ -316,6 +316,14 @@
     min-width: 1rem;
 }
 
+
+.rounded-image {
+    margin: .8rem;
+    border-radius: 12px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
 tooltip{
     background-color: $bg2;
     border-radius: 12px;
