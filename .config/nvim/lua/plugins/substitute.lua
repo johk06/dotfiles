@@ -22,7 +22,7 @@ local M = {
         local exchange = require("substitute.exchange")
         map("n", "cx", exchange.operator)
         map("n", "cxx", exchange.line)
-        map("x", "cx", exchange.visual)
+        map("x", "X", exchange.visual)
     end
 }
 

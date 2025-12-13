@@ -619,27 +619,64 @@ end
 -- Format {{{
 M.highlight_time = function(secs)
     local cur_time = os.time()
-    local diff = cur_time - secs
 
-    if diff < 60 then
-        return "FileTimeLastMinute"
-    elseif diff < 3600 then
+    return M.highlight_timedelta(cur_time - secs)
+end
+
+M.highlight_timedelta = function(secs)
+    if secs < 3600 then
         return "FileTimeLastHour"
-    elseif diff < 86400 then
+    elseif secs < 86400 then
         return "FileTimeLastDay"
-    elseif diff < 259200 then
-        return "FileTimeLastFewDays"
-    elseif diff < 604800 then
+    elseif secs < 604800 then
         return "FileTimeLastWeek"
-    elseif diff < 1209600 then
+    elseif secs < 1209600 then
         return "FileTimeLastFortnight"
-    elseif diff < 2592000 then
+    elseif secs < 2592000 then
         return "FileTimeLastMonth"
-    elseif diff < 22896000 then
+    elseif secs < 22896000 then
         return "FileTimeLastYear"
     else
-        return "FileTimeSuperOld"
+        return "FileTimeOld"
     end
+end
+
+-- NOTE: all of these formats take up the same space
+local day_fmt = "Tdy %H:%M"   -- Tdy 20:10
+local week_fmt = "%a %H:%M"   -- Mon 10:11
+local month_fmt = "%d. %H:%M" -- 10. 10:11
+local year_fmt = "%b %d'%H"   -- Nov 26'11
+local older_fmt = "%b/%y %d"  -- Oct/24 6
+
+---@param secs integer
+---@return [string, string]
+M.format_time_smart = function(secs)
+    local now = os.time()
+    local delta = now - secs
+    local timeinfo = os.date("*t", secs)
+    local nowinfo = os.date("*t", now)
+
+    local formatted
+    if
+        timeinfo.day == nowinfo.day
+        and timeinfo.month == nowinfo.month
+        and timeinfo.year == nowinfo.year then
+        formatted = os.date(day_fmt, secs)
+    elseif delta < 518400 then
+        formatted = os.date(week_fmt, secs)
+    elseif
+        timeinfo.month == nowinfo.month
+        and timeinfo.year == nowinfo.year then
+        formatted = os.date(month_fmt, secs)
+    elseif timeinfo.year == nowinfo.year then
+        formatted = os.date(year_fmt, secs)
+    else
+        formatted = os.date(older_fmt, secs)
+    end
+
+    local hl = M.highlight_timedelta(delta)
+
+    return { formatted, hl }
 end
 
 local datefmt = {}
@@ -657,20 +694,21 @@ datefmt.long_len = #datefmt.fmt_long(0)
 
 M.datefmt = datefmt
 
+--- Give bigger files scarier colors based on how bad of an idea it would be to open them in Neovim
+---@param bytes integer
+---@return string
 M.highlight_size = function(bytes)
     if bytes == 0 then
         return "FileSizeNone"
-    elseif bytes < 2048 then
-        return "FileSizeTiny"
-    elseif bytes < 4096 then
-        return "FileSizeSmall"
-    elseif bytes < 32768 then
+    elseif bytes < 16384 then    -- 16K
+        return "FileSizeNormal"
+    elseif bytes < 65536 then    -- 64K
         return "FileSizeMedium"
-    elseif bytes < 131072 then
+    elseif bytes < 262144 then   -- 256K
         return "FileSizeLarge"
-    elseif bytes < 134217728 then
+    elseif bytes < 10485760 then -- 10M
         return "FileSizeHuge"
-    else
+    else                         -- Anything bigger is a colossal mistake
         return "FileSizeTooBig"
     end
 end

@@ -39,12 +39,7 @@ local oil_columns = {
         end,
     },
     time = {
-        "mtime",
-        highlight = highlight_date,
-        format = datefmt,
-    },
-    birthtime = {
-        "birthtime",
+        "smart_time",
         highlight = highlight_date,
         format = datefmt,
     },
@@ -65,11 +60,10 @@ local oil_columns = {
 
 local column_positions = {
     time = 1,
-    birthtime = 2,
-    size = 3,
-    group = 4,
-    user = 5,
-    permissions = 6,
+    size = 2,
+    group = 3,
+    user = 4,
+    permissions = 5,
 }
 
 local enabled_columns = {
@@ -140,8 +134,8 @@ local sort_types = {
         { "size", "desc" },
         { "name", "asc" }
     },
-    mtime = {
-        { "mtime", "desc" },
+    time = {
+        { "smart_time", "desc" },
         { "name",  "asc" }
     },
     default = {
@@ -310,14 +304,13 @@ M.opts.keymaps = {
     ["gh"]             = "actions.toggle_hidden",
 
     ["=s"]             = function() set_sort("size") end,
-    ["=t"]             = function() set_sort("mtime") end,
+    ["=t"]             = function() set_sort("time") end,
     ["=i"]             = function() set_sort("invert") end,
     ["=d"]             = function() set_sort("default") end,
 
     ["<localleader>/"] = filter_items,
     ["<localleader>p"] = "actions.preview",
     ["<localleader>:"] = function() open_cmd("") end,
-    ["<localleader>b"] = function() toggle_column("birthtime") end,
     ["<localleader>g"] = function() toggle_column("group") end,
     ["<localleader>m"] = function() toggle_column("permissions") end,
     ["<localleader>s"] = function() toggle_column("size") end,
@@ -352,10 +345,11 @@ M.config = function(_, opts)
     local oil = require("oil")
     oil.setup(opts)
 
-    local my_columns = require("config.plugins.oil-owner")
+    local my_columns = require("config.plugins.oil-columns")
     local columns = require("oil.columns")
     columns.register("user", my_columns.user)
     columns.register("group", my_columns.group)
+    columns.register("smart_time", my_columns.smart_time)
 
 
     local git_status = require("config.plugins.oil-git")

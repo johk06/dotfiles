@@ -1,7 +1,5 @@
 ---@type LazySpec
-local M = {}
-
-M = {
+local M = {
     "nvim-orgmode/orgmode",
     cmd = { "Org" },
     ft = { "org" },
@@ -41,7 +39,8 @@ local opts = {
         },
     },
     org_agenda_files = {
-        "~/org/**/*"
+        "~/org/**/*",
+        "~/doc/*"
     },
     org_default_notes_file = "~/org/notes.org",
     org_todo_keywords = {
@@ -64,12 +63,12 @@ local opts = {
 
 opts.org_capture_templates = {}
 
+--- Mappings {{{
 opts.mappings = {
     global = {
         org_agenda = "<space>A",
     },
 }
-
 opts.mappings.agenda = {
     org_agenda_day_view           = "<localleader>d",
     org_agenda_month_view         = "<localleader>m",
@@ -77,7 +76,7 @@ opts.mappings.agenda = {
     org_agenda_year_view          = "<localleader>y",
     org_agenda_filter             = "<localleader>/",
 
-    -- I like my find motions
+    -- I like my find motions, so keep [nN]
     org_agenda_later              = ">",
     org_agenda_earlier            = "<",
     org_agenda_today              = ".",
@@ -96,7 +95,6 @@ opts.mappings.agenda = {
     org_agenda_toggle_archive_tag = false,
     ---@diagnostic enable
 }
-
 opts.mappings.capture = {
     org_capture_kill = "<localleader>q",
 
@@ -107,7 +105,6 @@ opts.mappings.capture = {
 opts.mappings.note = {
     org_note_kill = "<localleader>q",
 }
-
 opts.mappings.org = {
     org_toggle_heading                      = "<localleader>*",
     org_store_link                          = "<localleader>y",
@@ -153,13 +150,18 @@ opts.mappings.org = {
     org_cycle                 = false,
     ---@diagnostic enable
 }
+-- }}}
 
+-- Custom Directives {{{
 ---@type table<string, fun(file: OrgFile, value: string|string[])>
 local custom_opts = {
-    spell = function(file, value)
-        vim.wo[0][0].spell = true
+    language = function(file, value)
         if type(value) == "string" then
-            vim.bo[file.buf].spelllang = value:gsub("%s*,", ",")
+            if value:match("%s*%-%s*") then
+                vim.bo[file.buf].spelllang = ""
+            else
+                vim.bo[file.buf].spelllang = value:gsub("%s*,", ",")
+            end
         else
             vim.bo[file.buf].spelllang = table.concat(value, ",")
         end
@@ -180,6 +182,7 @@ local handle_custom_opts = function(file)
         end
     end
 end
+-- }}}
 
 M.config = function()
     local utils = require("config.utils")

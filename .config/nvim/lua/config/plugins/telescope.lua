@@ -68,7 +68,7 @@ M.bottom_pane_layout = function(picker)
             end
 
             local height = vim.o.lines
-            local view_height = get_layout(self.picker.layout_config.height, height - 4, 0.4, 8, 30)
+            local view_height = get_layout(self.picker.layout_config.height, height - 4, 0.3, 8, 30)
 
             local row = height - 2
 
@@ -256,18 +256,16 @@ local file_entry_display = function(entry)
     local st = entry.st
 
     local tail, parentdir, filename_highlight = get_names_and_hl(value)
-    local mtime, timehl
+    local time
     if not st then
-        mtime = ""
-        timehl = ""
+        time = {}
     else
-        mtime = utils.datefmt.fmt_short(st.mtime.sec)
-        timehl = utils.highlight_time(st.mtime.sec)
+        time = utils.format_time_smart(st.mtime.sec)
     end
 
     return file_display {
         { tail,      filename_highlight },
-        { mtime,     timehl },
+        time,
         { parentdir, "NonText" }
     }
 end

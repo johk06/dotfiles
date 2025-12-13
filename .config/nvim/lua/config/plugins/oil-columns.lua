@@ -7,8 +7,10 @@ TODO: Allow editing via Column.perform_action
 - NOTE: this may make more sense for the groups column
 ]]
 
-local constants = require("oil.constants")
+local constants  = require("oil.constants")
+local utils      = require("config.utils")
 local FIELD_META = constants.FIELD_META
+local uv         = vim.uv
 
 ---@type {[integer]: string}
 local Users
@@ -76,5 +78,36 @@ end
 
 M.user = make_entry("uid", "user", "OilUser", Users)
 M.group = make_entry("gid", "group", "OilGroup", Groups)
+
+---@type oil.ColumnDefinition
+M.smart_time = {
+    render = function(entry)
+        local meta = entry[FIELD_META]
+        if not meta then
+            return nil
+        end
+
+        ---@type integer
+        local time =  meta.stat and meta.stat.mtime.sec
+        if not time then
+            return nil
+        end
+        
+        return utils.format_time_smart(time)
+    end,
+    parse = function(line)
+        -- NOTE: all formats consist of two WORDs
+        return line:match("^(%S+%s+%S+)%s+(.+)$")
+    end,
+    get_sort_value = function(entry)
+        local meta = entry[FIELD_META]
+        local stat = meta and meta.stat
+        if stat and stat.mtime then
+            return stat.mtime.sec
+        else
+            return 0
+        end
+    end
+}
 
 return M

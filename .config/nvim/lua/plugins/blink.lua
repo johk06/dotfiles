@@ -110,12 +110,17 @@ opts.completion.menu.draw.components = {
     }
 }
 
+-- (Neo)Vim has a nice omnifunc for css: 'ft-css-omni'
+local css_sources = { "omni", "snippets", "path", "buffer" }
+
 opts.sources = {
     default = { "lsp", "path", "snippets", "buffer" },
     per_filetype = {
         oil = { "path", "buffer", "snippets" },
         org = { "orgmode", "snippets", "buffer" },
         Input = { "omni" },
+        css = css_sources,
+        scss = css_sources,
     },
     providers = {
         orgmode = {
