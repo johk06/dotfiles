@@ -39,8 +39,7 @@ def get_art(player):
         art_path = None
 
     if not art_path or not Path(art_path).is_file():
-        plname = player.props.player_name.lower()
-        art_path = get_icon(NAME_OVERRIDES.get(plname, plname))
+        return None
 
     return art_path
 

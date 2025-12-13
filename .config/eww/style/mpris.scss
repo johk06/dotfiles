@@ -12,6 +12,11 @@
     color: $bright-gray;
 }
 
+.mpris-gradient {
+    background-image: linear-gradient(45deg, $magenta, $purple, $lblue, $teal);
+    animation: cycle_gradient 5s linear infinite;
+}
+
 .bar-circle {
     @extend .circle;
     color: $accent;

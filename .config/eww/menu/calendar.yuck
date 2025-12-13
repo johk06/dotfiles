@@ -17,13 +17,14 @@
         (agenda-list-section)))
 
 (defwidget agenda-calendar-section []
-    (box :orientation "h" :class "agenda-calendar-section" :valign "center"
-        (calendar :class "agenda-calendar"
+    (box :orientation "h" :class "agenda-calendar-section" :valign "center" :space-evenly false
+        (box :class "calendar-box" :hexpand true (calendar :class "agenda-calendar"
             :day {_todo-day}
             :month {_todo-month}
             :year {_todo-year}
             :timeout "600s"
-            :onclick "${EWW_CMD} update todo-date={2}-$(({1}+1))-{0}")))
+            :onclick "${EWW_CMD} update todo-date={2}-$(({1}+1))-{0}"))
+        (rounded-image :path "${HOME}/.config/background/thumb" :width "160px")))
 
 (defwidget todo-date [time if-none ?no-hl ?start]
     (box :space-evenly false

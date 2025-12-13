@@ -1,6 +1,8 @@
 ; My desktop shell
 (include "widgets/icon.yuck")
 
+(defpoll HOME :interval "10000h" 'echo "$HOME"')
+
 (defwidget hsep [height]
     (box :class "hsep" :style "margin-top: ${height / 2}; margin-bottom: ${height / 2}"))
 (defwidget vsep [width]

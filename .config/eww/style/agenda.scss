@@ -1,6 +1,6 @@
 .agenda-calendar {
     color: $fg0;
-    font-size: 1.1rem;
+    font-size: 1.2rem;
     &.highlight {
         color: inherit;
     }
@@ -24,9 +24,12 @@
 
 .agenda-calendar-section {
     @extend .section;
-    padding: 1rem;
     margin-left: 1.2rem;
     margin-right: 1.2rem;
+}
+
+.calendar-box {
+    padding: .4rem;
 }
 
 .agenda-list-section {
