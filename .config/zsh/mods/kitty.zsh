@@ -1,10 +1,3 @@
-#!/bin/false
-# vim: ft=zsh
-
-if [[ "$1" == "unload" ]]; then
-    return
-fi
-
 # manually activate shell integration for the parts i care about
 if [[ ! -n "$KITTY_SHELL_INTEGRATION_ENABLED" && -n "$KITTY_INSTALLATION_DIR" && "$TERM" == "xterm-kitty" ]] {
     export KITTY_SHELL_INTEGRATION="no-cursor no-title no-prompt-mark"

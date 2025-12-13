@@ -1,20 +1,4 @@
-#!/bin/false
-# vim: ft=zsh
-
 # make filesystem naviation/file handling easier
-
-if [[ "$1" == "unload" ]]; then
-
-    unfunction rgf mcd rp bn rcd \
-        pwf \
-        root
-
-    unalias md ft bft zcp zln
-
-    unfunction zmv
-
-    return
-fi
 
 alias md="mkdir -p"
 
@@ -26,6 +10,9 @@ function mcd {
 }
 compdef mcd=mkdir
 
+function lcd {
+    cd "$(command lf -print-last-dir "$@")"
+}
 
 alias ft="file --mime-type -F$'\t'"
 alias bft="file --brief --mime-type -N"
@@ -34,6 +21,7 @@ alias bft="file --brief --mime-type -N"
 function rp {
     print -l -- "${@:A}"
 }
+
 # basename
 function bn {
     print -l -- "${@:t}"
@@ -109,5 +97,6 @@ function lfd {
 }
 compdef lfd=fd
 
+# use zmv to intelligently rename files
 autoload -Uz zmv
 alias zcp="zmv -C" zln="zmv -p 'ln -s'"

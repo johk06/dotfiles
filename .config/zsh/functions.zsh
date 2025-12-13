@@ -1,39 +1,35 @@
+# Utilities {{{
+# mainly for use in functions
+alias ret="print --"
+alias yield="print -l --"
+alias fn="function"
+
+# show a nice definition of the command after it
+# for functions and aliases, shows the definition
+# for builtins and programs, show the full invocation
+function getdef {
+    {
+        whence -w -- "$@"|sed 's/^.*: \(.*\)/\1 /'|tr -d '\n'
+        whence -f -x 4 -- "$@"
+    } | bat --plain --language zsh
+}
+compdef getdef=whence
+
+function keys {
+    local arrayname="${1}"
+    print -l -- ${(@k)${(P)arrayname}}
+}
+# }}}
+
+# Display {{{
 # faster, way faster than proper `clear`
+# commonly used for c;command
 function c {
     print -n "\e[H\e[2J"
 }
 
-# run program in alternate screen
-function @alt {
-    if [[ -t 1 ]]; then
-        tput smcup
-        eval "$@"
-        tput rmcup
-    fi
-}
-
-compdef @alt=eval
-
-function chars2codes {
-    local char
-    while read -u0 -k1 -r char; do
-        printf "%02x\n" "'$char"
-    done
-}
-
-function codes2chars {
-    local code
-    while read -r code; do
-        printf "\\U$code"
-    done
-}
-
 function hex2chars {
     printf '0: %s' "$@" | xxd -r
-}
-
-function lcd {
-    cd "$(command lf -print-last-dir "$@")"
 }
 
 function hlcolor {
@@ -51,7 +47,25 @@ function hlcolor {
             $foreground $red $green $blue $hex $red $green $blue $hex
     done
 }
+# }}}
 
+# Process Utils {{{
+# very, very verbose wrapper around `time`
+alias jobinfo='TIMEFMT="User:     %U
+Kernel:   %S
+Time:     %E
+Usage:    %P
+MemMax:   %MK
+Input:    %I
+Output:   %O
+Recv:     %r
+Send:     %s
+Signals:  %k
+Swaps:    %W
+Waits:    %w
+Switches: %c"
+time'
+# }}}
 
 function open {
     local arg
@@ -71,14 +85,13 @@ function cleanhist {
 
 source $ZDOTDIR/handlers.zsh
 
-# load all the modules i always want
-source "$ZDOTDIR/mods/fun.zsh"
-source "$ZDOTDIR/mods/proc.zsh"
-source "$ZDOTDIR/mods/net.zsh"
 source "$ZDOTDIR/mods/fs.zsh"
-source "$ZDOTDIR/mods/git.zsh"
 source "$ZDOTDIR/mods/fzf.zsh"
 
 if [[ "$TERM" == "xterm-kitty" ]]; then
     source "$ZDOTDIR/mods/kitty.zsh"
+fi
+
+if [[ -n "$NVIM" ]]; then
+    source "$ZDOTDIR/mods/nvim.zsh"
 fi

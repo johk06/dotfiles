@@ -95,7 +95,6 @@ nameddirs=(
     ["ws"]="$HOME/ws"
 )
 
-
 # my own config
 source "$ZDOTDIR/keybinds.zsh"
 source "$ZDOTDIR/functions.zsh"
@@ -118,7 +117,3 @@ export JQ_COLORS="0;90:0;36:0;36:0;35:0;32:0;90:0;90:1;34"
 export RIPGREP_CONFIG_PATH="$XDG_CONFIG_HOME/ripgrep/config"
 # only set this for interactive sessions
 export SSH_ASKPASS_REQUIRE=prefer
-
-if [[ -n "$NVIM" ]]; then
-    source "$ZDOTDIR/nvim.zsh"
-fi

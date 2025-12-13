@@ -1,13 +1,4 @@
-#!/bin/false
-
 # wrappers around fzf for my most common use cases
-
-if [[ "$1" == "unload" ]]; then
-    unfunction cd/ _fzf_shell_hist _fzf_change_dir _fzf_insert_path
-
-    unset FZF_DEFAULT_OPTS
-    return
-fi
 
 FZF_DEFAULT_OPTS="--pointer='' --no-scrollbar --info=inline-right --no-separator --border=none --preview-border=line --height=~50% --no-bold"
 FZF_DEFAULT_OPTS+=" --color="prompt:cyan,fg:white,bg:black,bg+:gray,gutter:black,hl:yellow:underline,hl+:yellow:underline,info:magenta,border:gray,query:white:regular,preview-fg:white,preview-bg:black,spinner:cyan,marker:magenta,header:white
@@ -15,13 +6,13 @@ FZF_DEFAULT_OPTS+=" --color="prompt:cyan,fg:white,bg:black,bg+:gray,gutter:black
 export FZF_DEFAULT_OPTS
 
 # find * cd
-function cd/ {
+function fcd {
     local res="$(fd $@ --type=dir | fzf --prompt="cd: " --preview='lsd -l -- {}')"
     if [[ -n "$res" ]]; then
         cd "$res"
     fi
 }
-compdef cd/=fd
+compdef fcd=fd
 
 function _fzf_change_dir {
     cd/
