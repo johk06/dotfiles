@@ -67,13 +67,6 @@ Switches: %c"
 time'
 # }}}
 
-function open {
-    local arg
-    for arg in "$@"; do
-        setsid xdg-open "$arg" >/dev/null 2>&1
-    done
-}
-
 # generate a "clean" version of the history
 # deduplicate
 # restore order

@@ -20,10 +20,10 @@ source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
 zvm_bindkey viins '^ ' autosuggest-accept
 ZSH_AUTOSUGGEST_STRATEGY=(history completion)
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=8,bold"
-zle -N up-line-or-beginning-search
-zle -N down-line-or-beginning-search
 
 # history
+zle -N up-line-or-beginning-search
+zle -N down-line-or-beginning-search
 autoload -U up-line-or-beginning-search
 autoload -U down-line-or-beginning-search
 bindkey "^[[A" up-line-or-beginning-search

@@ -6,9 +6,7 @@ alias \
     nv="nvim" \
     vi="nvim" \
     yay="yay --editmenu --devel" \
-    mpv="mpv --hwdec=auto" \
     q="exit" \
-    x="exit" \
     rm="rm -i" \
     ll='lsd -l --hyperlink=auto' \
     lls='lsd -l --blocks=size,name --total-size --sort=size' \
@@ -24,19 +22,12 @@ alias '#'="noglob qalc" # do math directly on the cmdline
 # nice to have redirections
 alias \
     -g "@quiet"=">/dev/null 2>&1" \
-    -g "@err2out"="2>&1" \
-    -g "@out2err"=">&2" \
-    -g '@noerr'="2>/dev/null" \
-    -g "@noout"=">/dev/null" \
+    -g "@e2o"="2>&1" \
+    -g "@o2e"=">&2" \
+    -g '@noe'="2>/dev/null" \
+    -g "@noo"=">/dev/null" \
     -g "@help"='--help 2>&1 | bat -l help -p' \
 
-
-alias \
-    '@raw'="noglob" \
-    ':tab'="IFS=$'\t'" \
-    ':colon'="IFS=':'" \
-    ':semic'="IFS=';'" \
-    ':lf'="IFS=$'\n'" \
-    ':eq'="IFS='='"
-
 TAB=$'\t'
+GH="https://github/com"
+GHSSH="git@github.com"

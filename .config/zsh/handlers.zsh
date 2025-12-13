@@ -37,6 +37,13 @@ function __readnullcommand {
 
 READNULLCMD=__readnullcommand
 
+function open {
+    local arg
+    for arg in "$@"; do
+        setsid xdg-open "$arg" >/dev/null 2>&1
+    done
+}
+
 # abuse for the clipboard, can contain any data, not just a dir
 function _clipboard_directory_name {
     if [[ "$1" == "d" ]]; then
