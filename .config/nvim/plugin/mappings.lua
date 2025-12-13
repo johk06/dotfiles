@@ -96,8 +96,8 @@ map("n", "glE", function() vim.diagnostic.setqflist { open = true } end, { desc 
 map("n", "gle", function() vim.diagnostic.setloclist { open = true } end, { desc = "Loclist: Diagnostics ([E]rrors)" })
 
 -- list all TODOs, only when followed by a description
-map("n", "glT", [[<cmd>silent grep '\b(TODO\|HACK\|FIXME):'|cwin<cr>]], { desc = "Qflist: List TODOs" })
-map("n", "glt", [[<cmd>silent lvimgrep /\<\%(TODO\|HACK\|FIXME\):/ %|lwin<cr>]], { desc = "Loclist: List TODOs" })
+map("n", "glT", [[<cmd>silent grep! '\b(TODO\|HACK\|FIXME):'|cwin<cr>]], { desc = "Qflist: List TODOs" })
+map("n", "glt", [[<cmd>silent lvimgrep! /\<\%(TODO\|HACK\|FIXME\):/ %|lwin<cr>]], { desc = "Loclist: List TODOs" })
 
 local spell_severity_mapping = {
     ["bad"] = "E",
@@ -192,8 +192,12 @@ map("n", "gl?", function()
 end, { desc = "Qflist: List Search" })
 
 -- toggle the lists, like other buffer mappings
-map("n", bufleader .. "q", function() require("quicker").toggle { min_height = 8 } end)
-map("n", bufleader .. "l", function() require("quicker").toggle { min_height = 8, loclist = true } end)
+map("n", bufleader .. "q", function()
+    require("quicker").toggle { min_height = 8 }
+end, { desc = "Qflist: Show" })
+map("n", bufleader .. "l", function()
+    require("quicker").toggle { min_height = 8, loclist = true }
+end, { desc = "Loclist: Show" })
 
 -- vertical view
 map("n", bufleader .. "Q", function()
@@ -442,7 +446,7 @@ map(mov, "<C-i>", "<C-i>zz")
 -- I do not use Low and High for navigation and even rarer in o-pending mode
 -- also kinda logical, a stronger version of lh
 map(mov, "L", "$")
-map(mov, "H", "^")
+map(mov, "H", "^") -- 0 is significantly less useful than ^ and easier to reach as well
 
 -- keep the old ones around though
 map(mov, "gL", "L")
@@ -459,25 +463,6 @@ end
 
 map("n", "<<space>", function() insert_spaces(-1) end)
 map("n", "><space>", function() insert_spaces(1) end)
-
----@param char string
-local is_ascii_lower = function(char)
-    local c = char:byte()
-    return c <= 0x7a and c >= 0x61
-end
-
--- Set next mark that matches the line text
-map("n", "m,", function()
-    local line = api.nvim_get_current_line()
-    for i = 1, #line do
-        local m = line:sub(i, i):lower()
-        if is_ascii_lower(m) and api.nvim_buf_get_mark(0, m)[1] == 0 then
-            vim.cmd.mark(m)
-            utils.message("Marks", "Set " .. m)
-            return
-        end
-    end
-end)
 -- }}}
 
 -- Set options {{{
@@ -490,7 +475,8 @@ map("n", "<space>cw", "<cmd>set wrap!<cr>", { desc = "Toggle 'wrap'" })
 
 map("n", "<space>cW", function()
     vim.o.textwidth = vim.v.count * 10
-end)
+end, { desc = "Set Width" })
+
 map("n", "<space>c|", function()
     if vim.o.colorcolumn == "" then
         if vim.o.textwidth ~= 0 then
@@ -559,6 +545,7 @@ local getmacroreg = function()
     local r = vim.v.register
     return r ~= '"' and r or "q"
 end
+
 map({ "n", "x" }, "<C-q>", function()
     if fn.reg_recording() ~= "" then
         return "q"
@@ -577,8 +564,8 @@ map({ "n", "x" }, "@", function()
     end
 end, { expr = true })
 
--- faster to close windows and cycle
--- additionally this is the norm for lots of plugin's floating windows as well
+-- this now frees up q to close windows and cycle
+-- additionally this is the norm for lots of plugin's floating windows as well, so this helps avoid surprises
 map("n", "q", function()
     local ok = pcall(vim.cmd.close)
     if not ok then
@@ -605,7 +592,7 @@ local terminal = require("config.terminal")
 local termleader = "<space>t"
 map("n", termleader .. "s", function() terminal.open_term { position = "horizontal" } end)
 map("n", termleader .. "v", function() terminal.open_term { position = "vertical" } end)
-map("n", termleader .. "x", function() terminal.open_term { position = "replace" } end)
+map("n", termleader .. "r", function() terminal.open_term { position = "replace" } end)
 map("n", termleader .. "f", function() terminal.open_term { position = "float" } end)
 map("n", termleader .. "a", function() terminal.open_term { position = "autosplit" } end)
 map("n", termleader .. "t", function() terminal.open_term { position = "autosplit" } end)
