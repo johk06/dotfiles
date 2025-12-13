@@ -23,7 +23,7 @@ shift
 # use `-` to generate a file based on the command
 if [ "$FILE" = "-" ]; then
     [ ! -d "$CACHEDIR" ] && mkdir -p "$CACHEDIR"
-    FILE="$CACHEDIR/$(echo "$@" | sed 's/\//%/')"
+    FILE="$CACHEDIR/$(echo "$@" | sed 's/\//%/g')"
 fi
 
 if [ -f "$FILE" ]; then
