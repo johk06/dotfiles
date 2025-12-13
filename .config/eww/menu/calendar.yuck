@@ -138,7 +138,7 @@
 (defvar agenda-new-start "")
 (defvar agenda-new-due "")
 (defwidget agenda-todo-new []
-    (box :class "todo-new" :space-evenly false :orientation "v"
+    (box :class "agenda-control" :space-evenly false :orientation "v"
         (box :space-evenly false
             (button
                 :class "sbutton active"

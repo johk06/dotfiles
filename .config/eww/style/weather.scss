@@ -1,5 +1,9 @@
-.weather-hour {
+.weather-hour, .weather-hour-now, .weather-hour-past {
     background-color: $bg2;
     padding: .3rem;
     border-radius: 12px;
+}
+
+.weather-hour-past {
+    background-color: $bg3;
 }

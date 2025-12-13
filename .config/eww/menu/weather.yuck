@@ -59,7 +59,7 @@
         :limit-width 32
         :text "Weather: ${weather.weatherDesc[0].value} at ${weather.temp_C}°C"))
 
-(defwidget weather-for-day [weather label]
+(defwidget weather-for-day [weather label now]
     (box :class "todo-task" :orientation "v" :space-evenly false :style "padding: 1rem;"
         (centerbox
             (label :halign "start" :class "todo-title" :text {label})
@@ -67,17 +67,25 @@
             (label :halign "end" :class "text" :text "${weather.mintempC}°C to ${weather.maxtempC}°C")
         )
         (scroll :class "slider" :hscroll true :hexpand true :style "min-height: 8rem; margin-top: 1rem;"
-            (box :spacing 12 (for hour in {jq(weather.hourly, ".[2:]")} (box :space-evenly false :orientation "v" :class "weather-hour"
+            (box :spacing 12 (for hour in {jq(weather.hourly, ".[2:]")} (box :space-evenly false :orientation "v"
+                :class "weather-hour ${now >= hour.time ? "weather-hour-past" : ""}"
                 (label :text "${replace(hour.time, "00$", "")}:00" :class "text" :vexpand true)
                 (themed-icon :name {weather-icons[hour.weatherCode]} :width 32 :height 32)
                 (label :text "${hour.weatherDesc[0].value}" :class "text" :limit-width 12)
-                (label :text "${hour.tempC}°C" :class "text")
-            ))))))
+                (label :text "${hour.tempC}°C" :class "text")))))))
+
+(defwidget weather-controls [] (box :space-evenly false :class "agenda-control"
+    (input :class "input l1" :value {weather-city}
+        :timeout "128s"
+        :onaccept `bin/weather.sh '{}'& disown`)
+    (box :hexpand true :space-evenly false :halign "end" :style "padding-right: 1rem;"
+        (label :class "text" 
+            :text "Showing weather for ${weather.nearest_area[0].areaName[0].value}\\n${weather.nearest_area[0].region[0].value}, ${weather.nearest_area[0].country[0].value}"))))
 
 (defwidget agenda-weather-list [] 
     (scroll :vscroll true :vexpand true
         (box :orientation "v" :space-evenly false
-            (weather-for-day :weather {weather.weather[0]} :label "Today")
-            (weather-for-day :weather {weather.weather[1]} :label "Tomorrow")
-            (weather-for-day :weather {weather.weather[2]} :label "Overmorrow")
-    )))
+            (weather-controls)
+            (weather-for-day :weather {weather.weather[0]} :label "Today" :now {formattime(EWW_TIME, "%H00")})
+            (weather-for-day :weather {weather.weather[1]} :label "Tomorrow" :now {-1})
+            (weather-for-day :weather {weather.weather[2]} :label "Overmorrow" :now {-1}))))
