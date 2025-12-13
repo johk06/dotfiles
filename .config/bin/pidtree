@@ -1,15 +1,52 @@
 #!/bin/sh
 
-for pid in "$@"; do
+usage() {
+    echo "Usage: pidtree [-r] [PID]..." >&2
+    exit 1
+}
+
+padding=6
+while getopts ":rbp:" o; do
+    case "$o" in
+    r) rev=yes ;;
+    b) brief=yes ;;
+    p) padding=$OPTARG ;;
+    *) usage ;;
+    esac
+done
+shift $((OPTIND - 1))
+
+print_tree() {
+    pid=$1
     if [ ! -d /proc/$pid ]; then
         echo "No such process $pid" >&2
-        break
+        echo
+        return
     fi
     while [ "$pid" -gt 0 ]; do
         read -r id _ _ pid _ </proc/$pid/stat
-        printf "%5d " "$id"
-        sed s'/\x00/ /g' </proc/$id/cmdline
-        echo
-    done
+        printf "%*d " "$padding" "$id"
+        if [ -z "$brief" ]; then
+            sed s'/\x00/ /g' </proc/$id/cmdline
+            echo
+        else
+            cat /proc/$id/comm
+        fi
+    done | {
+        if [ -n "$rev" ]; then
+            tac
+        else
+            cat
+        fi
+    }
     echo
-done
+}
+if [ $# -eq 0 ]; then
+    while read -r pid; do
+        print_tree "$pid"
+    done
+else
+    for pid in "$@"; do
+        print_tree "$pid"
+    done
+fi
