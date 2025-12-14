@@ -3,6 +3,6 @@
         :class "styled-icon ${class?:""}"
         :style "background-image: -gtk-icontheme('${name}'); background-size: ${width?:32}px ${height?:32}px;"))
 
-(defwidget rounded-image [path ?class ?width ?height ?vexpand ?empty]
+(defwidget rounded-image [path ?class ?width ?height ?vexpand]
     (box :class "rounded-image ${class?:""}" :vexpand {vexpand?:false}
-        :style `${empty?:false ? "" : 'background-image: url("${path}")'}; min-width: ${width?:"32px"}; min-height: ${height?:"32px"};`))
+        :style `background-image: url("${path}"); min-width: ${width?:"32px"}; min-height: ${height?:"32px"};`))

@@ -43,8 +43,7 @@
         (box :space-evenly false :class "section" :orientation "v"
             (box :space-evenly false
                 (box :orientation "vertical" :space-evenly false :valign "center"
-                    (rounded-image :empty {mpris.art == "null"} 
-                        :path {matches(mpris.title, "^Netflix") ? "assets/netflix.svg" : mpris.art}
-                        :class {mpris.art == "null" ? "mpris-gradient" : ""}
+                    (rounded-image
+                        :path {matches(mpris.title, "^Netflix") ? "assets/netflix.svg" : mpris.art?:"assets/juniper.png"}
                         :width "96px" :height "96px"))
                 (mpris-panel-controls)))))
