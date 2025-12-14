@@ -1,5 +1,11 @@
 #!/bin/bash
 
+WALL="$HOME/.config/background/wall"
+THUMB="$HOME/.config/background/thumb"
+LOCK="$HOME/.config/background/lock"
+
+THUMB_RESOLUTION=384x384 # Provides a clean 10x downscale from 3840x2160
+
 function set_walls() {
     if ! swww query; then
         swww-daemon &
@@ -9,16 +15,18 @@ function set_walls() {
         --transition-pos bottom \
         --transition-duration 1.2 \
         --transition-fps 60 \
-        "$HOME/.config/background/wall"
+        "${WALL}"
 }
 function set_as_wall() {
-    unlink "$HOME/.config/background/wall"
-    ln -s "$1" "$HOME/.config/background/wall"
+    unlink "${WALL}"
+    ln -s "$1" "${WALL}"
+
+    magick "${WALL}" -resize $THUMB_RESOLUTION "$THUMB" &
 }
 
 function set_as_lock() {
-    unlink "$HOME/.config/background/lock"
-    ln -s "$1" "$HOME/.config/background/lock"
+    unlink "${LOCK}"
+    ln -s "$1" "${LOCK}"
 }
 case $1 in
 lock)
