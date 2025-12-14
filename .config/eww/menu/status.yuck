@@ -58,7 +58,7 @@
     (uptime-time :title "Welcome ${USER}!")
     (label :text {formattime(EWW_TIME, "%H:%M:%S")} :class "text")
     (hsep :height 20)
-    (label :text "Date: ${formattime(EWW_TIME, "%a, %b %d %Y")}" :class "text")
+    (label :text "Today is ${formattime(EWW_TIME, "%a, %b %d %Y")}" :class "text")
     (status-weather :weather {weather.current_condition[0]})
     (box :space-evenly false :vexpand true :hexpand true :orientation "v"
         (box :space-evenly false (button :class "sbutton"

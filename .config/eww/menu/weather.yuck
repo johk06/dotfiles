@@ -56,8 +56,8 @@
 
 (defwidget status-weather [weather]
     (label :class "text" :style "margin: .6rem;"
-        :limit-width 32
-        :text "Weather: ${weather.weatherDesc[0].value} at ${weather.temp_C}°C"))
+        :limit-width 26
+        :text "${weather.weatherDesc[0].value} at ${weather.temp_C}°C"))
 
 (defwidget weather-for-day [weather label now]
     (box :class "todo-task" :orientation "v" :space-evenly false :style "padding: 1rem;"
