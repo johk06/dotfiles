@@ -11,7 +11,7 @@ print_walls() {
 }
 
 if ((ROFI_RETV != 0)); then
-    ~/.config/background/wallpaper.sh both "$XDG_CONFIG_HOME/background/img/$1" >/dev/null 2>&1
+    wallpaper both "$XDG_CONFIG_HOME/background/img/$1" >/dev/null 2>&1
     echo -en "$SETSEL$ROFI_INFO"
 else
     echo -en "$SET_DELIM\t\n"
