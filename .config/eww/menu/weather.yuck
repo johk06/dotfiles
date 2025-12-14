@@ -68,9 +68,7 @@
         )
         (scroll :class "slider" :hscroll true :hexpand true :style "min-height: 8rem; margin-top: 1rem;"
             (box :spacing 12 (for hour in {jq(weather.hourly, ".[2:]")} (box :space-evenly false :orientation "v"
-                :class "weather-hour ${now >= hour.time ? "weather-hour-past" : (
-                    (now == hour.time || now - 100 == hour.time || now + 100 == hour.time) ? "weather-hour-now"
-                    : "")}"
+                :class "weather-hour ${(now == hour.time || now - 100 == hour.time || now + 100 == hour.time)? "weather-hour-now" : ( now >= hour.time  ? "weather-hour-past" : "")}"
                 (label :text "${replace(hour.time, "00$", "")}:00" :class "text" :vexpand true)
                 (themed-icon :name {weather-icons[hour.weatherCode]} :width 32 :height 32)
                 (label :text "${hour.weatherDesc[0].value}" :class "text" :limit-width 12)

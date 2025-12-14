@@ -48,6 +48,8 @@
     {"keys": "<M-*", "action": "Selection", "mod": true},
     {"keys": "p", "action": "Print"},
     {"keys": "y", "action": "Copy other"},
+    {"keys": "a", "action": "Append other"},
+    {"keys": "i", "action": "Insert other"},
     {"keys": "x", "action": "Exchange"},
     {"keys": "e", "action": "Edit"},
     {"keys": "c", "action": "Clear"},
