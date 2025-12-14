@@ -2,7 +2,7 @@
 import json
 import sys
 from urllib.parse import urlparse, unquote
-from pathlib import Path
+import os
 
 import gi
 
@@ -38,7 +38,9 @@ def get_art(player):
     except KeyError:
         art_path = None
 
-    if not art_path or not Path(art_path).is_file():
+
+    st = os.stat(art_path) if art_path else None
+    if not art_path or not st or st.st_size == 0:
         return None
 
     return art_path
