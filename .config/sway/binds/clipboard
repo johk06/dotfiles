@@ -14,10 +14,10 @@ mode "clipboard" {
     bindsym Y exec wl-paste -p | wl-copy; mode "default"
     bindsym Mod1+Y exec wl-paste | wl-copy -p; mode "default"
 
-    bindsym A exec {wl-paste && wl-paste -p} | wl-copy
-    bindsym Mod1+A exec {wl-paste -p && wl-paste} | wl-copy -p
-    bindsym I exec {wl-paste -p && wl-paste} | wl-copy
-    bindsym Mod1+I exec {wl-paste && wl-paste -p} | wl-copy -p
+    bindsym A exec {wl-paste && wl-paste -p} | wl-copy; mode "default"
+    bindsym Mod1+A exec {wl-paste -p && wl-paste} | wl-copy -p; mode "default"
+    bindsym I exec {wl-paste -p && wl-paste} | wl-copy; mode "default"
+    bindsym Mod1+I exec {wl-paste && wl-paste -p} | wl-copy -p; mode "default"
 
     # Exchange them
     bindsym X exec $sc/exchange-clipboard.sh; mode "default"
