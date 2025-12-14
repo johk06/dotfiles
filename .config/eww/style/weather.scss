@@ -5,5 +5,8 @@
 }
 
 .weather-hour-past {
-    background-color: $bg3;
+    background-color: $bg1;
+}
+.weather-hour-now {
+    background-color: mix($bg3, $accent);
 }
