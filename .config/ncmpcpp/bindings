@@ -135,4 +135,8 @@ def_key "<"
 def_command "q" [deferred]
     quit
 
+# make it behave sensibly
+def_key "ctrl-z"
+    run_external_console_command "kill -STOP $PPID"
+
 # }}}
