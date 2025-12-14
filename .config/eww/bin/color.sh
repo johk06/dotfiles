@@ -28,6 +28,7 @@ sed -i "s/$old.scss/$target.scss/" "$XDG_CONFIG_HOME/eww/style/color.scss" &
 sed -i "s/$old/$target/" "$XDG_CONFIG_HOME/rofi/style/color.rasi" &
 relink_file "$XDG_CONFIG_HOME/swaylock" config.$target config &
 relink_file "$XDG_CONFIG_HOME/sway" $target color &
+relink_file "$XDG_CONFIG_HOME/mpv" $target.conf color.conf &
 (
     relink_file "$XDG_CONFIG_HOME/zathura" $target color
     # reload zathura instances
