@@ -47,14 +47,16 @@ local cursor_for_ts_node = function(ctx, capture, range)
     main:delete()
 end
 
-local map_select_operator = function(keys, capture, field, desc)
-    require("config.lib.operators").map_function(keys, function(mode, region, extra)
+local map_select_operator = function(keys, capture, desc)
+    require("config.lib.operators").map_function(keys, function(mode, region)
+        local endline = region[2][1]
         require("multicursor-nvim").action(function(ctx)
             cursor_for_ts_node(ctx, capture, {
                 region[1][1] - 1,
                 region[1][2],
-                region[2][1] - 1,
-                mode == "line" and #vim.api.nvim_buf_get_lines(0, region[2][1]-1, region[2][1], false)[1] or region[2][2]
+                endline - 1,
+                mode == "line" and #vim.api.nvim_buf_get_lines(0, endline - 1, endline, false)[1] or
+                region[2][2]
             })
         end)
     end, { desc = desc })
@@ -121,7 +123,7 @@ function M.config()
     map("n", "-/", mc.searchAllAddCursors, { desc = "Cursor: New for /" })
 
     -- align cursors: all to same column
-    map(action, "-a", function()
+    map(action, "-|", function()
         mc.action(function(ctx)
             local maincol = vim.fn.charcol(".")
             ctx:forEachCursor(function(cursor)
@@ -145,14 +147,9 @@ function M.config()
     map(action, "-o", mc.operator, { desc = "Cursor: New for obj in" })
 
     -- treesitter aware, put a cursor on each capture with the field that is *fully* inside the motion:
-    -- `-faa` to match all function arguments on the current line
-    -- `-faiF` to match all arguments to a function call
-    -- `-fvip` to match all assignments in the current paragraph
-    map_select_operator("-ff", "function.outer", "Cursor: Select functions")
-    map_select_operator("-fF", "call.inner", "Cursor: Select calls")
-    map_select_operator("-fa", "parameter.inner", "Cursor: Select arguments")
-    map_select_operator("-fv", "assignment.outer", "Cursor: Select variables")
-    map_select_operator("-fn", "assignment.lhs", "Cursor: Select names")
+    -- -a_ to match all function arguments on the current line
+    -- -aiF to match all arguments to a function call
+    map_select_operator("-a", "parameter.inner", "Cursor: Select arguments")
 
     -- a cursor on/selecting each reference of the symbol under the cursor
     require("config.lsp").lsp_map("n", "-r", function()
