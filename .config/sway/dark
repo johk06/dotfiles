@@ -1,4 +1,5 @@
 # vim: ft=swayconfig
+blur_brightness 1
 
 #                       Border  Background Text    Indicator Child-Border
 client.focused          #2e3440 #2e3440    #eceff4 #8fbcbb   #8fbcbb

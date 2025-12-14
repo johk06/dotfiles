@@ -12,13 +12,17 @@ It does a couple of things:
 import i3ipc
 
 # Configuration {{{
+# target size of windows
 SPLIT_RATIO = 1.61  # golden ratio
-
-DEFAULT_GAPS = 8  # gaps when there are multiple windows
-SINGLE_GAPS = 32  # gaps when there is only one window
-AUTO_GAPS_SCREENS = {"DP-1"}  # monitors to show gaps on if there only is one window
-
-DISABLE_SCALING_ON_WS = 10 # disable scaling when on this workspace
+# gaps when there are multiple windows
+DEFAULT_GAPS = 8
+# gaps when there is only one window
+SINGLE_GAPS = 32
+# monitors to show gaps on if there only is one window
+AUTO_GAPS_SCREENS = {"DP-1"}
+# disable scaling when on this workspace
+DISABLE_SCALING_ON_WS = 10
+# scale to fall back to on all other workspaces
 DEFAULT_SCALE = 1.4
 # }}}
 
@@ -88,13 +92,12 @@ def workspace_based_scaling(i3: i3ipc.Connection, e: i3ipc.WorkspaceEvent):
         i3.command(f"output {old_out} scale 1")
 
 
-
-
 def main():
     i3 = i3ipc.Connection()
     i3.on(i3ipc.Event.WINDOW, on_win_change)
     i3.on(i3ipc.Event.WORKSPACE_FOCUS, workspace_based_scaling)
     i3.main()
+
 
 if __name__ == "__main__":
     main()

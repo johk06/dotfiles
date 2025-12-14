@@ -33,6 +33,7 @@ bindsym $mod+Mod1+L exec $sc/swap.sh right
 # Rarely needed, TODO: make sure I really need this
 bindsym $mod+S splitv
 bindsym $mod+V splith
+# bindsym $mod+B layout toggle split tabbed
 
 # "real" fullscreen
 bindsym $mod+F fullscreen
@@ -42,6 +43,9 @@ bindsym $mod+Shift+F exec $sc/set-gaps.sh 0
 # Like vim for numbers
 bindsym $mod+A resize grow width 64px; resize grow height 64px
 bindsym $mod+X resize shrink width 64px; resize shrink height 64px 
+
+bindsym $mod+Backspace focus parent
+bindsym $mod+Delete focus child
 
 # Like the vim z* family of commands
 bindsym $mod+Z focus mode_toggle

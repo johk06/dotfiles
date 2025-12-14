@@ -26,6 +26,7 @@ floating_modifier $mod
 gaps inner 4
 gaps outer 8
 default_border none
+default_floating_border none
 titlebar_separator disable
 
 include ./color
@@ -58,7 +59,7 @@ exec nm-applet
 exec blueman-applet
 exec ydotoold
 exec mpd-mpris
-exec ~/.config/background/wallpaper.sh set
+exec wallpaper set
 exec $eww/run.sh
 # dbus secrets agent
 exec gnome-keyring-daemon

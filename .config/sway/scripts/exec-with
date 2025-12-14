@@ -34,7 +34,7 @@ done
 
 swaymsg -t subscribe '["window"]' -- monitor | jq --unbuffered "select(.change == \"new\" and $PREDICATE)|.container.id, halt" | {
     read -r id
-    sleep 0.1
+    sleep 0.2
     swaymsg "[con_id=$id] $sway_cmd"
     if ((${#command} > 0)); then
         "${command[@]}"
