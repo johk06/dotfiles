@@ -10,7 +10,6 @@ TODO: Allow editing via Column.perform_action
 local constants  = require("oil.constants")
 local utils      = require("config.utils")
 local FIELD_META = constants.FIELD_META
-local uv         = vim.uv
 
 ---@type {[integer]: string}
 local Users
@@ -79,8 +78,9 @@ end
 M.user = make_entry("uid", "user", "OilUser", Users)
 M.group = make_entry("gid", "group", "OilGroup", Groups)
 
----@return oil.ColumnDefinition
+---@param field "mtime"|"birthtime"|"atime"
 local make_smart_time = function(field)
+    ---@type oil.ColumnDefinition
     return {
         render = function(entry)
             local meta = entry[FIELD_META]
@@ -112,7 +112,8 @@ local make_smart_time = function(field)
     }
 end
 
-M.smart_mtime = make_smart_time("mtime")
+M.smart_atime = make_smart_time("atime")
 M.smart_btime = make_smart_time("birthtime")
+M.smart_mtime = make_smart_time("mtime")
 
 return M

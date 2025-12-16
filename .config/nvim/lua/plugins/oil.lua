@@ -32,12 +32,6 @@ local oil_columns = {
             return hls
         end,
     },
-    time = {
-        "smart_mtime",
-    },
-    birthtime = {
-        "smart_btime",
-    },
     size = {
         "size",
         highlight = function(str)
@@ -54,17 +48,19 @@ local oil_columns = {
 }
 
 local column_positions = {
-    birthtime = 1,
-    time = 2,
-    size = 3,
-    group = 4,
-    user = 5,
-    permissions = 6,
+    smart_btime = 1,
+    smart_mtime = 2,
+    smart_atime = 3,
+    size = 4,
+    group = 5,
+    user = 6,
+    permissions = 7,
 }
 
 local enabled_columns = {
     nil,
-    "time",
+    "smart_mtime",
+    nil,
     nil,
     nil,
     "user",
@@ -134,6 +130,10 @@ local sort_types = {
         { "smart_btime", "desc" },
         { "name",        "asc" }
     },
+    access = {
+        { "smart_atime", "desc" },
+        { "name",        "asc" }
+    },
     default = {
         { "type", "asc" },
         { "name", "asc" }
@@ -141,25 +141,29 @@ local sort_types = {
 }
 
 local function set_sort(action)
-    if action == "invert" then
-        sort[1][2] = (sort[1][2] == "asc" and "desc" or "asc")
-    else
-        sort = sort_types[action]
-    end
+    return function()
+        if action == "invert" then
+            sort[1][2] = (sort[1][2] == "asc" and "desc" or "asc")
+        else
+            sort = sort_types[action]
+        end
 
-    require("oil").set_sort(sort)
+        require("oil").set_sort(sort)
+    end
 end
 
 local function toggle_column(col)
-    local pos = column_positions[col]
-    if enabled_columns[pos] then
-        enabled_columns[pos] = nil
-    else
-        enabled_columns[pos] = col
+    return function()
+        local pos = column_positions[col]
+        if enabled_columns[pos] then
+            enabled_columns[pos] = nil
+        else
+            enabled_columns[pos] = col
+        end
+        require("oil").set_columns(vim.tbl_map(function(c)
+            return oil_columns[c] or c
+        end, vim.tbl_values(enabled_columns)))
     end
-    require("oil").set_columns(vim.tbl_map(function(c)
-        return oil_columns[c] or c
-    end, vim.tbl_values(enabled_columns)))
 end
 
 local function default_is_hidden(name, bufnr)
@@ -299,20 +303,22 @@ M.opts.keymaps = {
     -- toggle hidden
     ["gh"]             = "actions.toggle_hidden",
 
-    ["=s"]             = function() set_sort("size") end,
-    ["=t"]             = function() set_sort("time") end,
-    ["=i"]             = function() set_sort("invert") end,
-    ["=d"]             = function() set_sort("default") end,
+    ["=s"]             = set_sort("size"),
+    ["=t"]             = set_sort("time"),
+    ["=a"]             = set_sort("access"),
+    ["=i"]             = set_sort("invert"),
+    ["=d"]             = set_sort("default"),
 
     ["<localleader>/"] = filter_items,
     ["<localleader>p"] = "actions.preview",
     ["<localleader>:"] = function() open_cmd("") end,
-    ["<localleader>g"] = function() toggle_column("group") end,
-    ["<localleader>m"] = function() toggle_column("permissions") end,
-    ["<localleader>s"] = function() toggle_column("size") end,
-    ["<localleader>t"] = function() toggle_column("time") end,
-    ["<localleader>b"] = function() toggle_column("birthtime") end,
-    ["<localleader>u"] = function() toggle_column("user") end,
+    ["<localleader>g"] = toggle_column("group"),
+    ["<localleader>m"] = toggle_column("permissions"),
+    ["<localleader>s"] = toggle_column("size"),
+    ["<localleader>t"] = toggle_column("smart_mtime"),
+    ["<localleader>a"] = toggle_column("smart_atime"),
+    ["<localleader>b"] = toggle_column("smart_btime"),
+    ["<localleader>u"] = toggle_column("user"),
     ["<localleader>q"] = {
         "actions.send_to_qflist",
         opts = {
@@ -346,8 +352,9 @@ M.config = function(_, opts)
     local columns = require("oil.columns")
     columns.register("user", my_columns.user)
     columns.register("group", my_columns.group)
-    columns.register("smart_mtime", my_columns.smart_mtime)
+    columns.register("smart_atime", my_columns.smart_atime)
     columns.register("smart_btime", my_columns.smart_btime)
+    columns.register("smart_mtime", my_columns.smart_mtime)
 
 
     local git_status = require("config.plugins.oil-git")
