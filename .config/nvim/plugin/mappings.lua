@@ -200,6 +200,12 @@ map("n", bufleader .. "l", function()
 end, { desc = "Loclist: Show" })
 
 -- vertical view
+local vertical_qf_wincfg = {
+    split = "left",
+    width = 80,
+    vertical = true
+}
+
 map("n", bufleader .. "Q", function()
     local qfwin = fn.getqflist { winid = true }.winid
     if qfwin == 0 then
@@ -207,11 +213,7 @@ map("n", bufleader .. "Q", function()
         qfwin = fn.getqflist { winid = true }.winid
     end
 
-    api.nvim_win_set_config(qfwin, {
-        split = "left",
-        width = 72,
-        vertical = true
-    })
+    api.nvim_win_set_config(qfwin, vertical_qf_wincfg)
     vim.wo[qfwin][0].number = true
 end, { desc = "Qflist: Vertical" })
 
@@ -222,11 +224,7 @@ map("n", bufleader .. "L", function()
         locwin = fn.getloclist(0, { winid = true }).winid
     end
 
-    api.nvim_win_set_config(locwin, {
-        split = "left",
-        width = 72,
-        vertical = true
-    })
+    api.nvim_win_set_config(locwin, vertical_qf_wincfg)
     vim.wo[locwin][0].number = true
 end, { desc = "Loclist: Vertical" })
 

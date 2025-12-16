@@ -34,7 +34,7 @@ M.opts = {
         soft_end = "┤",
     },
     max_filename_width = function()
-        return math.floor(math.min(24, vim.o.columns / 4))
+        return math.floor(math.min(16, vim.o.columns / 4))
     end
 }
 

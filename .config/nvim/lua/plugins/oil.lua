@@ -33,7 +33,10 @@ local oil_columns = {
         end,
     },
     time = {
-        "smart_time",
+        "smart_mtime",
+    },
+    birthtime = {
+        "smart_btime",
     },
     size = {
         "size",
@@ -51,14 +54,16 @@ local oil_columns = {
 }
 
 local column_positions = {
-    time = 1,
-    size = 2,
-    group = 3,
-    user = 4,
-    permissions = 5,
+    birthtime = 1,
+    time = 2,
+    size = 3,
+    group = 4,
+    user = 5,
+    permissions = 6,
 }
 
 local enabled_columns = {
+    nil,
     "time",
     nil,
     nil,
@@ -126,8 +131,8 @@ local sort_types = {
         { "name", "asc" }
     },
     time = {
-        { "smart_time", "desc" },
-        { "name",  "asc" }
+        { "smart_btime", "desc" },
+        { "name",        "asc" }
     },
     default = {
         { "type", "asc" },
@@ -306,6 +311,7 @@ M.opts.keymaps = {
     ["<localleader>m"] = function() toggle_column("permissions") end,
     ["<localleader>s"] = function() toggle_column("size") end,
     ["<localleader>t"] = function() toggle_column("time") end,
+    ["<localleader>b"] = function() toggle_column("birthtime") end,
     ["<localleader>u"] = function() toggle_column("user") end,
     ["<localleader>q"] = {
         "actions.send_to_qflist",
@@ -340,7 +346,8 @@ M.config = function(_, opts)
     local columns = require("oil.columns")
     columns.register("user", my_columns.user)
     columns.register("group", my_columns.group)
-    columns.register("smart_time", my_columns.smart_time)
+    columns.register("smart_mtime", my_columns.smart_mtime)
+    columns.register("smart_btime", my_columns.smart_btime)
 
 
     local git_status = require("config.plugins.oil-git")
