@@ -1,0 +1,10 @@
+{
+    "lua-format-strlit": {
+        "keys": "ysa\")f)a:format()<Left>",
+        "desc": "Append :format() to a string literal"
+    },
+    "extract-func": {
+        "keys": "yifgsaf",
+        "desc": "Extract statements from function"
+    }
+}

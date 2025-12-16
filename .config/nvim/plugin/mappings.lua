@@ -562,9 +562,18 @@ map("n", "q", function()
     end
 end)
 
+
+local edit_register = require("config.commands.edit-register")
+
 map("n", "cq", function()
-    require("config.commands.edit-register").edit_macro(getmacroreg())
-end)
+    edit_register.edit_macro(getmacroreg())
+end, { desc = "Macro: Change" })
+map("n", "yq", function()
+    edit_register.load_macro(getmacroreg())
+end, { desc = "Macro: Load" })
+map("n", "dq", function()
+    edit_register.save_macro(getmacroreg())
+end, { desc = "Macro: Define" })
 -- }}}
 -- Abbreviations {{{
 
@@ -949,6 +958,8 @@ end, { desc = "Directory: Goto Buffer Parent" })
 map("n", cdleader .. "p", function()
     vim.cmd.lcd(fn.fnamemodify(get_cur_buf_parent(), ":h"))
 end, { desc = "Directory: Goto Directory Parent" })
+
+map("n", "<space>.<space>", ":cd<space>")
 
 local get_best_root = function()
     local root
