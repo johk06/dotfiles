@@ -106,7 +106,7 @@ function M.format_buf_name(buf, short)
                 return "@" .. host .. ":" .. fn.fnamemodify(path, ":t"), "reg", true
             else
                 -- try to get smth reasonable for plugin provided buffers
-                return short and fn.fnamemodify(name, ":t") or name, "special", true
+                return fn.fnamemodify(name, ":t"), "special", true
             end
         end
     end
