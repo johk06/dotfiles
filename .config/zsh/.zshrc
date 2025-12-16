@@ -97,9 +97,9 @@ nameddirs=(
 
 # my own config
 source "$ZDOTDIR/keybinds.zsh"
-source "$ZDOTDIR/functions.zsh"
 source "$ZDOTDIR/aliases.zsh"
 source "$ZDOTDIR/prompt.zsh"
+source "$ZDOTDIR/functions.zsh"
 
 # syntax highlighting
 source "$ZDOTDIR/highlight.zsh"
