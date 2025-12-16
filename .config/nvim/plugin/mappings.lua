@@ -4,7 +4,6 @@
 
  It's grouped into rough sections based on the type of keymap or its use case(s),
  each of those should be a foldmarker section as well. }}} ]]
-
 -- Declarations {{{
 local api = vim.api
 local fn = vim.fn
@@ -50,12 +49,10 @@ local function run_cmd(cmd, args)
     end
 end
 -- }}}
-
 -- Configuration {{{
 -- there still is ` for marks, ' is on the home row, soooo nice
 local bufleader = "'"
 -- }}}
-
 -- Unmap Unused {{{
 map("n", "gQ", "<nop>") -- ex mode is just plain annoying
 
@@ -202,7 +199,7 @@ end, { desc = "Loclist: Show" })
 -- vertical view
 local vertical_qf_wincfg = {
     split = "left",
-    width = 80,
+    width = 72,
     vertical = true
 }
 
@@ -229,7 +226,6 @@ map("n", bufleader .. "L", function()
 end, { desc = "Loclist: Vertical" })
 
 -- }}}
-
 -- Commands {{{
 map("n", "<space>m", function()
     vim.cmd [[
@@ -242,7 +238,6 @@ end, { desc = "Make" })
 
 map("n", "<space>w", "<cmd>write<cr>", { desc = "Write Buffer" })
 -- }}}
-
 -- Folds {{{
 
 --[[ focus the current fold
@@ -253,7 +248,6 @@ map("n", "<space>w", "<cmd>write<cr>", { desc = "Write Buffer" })
  the j is required so that this applies when on the fold start ]]
 map("n", "<Tab>", "zMzOj[zzt", { remap = true --[[ is required so ufo applies ]] })
 -- }}}
-
 -- Buffers & Windows {{{
 -- faster alternate file, mnemonic: [s]econd, also allows remapping <C-6>
 map("n", "<C-s>", "<cmd>b #<cr>")
@@ -424,7 +418,6 @@ map("n", bufleader .. "D", function()
     end
 end, { desc = "Tab: Delete recursively" })
 -- }}}
-
 -- Improved Builtin Mappings {{{
 
 -- make them wait until I press another key
@@ -462,7 +455,6 @@ end
 map("n", "<<space>", function() insert_spaces(-1) end)
 map("n", "><space>", function() insert_spaces(1) end)
 -- }}}
-
 -- Set options {{{
 -- [c]onfigure
 map("n", "<space>cs", "<cmd>set spell!<cr>", { desc = "Toggle 'spell'" })
@@ -536,8 +528,7 @@ map("n", "<space>cd", function()
     end
 end, { desc = "Change Decoration" })
 -- }}}
-
--- Rethink the macro system {{{
+-- Rethink the macro system & other register improvements {{{
 -- use "reg, like other vim commands, defaulting to "q
 local getmacroreg = function()
     local r = vim.v.register
@@ -570,8 +561,11 @@ map("n", "q", function()
         vim.cmd.bnext()
     end
 end)
--- }}}
 
+map("n", "cq", function()
+    require("config.commands.edit-register").edit_macro(getmacroreg())
+end)
+-- }}}
 -- Abbreviations {{{
 
 -- I probably never will actually use :file
@@ -583,7 +577,6 @@ abbrev("c", "vf", "vertical sf") -- much shorter, much more useful
 abbrev("c", "vt", "vertical terminal")
 abbrev("c", "st", "horizontal terminal")
 -- }}}
-
 -- Terminal {{{
 local terminal = require("config.terminal")
 
@@ -624,7 +617,6 @@ end)
 map("t", "<M-Esc>", "<C-\\><C-n>")
 map("t", "<M-C-w>", "<C-\\><C-n><C-w>")
 -- }}}
-
 -- Insert Mode {{{
 --[[ Why would I want to do smth so un-vimmy?
  Well, on my keyboard tapping L/R Shift yields BS/Del,
@@ -666,7 +658,6 @@ map("i", "<M-,>", function() toggle_char_at_eol(",") end)
 - <C-z>
 -- <C-m> maybe, may conflict with <cr>
 }}} ]]
-
 --[[ Command Mode {{{
 All of these are just shortcuts for simple text insertions for now
 Some highlights:
@@ -718,13 +709,11 @@ map_search("<M-m>", function()
     fn.setcmdline(replacement)
 end)
 -- }}}
-
 -- Snippets {{{
 -- move between snippet fields
 map({ "n", "s", "i" }, "<M-space>", function() vim.snippet.jump(1) end)
 map({ "n", "s", "i" }, "<C-space>", function() vim.snippet.jump(-1) end)
 -- }}}
-
 --[[ Textobjects & Motions {{{
  Textobjects and motions are the heart of Vim, so it makes sense to optimize them more than almost everything else.
  This section has both abbreviations for, as well as new, motions and textobjects(mostly). ]]
@@ -824,7 +813,6 @@ map(obj, "gG", textobjs.entire_buffer)
 -- this is a heuristic, for "proper variable" declarations use `iv` from treesitter
 map("o", "=", textobjs.variable_value)
 -- }}}
-
 --[[ Custom Operators {{{
  Operators are important as well
  This section mostly has operators where no plugin has managed to satisfy me (yet)]]
@@ -919,7 +907,6 @@ operators.map_function("gM", multiply_operator, { hijack_count = true }, { befor
 local sort_operator = require("config.operators.sort").operator
 operators.map_function("g=", sort_operator)
 -- }}}
-
 --[[ Change Directory {{{
  Sometimes I need a quicker way to change directory than :cd, :lcd etc
  This may benefit from being turned into a sub mode sometime (e.g. using hydra) ]]
@@ -997,7 +984,6 @@ map("n", cdleader .. "g", function()
     end
 end, { desc = "Directory: Goto Git Root" })
 -- }}}
-
 --[[ Table of Content {{{
  like the one in a help buffer
  based on folds, so it works for most filetypes ]]
