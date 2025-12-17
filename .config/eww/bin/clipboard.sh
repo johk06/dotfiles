@@ -11,4 +11,4 @@ text/*)
 esac
 
 jq -n -c --arg mime "$mimetype" --arg state "$CLIPBOARD_STATE" --arg data "$text" --argjson lines "${lines:-0}" \
-    '{data: $data|@json, mime: $mime, state: $state, lines: $lines}' </dev/null
+    '{data: $data|@json|.[1:-1], mime: $mime, state: $state, lines: $lines}' </dev/null
