@@ -44,4 +44,4 @@ function _fzf_shell_hist {
 zle -N fzf-shell-hist _fzf_shell_hist
 bindkey '^[/' fzf-shell-hist
 
-export _ZO_FZF_OPTS="$FZF_DEFAULT_OPTS --prompt='cd: ' --preview='lsd -l {2}'"
+export _ZO_FZF_OPTS="$FZF_DEFAULT_OPTS --prompt='cd: ' --preview='lsd -l {2}' --no-sort"
