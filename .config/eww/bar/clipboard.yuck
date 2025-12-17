@@ -3,10 +3,10 @@
 (defwidget clipboard-info [] 
     (box :space-evenly false :visible {mode.change == "default" || mode.change == "clipboard"}
         (button :class "text-button"
-            :onclick "xdg-open ${clipboard.data}"
-            :onrightclick "wl-copy -c"
+            :onclick "wl-copy -c"
+            :onrightclick "xdg-open ${clipboard.data}"
             (box :space-evenly false
-                (label :class "text yellow" :text '"+')
+                (label :class "text orange" :text '"+')
                 (stack :selected {clipboard.mime =~ "text/.*" ? 1 : 0 } 
                     :transition "none"
                     :style "margin-left: .5rem" 

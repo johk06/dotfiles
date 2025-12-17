@@ -16,6 +16,7 @@
         :halign "start"
         :valign "start"
         (eventbox
+        :tooltip "${win.name}"
             :onclick "swaymsg [con_id=${win.id}] focus >/dev/null&"
             (image
                 :path {win.icon}
