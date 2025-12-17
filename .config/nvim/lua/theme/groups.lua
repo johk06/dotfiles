@@ -431,19 +431,16 @@ return function(pal)
         Message   = { italic = true },
 
         -- entries
-        EditFile  = { fg = col.pink },
-        GrepFiles = { fg = col.purple },
-        FindFiles = { fg = col.blue },
-        EditFiles = { fg = col.light_blue },
-        Agenda    = { fg = col.teal },
-        Capture   = { fg = col.green },
-        Lazy      = { fg = col.yellow },
-        Mason     = { fg = col.orange },
-        Quit      = { fg = col.red },
+        EditFile  = { fg = col.purple },
+        FindFiles = { fg = col.light_blue },
+        Oil       = { fg = col.teal },
+        Git       = { fg = col.green },
+        GrepFiles = { fg = col.yellow },
+        Quit      = { fg = col.orange },
 
-        Actions   = { fg = pal.fg0, bg = pal.bg01, italic = true },
-        Projects  = { fg = col.light_blue, bg = pal.bg01, italic = true },
-        Recents   = { fg = col.green, bg = pal.bg01, italic = true },
+        Actions   = { fg = pal.fg0, bg = pal.bg01 },
+        Projects  = { fg = col.light_blue, bg = pal.bg01 },
+        Recents   = { fg = col.green, bg = pal.bg01 },
     })
     -- }}}
 

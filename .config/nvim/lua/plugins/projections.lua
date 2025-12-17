@@ -3,7 +3,9 @@
 local M = {
     "GnikDroy/projections.nvim",
     branch = "dev",
-    keys = {},
+    keys = {
+        "<space>P"
+    },
 }
 
 M.init = function()
@@ -19,6 +21,7 @@ end
 
 M.config = function()
     require("projections").setup {
+        selector_mapping = "<space>P",
         workspaces = {
             { path = "~/ws/",     patterns = { ".git" } },
             { path = "~/.config", patterns = { ".git", ".luarc.json" } },

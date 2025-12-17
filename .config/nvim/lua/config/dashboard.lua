@@ -24,20 +24,11 @@ local MESSAGES = {
 ---@type ({[1]: string, desc: string, key: string, on_click: function, hl: string})[]
 local ACTIONS = {
     {
-        "Edit new File",
-        desc = "New File",
+        "Empty Buffer",
+        desc = "Edit a new, empty Buffer",
         key = "e",
         on_click = vim.cmd.enew,
         hl = "EditFile"
-    },
-    {
-        "Search/Grep",
-        desc = "Search by file content",
-        key = "s",
-        on_click = function()
-            require("telescope.builtin").live_grep()
-        end,
-        hl = "GrepFiles"
     },
     {
         "Find Files",
@@ -50,44 +41,28 @@ local ACTIONS = {
     },
     {
         "View Filesystem",
-        desc = "Edit filesystem as buffer",
+        desc = "Open Oil Buffer",
         key = "v",
         on_click = function()
             require("oil").open()
         end,
-        hl = "EditFiles"
+        hl = "Oil"
     },
     {
-        "Agenda",
-        desc = "Show current org agenda",
-        key = "a",
+        "Version Control",
+        desc = "Show Git Info",
+        key = "i",
+        on_click = vim.cmd.Git,
+        hl = "Git"
+    },
+    {
+        "Search Files",
+        desc = "Search by file content",
+        key = "s",
         on_click = function()
-            Org.agenda.a()
+            require("telescope.builtin").live_grep()
         end,
-        hl = "Agenda"
-    },
-    {
-        "Capture",
-        desc = "Capture note using org",
-        key = "w",
-        on_click = function()
-            Org.capture()
-        end,
-        hl = "Capture"
-    },
-    {
-        "Plugins",
-        desc = "Use Lazy",
-        key = "L",
-        on_click = vim.cmd.Lazy,
-        hl = "Lazy"
-    },
-    {
-        "Packages",
-        desc = "Manage using Mason",
-        key = "M",
-        on_click = vim.cmd.Mason,
-        hl = "Mason"
+        hl = "GrepFiles"
     },
     {
         "Quit NeoVIM",
@@ -270,7 +245,7 @@ do
     end
 
     for i, proj in ipairs(ProjectSection.items) do
-        proj.left[1] = { ("%2d. "):format(i - 1), "Number" }
+        proj.left[1] = { (" %d) "):format(i - 1), "NonText" }
     end
 end
 
@@ -317,7 +292,7 @@ do
 
             table.insert(OldfileSection.items, {
                 data = {},
-                left = { { ("%2d. "):format(index), "Number" }, { head, "NonText" }, { tail, highlight } },
+                left = { { ("%2d) "):format(index), "NonText" }, { head, "NonText" }, { tail, highlight } },
                 right = { time },
                 callback = function()
                     vim.cmd.edit(file)
@@ -333,7 +308,7 @@ end
 
 ---@type dashboard.section
 local ActionSection = {
-    title = "Quick Actions",
+    title = "Commands",
     titlehl = "DashboardActions",
     items = {}
 }
@@ -341,7 +316,7 @@ do
     for _, action in ipairs(ACTIONS) do
         table.insert(ActionSection.items, {
             map = action.key,
-            left = { { " " .. action.key .. " ", "SpecialChar" }, { action[1], "Dashboard" .. action.hl } },
+            left = { { " " .. action.key .. ") ", "NonText" }, { action[1], "Dashboard" .. action.hl } },
             right = { { action.desc, "Comment" } },
             data = {},
             callback = action.on_click,
@@ -389,7 +364,7 @@ local draw_lazy = function()
 
     set_virt_lines(State.current, {
         { { "" } },
-        plugin_info,
+        plugin_info
     })
 end
 
@@ -423,7 +398,7 @@ local draw_sections = function()
 
     longest_line = longest_line + 1
     local start_offset = get_center_padding(longest_line)
-    State.col = start_offset - 1
+    State.col = start_offset + 1
     local initial_padding = (" "):rep(start_offset)
 
     for _, section in ipairs(Sections) do
@@ -431,8 +406,8 @@ local draw_sections = function()
             goto continue
         end
 
-        local suffix = section.map and (" - [count]%s"):format(section.map) or ""
-        local title = (" %s%s "):format(section.title, suffix)
+        local prefix = section.map and (" (N%s)"):format(section.map) or ""
+        local title = (" %s%s "):format(section.title, prefix)
         local titlewidth = strwidth(title)
         local remaining = State.width - titlewidth
         local half = math.floor(remaining / 2)
