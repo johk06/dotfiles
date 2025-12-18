@@ -37,6 +37,8 @@ syn match qalcBracket '{'
 syn match qalcBracket '}'
 syn match qalcComma ';'
 syn match qalcComma ','
+" NOTE: this is only part of my qalc-script wrapper
+syn match qalcLineContinuation '\\$'
 
 syn match qalcFunction '\w\+\((\)\@='
 
@@ -55,14 +57,21 @@ syn keyword qalcKeyword factor
 syn keyword qalcKeyword function variable
 syn keyword qalcKeyword quit exit
 
-syn keyword qalcConstant pi e
+syn match qalcParam '\\\w'
+
+syn keyword qalcConstant pi conceal cchar=π
+syn keyword qalcConstant planck2pi dirac conceal cchar=ħ
+syn keyword qalcConstant e planck g_0 G c
+syn keyword qalcConstant boltzmann conceal cchar=k
 
 hi link qalcComment Comment
 hi link qalcBracket Delimiter
 hi link qalcComma Delimiter
+hi link qalcLineContinuation Delimiter
 hi link qalcNumber Number
 hi link qalcKeyword Keyword
 hi link qalcOperator Operator
 hi link qalcUnit String
 hi link qalcFunction PreProc
-hi link qalcConstant SpecialChar
+hi link qalcConstant @constant.builtin
+hi link qalcParam SpecialChar
