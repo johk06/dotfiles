@@ -51,9 +51,62 @@ M.nvim_input_omnifunc = function(start, base)
     end
 end
 
+---@alias config.ui.input_opts {prompt: string?, default: string?, completion: string?, highlight: function, _ts_lang: string?}
+
+---Edit vim.ui.input in a full-fat window
+---@param cb fun(string?)
+---@param content string
+---@param prompt string
+---@param opts config.ui.input_opts
+local expand_input = function(cb, content, prompt, opts)
+    local buf = api.nvim_create_buf(false, true)
+    api.nvim_buf_set_name(buf, ("[Input: %s]"):format(prompt))
+    api.nvim_buf_set_lines(buf, 0, 1, false, { content })
+
+    local win = utils.win_show_buf(buf, {
+        position = "float",
+        title = prompt
+    })
+
+
+    local bo = vim.bo[buf]
+    bo.buftype = "acwrite"
+    bo.modified = false
+    if opts._ts_lang then
+        bo.ft = opts._ts_lang
+    end
+
+    local augroup
+    local clean = function()
+        pcall(api.nvim_win_close, win)
+        pcall(api.nvim_buf_delete, buf, { force = true })
+        api.nvim_del_augroup_by_id(augroup)
+    end
+    augroup = utils.autogroup("config.ui.input-expanded.#" .. buf, {
+        BufWriteCmd = {
+            buffer = buf,
+            callback = function()
+                bo.modified = false
+            end
+        },
+        BufLeave = {
+            buffer = buf,
+            callback = function()
+                if bo.modified then
+                    cb(nil)
+                else
+                    local text = table.concat(api.nvim_buf_get_lines(buf, 0, -1, false), " ")
+                    cb(text)
+                end
+                clean()
+            end
+        }
+    })
+end
+
 local last_was_insert
 
----@param opts {prompt: string?, default: string?, completion: string?, highlight: function, _ts_lang: string?}
+---@param opts config.ui.input_opts
 ---@param callback fun(string?)
 M.nvim_input = function(opts, callback)
     last_was_insert = api.nvim_get_mode().mode:find("[it]") and true or false
@@ -155,7 +208,13 @@ M.nvim_input = function(opts, callback)
     local map = utils.local_mapper(buf)
 
     map({ "i", "n" }, "<cr>", confirm)
-    map({ "n" }, "<esc>", cancel)
+    map("n", "<esc>", cancel)
+    map("n", "<localleader>q", cancel, { desc = "Input: Quit" })
+    map("n", "<localleader>x", function()
+        local text = api.nvim_buf_get_lines(buf, 0, 1, false)[1]
+        clean()
+        expand_input(callback, text, title, opts)
+    end, { desc = "Input: Expand" })
     map({ "i", "n" }, "<C-c>", cancel)
     map({ "i", "s" }, "<Tab>", "<C-n>", { remap = true })
 
