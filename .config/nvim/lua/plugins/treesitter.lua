@@ -33,31 +33,35 @@ local brackets = {
     goto_next_start = {
         ["]a"] = "@parameter.inner",
         ["]f"] = "@function.outer",
+        ["]k"] = "@class.outer",
+        ["]l"] = "@loop.outer",
         ["]m"] = "@method.outer",
         ["]n"] = "@comment.outer",
-        ["]k"] = "@class.outer",
+        ["]u"] = "@call.outer",
         ["]v"] = "@assignment.lhs",
-        ["]l"] = "@loop.outer",
     },
     goto_previous_start = {
         ["[a"] = "@parameter.inner",
         ["[f"] = "@function.outer",
+        ["[k"] = "@class.outer",
+        ["[l"] = "@loop.outer",
         ["[m"] = "@method.outer",
         ["[n"] = "@comment.outer",
-        ["[k"] = "@class.outer",
+        ["[u"] = "@call.outer",
         ["[v"] = "@assignment.lhs",
-        ["[l"] = "@loop.outer",
     },
 
     goto_next_end = {
         ["]A"] = "@parameter.inner",
         ["]F"] = "@function.outer",
         ["]M"] = "@method.outer",
+        ["]U"] = "@call.outer",
     },
     goto_previous_end = {
         ["[A"] = "@parameter.inner",
         ["[F"] = "@function.outer",
         ["[M"] = "@method.outer",
+        ["[U"] = "@call.outer",
     },
 }
 
