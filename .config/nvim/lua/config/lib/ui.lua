@@ -9,33 +9,53 @@ local string_buffer = require("string.buffer")
 --[[ vim.ui.input implementation {{{
 NOTE: This is *not* 100% what neovim says it should be, instead I add my own private features,
 starting with an underscore:
-- _ts_lang: highlight the buffer using that treesitter language ]]
+- _ts_lang: highlight the buffer using that treesitter language
+- completion can be a function
+]]
+---@type string|function
 local cur_input_completion
+local input_omnifunc_decl = "v:lua.require'config.lib.ui'.nvim_input_omnifunc"
 M.nvim_input_omnifunc = function(start, base)
     local compl = cur_input_completion
     if not compl then
         return start == 1 and 0 or {}
     end
+
     if start == 1 then
         return 0
     end
 
+    -- My extension, completion is a regular lua function
+    if type(compl) == "function" then
+        local ok, result = pcall(compl, start, base)
+        if ok then
+            return result
+        else
+            return {}
+        end
+    end
+
+    ---@cast compl string
     local parts = vim.split(compl, ",", { plain = true })
     local ret
     if parts[1] == "custom" or parts[1] == "customlist" then
-        local func = parts[2]
+        local func = table.concat(parts, ",", 2)
+
         if vim.startswith(func, "v:lua.") then
+            -- v:lua.some_module_function
             local lua_to_load = ("return %s(...)"):format(func:sub(7))
             local luafunc, err = loadstring(lua_to_load)
             if not luafunc then
-                vim.notify(("Failed to load lua omnifunc '%s': %s"):format(lua_to_load, err), vim.log.levels.ERROR)
+                utils.error("Input", ("Failed to load lua omnifunc '%s': %s"):format(lua_to_load, err))
                 return {}
             end
 
-            ret = luafunc(base, base, fn.strlen(base))
+            ret = luafunc(base, #base)
         else
-            ret = fn[func](base, base, fn.strlen(base))
+            -- regular vimscript function
+            ret = fn[func](base, #base)
         end
+        -- :h :command-completion-custom returns a newline separated string
         if parts[1] == "custom" then
             ret = vim.split(ret, "\n", { plain = true })
         end
@@ -43,6 +63,7 @@ M.nvim_input_omnifunc = function(start, base)
         return ret
     end
 
+    -- it's a different, string-based :h :command-completion
     local ok, result = pcall(fn.getcompletion, base, compl)
     if ok then
         return result
@@ -51,14 +72,19 @@ M.nvim_input_omnifunc = function(start, base)
     end
 end
 
----@alias config.ui.input_opts {prompt: string?, default: string?, completion: string?, highlight: function, _ts_lang: string?}
+---@class config.ui.input_opts
+---@field prompt string?
+---@field default string?
+---@field completion string|function? Custom extension
+---@field highlight function?
+---@field _ts_lang string? Custom extension
 
 ---Edit vim.ui.input in a full-fat window
 ---@param cb fun(string?)
 ---@param content string
 ---@param prompt string
 ---@param opts config.ui.input_opts
-local expand_input = function(cb, content, prompt, opts)
+local expand_ui_input = function(cb, content, prompt, opts)
     local buf = api.nvim_create_buf(false, true)
     api.nvim_buf_set_name(buf, ("[Input: %s]"):format(prompt))
     api.nvim_buf_set_lines(buf, 0, 1, false, { content })
@@ -72,8 +98,10 @@ local expand_input = function(cb, content, prompt, opts)
     local bo = vim.bo[buf]
     bo.buftype = "acwrite"
     bo.modified = false
+    bo.omnifunc = input_omnifunc_decl
+    bo.ft = "Input"
     if opts._ts_lang then
-        bo.ft = opts._ts_lang
+        vim.treesitter.start(buf, opts._ts_lang)
     end
 
     local augroup
@@ -130,12 +158,12 @@ M.nvim_input = function(opts, callback)
         virt_text_win_col = 0
     })
 
-    api.nvim_buf_set_name(buf, "[Input]")
+    api.nvim_buf_set_name(buf, ("[Input: %s]"):format(title))
     local bo = vim.bo[buf]
     bo.filetype = "Input"
     bo.swapfile = false
     bo.bufhidden = "wipe"
-    bo.omnifunc = "v:lua.require'config.lib.ui'.nvim_input_omnifunc"
+    bo.omnifunc = input_omnifunc_decl
     cur_input_completion = opts.completion
 
     local columns = vim.o.columns
@@ -158,7 +186,6 @@ M.nvim_input = function(opts, callback)
     wincfg.col = titlewidth
     local win = api.nvim_open_win(buf, true, wincfg)
 
-    -- HACK: add my own extension
     if opts._ts_lang then
         vim.treesitter.start(buf, opts._ts_lang)
     end
@@ -216,7 +243,7 @@ M.nvim_input = function(opts, callback)
     map("n", "<localleader>x", function()
         local text = api.nvim_buf_get_lines(buf, 0, 1, false)[1]
         clean()
-        expand_input(callback, text, title, opts)
+        expand_ui_input(callback, text, title, opts)
     end, { desc = "Input: Expand" })
     map({ "i", "n" }, "<C-c>", cancel)
     map({ "i", "s" }, "<Tab>", "<C-n>", { remap = true })

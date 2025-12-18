@@ -19,7 +19,6 @@ local nomodified_names = {
 
 local modified_names = {
     gitcommit = { "[commit]", "git" },
-    Input = { "[input]", },
     grapple = { "[grapple]" },
 }
 -- }}}

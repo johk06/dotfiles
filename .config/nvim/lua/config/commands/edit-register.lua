@@ -21,7 +21,10 @@ M.MACRO_SAVEPATH = fn.stdpath("config") .. "/saved-macros.json"
 ---@param reg string
 M.edit_macro = function(reg)
     local keys = get_macro_str(reg)
-    vim.ui.input({ prompt = ("Edit @%s"):format(reg), default = keys}, function(new)
+    vim.ui.input({
+        prompt = ("Edit @%s"):format(reg),
+        default = keys,
+    }, function(new)
         if new then
             set_from_str(new, reg)
         end
@@ -31,10 +34,13 @@ end
 local macro_cache = {}
 local last_load
 
+---@alias config.macro.saved {keys: string, desc: string}
+
+---@return {macros: table<string, config.macro.saved>}
 local load_macros = function()
     local time = vim.uv.fs_stat(M.MACRO_SAVEPATH)
-    if not last_load or time ~= last_load then
-        last_load = time
+    if time and (not last_load or time.mtime.sec ~= last_load) then
+        last_load = time.mtime.sec
         local file = io.open(M.MACRO_SAVEPATH, "r")
         if not file then
             macro_cache = {}
@@ -60,7 +66,7 @@ local write_macros = function()
 end
 
 M.load_macro = function(reg)
-    local macros = load_macros()
+    local macros = load_macros().macros
     vim.ui.select(vim.tbl_keys(macros), {
         prompt = ("Load @%s with"):format(reg),
         format_item = function(macro)
@@ -78,16 +84,23 @@ end
 
 M.save_macro = function(reg)
     local cmds = get_macro_str(reg)
-    vim.ui.input({ prompt = ("Save @%s as:"):format(reg) }, function(name)
+    local macros = load_macros().macros
+    vim.ui.input({
+        prompt = ("Save @%s as:"):format(reg),
+        completion = function()
+            return vim.tbl_keys(macros)
+        end
+    }, function(name)
         if not name or name:match("^%s*$") then
             return
         end
-        local ident, desc = name:match("(%S+)%s*(.*)")
-        local macros = load_macros()
-        macros[ident] = {
+        local ident, _desc = name:match("(%S+)%s*(.*)")
+        local desc = _desc:match("(%S+)")
+        local old = macros[ident] or {}
+        macros[ident] = vim.tbl_extend("force", old, {
             keys = cmds,
             desc = desc
-        }
+        })
         write_macros()
     end)
 end
