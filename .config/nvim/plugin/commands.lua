@@ -263,11 +263,14 @@ local SHEBANG_NAMES = {
 }
 
 command("Shebang", function(args)
+    local ft = vim.bo.ft
     local shebang
     if args.fargs[1] then
         shebang = SHEBANG_NAMES[args.args] or ("/usr/bin/env " .. args.args)
+        if not ft or ft == "" then
+            vim.bo.ft = args.args
+        end
     else
-        local ft = vim.bo.ft
         if ft == "sh" and vim.b.is_bash then
             ft = "bash"
         end
