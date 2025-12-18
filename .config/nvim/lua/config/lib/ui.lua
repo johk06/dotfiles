@@ -1,10 +1,8 @@
 local M = {}
-local fn = vim.fn
 local api = vim.api
+local fn = vim.fn
 local ns = api.nvim_create_namespace("config.ui")
-M.ns = ns
 local utils = require("config.utils")
-local string_buffer = require("string.buffer")
 
 --[[ vim.ui.input implementation {{{
 NOTE: This is *not* 100% what neovim says it should be, instead I add my own private features,
@@ -12,6 +10,14 @@ starting with an underscore:
 - _ts_lang: highlight the buffer using that treesitter language
 - completion can be a function
 ]]
+---@class config.ui.input_opts
+---@field prompt string?
+---@field default string?
+---@field completion string|function? Custom extension
+---@field highlight function?
+---@field _ts_lang string? Custom extension
+---@type string|function
+
 ---@type string|function
 local cur_input_completion
 local input_omnifunc_decl = "v:lua.require'config.lib.ui'.nvim_input_omnifunc"
@@ -72,12 +78,15 @@ M.nvim_input_omnifunc = function(start, base)
     end
 end
 
----@class config.ui.input_opts
----@field prompt string?
----@field default string?
----@field completion string|function? Custom extension
----@field highlight function?
----@field _ts_lang string? Custom extension
+---@param cb fun(string?)
+---@param text string
+local confirm_text = function(cb, text)
+    vim.schedule(function()
+        cb(text)
+    end)
+end
+
+local last_was_insert
 
 ---Edit vim.ui.input in a full-fat window
 ---@param cb fun(string?)
@@ -93,7 +102,6 @@ local expand_ui_input = function(cb, content, prompt, opts)
         position = "float",
         title = prompt
     })
-
 
     local bo = vim.bo[buf]
     bo.buftype = "acwrite"
@@ -125,7 +133,7 @@ local expand_ui_input = function(cb, content, prompt, opts)
             callback = function()
                 if not bo.modified and wrote_at_least_once then
                     local text = table.concat(api.nvim_buf_get_lines(buf, 0, -1, false), " ")
-                    cb(text)
+                    confirm_text(cb, text)
                 else
                     cb(nil)
                 end
@@ -134,8 +142,6 @@ local expand_ui_input = function(cb, content, prompt, opts)
         }
     })
 end
-
-local last_was_insert
 
 ---@param opts config.ui.input_opts
 ---@param callback fun(string?)
@@ -207,9 +213,7 @@ M.nvim_input = function(opts, callback)
     end
     local confirm = function()
         local text = api.nvim_buf_get_lines(buf, 0, -1, false)[1]
-        vim.schedule(function()
-            callback(text)
-        end)
+        confirm_text(callback, text)
         clean()
     end
 
@@ -237,16 +241,19 @@ M.nvim_input = function(opts, callback)
     }, { buf = buf })
     local map = utils.local_mapper(buf)
 
-    map({ "i", "n" }, "<cr>", confirm)
     map("n", "<esc>", cancel)
+    map({ "i", "n" }, "<C-c>", cancel)
+
+    map({ "i", "n" }, "<cr>", confirm)
+
+    map({ "i", "s" }, "<Tab>", "<C-n>", { remap = true })
+
     map("n", "<localleader>q", cancel, { desc = "Input: Quit" })
     map("n", "<localleader>x", function()
         local text = api.nvim_buf_get_lines(buf, 0, 1, false)[1]
         clean()
         expand_ui_input(callback, text, title, opts)
     end, { desc = "Input: Expand" })
-    map({ "i", "n" }, "<C-c>", cancel)
-    map({ "i", "s" }, "<Tab>", "<C-n>", { remap = true })
 
     if not opts.default or opts.default:match("^%s*$") then
         vim.cmd("startinsert!")
@@ -254,6 +261,7 @@ M.nvim_input = function(opts, callback)
 end
 -- }}}
 
+-- Popup Notifications {{{
 ---@class config.ui.notif_opts
 ---@field max_width integer
 ---@field align "left"|"right"
@@ -322,71 +330,6 @@ M.floating_notif_hide = function(id)
         M.shown_floating_notifs = M.shown_floating_notifs - 1
     end
 end
-
----@alias config.ui.select_item {key: string, desc: string, value: any}
-
----@generic T
----@param prompt string
----@param items config.ui.select_item[]
----@return T?
-M.select = function(prompt, items)
-    local count = #items
-    local width = vim.o.columns
-    local items_per_line = math.floor(width / 20)
-
-    local key_lookup = {}
-    for _, v in ipairs(items) do
-        key_lookup[vim.keycode(v.key)] = v.value or v.key
-    end
-
-    local line_buf = string_buffer.new(width)
-    local lines = {}
-    local highlights = {}
-    for i = 1, math.ceil(count / items_per_line) do
-        for j = 1, items_per_line do
-            local item = items[items_per_line * (i - 1) + j]
-            if item then
-                local text = ("%6s %-13s"):format(item.key, item.desc)
-                local kstart = 20 * (j - 1)
-                local kstop = kstart + 6
-                table.insert(highlights, { i - 1, kstart + (6 - #item.key), kstop, "@comment.note" })
-                table.insert(highlights, { i - 1, kstop + 1, kstop + 13, "@text.emphasis" })
-                line_buf:put(text)
-            else
-                break
-            end
-        end
-        table.insert(lines, line_buf:tostring())
-
-        line_buf:reset()
-    end
-
-    local buf = api.nvim_create_buf(false, true)
-    api.nvim_buf_set_lines(buf, 0, -1, false, lines)
-    for _, hl in ipairs(highlights) do
-        api.nvim_buf_set_extmark(buf, ns, hl[1], hl[2], {
-            end_col = hl[3],
-            hl_group = hl[4]
-        })
-    end
-
-    local win = api.nvim_open_win(buf, false, {
-        title = prompt,
-        title_pos = "center",
-        style = "minimal",
-        relative = "laststatus",
-        anchor = "SW",
-        col = 0,
-        row = 0,
-        width = width,
-        height = #lines
-    })
-
-    vim.cmd.redraw()
-    local key = vim.fn.getcharstr(-1, { cursor = "hide", simplify = false })
-    api.nvim_win_close(win, true)
-
-    return key_lookup[key]
-end
+-- }}}
 
 return M
