@@ -79,7 +79,11 @@ local ts_texobjects = {
     "nvim-treesitter/nvim-treesitter-textobjects",
     branch = "main",
     config = function()
-        require("nvim-treesitter-textobjects").setup {}
+        require("nvim-treesitter-textobjects").setup {
+            select = {
+                lookahead = true
+            }
+        }
         local utils = require("config.utils")
         local map = utils.map
         local modes = { "n", "x", "o" }
