@@ -1,0 +1,19 @@
+#!/bin/sh
+
+# Simple tool to make qalc a better scripting language
+# Makes arguments available as the args vector
+# Additionally, turn *all* saving off
+# Removes newlines directly after `([;,` - escapes them after \
+# This allows easy multiline matrices, function call &c
+
+SCRIPT="$1"
+shift
+
+{
+    IFS=";" args="$*"
+    echo "args = [$args]"
+    sed -z -e 's/\([;,\[(]\)\n/\1/g' -e 's/\\\n//g' "$SCRIPT"
+} | exec qalc -t -f - \
+    -s "save definitions no" \
+    -s "save mode no" \
+    -s "save config" \
