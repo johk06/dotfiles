@@ -3,9 +3,12 @@ local M = {}
 local fn = vim.fn
 local utils = require("config.utils")
 
+---@param s string
+---@param reg string
 local set_from_str = function(s, reg)
     local text = s:gsub("%s", "")
-    fn.setreg(reg, vim.keycode(text))
+    local keycodes = vim.keycode(text):gsub("<Ignore>", "")
+    fn.setreg(reg, keycodes)
 end
 
 local get_macro_str = function(reg)
@@ -76,10 +79,10 @@ end
 M.save_macro = function(reg)
     local cmds = get_macro_str(reg)
     vim.ui.input({ prompt = ("Save @%s as:"):format(reg) }, function(name)
-        if not name then
+        if not name or name:match("^%s*$") then
             return
         end
-        local ident, desc = name:match("(%S)%s*(.*)")
+        local ident, desc = name:match("(%S+)%s*(.*)")
         local macros = load_macros()
         macros[ident] = {
             keys = cmds,
