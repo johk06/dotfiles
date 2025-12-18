@@ -82,21 +82,24 @@ local expand_input = function(cb, content, prompt, opts)
         pcall(api.nvim_buf_delete, buf, { force = true })
         api.nvim_del_augroup_by_id(augroup)
     end
+
+    local wrote_at_least_once = false
     augroup = utils.autogroup("config.ui.input-expanded.#" .. buf, {
         BufWriteCmd = {
             buffer = buf,
             callback = function()
                 bo.modified = false
+                wrote_at_least_once = true
             end
         },
         BufLeave = {
             buffer = buf,
             callback = function()
-                if bo.modified then
-                    cb(nil)
-                else
+                if not bo.modified and wrote_at_least_once then
                     local text = table.concat(api.nvim_buf_get_lines(buf, 0, -1, false), " ")
                     cb(text)
+                else
+                    cb(nil)
                 end
                 clean()
             end
