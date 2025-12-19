@@ -181,7 +181,7 @@ function TRAPUSR1 {
 PS2="%F{8}%_ │%f "
 
 # sudo prompt
-print -P -v SUDO_PROMPT "%B%F{red}!sudo%f%b %F{13}%%p %F{8}->%f %%U%F{8}:%f"
+print -P -v SUDO_PROMPT "%F{8}[%f%B%F{red}sudo%f%b as %B%%U%b%F{8}]#%f "
 export SUDO_PROMPT
 
 # only the default, i have a couple more functions planed for this
