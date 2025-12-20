@@ -104,7 +104,7 @@ map gD cd ~/Documents/
 map gw cd ~/ws
 map gm cd-eval /run/media/$USER/
 map gM cd-eval \$XDG_RUNTIME_DIR/gvfs
-map g<space> push :cd<space>
+map g<space> fzf-cd
 # }}}
 
 # Selections {{{
