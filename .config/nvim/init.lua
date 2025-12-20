@@ -56,8 +56,9 @@ o.undofile = true
 o.winborder = "rounded"
 vim.filetype.add {
     extension = {
-        psv = "psv"
-    }
+        psv = "psv",
+        qalc = "qalc"
+    },
 }
 -- }}}
 

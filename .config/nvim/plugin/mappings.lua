@@ -237,6 +237,7 @@ map("n", "<space>m", function()
 end, { desc = "Make" })
 
 map("n", "<space>w", "<cmd>write<cr>", { desc = "Write Buffer" })
+map("n", "<space>W", "<cmd>wall<cr>", { desc = "Write All Buffers" })
 -- }}}
 -- Folds {{{
 

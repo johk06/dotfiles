@@ -754,6 +754,8 @@ return function(pal)
         ["agenda.deadline"]       = { fg = col.orange, italic = true },
         ["agenda.weekend"]        = { fg = col.bright_gray },
 
+        ["inline_block"]          = { link = "@punctuation.delimiter" },
+
         ["hyperlink"]             = { link = "@punctuation.delimiter" },
         ["bullet"]                = { fg = col.bright_gray },
         ["checkbox"]              = { fg = col.bright_gray },

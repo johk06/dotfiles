@@ -17,18 +17,38 @@ local function generic_pair(left, right)
     }
 end
 
+local foldmarker = {
+    add = function()
+        local fdm = vim.opt.foldmarker:get()
+        local comment = vim.o.commentstring
+        local title = require("nvim-surround.config").get_input("Title: ")
+        if not title then
+            return
+        end
+
+        local opening = comment:format(title .. " " .. fdm[1])
+        local closing = comment:format(fdm[2])
+
+        return {
+            { opening, "" },
+            { "",      closing }
+        }
+    end,
+}
+
 M.opts = {
     surrounds = {
         -- variable expansion
-        ["v"] = generic_pair("${", "}"),
+        v = generic_pair("${", "}"),
         -- subshell expansion
-        ["x"] = generic_pair("$(", ")"),
+        x = generic_pair("$(", ")"),
         -- general associative array key
-        ["k"] = generic_pair('["', '"]'),
+        k = generic_pair('["', '"]'),
+        z = foldmarker
     },
     aliases = {
         -- mirror the {a,i}m textobject (which aliases {i,a}%)
-        m = { "}", "]", ")", ">", '"', "'", "`"  }
+        m = { "}", "]", ")", ">", '"', "'", "`" }
     }
 }
 

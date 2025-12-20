@@ -1,10 +1,8 @@
 {
-    "lua-format-strlit": {
-        "keys": "ysa\")f)a:format()<Left>",
-        "desc": "Append :format() to a string literal"
-    },
-    "extract-func": {
-        "keys": "yifgsaf",
-        "desc": "Extract statements from function"
+    "macros": {
+        "extract-func": { "keys": "yifgsaf", "desc": "Extract statements from function" },
+        "lua-format-strlit": { "keys": "ysa\")f)a:format()<Left>", "desc": "Append :format() to a string literal" },
+        "lua-make-pcall": { "keys": "vauo<Esc>ipcall(<Esc>f(cl,<Space><Esc>", "desc": "" },
+        "lua-un-pcall": { "desc": "Remove pcall() from function call", "keys": "viuo<Esc>?pcall<CR>df(f,r(lx" }
     }
 }
