@@ -1,0 +1,21 @@
+#!/bin/sh
+
+POSITION="$1"
+SIZE="$2"
+shift 2
+
+if [ -n "$NVIM" ]; then
+	case "$POSITION" in
+	vsplit) cmd="vertical new" ;;
+	split) cmd="new" ;;
+	replace) cmd="enew" ;;
+	esac
+	nvr -c "lcd $PWD" -c "$cmd" -c "terminal $*" -c "let b:term_autoclose=v:true"
+elif [ -n "$KITTY_PID" ]; then
+	case "$POSITION" in
+	vsplit) cmd="vsplit" ;;
+	split) cmd="hsplit" ;;
+	replace) cmd="overlay" ;;
+	esac
+	kitten @ launch --bias="$SIZE" --cwd="$PWD" --copy-env --location="$cmd" "$@" 2>&1
+fi
