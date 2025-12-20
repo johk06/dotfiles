@@ -182,15 +182,15 @@ map Im push :image-magick<space>
 
 # Open Externally {{{
 map e
-map ee &~/.config/lf/bin/split.sh none edit "$fx"
-map es &~/.config/lf/bin/split.sh sp edit "$fx"
-map ev &~/.config/lf/bin/split.sh vsp edit "$fx"
+map ee $$EDITOR "$fx"
+map es &~/.config/lf/bin/edit.sh sp "$fx"
+map ev &~/.config/lf/bin/edit.sh vsp "$fx"
 
-map rr &~/.config/lf/bin/split.sh none shell "$PWD"
-map rs &~/.config/lf/bin/split.sh sp shell "$PWD"
-map rv &~/.config/lf/bin/split.sh vsp shell "$PWD"
+map rr $$SHELL
+map rs split "$SHELL"
+map rv vsplit "$SHELL"
 
-map oo &~/.config/lf/bin/split.sh none lf "$fx"
-map os &~/.config/lf/bin/split.sh sp lf "$fx"
-map ov &~/.config/lf/bin/split.sh vsp lf "$fx"
+map oo $lf "$fx"
+map os split lf "$fx"
+map ov vsplit lf "$fx"
 # }}}
