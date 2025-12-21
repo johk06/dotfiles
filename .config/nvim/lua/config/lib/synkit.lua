@@ -11,14 +11,16 @@ TODO: Grouping
 ---@alias synkit.Match (string|synkit.DetailedMatch)
 ---@alias synkit.Keyword string|{[integer]: string, conceal: string?}
 
----@alias synkit.Matches table<string, synkit.Match[]>
+---@alias synkit.MatchEntry {[integer]: synkit.Match, priority: integer?}
+
+---@alias synkit.Matches table<string, synkit.MatchEntry>
 ---@alias synkit.Keywords table<string, synkit.Keyword[]>
 
 ---@class synkit.Syntax
 ---@field name string
 ---@field iskeyword string?
----@field keywords table<string, synkit.Keyword[]>
----@field match table<string, synkit.Match[]>
+---@field keywords synkit.Keywords
+---@field match synkit.Matches
 
 ---@param syn string
 ---@param group string
@@ -92,8 +94,18 @@ M.syntax = function(syn)
         end
     end
 
-    for group, patterns in pairs(syn.match) do
+    local groups = vim.tbl_keys(syn.match)
+    table.sort(groups, function(a, b)
+        local enta = syn.match[a]
+        local entb = syn.match[b]
+        local prioa = (type(enta) == "table" and enta.priority) or 0
+        local priob = (type(entb) == "table" and entb.priority) or 0
+
+        return prioa < priob
+    end)
+    for _, group in ipairs(groups) do
         local gname = mkname(syn.name, group)
+        local patterns = syn.match[group]
 
         for _, pattern in ipairs(patterns) do
             local list, suffix

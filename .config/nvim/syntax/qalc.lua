@@ -1,13 +1,16 @@
 ---@type synkit.Keywords
 local keywords = {
-    keyword = {
+    ["keyword.function"] = { "function" },
+    ["keyword.directive"] = {
         "set",
-        "base",
-        "factor",
-        "function",
         "variable",
+    },
+    ["keyword.return"] = {
         "quit",
-        "exit",
+        "exit"
+    },
+    keyword = {
+        "base",
     },
     operator = { "to" },
     ["constant.builtin"] = {
@@ -46,6 +49,7 @@ local patterns = {
         { "integral", conceal = "ʃ" },
     },
     ["variable.parameter.builtin"] = {
+        priority = 1000, -- override the \ operator
         [[\\\w]]
     },
 }
