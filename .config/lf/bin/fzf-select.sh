@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 res="$(fd -u|fzf --height=999 --prompt="Select: ")"
-if [[ "${res:t}" == "."* ]]; then
+if [[ "${res##*/}" == "."* ]]; then
     lf -remote "send $id set hidden"
 fi
 

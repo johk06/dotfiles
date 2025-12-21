@@ -10,7 +10,7 @@ IFS=: read -r fl _ _ _ < <(fzf --prompt="Select: " \
     --bind="change:$RELOAD" \
     --preview="$PREVIEW")
 
-if [[ "${fl:t}" == "."* ]]; then
+if [[ "${fl##*/}" == "."* ]]; then
     lf -remote "send $id set hidden"
 fi
 
