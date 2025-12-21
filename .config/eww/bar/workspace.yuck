@@ -8,13 +8,16 @@
         :onclick "swaymsg -q workspace ${ws.ws}"
         "${ws.icon}"))
 
-
+(defwidget workspace-scratch []
+    (button :style "min-width: 1.3rem;"
+        :class "button ${sway.scratch_count > 0 ? "good" : ""}"
+        "~${sway.scratch_count}"))
 
 (defwidget workspace-list []
-    (eventbox 
-        :onhover "./bin/popup.sh ws-overview-win ws-overview-reveal open&" 
-        (box :space-evenly false 
-            (button :style "min-width: 1.3rem;" :class "button ${sway.scratch_count > 0 ? "stack" : ""}" "~${sway.scratch_count}")
-            (box :space-evenly false 
+    (eventbox
+        :onhover "./bin/popup.sh ws-overview-win ws-overview-reveal open&"
+        (box :space-evenly false
+            (workspace-scratch)
+            (box :space-evenly false
                 (for ws in {sway.workspaces}
                     (workspace-button :ws {ws}))))))
