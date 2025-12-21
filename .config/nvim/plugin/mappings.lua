@@ -564,7 +564,7 @@ map("n", "q", function()
 end)
 
 
-local edit_register = require("config.commands.edit-register")
+local edit_register = require("config.edit-register")
 
 map("n", "cq", function()
     edit_register.edit_macro(getmacroreg())
