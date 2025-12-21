@@ -1,6 +1,40 @@
 #!/usr/bin/env bash
 
-if [[ -t 1 ]]; then
+usage() {
+    echo "Usage: lschg [-iuac]" >&2
+    exit 1
+}
+
+ignored=no
+do_ignored=0
+untracked=no
+do_untracked=0
+force_color=0
+while getopts ":iuac" o; do
+    case "$o" in
+    i)
+        ignored=traditional
+        untracked=yes
+        do_ignored=1
+        ;;
+    u)
+        untracked=yes
+        do_untracked=1
+        ;;
+    a)
+        ignored=traditional
+        untracked=yes
+        do_ignored=1
+        do_untracked=1
+        ;;
+    c) force_color=1 ;;
+    *)
+        usage
+        ;;
+    esac
+done
+
+if [[ -t 1 ]] || ((force_color)); then
     YELLOW="\e[0;33m"
     GREEN="\e[0;32m"
     RED="\e[0;31m"
@@ -10,32 +44,8 @@ if [[ -t 1 ]]; then
     RESET="\e[0m"
 fi
 
-declare -a DIRS=()
-
-ignored=no
-do_ignored=0
-untracked=no
-do_untracked=0
-for arg in "$@"; do
-    case "$arg" in
-    -i | --ignored)
-        ignored=traditional
-        untracked=yes
-        do_ignored=1
-        ;;
-    -u | --untracked)
-        untracked=yes
-        do_untracked=1
-        ;;
-    -a | --all)
-        ignored=traditional
-        untracked=yes
-        do_ignored=1
-        do_untracked=1
-        ;;
-    *) DIRS+=("$arg") ;;
-    esac
-done
+shift $((OPTIND - 1))
+declare -a DIRS=("$@")
 
 function compare_modes {
 
