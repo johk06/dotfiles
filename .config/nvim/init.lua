@@ -3,12 +3,18 @@
 This file (init.lua) sets options and does everything needed at startup.
 It does *not* create mappings, commands &c.
 
-Mappings are created in:
-- plugin/mappings.lua - Global mappings that are always needed
-- lua/plugins/*.lua   - Plugin-specific keymaps
-- lua/config/lsp.lua  - Keymaps that require an LSP to be there
+Mappings & Commands are created in:
+- plugin/mappings.lua - Global, with little or no plugin dependencies
+- lua/plugins/*.lua   - Plugin-specific
+- lua/config/lsp.lua  - Those that require an LSP to be there
 
-Commands are created in the same locations.
+Contents of lua/:
+- config/
+    - lib/      - Modules that are useful and factor out repetitive tasks
+    - plugins/  - Additional configuration or helpers for plugin configuration
+    - *.lua     - Additional configuration or *very* common helpers
+- plugins/      - The lazy plugin specifications
+- theme/        - My colorscheme
 
 TODO: figure out note-taking solution
 TODO: repl
