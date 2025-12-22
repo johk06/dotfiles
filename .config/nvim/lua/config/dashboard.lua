@@ -20,6 +20,7 @@ local MESSAGES = {
     "It is our duty to keep computing gay, we owe that to Turing",
     "Never :q me for emacs",
     "Tired? Just <C-z>",
+    "Vim is charityware. See :h uganda for more information.",
 }
 ---@type ({[1]: string, desc: string, key: string, on_click: function, hl: string})[]
 local ACTIONS = {
@@ -65,7 +66,7 @@ local ACTIONS = {
         hl = "GrepFiles"
     },
     {
-        "Quit NeoVIM",
+        "Quit Neovim",
         desc = "Goodbye, yes it's possible",
         key = "q",
         on_click = vim.cmd.quit,

@@ -11,7 +11,7 @@ autocmd({ "BufEnter", "BufReadPost", "BufNewFile", "VimEnter" }, {
         vim.o.titlestring = "nv: " .. (name or "[-]")
     end
 })
-vim.o.titlestring = "nv: NeoVIM" -- set initial
+vim.o.titlestring = "nv: Neovim" -- set initial
 -- }}}
 
 --[[ Mode based 'number' and 'relativenumber' {{{
