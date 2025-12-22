@@ -644,6 +644,7 @@ M.highlight_timedelta = function(secs)
 end
 
 -- NOTE: all of these formats take up the same space
+-- and importantly for Oil, the main user of this, two WORDs
 local day_fmt = "Tdy %H:%M"   -- Tdy 20:10
 local week_fmt = "%a %H:%M"   -- Mon 10:11
 local month_fmt = "%d. %H:%M" -- 10. 10:11

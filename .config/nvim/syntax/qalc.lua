@@ -49,7 +49,7 @@ local patterns = {
         { "integral", conceal = "ʃ" },
     },
     ["variable.parameter.builtin"] = {
-        priority = 1000, -- override the \ operator
+        priority = 1000, -- overrule the \ operator
         [[\\\w]]
     },
 }

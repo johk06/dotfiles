@@ -914,8 +914,44 @@ end
 operators.map_function("gm", multiply_operator, { hijack_count = true })
 operators.map_function("gM", multiply_operator, { hijack_count = true }, { before = true })
 
-local sort_operator = require("config.operators.sort").operator
-operators.map_function("g=", sort_operator)
+--[[ Sort a range of lines/elements
+In a single line: use commas
+Otherwise: sort lines
+Anything that this can't do should be done with :!sort anyways ]]
+operators.map_function("g=", function(mode, region, _)
+    local text = operators.get_region(mode, region)
+    local items
+    local comma_separated = #text == 1
+    if comma_separated then
+        items = vim.split(text[1], ",")
+    else
+        items = text
+    end
+
+    local whites = {}
+    local texts = {}
+    for _, item in ipairs(items) do
+        local leading_white = item:match("^(%s*)")
+        local trailing_white = item:match("(%s*)$")
+        table.insert(whites, { leading_white, trailing_white })
+        table.insert(texts, vim.trim(item))
+    end
+
+    table.sort(texts)
+
+    local replacements = {}
+    for i, white in ipairs(whites) do
+        table.insert(replacements,
+            white[1] .. texts[i] .. white[2]
+        )
+    end
+
+    if comma_separated then
+        operators.set_region("char", region, { table.concat(replacements, ",") })
+    else
+        operators.set_region(mode, region, replacements)
+    end
+end)
 -- }}}
 --[[ Change Directory {{{
  Sometimes I need a quicker way to change directory than :cd, :lcd etc

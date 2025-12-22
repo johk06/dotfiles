@@ -7,6 +7,7 @@ by simply specifying the syntax as a set of strings and tables.
 TODO: Grouping
 }}} ]]
 
+-- Types {{{
 ---@alias synkit.DetailedMatch {[1]: string, conceal: string?, spell: boolean?}
 ---@alias synkit.Match (string|synkit.DetailedMatch)
 ---@alias synkit.Keyword string|{[integer]: string, conceal: string?}
@@ -21,6 +22,7 @@ TODO: Grouping
 ---@field iskeyword string?
 ---@field keywords synkit.Keywords
 ---@field match synkit.Matches
+-- }}}
 
 ---@param syn string
 ---@param group string

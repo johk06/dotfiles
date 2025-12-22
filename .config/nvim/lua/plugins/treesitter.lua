@@ -212,7 +212,7 @@ local ensure_installed = {
     "query",
     "regex",
     "scss",
-    "vim",
+    "vim", -- although bundled with neovim, a newer version is often needed
     "vimdoc",
 }
 -- }}}

@@ -1,9 +1,14 @@
---[[ Information {{{
-Entry point to *almost* all of my neovim configuration 
-(barring ftplugins, plugin/ and after/)
-This file is mainly concerned with setting options
-and doing everything required for startup.
-Once it is done bootstrapping neovim, little if anything remains of it
+--[[ Information & Architecture {{{
+
+This file (init.lua) sets options and does everything needed at startup.
+It does *not* create mappings, commands &c.
+
+Mappings are created in:
+- plugin/mappings.lua - Global mappings that are always needed
+- lua/plugins/*.lua   - Plugin-specific keymaps
+- lua/config/lsp.lua  - Keymaps that require an LSP to be there
+
+Commands are created in the same locations.
 
 TODO: figure out note-taking solution
 TODO: repl

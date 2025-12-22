@@ -51,10 +51,10 @@ end
 M.tried_languages = {}
 local try_to_download = function(name)
     if M.tried_languages[name] then
-        print("Already tried to get language: " .. name)
+        utils.warn("Spell", "Already tried to get language: " .. name)
         return
     end
-    print("Language not found: " .. name .. ", trying to download...")
+    utils.message("Spell", "Language not found: " .. name .. ", trying to download...")
     M.tried_languages[name] = true
     download_spellfile(name)
 end

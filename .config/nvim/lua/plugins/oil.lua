@@ -63,7 +63,7 @@ local enabled_columns = {
     nil,
     nil,
     nil,
-    "user",
+    nil,
     "permissions"
 }
 -- }}}
