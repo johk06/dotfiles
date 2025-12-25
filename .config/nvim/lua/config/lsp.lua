@@ -137,6 +137,12 @@ local lsp_mappings = {
         function() lsp.buf.outgoing_calls() end,
         { desc = "LSP: List Called functions (qflist)" }
     },
+
+    {
+        "n", "<C-w>u",
+        function() lsp.buf.signature_help() end,
+        { desc = "LSP: Usage Info" }
+    }
 }
 
 ---@param args vim.api.keyset.create_user_command.command_args
