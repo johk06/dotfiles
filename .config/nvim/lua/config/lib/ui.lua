@@ -2,6 +2,7 @@ local M = {}
 local api = vim.api
 local fn = vim.fn
 local ns = api.nvim_create_namespace("config.ui")
+M.ns = ns
 local utils = require("config.utils")
 
 --[[ vim.ui.input implementation {{{

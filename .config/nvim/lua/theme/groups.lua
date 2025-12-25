@@ -36,6 +36,7 @@ return function(pal)
         EndOfBuffer                 = { fg = pal.bg1 },
         Visual                      = { bg = pal.bg1 },
         NonText                     = { fg = col.bright_gray },
+        WhiteSpace                  = { fg = col.light_gray },
         SpecialKey                  = { link = "NonText" },
         MatchParen                  = { bg = pal.bg1, fg = col.pink },
 
@@ -733,16 +734,21 @@ return function(pal)
 
         ["keyword.todo"]          = { fg = pal.fg0, italic = true, nocombine = true },
         ["keyword.done"]          = { fg = col.bright_gray, nocombine = true },
+        ["keyword.deadline"]      = { fg = col.red, italic = true, nocombine = true },
+
         ["keyword.face.NEXT"]     = { fg = col.green, italic = true, nocombine = true },
         ["keyword.face.WAITING"]  = { fg = col.teal, italic = true, nocombine = true },
         ["keyword.face.CURRENT"]  = { fg = col.magenta, italic = true, nocombine = true },
         ["keyword.face.NOPE"]     = { fg = col.bright_gray, strikethrough = true, nocombine = true },
+
         ["priority.highest"]      = { fg = col.orange, nocombine = true },
         ["priority.default"]      = { fg = col.green, nocombine = true },
         ["priority.lowest"]       = { fg = col.bright_gray, nocombine = true },
-        ["plan"]                  = { fg = col.light_blue },
-        ["timestamp.active"]      = { fg = col.magenta },
-        ["tag"]                   = { fg = col.purple, nocombine = true },
+
+        ["plan"]                  = { link = "@keyword" },
+        ["timestamp.active"]      = { fg = pal.fg3, italic = true, nocombine = true },
+        ["timestamp.day"]         = { fg = col.light_blue, italic = true, nocombine = true },
+        ["tag"]                   = { fg = col.teal, nocombine = true },
         ["verbatim"]              = { bg = pal.bg01 },
         ["code"]                  = { bg = pal.bg01 },
 

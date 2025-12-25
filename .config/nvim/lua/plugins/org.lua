@@ -40,6 +40,7 @@ local opts = {
     },
     org_agenda_files = {
         "~/org/**/*",
+        "~/uni/**/*",
         "~/doc/*"
     },
     org_default_notes_file = "~/org/notes.org",
@@ -205,6 +206,8 @@ M.config = function()
         FileType = {
             pattern = "org",
             callback = function(ev)
+                vim.wo.conceallevel = 2
+                vim.wo.concealcursor="nv"
                 local map = utils.local_mapper(ev.buf)
                 map("n", "<localleader>l", "<cmd>Telescope orgmode insert_link<cr>")
                 map("n", "<localleader>/", "<cmd>Telescope orgmode search_headings<cr>")
