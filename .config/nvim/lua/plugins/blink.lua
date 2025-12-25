@@ -111,13 +111,13 @@ opts.completion.menu.draw.components = {
 }
 
 -- (Neo)Vim has a nice omnifunc for css: 'ft-css-omni'
-local css_sources = { "omni", "snippets", "path", "buffer" }
+local css_sources = { "omni", "lua_snippets", "path", "buffer" }
 
 opts.sources = {
-    default = { "lsp", "path", "snippets", "buffer" },
+    default = { "lsp", "path", "lua_snippets", "buffer" },
     per_filetype = {
-        oil = { "path", "buffer", "snippets" },
-        org = { "orgmode", "snippets", "buffer" },
+        oil = { "path", "buffer", "lua_snippets" },
+        org = { "orgmode", "lua_snippets", "buffer" },
         Input = { "omni" },
         css = css_sources,
         scss = css_sources,
@@ -126,6 +126,9 @@ opts.sources = {
         orgmode = {
             module = "orgmode.org.autocompletion.blink",
             fallbacks = { "buffer" },
+        },
+        lua_snippets = {
+            module = "config.plugins.blink-snippets",
         },
         path = {
             opts = {
