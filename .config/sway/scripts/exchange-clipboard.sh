@@ -4,8 +4,8 @@ FILE="$(mktemp)"
 SECONDARY="$FILE.copy"
 PRIMARY="$FILE.primary"
 
-wl-paste -p >"$PRIMARY"
-wl-paste >"$SECONDARY"
+wl-paste -n -p >"$PRIMARY"
+wl-paste -n >"$SECONDARY"
 
 wl-copy -p <"$SECONDARY"
 wl-copy <"$PRIMARY"

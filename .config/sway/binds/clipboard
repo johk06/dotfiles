@@ -11,13 +11,13 @@ mode "clipboard" {
     bindsym Mod1+P exec $sc/print-clipboard.sh -p
 
     # Copy the other clipboard
-    bindsym Y exec wl-paste -p | wl-copy; mode "default"
-    bindsym Mod1+Y exec wl-paste | wl-copy -p; mode "default"
+    bindsym Y exec wl-paste -n -p | wl-copy; mode "default"
+    bindsym Mod1+Y exec wl-paste -n | wl-copy -p; mode "default"
 
-    bindsym A exec {wl-paste && wl-paste -p} | wl-copy; mode "default"
-    bindsym Mod1+A exec {wl-paste -p && wl-paste} | wl-copy -p; mode "default"
-    bindsym I exec {wl-paste -p && wl-paste} | wl-copy; mode "default"
-    bindsym Mod1+I exec {wl-paste && wl-paste -p} | wl-copy -p; mode "default"
+    bindsym A exec {wl-paste -n && wl-paste -n -p} | wl-copy; mode "default"
+    bindsym Mod1+A exec {wl-paste -n -p && wl-paste -n} | wl-copy -p; mode "default"
+    bindsym I exec {wl-paste -n -p && wl-paste -n} | wl-copy; mode "default"
+    bindsym Mod1+I exec {wl-paste -n && wl-paste -n -p} | wl-copy -p; mode "default"
 
     # Exchange them
     bindsym X exec $sc/exchange-clipboard.sh; mode "default"
