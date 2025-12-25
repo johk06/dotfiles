@@ -513,7 +513,7 @@ map("n", "<space>cC", function()
     elseif cur.n then
         vim.wo.concealcursor = "nvic"
     else
-        vim.wo.concealcursor = "n"
+        vim.wo.concealcursor = "nc"
     end
 end, { desc = "Cycle Concealcursor" })
 

@@ -79,6 +79,7 @@ local typst_symbol_names = {
     QQ                 = "ℚ",
     RR                 = "ℝ",
     ZZ                 = "ℤ",
+    II                 = "𝕀",
     Im                 = "ℑ",
     Re                 = "ℜ",
 

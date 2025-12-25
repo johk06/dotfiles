@@ -60,6 +60,7 @@ local opts = {
     org_hide_leading_stars = true,
     org_hide_emphasis_markers = true,
     org_startup_indented = true,
+    org_tags_column = -100
 }
 
 opts.org_capture_templates = {}
@@ -83,7 +84,7 @@ opts.mappings.agenda = {
     org_agenda_today              = ".",
     org_agenda_goto_date          = "?",
 
-    org_agenda_add_note           = "<localleader>n",
+    org_agenda_add_note           = "o",
     org_agenda_deadline           = "d",
     org_agenda_schedule           = "s",
     org_agenda_archive            = "A",
@@ -109,11 +110,11 @@ opts.mappings.note = {
 opts.mappings.org = {
     org_toggle_heading                      = "<localleader>*",
     org_store_link                          = "<localleader>y",
+    org_insert_link                         = "<localleader>p",
     org_edit_special                        = "<localleader>e",
     org_add_note                            = "<localleader>n",
     org_archive_subtree                     = "<localleader>A",
     org_toggle_archive_tag                  = "<localleader>a",
-    org_set_tags_command                    = "<localleader>t",
     org_meta_return                         = "<localleader>o",
     org_insert_heading_respect_content      = "<localleader>h",
     org_insert_todo_heading_respect_content = "<localleader>d",
@@ -124,13 +125,12 @@ opts.mappings.org = {
     org_timestamp_up_day                    = ">d",
 
 
-    -- Use [y]ou like surround, e.g. [y]ou [s]urround
-    org_deadline              = "yd",
-    org_priority              = "yp",
-    org_schedule              = "y@",
+    org_priority              = "cp",
+    org_schedule              = "c@",
+    org_deadline              = "c!",
     org_time_stamp            = "y.",
-    org_time_stamp_inactive   = "y!",
-    org_toggle_timestamp_type = "g!",
+    org_time_stamp_inactive   = "g.",
+    org_set_tags_command      = "c:",
 
     org_clock_in              = "<localleader>ci",
     org_clock_out             = "<localleader>cq",
@@ -142,13 +142,13 @@ opts.mappings.org = {
     org_refile                = "<localleader>r",
 
     org_open_at_point         = "<cr>",
-    org_insert_link           = "<localleader>p",
 
     ---@diagnostic disable: assign-type-mismatch
     org_insert_todo_heading   = false,
     org_set_effort            = false,
     -- I prefer my own tab
     org_cycle                 = false,
+    org_toggle_timestamp_type = false,
     ---@diagnostic enable
 }
 -- }}}
@@ -207,7 +207,7 @@ M.config = function()
             pattern = "org",
             callback = function(ev)
                 vim.wo.conceallevel = 2
-                vim.wo.concealcursor="nv"
+                vim.wo.concealcursor = "nc"
                 local map = utils.local_mapper(ev.buf)
                 map("n", "<localleader>l", "<cmd>Telescope orgmode insert_link<cr>")
                 map("n", "<localleader>/", "<cmd>Telescope orgmode search_headings<cr>")
@@ -227,7 +227,7 @@ M.config = function()
 
                 handle_custom_opts(orgmode.files:get(vim.api.nvim_buf_get_name(ev.buf)))
             end
-        }
+        },
     })
 end
 

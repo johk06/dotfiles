@@ -1,7 +1,6 @@
 local M = {}
 
 local cache = {}
-groups = require("theme.groups")
 
 function M.load()
     local background = vim.o.background
@@ -9,11 +8,11 @@ function M.load()
     theme.palettes.default = background == "light"
         and theme.palettes.light
         or theme.palettes.dark
-    local groups = cache[background] or groups(theme.palettes.default)
-    if not groups then
-        cache[background] = groups
+    if not cache[background] then
+        package.loaded["theme.groups"] = nil
+        cache[background] = require("theme.groups")
     end
-    for name, group in pairs(groups) do
+    for name, group in pairs(cache[background]) do
         vim.api.nvim_set_hl(0, name, group)
     end
 end

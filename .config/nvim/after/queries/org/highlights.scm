@@ -53,3 +53,38 @@
 ; Make the colons less annoying :)
 (tag_list
   ":" @punctuation.delimiter)
+
+; The :CUSTOM_ID: property is the most common, but it looks horrendous
+(property
+  ":" @punctuation.delimiter
+  name: (_) @property
+  ":" @punctuation.delimiter
+  value: (_) @constant
+  (#eq? @property "CUSTOM_ID")
+  (#set! @property conceal "#")
+  (#set! @punctuation.delimiter conceal ""))
+
+; Make the begin and end markers less obtrusive
+(property_drawer
+  ":properties:" @punctuation.delimiter.start
+  ":end:" @punctuation.delimiter.end
+  (#set! @punctuation.delimiter.start conceal "{")
+  (#set! @punctuation.delimiter.end conceal "}"))
+
+; Analogous, but leave the type of block there
+(block
+  "#+begin_" @punctuation.delimiter.start
+  "#+end_" @punctuation.delimiter.end
+  (#set! @punctuation.delimiter.start conceal "{")
+  (#set! @punctuation.delimiter.end conceal "}"))
+
+; Footnotes can obstruct a lot of screen real estate otherwise
+(expr
+  "[" @_conceal
+  "str" @_name
+  ":" @punctuation.delimiter
+  "]" @_conceal
+  (#eq? @_name "fn")
+  (#set! @_name conceal "")
+  (#set! @_conceal conceal "")
+  (#set! @punctuation.delimiter conceal "^"))

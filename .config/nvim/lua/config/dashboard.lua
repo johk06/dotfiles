@@ -50,11 +50,13 @@ local ACTIONS = {
         hl = "Oil"
     },
     {
-        "Version Control",
-        desc = "Show Git Info",
-        key = "i",
-        on_click = vim.cmd.Git,
-        hl = "Git"
+        "Agenda",
+        desc = "Show Org Agenda",
+        key = "a",
+        on_click = function()
+            Org.agenda()
+        end,
+        hl = "Agenda"
     },
     {
         "Search Files",
