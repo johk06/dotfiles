@@ -10,6 +10,7 @@ local utils = require("config.utils")
 local ui = require("config.lib.ui")
 local lsp = vim.lsp
 
+-- Mappings {{{
 local rename_visually = function()
     local old_name = fn.expand("<cword>")
     vim.cmd("normal! viw")
@@ -28,7 +29,6 @@ local rename_visually = function()
     })
 end
 
--- Callbacks & Mappings {{{
 ---@type [nvim_mode, string, function|string, vim.keymap.set.Opts?][]
 local lsp_mappings = {
     {
@@ -145,6 +145,17 @@ local lsp_mappings = {
     }
 }
 
+---Add a mapping for when LSP is active
+---@param mode nvim_mode
+---@param keys string
+---@param action string|function
+---@param opts vim.keymap.set.Opts?
+M.lsp_map = function(mode, keys, action, opts)
+    table.insert(lsp_mappings, { mode, keys, action, opts })
+end
+-- }}}
+
+-- Commands {{{
 ---@param args vim.api.keyset.create_user_command.command_args
 local inlay_hint_command = function(args)
     local cmd = args.fargs[1]
@@ -200,15 +211,9 @@ local lsp_commands = {
     }
 }
 
----Add a mapping for when LSP is active
----@param mode nvim_mode
----@param keys string
----@param action string|function
----@param opts vim.keymap.set.Opts?
-M.lsp_map = function(mode, keys, action, opts)
-    table.insert(lsp_mappings, { mode, keys, action, opts })
-end
+-- }}}
 
+-- Callbacks {{{
 local on_lsp_attached = function(ev)
     local buf = ev.buf
 
