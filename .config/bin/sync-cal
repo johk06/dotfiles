@@ -1,16 +1,21 @@
 #!/usr/bin/env bash
 
 mkdir -p ~/cal/{,.}{contacts,private}
-mkdir -p ~/cal/uni/{1,2}
+mkdir -p ~/cal/uni{1,2}
 
 pimsync sync "$@"
 
 for dir in ~/cal/.contacts/*; do
-    read dispname < "$dir/displayname"
-    ln -sT "$dir" ~/cal/contacts/"${dispname// /_}"
+    read -r dispname <"$dir/displayname"
+    ln -sT "$dir" ~/cal/contacts/"${dispname// /_}" 2>/dev/null
 done
 
 for dir in ~/cal/.private/*; do
-    read dispname < "$dir/displayname"
-    ln -sT "$dir" ~/cal/private/"${dispname// /_}"
+    read -r dispname <"$dir/displayname"
+    ln -sT "$dir" ~/cal/private/"${dispname// /_}" 2>/dev/null
+done
+
+for hook in $XDG_CONFIG_HOME/pimsync/hooks/*; do
+    echo "Running hook ${hook##*/}"
+    "$hook"
 done
