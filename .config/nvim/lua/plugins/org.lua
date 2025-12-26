@@ -60,7 +60,20 @@ local opts = {
     org_hide_leading_stars = true,
     org_hide_emphasis_markers = true,
     org_startup_indented = true,
-    org_tags_column = -100
+    org_tags_column = 0,
+}
+
+opts.org_agenda_custom_commands = {
+    u = {
+        description = "Uni",
+        types = {
+            {
+                type = "agenda",
+                match = "uni",
+                org_agenda_span = "month"
+            }
+        }
+    }
 }
 
 opts.org_capture_templates = {}

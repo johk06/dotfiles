@@ -37,6 +37,12 @@
   (#eq? @org.keyword.deadline "DEADLINE")
   (#set! conceal "!"))
 
+(plan
+  (entry
+    name: (entry_name) @org.keyword.done)
+  (#eq? @org.keyword.done "CLOSED")
+  (#set! conceal "$"))
+
 ; Make timestamps less annoying
 (timestamp
   [
@@ -70,6 +76,25 @@
   ":end:" @punctuation.delimiter.end
   (#set! @punctuation.delimiter.start conceal "{")
   (#set! @punctuation.delimiter.end conceal "}"))
+
+; Similar thing for the logbook
+(drawer
+  ":" @punctuation.delimiter.start
+  name: (_) @label
+  ":" @punctuation.delimiter.hide
+  (#eq? @label "LOGBOOK")
+  ":end:" @punctuation.delimiter.end
+  (#set! @punctuation.delimiter.hide conceal "")
+  (#set! @punctuation.delimiter.start conceal "{")
+  (#set! @punctuation.delimiter.end conceal "}"))
+
+(drawer
+  name: (_) @_name
+  contents: (contents
+    (expr) @org.keyword.todo
+    (#eq? @_name "LOGBOOK")
+    (#eq? @org.keyword.todo "CLOCK:")
+    (#set! @org.keyword.todo conceal "@")))
 
 ; Analogous, but leave the type of block there
 (block

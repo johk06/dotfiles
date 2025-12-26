@@ -28,8 +28,8 @@ FILE_HEADING_FMT = """#+title: {title}
 
 """
 
-EVENT_HEADING_FMT = """** {keywd}{title}
-{date}
+EVENT_HEADING_FMT = """** {keywd} {title} {date} :{tags}:
+SCHEDULED: {date}
 :PROPERTIES:
 :CUSTOM_ID: {id}
 :END:
@@ -56,7 +56,7 @@ def as_org_daterange(start: datetime, end: datetime, active) -> str:
         return f"{as_org_date(start, active)}--{as_org_date(end, active)}"
 
 
-def as_org_event(ev: Event, calname) -> (bool, str):
+def as_org_event(ev: Event, calname, extra_tag) -> (bool, str):
     start: datetime = ev.DTSTART
     end: datetime = ev.DTEND
     in_the_past = end.timestamp() < NOW.timestamp()
@@ -67,9 +67,10 @@ def as_org_event(ev: Event, calname) -> (bool, str):
     body.append("")
     body.append(ev["description"])
     return in_the_past, EVENT_HEADING_FMT.format(
-        keywd="DONE " if in_the_past else "",
+        keywd="DONE" if in_the_past else "NEXT",
         title=ev["summary"],
         date=date,
+        tags=extra_tag,
         body="\n".join(body),
         id="cal-" + name + "-" + ev["uid"],
     )
@@ -78,6 +79,11 @@ def as_org_event(ev: Event, calname) -> (bool, str):
 def export_to_org(cal: Calendar, name: str, path: str):
     npath = path + ".org"
     opath = path + "-archive.org"
+    if name.startswith("uni"):
+        extra = "uni"
+    else:
+        extra = "private"
+
     with (
         open(npath, "w") as nfile,
         open(opath, "w") as ofile,
@@ -104,7 +110,7 @@ def export_to_org(cal: Calendar, name: str, path: str):
         events = cal.events
         events.sort(key=lambda e: e.DTSTART)
         for ev in events:
-            past, text = as_org_event(ev, name)
+            past, text = as_org_event(ev, name, extra)
             if past:
                 ofile.write(text)
             else:

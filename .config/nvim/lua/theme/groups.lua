@@ -737,13 +737,12 @@ add_with_prefix(colorscheme, "@org.", {
 
     ["table.delimiter"]       = { link = "@punctuation.delimiter" },
 
-    ["keyword.todo"]          = { fg = pal.fg0, italic = true, nocombine = true },
+    ["keyword.todo"]          = { fg = pal.fg0, nocombine = true },
     ["keyword.done"]          = { fg = col.bright_gray, nocombine = true },
-    ["keyword.deadline"]      = { fg = col.red, italic = true, nocombine = true },
-
-    ["keyword.face.NEXT"]     = { fg = col.green, italic = true, nocombine = true },
-    ["keyword.face.WAITING"]  = { fg = col.teal, italic = true, nocombine = true },
-    ["keyword.face.CURRENT"]  = { fg = col.magenta, italic = true, nocombine = true },
+    ["keyword.deadline"]      = { fg = col.red, nocombine = true },
+    ["keyword.face.NEXT"]     = { fg = col.green, nocombine = true },
+    ["keyword.face.WAITING"]  = { fg = col.light_blue, nocombine = true },
+    ["keyword.face.CURRENT"]  = { fg = col.teal, nocombine = true },
     ["keyword.face.NOPE"]     = { fg = col.bright_gray, strikethrough = true, nocombine = true },
 
     ["priority.highest"]      = { fg = col.orange, nocombine = true },
@@ -751,9 +750,9 @@ add_with_prefix(colorscheme, "@org.", {
     ["priority.lowest"]       = { fg = col.bright_gray, nocombine = true },
 
     ["plan"]                  = { link = "@keyword" },
-    ["timestamp.active"]      = { fg = pal.fg3, italic = true, nocombine = true },
-    ["timestamp.inactive"]    = { fg = col.bright_gray, italic = true, nocombine = true },
-    ["timestamp.day"]         = { fg = col.light_blue, italic = true, nocombine = true },
+    ["timestamp.active"]      = { fg = col.magenta, nocombine = true },
+    ["timestamp.inactive"]    = { fg = col.bright_gray, nocombine = true },
+    ["timestamp.day"]         = { fg = col.light_blue, nocombine = true },
     ["tag"]                   = { fg = col.teal, nocombine = true },
     ["verbatim"]              = { bg = pal.bg01 },
     ["code"]                  = { bg = pal.bg01 },
