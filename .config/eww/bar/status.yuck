@@ -138,7 +138,7 @@ ${dev.rate}W" : ""}"
                 : (brightness < 80 ? "󰃟"
                 : "󰃠"))))})
         (revealer :reveal recording :transition "slideright" :visible recording
-            (button :class "tiny-button active" :style "min-width: 6rem; margin-left: .5rem;"
+            (button :class "tiny-button red" :style "min-width: 6rem; margin-left: .5rem;"
                 :onclick "kill ${recording-info.pid}"
                 :tooltip "Recording to ${recording-info.path}"
                 "rec:  ${formattime(EWW_TIME - recording-info.start, "%M:%S", "UTC")}"))))

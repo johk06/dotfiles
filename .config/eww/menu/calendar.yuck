@@ -18,13 +18,13 @@
 
 (defwidget agenda-calendar-section []
     (box :orientation "h" :class "agenda-calendar-section" :valign "center" :space-evenly false
+        (rounded-image :path "${HOME}/.config/background/thumb" :width "160px")
         (box :class "calendar-box" :hexpand true (calendar :class "agenda-calendar"
             :day {_todo-day}
             :month {_todo-month}
             :year {_todo-year}
             :timeout "600s"
-            :onclick "${EWW_CMD} update todo-date={2}-$(({1}+1))-{0}"))
-        (rounded-image :path "${HOME}/.config/background/thumb" :width "160px")))
+            :onclick "${EWW_CMD} update todo-date={2}-$(({1}+1))-{0}"))))
 
 (defwidget todo-date [time if-none ?no-hl ?start]
     (box :space-evenly false
@@ -45,7 +45,7 @@
 (defwidget agenda-list-section []
     (box :orientation "v" :space-evenly false :class "agenda-list-section" :vexpand true
         (agenda-list-controls)
-        (stack :selected {agenda-selected-list} :tramsition "slideright" :same-size true :vexpand true
+        (stack :selected {agenda-selected-list} :transition "slideright" :same-size true :vexpand true
             (agenda-todo-list)
             (agenda-weather-list))))
 

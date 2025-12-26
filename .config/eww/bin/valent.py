@@ -95,15 +95,6 @@ def on_removed(bus, devpath, *args):
 def main():
     DBusGMainLoop(set_as_default=True)
     bus = dbus.SessionBus()
-    valent = bus.get_object(BUS_NAME, BUS_ROOT)
-
-    devices_iface = dbus.Interface(valent, OBJECT_MANAGER)
-    devices_iface.connect_to_signal("InterfacesAdded", lambda *x: on_added(bus, x))
-    devices_iface.connect_to_signal("InterfacesRemoved", lambda *x: on_removed(bus, x))
-
-    for path in devices_iface.GetManagedObjects():
-        DEVICES[str(path)] = ValentDevice(bus, path)
-
 
     bus.call_blocking(
         "org.freedesktop.DBus",
@@ -114,6 +105,16 @@ def main():
         [BUS_NAME, 0],
     )
     time.sleep(2)
+
+    valent = bus.get_object(BUS_NAME, BUS_ROOT)
+
+    devices_iface = dbus.Interface(valent, OBJECT_MANAGER)
+    devices_iface.connect_to_signal("InterfacesAdded", lambda *x: on_added(bus, x))
+    devices_iface.connect_to_signal("InterfacesRemoved", lambda *x: on_removed(bus, x))
+
+    for path in devices_iface.GetManagedObjects():
+        DEVICES[str(path)] = ValentDevice(bus, path)
+
 
     do_reprint()
 
