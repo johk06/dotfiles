@@ -11,12 +11,14 @@ local keywords = {
     },
     keyword = {
         "base",
+        "assume"
     },
     operator = { "to" },
     ["constant.builtin"] = {
         { "pi", conceal = "π" },
         { "dirac", conceal = "ħ" },
         { "boltzmann", conceal = "k" },
+        { "i", conceal = "𝑖" },
         "e", "planck", "g_0", "G", "c"
     }
 }
@@ -34,8 +36,8 @@ local patterns = {
         + - \* /
         \\ \^ +/-
         ! % | &
-        < > <= >= =
-        ->
+        < > <= >=
+        := = ->
     ]] },
     punctuation = { [[
         \[ \] ( ) { }
