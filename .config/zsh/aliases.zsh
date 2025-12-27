@@ -15,6 +15,10 @@ alias \
     llv='lsd -l --hyperlink=auto --blocks=group,user,permission,git,date,size,links,name' \
     grep='grep --color=auto'
 
+# Intelligently request stuff from the internet
+# Mainly to build up a more complex pipeline
+alias req='noglob cache - curl'
+
 alias '#'="noglob qalc" # do math directly on the cmdline
 
 # nice to have redirections
@@ -23,5 +27,5 @@ alias \
     -g "@help"='--help 2>&1 | bat -l help -p'
 
 TAB=$'\t'
-GH="https://github/com"
+GH="https://github.com"
 GHSSH="git@github.com"
