@@ -80,14 +80,13 @@ local colorscheme = {
 
     -- diffs
     Added                       = { fg = col.green },
-    Deleted                     = { fg = col.red },
-    Removed                     = { link = "Deleted" },
+    Removed                     = { fg = col.red },
     Changed                     = { fg = col.yellow },
-    DiffChange                  = { bg = pal.bg1 },
-    DiffAdd                     = { bg = pal.bg1, fg = col.green, italic = true },
-    DiffText                    = { bg = pal.bg1, fg = col.yellow, italic = true },
+    DiffChange                  = { bg = pal.bg01 },
+    DiffAdd                     = { bg = pal.bg01, fg = col.green, italic = true },
+    DiffText                    = { bg = pal.bg01, fg = col.yellow, italic = true },
     DiffSubname                 = { fg = pal.fg, bold = true },
-    DiffDelete                  = { bg = blend(col.red, pal.bg3, 0.3) },
+    DiffDelete                  = { bg = blend(col.red, pal.bg01, 0.1), fg = col.bright_gray },
     DiffLine                    = { fg = col.purple },
     diffFile                    = { link = "Directory" },
 

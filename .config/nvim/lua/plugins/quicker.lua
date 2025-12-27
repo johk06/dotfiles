@@ -10,9 +10,8 @@ M.opts = {
         signcolumn = "no",
     },
     keys = {
-        { "+", function()
-            require("quicker").toggle_expand()
-        end },
+        { "+", function() require("quicker").toggle_expand() end },
+        { "<C-r>", function() require("quicker").refresh() end }
     },
     type_icons = {
         E = "E",
