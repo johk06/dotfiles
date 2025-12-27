@@ -564,16 +564,16 @@ map("n", "q", function()
 end)
 
 
-local edit_register = require("config.edit-register")
+local register_utils = require("config.registers")
 
 map("n", "cq", function()
-    edit_register.edit_macro(getmacroreg())
+    register_utils.edit_macro(getmacroreg())
 end, { desc = "Macro: Change" })
 map("n", "yq", function()
-    edit_register.load_macro(getmacroreg())
+    register_utils.load_macro(getmacroreg())
 end, { desc = "Macro: Load" })
 map("n", "dq", function()
-    edit_register.save_macro(getmacroreg())
+    register_utils.save_macro(getmacroreg())
 end, { desc = "Macro: Define" })
 -- }}}
 -- Abbreviations {{{
