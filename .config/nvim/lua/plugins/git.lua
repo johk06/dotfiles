@@ -49,6 +49,7 @@ local map_on_git_buffer = function(buf)
 
     map("n", "b", gitsigns.blame_line, { desc = "Git: Blame line" })
     map("n", "B", gitsigns.blame, { desc = "Git: Blame buffer" })
+    map("n", "<C-b>", gitsigns.toggle_current_line_blame, { desc = "Git: Toggle Blame" })
 
     map("n", "h", gitsigns.setloclist, { desc = "Git: Hunks to loclist" })
 
@@ -128,7 +129,16 @@ M[1].opts = {
         delay = 200,
     },
 
-    current_line_blame_formatter = "<author>, <author_time:%b/%y, %d %H:%M> - <summary>",
+    ---@type Gitsigns.CurrentLineBlameFmtFun
+    current_line_blame_formatter = function(name, info)
+        local time = require("config.utils").format_time_smart(info.author_time)
+        return {
+            time,
+            { " by ",         "@comment" },
+            { info.committer, "@constant.comment" },
+            { " - " .. info.summary }
+        }
+    end,
 
     diff_opts = {
         vertical = true,
