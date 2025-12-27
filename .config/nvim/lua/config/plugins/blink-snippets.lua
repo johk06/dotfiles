@@ -44,6 +44,10 @@ S.new = function()
     return setmetatable({}, { __index = S })
 end
 
+S.enabled = function(self)
+    return not not get_buf_snippets(0)
+end
+
 S.get_completions = function(self, ctx, cb)
     local snips, ft = get_buf_snippets(ctx.bufnr)
     if not snips then
