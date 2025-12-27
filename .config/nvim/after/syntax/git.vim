@@ -10,6 +10,6 @@ syn match gitInlineHash /\x\{8,}/
 
 hi def link gitStatFile Directory
 hi def link gitStatAdded Added
-hi def link gitStatDeleted Deleted
+hi def link gitStatDeleted Removed
 hi def link gitStatSeparator NonText
 hi def link gitInlineHash gitHashAbbrev
