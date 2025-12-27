@@ -664,8 +664,11 @@ end
 map("i", "<M-;>", function() toggle_char_at_eol(";") end)
 map("i", "<M-,>", function() toggle_char_at_eol(",") end)
 
+-- Jump to previous spelling error and attempt to fix it
+-- remap needed for telescope to kick in
+map("i", "<C-z>", "<Esc>[sz=", { remap = true })
+
 --[[ Leftover keys looking for a mapping
-- <C-z>
 -- <C-m> maybe, may conflict with <cr>
 }}} ]]
 --[[ Command Mode {{{
