@@ -16,8 +16,11 @@ Both fugitive and gitsigns are great git plugins
 gitsigns generally performs better for basic features,
 whereas fugitive imo provides more capabilities
 
-I prefer gitsigns' buffer monitoring and interactive features,
-but fugitive's commands and history capabilities are better
+So I use gitsigns for buffer monitoring and status information
+and fugitive for its extremely powerful commands.
+
+All of the keymaps defined by these plugins are under a <space>g prefix
+(except for the textobjects).
 }}} ]] --
 
 -- last buffer for :G, to be relative to the current file with <space>gg
@@ -95,7 +98,7 @@ local map_global_maps = function()
     map("n", "c", "<cmd>silent Git commit<cr>", { desc = "Git: Commit" })
     map("n", "p", "<cmd>Git push<cr>", { desc = "Git: Push" })
 
-    -- ! means don't jump automatically
+    -- `!` means don't jump automatically
     map("n", "H", "<cmd>G! difftool .<cr>", { desc = "Git: Hunks to qflist" })
     map("n", "<C-h>", "<cmd>G difftool -y .<cr>", { desc = "Git: Diff all in tabs" })
     map("n", "<C-s>", "<cmd>Git add -p .<cr>", { desc = "Git: Stage interactively" })
