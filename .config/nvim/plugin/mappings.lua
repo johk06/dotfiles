@@ -3,10 +3,15 @@
  This is pretty much the core of my configuration and pulls in lots of other modules
 
  It's grouped into rough sections based on the type of keymap or its use case(s),
- each of those should be a foldmarker section as well. }}} ]]
+ each of those should be a foldmarker section as well.
+
+ Unused <space> mappings:
+ - b, e, i, k, n, v, x, y, z
+ }}} ]]
 -- Declarations {{{
 local api = vim.api
 local fn = vim.fn
+local fs = require("config.lib.fs")
 local utils = require("config.utils")
 local ftpref = require("config.lib.ftpref")
 local abbrev = utils.abbrev
@@ -1001,30 +1006,11 @@ end, { desc = "Directory: Goto Directory Parent" })
 
 map("n", "<space>.<space>", ":cd<space>")
 
-local get_best_root = function()
-    local root
-    local clients = vim.lsp.get_clients { bufnr = api.nvim_get_current_buf() }
-    if #clients == 0 then
-        clients = vim.lsp.get_clients {}
-    end
-    if #clients > 0 then
-        root = clients[1].root_dir
-    end
-
-    if not root then
-        root = vim.fs.root(fn.getcwd(0), { ".git", "Makefile" })
-    end
-
-    return root
-end
-
 -- go to project root
 map("n", cdleader .. "r", function()
-    local root = get_best_root()
+    local root = fs.get_project_root()
 
-    if root then
-        vim.cmd.lcd(root)
-    end
+    vim.cmd.lcd(root)
 end, { desc = "Directory: Goto Project Root" })
 
 -- go to git root
