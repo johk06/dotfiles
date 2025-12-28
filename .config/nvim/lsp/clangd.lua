@@ -4,7 +4,7 @@ Jhk.require_program("clangd")
  (See https://github.com/clangd/clangd/issues/1007)
  That isn't very nice, so create a *special* TMPDIR just for it ]]
 local CACHEPATH = vim.fn.stdpath("cache") .. "/clangd"
-vim.uv.fs_mkdir(CACHEPATH, 420) -- 0644
+vim.uv.fs_mkdir(CACHEPATH, 493) -- 0755
 
 ---@type vim.lsp.Config
 return {
