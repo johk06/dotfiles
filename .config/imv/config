@@ -1,9 +1,11 @@
-# Default config for imv
-
 [options]
 background = 2e3440
+overlay = true
+overlay_position_bottom = true
+overlay_font = Fira Code:11
 overlay_text_color = eceff4
 overlay_background_color = 2e3440
+overlay_background_alpha = f0
 
 # Suppress built-in key bindings, and specify them explicitly in this
 # config file.
@@ -15,7 +17,6 @@ suppress_default_binds = true
 # alias = command to run
 
 [binds]
-# Define some key bindings
 q = quit
 
 # Image navigation
@@ -32,19 +33,20 @@ k = pan 0 50
 h = pan 50 0
 l = pan -50 0
 
+
 # Zooming
 <Up> = zoom 1
 <Shift+plus> = zoom 1
-i = zoom 1
 <Down> = zoom -1
 <minus> = zoom -1
+i = zoom 1
 o = zoom -1
+zz = zoom actual
 
 # Rotate Clockwise by 90 degrees
 <Ctrl+r> = rotate by 90
 
 # Other commands
-x = close
 f = fullscreen
 d = overlay
 p = exec echo $imv_current_file
