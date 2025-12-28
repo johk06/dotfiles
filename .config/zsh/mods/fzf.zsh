@@ -14,22 +14,43 @@ function fcd {
 }
 compdef fcd=fd
 
+function _fzf_do_completion {
+    local tokens=(${(z)LBUFFER})
+    local curword
+    if [[ ${LBUFFER[-1]} == " " ]]; then
+        target=$((${#tokens} + 1))
+        curword=""
+    else
+        target=-1
+        curword="${tokens[-1]}"
+    fi
+    
+    "$1" "$curword"
+
+    if [[ -n "$REPLY" ]]; then
+        tokens[$target]="$REPLY"
+        LBUFFER="${tokens[@]}"
+        zle redisplay
+    fi
+}
+
 function _fzf_change_dir {
-    cd/
+    fcd
     zle reset-prompt
 }
 
 zle -N fzf-change-dir _fzf_change_dir
 bindkey "^[c" fzf-change-dir
 
-function _fzf_insert_path {
-    local res="$(fd $@ | fzf --prompt="file: " --preview='bat -p --color=always -- {}')"
-    if [[ -n "$res" ]]; then
-        LBUFFER+="${res:q}"
-        zle redisplay
-    fi
+function _fzf_find_path {
+    REPLY="$(fd $@ | fzf -q "$1" --prompt="file: " --preview='bat -p --color=always -- {}')"
 }
-zle -N fzf-insert-path _fzf_insert_path
+
+function _fzf_complete_path {
+    _fzf_do_completion _fzf_find_path
+}
+
+zle -N fzf-insert-path _fzf_complete_path
 bindkey "^[f" fzf-insert-path
 
 # search shell history
