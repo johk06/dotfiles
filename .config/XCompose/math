@@ -1,13 +1,9 @@
 # vim: set ft=xcompose :
 
-# Various mathematical symbols
-# Conventions:
-# - Use short words
-# - Use prefixes (like { for set operations)
-
 <Multi_key> <i> <n> : "∈" U2208
 <Multi_key> <exclam> <i> <n> : "∉" U2209
 
+# Set operations, using { as a leader {{{
 <Multi_key> <braceleft> <parenleft> : "⊂" U2282
 <Multi_key> <braceleft> <equal> <parenleft> : "⊆" U2286
 
@@ -18,6 +14,7 @@
 <Multi_key> <braceleft> <n> : "∩" U2229
 <Multi_key> <braceleft> <U> : "⋃" U22c3
 <Multi_key> <braceleft> <N> : "⋂" U22c2
+# }}}
 
 <Multi_key> <n> <o> <t> : "¬" U00ac
 # like programming languages
@@ -31,3 +28,9 @@
 # Summation/Product: Repeat the operator
 <Multi_key> <plus> <plus> : "∑" U2211 # NOTE: No-One needs a digraph for `#`
 <Multi_key> <asterisk> <asterisk> : "∏" U220f
+
+# Integrals
+<Multi_key> <I> <n> : "∫"  U222b
+<Multi_key> <I> <2> <n> : "∬ "  U222c
+<Multi_key> <I> <3> <n> : "∭"  U222d
+<Multi_key> <I> <o> <n> : "∮" U222e

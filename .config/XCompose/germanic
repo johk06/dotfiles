@@ -36,42 +36,7 @@
 # þū / thou
 <Multi_key> <t> <u> : "þͧ"
 
-# old english runes, starting with *
-# I use the latin order here I know.....
-<Multi_key> <asterisk> <a> : "ᚪ" # āc       -> Oak
-<Multi_key> <asterisk> <A> : "ᚫ" # æsċ      -> Ash (tree)
-<Multi_key> <asterisk> <b> : "ᛒ" # beorċ    -> Birch
-<Multi_key> <asterisk> <c> : "ᚳ" # cēn      -> Torch
-<Multi_key> <asterisk> <C> : "ᛣ" # calc     -> Chalk
-<Multi_key> <asterisk> <d> : "ᛞ" # dæġ      -> Day
-<Multi_key> <asterisk> <e> : "ᛖ" # eh       -> Steed
-<Multi_key> <asterisk> <E> : "ᛠ" # ēar      -> Grave? Earth?(ēarþ == ēorþ?)
-<Multi_key> <asterisk> <f> : "ᚠ" # feoh     -> Wealth, Cattle (modern english "fee")
-<Multi_key> <asterisk> <g> : "ᚷ" # ġyfu     -> Gift
-<Multi_key> <asterisk> <G> : "ᚸ" # gār      -> Spear
-<Multi_key> <asterisk> <h> : "ᚻ" # hæġl     -> Hail
-<Multi_key> <asterisk> <i> : "ᛁ" # īs       -> Ice
-<Multi_key> <asterisk> <I> : "ᛇ" # īw       -> Yew (tree)
-<Multi_key> <asterisk> <j> : "ᛄ" # ġēar     -> Year
-<Multi_key> <asterisk> <J> : "ᛡ" # īor      -> Eel?
-<Multi_key> <asterisk> <l> : "ᛚ" # lagu     -> Lake
-<Multi_key> <asterisk> <m> : "ᛗ" # mon      -> Man/Person
-<Multi_key> <asterisk> <n> : "ᚾ" # nȳd      -> Need, Plight
-<Multi_key> <asterisk> <N> : "ᛝ" # ing      -> Hero or some god
-<Multi_key> <asterisk> <o> : "ᚩ" # ōs       -> God (heathen), later reinterpreted as latin ōs(mouth) due to heathen connotations
-<Multi_key> <asterisk> <O> : "ᛟ" # ēðel     -> Inheritance
-<Multi_key> <asterisk> <p> : "ᛈ" # peorð    -> Cup?, Pear(wood)? (norse), perhaps linked to gothic pairþra
-<Multi_key> <asterisk> <q> : "ᛢ" # cweorð   -> Unknown, perhaps linked to gothic qairþra
-<Multi_key> <asterisk> <r> : "ᚱ" # rād      -> Wheel
-<Multi_key> <asterisk> <s> : "ᚴ" # siġel    -> Sun
-<Multi_key> <asterisk> <t> : "ᛏ" # tīw      -> Tiw(god) == Tȳr
-<Multi_key> <asterisk> <T> : "ᚦ" # þorn     -> Thorn
-<Multi_key> <asterisk> <u> : "ᚢ" # ūr       -> Ox
-<Multi_key> <asterisk> <w> : "ᚹ" # wynn     -> Joy
-<Multi_key> <asterisk> <x> : "ᛉ" # eolh/ilx -> Elk?
-<Multi_key> <asterisk> <y> : "ᚣ" # ȳr       -> Yew bow
-
-# gothic, using & as leader
+# # gothic, using & as leader
 <Multi_key> <ampersand> <a> : "𐌰"   # asks
 <Multi_key> <ampersand> <b> : "𐌱"   # bairkan
 <Multi_key> <ampersand> <g> : "𐌲"   # giba

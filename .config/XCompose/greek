@@ -1,74 +1,74 @@
 # vim: ft=xcompose
 
-# use @ as a prefix for the greek alphabet
-<Multi_key> <at> <a> : "α"
-<Multi_key> <at> <b> : "β"
-<Multi_key> <at> <g> : "γ"
-<Multi_key> <at> <d> : "δ"
-<Multi_key> <at> <e> : "ε"
-<Multi_key> <at> <z> : "ζ"
-<Multi_key> <at> <h> : "η"
-<Multi_key> <at> <y> : "θ" # like þ often being written as y
-<Multi_key> <at> <i> : "ι"
-<Multi_key> <at> <k> : "κ"
-<Multi_key> <at> <l> : "λ"
-<Multi_key> <at> <m> : "μ"
-<Multi_key> <at> <n> : "ν"
-<Multi_key> <at> <c> : "ξ" # i kinda think chi is more important
-<Multi_key> <at> <o> : "ο" 
-<Multi_key> <at> <p> : "π"
-<Multi_key> <at> <r> : "ρ"
-<Multi_key> <at> <s> : "σ"
-<Multi_key> <at> <v> : "ς" # final sigma
-<Multi_key> <at> <t> : "τ"
-<Multi_key> <at> <u> : "υ"
-<Multi_key> <at> <f> : "φ"
-<Multi_key> <at> <x> : "χ"
-<Multi_key> <at> <q> : "ψ"
-<Multi_key> <at> <w> : "ω"
+# use * as a prefix for the greek alphabet, like VIM, but backwards
+<Multi_key> <asterisk> <a> : "α"
+<Multi_key> <asterisk> <b> : "β"
+<Multi_key> <asterisk> <g> : "γ"
+<Multi_key> <asterisk> <d> : "δ"
+<Multi_key> <asterisk> <e> : "ε"
+<Multi_key> <asterisk> <z> : "ζ"
+<Multi_key> <asterisk> <h> : "η"
+<Multi_key> <asterisk> <y> : "θ" # like þ often being written as y
+<Multi_key> <asterisk> <i> : "ι"
+<Multi_key> <asterisk> <k> : "κ"
+<Multi_key> <asterisk> <l> : "λ"
+<Multi_key> <asterisk> <m> : "μ"
+<Multi_key> <asterisk> <n> : "ν"
+<Multi_key> <asterisk> <c> : "ξ" # i kinda think chi is more important
+<Multi_key> <asterisk> <o> : "ο" 
+<Multi_key> <asterisk> <p> : "π"
+<Multi_key> <asterisk> <r> : "ρ"
+<Multi_key> <asterisk> <s> : "σ"
+<Multi_key> <asterisk> <v> : "ς" # final sigma
+<Multi_key> <asterisk> <t> : "τ"
+<Multi_key> <asterisk> <u> : "υ"
+<Multi_key> <asterisk> <f> : "φ"
+<Multi_key> <asterisk> <x> : "χ"
+<Multi_key> <asterisk> <q> : "ψ"
+<Multi_key> <asterisk> <w> : "ω"
 
-<Multi_key> <at> <A> : "Α"
-<Multi_key> <at> <B> : "Β"
-<Multi_key> <at> <G> : "Γ"
-<Multi_key> <at> <D> : "Δ"
-<Multi_key> <at> <E> : "Ε"
-<Multi_key> <at> <Z> : "Ζ"
-<Multi_key> <at> <H> : "Η"
-<Multi_key> <at> <Y> : "Θ" # like þ often being written as y
-<Multi_key> <at> <I> : "Ι"
-<Multi_key> <at> <K> : "Κ"
-<Multi_key> <at> <L> : "Λ"
-<Multi_key> <at> <M> : "Μ"
-<Multi_key> <at> <N> : "Ν"
-<Multi_key> <at> <C> : "Ξ" # i kinda think chi is more important
-<Multi_key> <at> <O> : "Ο" 
-<Multi_key> <at> <P> : "Π"
-<Multi_key> <at> <R> : "Ρ"
-<Multi_key> <at> <S> : "Σ"
-<Multi_key> <at> <V> : "Σ" # final sigma, leave it here when all caps
-<Multi_key> <at> <T> : "Τ"
-<Multi_key> <at> <U> : "Υ"
-<Multi_key> <at> <F> : "Φ"
-<Multi_key> <at> <X> : "Χ"
-<Multi_key> <at> <Q> : "Ψ"
-<Multi_key> <at> <W> : "Ω"
+<Multi_key> <asterisk> <A> : "Α"
+<Multi_key> <asterisk> <B> : "Β"
+<Multi_key> <asterisk> <G> : "Γ"
+<Multi_key> <asterisk> <D> : "Δ"
+<Multi_key> <asterisk> <E> : "Ε"
+<Multi_key> <asterisk> <Z> : "Ζ"
+<Multi_key> <asterisk> <H> : "Η"
+<Multi_key> <asterisk> <Y> : "Θ" # like þ often being written as y
+<Multi_key> <asterisk> <I> : "Ι"
+<Multi_key> <asterisk> <K> : "Κ"
+<Multi_key> <asterisk> <L> : "Λ"
+<Multi_key> <asterisk> <M> : "Μ"
+<Multi_key> <asterisk> <N> : "Ν"
+<Multi_key> <asterisk> <C> : "Ξ" # i kinda think chi is more important
+<Multi_key> <asterisk> <O> : "Ο" 
+<Multi_key> <asterisk> <P> : "Π"
+<Multi_key> <asterisk> <R> : "Ρ"
+<Multi_key> <asterisk> <S> : "Σ"
+<Multi_key> <asterisk> <V> : "Σ" # final sigma, leave it here when all caps
+<Multi_key> <asterisk> <T> : "Τ"
+<Multi_key> <asterisk> <U> : "Υ"
+<Multi_key> <asterisk> <F> : "Φ"
+<Multi_key> <asterisk> <X> : "Χ"
+<Multi_key> <asterisk> <Q> : "Ψ"
+<Multi_key> <asterisk> <W> : "Ω"
 
 # archaic greek letters, double @
 # digamma
-<Multi_key> <at> <at> <w> : "ϝ"
-<Multi_key> <at> <at> <W> : "Ϝ"
+<Multi_key> <asterisk> <asterisk> <w> : "ϝ"
+<Multi_key> <asterisk> <asterisk> <W> : "Ϝ"
 # qoppa
-<Multi_key> <at> <at> <q> : "ϙ"
-<Multi_key> <at> <at> <Q> : "Ϙ"
+<Multi_key> <asterisk> <asterisk> <q> : "ϙ"
+<Multi_key> <asterisk> <asterisk> <Q> : "Ϙ"
 # san
-<Multi_key> <at> <at> <s> : "ϻ"
-<Multi_key> <at> <at> <S> : "Ϻ"
+<Multi_key> <asterisk> <asterisk> <s> : "ϻ"
+<Multi_key> <asterisk> <asterisk> <S> : "Ϻ"
 # sampi, i know its probably /ss/ or /s:/, but it looks like <T>
-<Multi_key> <at> <at> <t> : "ͳ"
-<Multi_key> <at> <at> <T> : "Ͳ"
+<Multi_key> <asterisk> <asterisk> <t> : "ͳ"
+<Multi_key> <asterisk> <asterisk> <T> : "Ͳ"
 
 # accents etc
-<Multi_key> <at> <asciitilde> : U0342       # ᾶ
-<Multi_key> <at> <apostrophe> : U0343       # ἀ
-<Multi_key> <at> <quotedbl> : U0344         # α̈́
-<Multi_key> <at> <comma> : U0345            # ͅͅῳ
+<Multi_key> <asterisk> <asciitilde> : U0342       # ᾶ
+<Multi_key> <asterisk> <apostrophe> : U0343       # ἀ
+<Multi_key> <asterisk> <quotedbl> : U0344         # α̈́
+<Multi_key> <asterisk> <comma> : U0345            # ͅͅῳ
