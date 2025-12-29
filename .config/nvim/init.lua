@@ -255,7 +255,8 @@ vim.diagnostic.config {
 -- }}}
 
 -- Load Config {{{
-require("config.lsp") -- language servers
+require("config.lsp")    -- language servers
+require("config.editor") -- extra features
 
 -- load UI components
 local ui = require("config.lib.ui")

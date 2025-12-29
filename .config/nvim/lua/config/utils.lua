@@ -368,6 +368,15 @@ function M.unmap_group(buf)
     M.local_maps[buf] = nil
 end
 
+M.ft_mapper = function()
+    local buf = api.nvim_get_current_buf()
+    local map = M.local_mapper(buf, { group = true })
+    
+    vim.b.undo_ftplugin = ("%s | call v:lua.require'config.utils'.unmap_group(%d)"):format(vim.b.undo_ftplugin, buf)
+    return map
+end
+
+
 ---@param mode nvim_mode
 ---@param keys string
 ---@param string string

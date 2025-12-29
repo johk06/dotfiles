@@ -95,13 +95,25 @@ M.save_macro = function(reg)
             return
         end
         local ident, _desc = name:match("(%S+)%s*(.*)")
-        local desc = _desc:match("(%S+)")
+        local desc = _desc:match("(%S.*)")
         local old = macros[ident] or {}
         macros[ident] = vim.tbl_extend("force", old, {
             keys = cmds,
             desc = desc
         })
         write_macros()
+    end)
+end
+
+M.macro_from_history = function(reg)
+    local history = fn.keytrans(require("config.editor").get_key_history())
+    vim.ui.input({
+        prompt = ("Save to @%s:"):format(reg),
+        default = history,
+    }, function(new)
+        if new then
+            set_from_str(new, reg)
+        end
     end)
 end
 

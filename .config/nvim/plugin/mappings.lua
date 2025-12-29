@@ -580,6 +580,9 @@ end, { desc = "Macro: Load" })
 map("n", "dq", function()
     register_utils.save_macro(getmacroreg())
 end, { desc = "Macro: Define" })
+map("n", ">q", function()
+    register_utils.macro_from_history(getmacroreg())
+end, { desc = "Macro: From History" })
 -- }}}
 -- Abbreviations {{{
 

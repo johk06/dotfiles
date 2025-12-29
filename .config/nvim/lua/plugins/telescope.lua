@@ -4,7 +4,7 @@ local picker_maps = {
     ["<space>:"] = { "command_history", "Telescope: Command History" },
     ["<space>d"] = { "diagnostics", "Telescope: Diagnostics" },
     ["<space>f"] = { "find_files", "Telescope: Files" },
-    ["<space>*"] = { "grep_string", "Telescope: Grep <cword>" },
+    ["<space>*"] = { "grep_string", "Telescope: Grep <cword>", mode = {"n", "x"} },
     ["<space>h"] = { "help_tags", "Telescope: Help" },
     ["<space>/"] = { "live_grep", "Telescope: Grep" },
     ["<space>s"] = { "lsp_document_symbols", "Telescope: Local Symbols" },
@@ -286,7 +286,7 @@ M.config = function()
     local builtin = require("telescope.builtin")
     local map = utils.map
     for lhs, rhs in pairs(picker_maps) do
-        map("n", lhs, rhs.custom and custom(rhs[1]) or builtin[rhs[1]], { desc = rhs[2] })
+        map(rhs.mode or "n", lhs, rhs.custom and custom(rhs[1]) or builtin[rhs[1]], { desc = rhs[2] })
     end
 end
 -- }}}

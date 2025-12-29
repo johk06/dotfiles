@@ -243,6 +243,13 @@ command("LspInfo", function(args)
             })
         end
 
+        if args.smods.verbose > 0 then
+            vim.list_extend(message, {
+                { "\nOptions\n",                   "Title" },
+                { vim.inspect(client.settings) },
+            })
+        end
+
         api.nvim_echo(message, false, {})
     end
 end, {

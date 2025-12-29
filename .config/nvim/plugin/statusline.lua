@@ -207,7 +207,7 @@ local update_searchcount = function()
     end
 
     if res.total == 0 then
-        return delim .. "0 matches"
+        return delim .. "no matches"
     end
 
     return ("%s%s%s%%* of %s%d"):format(delim,
@@ -445,8 +445,7 @@ update_timer:start(0, 200, vim.schedule_wrap(function()
     if should_redraw then
         redraw()
     end
-end)
-)
+end))
 
 local bracket_left = "%#SlISL#"
 local bracket_right = "%#SlISR#"
