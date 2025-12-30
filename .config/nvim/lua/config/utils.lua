@@ -361,6 +361,10 @@ end
 ---Unmap all mappings created by a local_mapper with `group = true` for the buffer buf
 ---@param buf integer Buffer for which local_mapper was created
 function M.unmap_group(buf)
+    if not M.local_maps[buf] then
+        return
+    end
+
     for _, map in ipairs(M.local_maps[buf]) do
         vim.keymap.del(map[1], map[2], { buffer = buf })
     end
