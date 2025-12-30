@@ -105,11 +105,12 @@ M.save_macro = function(reg)
     end)
 end
 
-M.macro_from_history = function(reg)
-    local history = fn.keytrans(require("config.editor").get_key_history())
+M.macro_from_history = function(reg, invoking_length)
+    local history = require("config.editor").get_key_history()
+    local as_text = fn.keytrans(history:sub(1, -invoking_length))
     vim.ui.input({
         prompt = ("Save to @%s:"):format(reg),
-        default = history,
+        default = as_text,
     }, function(new)
         if new then
             set_from_str(new, reg)
