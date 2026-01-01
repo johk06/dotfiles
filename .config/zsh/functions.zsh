@@ -80,6 +80,7 @@ source $ZDOTDIR/handlers.zsh
 
 source "$ZDOTDIR/mods/fs.zsh"
 source "$ZDOTDIR/mods/fzf.zsh"
+source "$ZDOTDIR/mods/zoxide.zsh"
 
 if [[ "$TERM" == "xterm-kitty" ]]; then
     source "$ZDOTDIR/mods/kitty.zsh"
