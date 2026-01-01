@@ -7,6 +7,8 @@ local M = {
         cmd = { "GitLink" },
         opts = {
             message = false,
+            -- Same value as on yank, see plugin/autocommands.lua
+            highlight_duration = 120,
         }
     },
 }
@@ -89,7 +91,7 @@ local map_global_maps = function()
 
     -- limit max commit count to count * 100, use 99 to get all for most repos
     map("n", "L", function()
-        local max = vim.v.count > 0 and vim.v.count * 100 or 100
+        local max = vim.v.count > 0 and vim.v.count or 100
         local cmd = "log --stat --max-count=" .. max
         vim.cmd.Git(cmd)
     end, { desc = "Git: Log" })
