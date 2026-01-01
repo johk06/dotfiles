@@ -6,7 +6,7 @@
 
 * Password Store
 All my passwords that are not local to my system are managed via the [[man:pass(1)][pass(1)]] password manager.
-They're stored in [[~/.password-store]], as is the default.
+They're stored in [[.password-store]], as is the default.
 
 ** File Format
 Pass does not have a standard or built-in file format, but I do like
@@ -14,13 +14,14 @@ Pass does not have a standard or built-in file format, but I do like
 In that very shell-script friendly schema, the first line of the file is reserved for the actual password with all of
 the following lines being ~Key: Value~ pairs that are both human and machine readable.
 Some common keys I use are:
+
 | Field    | Value                                                                              |
 |----------+------------------------------------------------------------------------------------|
 | Email    | The Email address associated with the account                                      |
 | Name     | Either the real name of the user or the account (in case the name is doxxy)        |
 | Phone#   | The phone number used for the account, with no spaces and country number prepended |
 | Public   | For an ssh key, the public key                                                     |
-| Type     | Some accounts do not have a traditional password                                   |
+| Type     | Indicates the meaning of the first line if it is not a traditional password        |
 | Used-for | A list of ~user@domain~ sub-accounts                                               |
 | User     | The username                                                                       |
 
