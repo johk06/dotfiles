@@ -678,10 +678,8 @@ add_with_prefix(colorscheme, "fugitive", {
 })
 
 add_with_prefix(colorscheme, "git", {
-    Keyword         = { link = "@property" },
-    IdentityHeader  = { link = "@property" },
-    DateHeader      = { link = "@property" },
-    IdentityKeyword = { link = "@property" },
+    DateHeader      = { link = "Keyword" },
+    IdentityKeyword = { link = "Keyword" },
     File            = { link = "diffFile" },
 })
 -- }}}
