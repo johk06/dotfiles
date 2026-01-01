@@ -83,6 +83,8 @@ local api = vim.api
 local ns = api.nvim_create_namespace("config.dashboard")
 local utils = require("config.utils")
 
+-- Helpers {{{
+
 ---@class dashboard.entry
 ---@field left ([string, string])[]
 ---@field right ([string, string])[]
@@ -96,7 +98,6 @@ local utils = require("config.utils")
 ---@field map string?
 ---@field items dashboard.entry[]
 
--- Helpers {{{
 local State = {
 }
 
