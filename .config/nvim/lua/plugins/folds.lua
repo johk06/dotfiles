@@ -129,6 +129,8 @@ local opts = {
     fold_virt_text_handler = fold_formatter,
     close_fold_kinds_for_ft = {
         default = { "imports", "marker" },
+        ---@diagnostic disable-next-line: assign-type-mismatch Treesitter node names can be used too
+        c = { "preproc_include", "marker" }
     },
     provider_selector = function(bufnr, ft, bft)
         if ft == "qf" then
