@@ -15,6 +15,10 @@ M.get_project_root = function()
         root = vim.fs.root(vim.fn.getcwd(0), { ".git", "Makefile" })
     end
 
+    if root == vim.env.HOME then
+        root = nil
+    end
+
     return root or vim.fn.getcwd()
 end
 
