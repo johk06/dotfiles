@@ -31,6 +31,13 @@ M.config = function()
             click = "v:lua.ScLa",
         },
         {
+            -- My own signs
+            sign = {
+                namespace = { "config.*" },
+                auto = true,
+            }
+        },
+        {
             -- for qf list
             sign = {
                 namespace = { "quicker.*" },

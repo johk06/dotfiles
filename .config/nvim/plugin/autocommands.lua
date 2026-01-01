@@ -95,10 +95,3 @@ autocmd("FocusLost", {
         vim.fn.setreg("*", vim.fn.getreg("\""))
     end
 })
-
-autocmd("BufReadCmd", {
-    pattern = { "https://*", "http://*" },
-    callback = function(ev)
-        return require("config.editor").view_web(ev)
-    end
-})

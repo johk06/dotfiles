@@ -41,7 +41,9 @@ local buf_list_type = {}
 ---@return string kind
 ---@return boolean should_show_modified
 function M.format_buf_name(buf, short)
-    local term_title = vim.b[buf].term_title
+    local bvar = vim.b[buf]
+
+    local term_title = bvar.term_title
     if term_title then
         local program, path = term_title:match("(.-): (.*)")
         if not (program and path) then
@@ -63,8 +65,6 @@ function M.format_buf_name(buf, short)
             ret = expand_home(name:sub(#"oil://" + 1, -2), 3) .. "/"
         end
         return ret, "oil", true
-    elseif vim.b[buf].special_buftype then
-        return fn.fnamemodify(name, ":t"), vim.b[buf].special_buftype, true
     elseif ft == "help" then
         return ":h " .. fn.fnamemodify(name, ":t"):gsub("%.txt$", ""), "help", false
     elseif ft == "git" then
@@ -103,6 +103,8 @@ function M.format_buf_name(buf, short)
             if vim.startswith(name, "oil-ssh://") then
                 local _, _, host, path = name:find("//([^/]+)/(.*)")
                 return "@" .. host .. ":" .. fn.fnamemodify(path, ":t"), "reg", true
+            elseif bvar.special_bufname then
+                return bvar.special_bufname, "special", true
             else
                 -- try to get smth reasonable for plugin provided buffers
                 return fn.fnamemodify(name, ":t"), "special", true
@@ -375,7 +377,7 @@ end
 M.ft_mapper = function()
     local buf = api.nvim_get_current_buf()
     local map = M.local_mapper(buf, { group = true })
-    
+
     vim.b.undo_ftplugin = ("%s | call v:lua.require'config.utils'.unmap_group(%d)"):format(vim.b.undo_ftplugin, buf)
     return map
 end
