@@ -842,17 +842,23 @@ map("o", "=", textobjs.variable_value)
  Open a cmdline in a region specified by a textobject or motion
  Allows repeating commands like they're regular mappings
  mostly useful with things like :g and :s ]]
----@diagnostic disable-next-line: unused-local
-operators.map_function("g:", function(mode, region, extra)
+
+---@type config.op.operator_func
+local command_in_region = function(_, region, extra)
+    local start_line = region[1][1]
+    local end_line = region[2][1]
+
     if extra.repeated then
+        local cmd = string.format("%d,%d%s", start_line, end_line, extra.saved.cmd)
+
         ---@diagnostic disable-next-line: param-type-mismatch
-        local ok, err = pcall(vim.cmd, string.format("%d,%d%s", region[1][1], region[2][1], extra.saved.cmd))
+        local ok, err = pcall(vim.cmd, cmd)
         if not ok and err then
             vim.notify(tostring(err), vim.log.levels.ERROR)
         end
     else
-        local cmdstr = string.format(":%d,%d", region[1][1], region[2][1])
-        api.nvim_feedkeys(cmdstr, "n", false)
+        local cmd_with_range = string.format(":%d,%d", start_line, end_line)
+        api.nvim_feedkeys(cmd_with_range, "n", false)
 
         api.nvim_create_autocmd("CmdlineLeave", {
             once = true,
@@ -866,7 +872,9 @@ operators.map_function("g:", function(mode, region, extra)
             end
         })
     end
-end)
+end
+
+operators.map_function("g:", command_in_region)
 
 ---@param lines string[]
 ---@param count integer
