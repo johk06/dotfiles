@@ -42,7 +42,7 @@ opts.cmdline = {
     completion = {
         menu = {
             -- incredibly useful for :find
-            auto_show = true
+            auto_show = true,
         }
     }
 }
@@ -74,6 +74,7 @@ opts.completion = {
     menu = {
         scrollbar = false,
         max_height = 24,
+        min_width = 30,
         draw = {
             columns = {
                 { "index" },
@@ -103,10 +104,15 @@ opts.completion.menu.draw.components = {
         end,
     },
     label = {
-        width = { fill = true, max = 40 },
+        width = {
+            max = 30,
+            fill = true
+        },
     },
     label_description = {
-        width = { max = 20 }
+        width = {
+            max = 20,
+        },
     }
 }
 
