@@ -1,0 +1,55 @@
+#!/usr/bin/env bash
+
+# Code referenced: https://github.com/xPaw/PHP-Minecraft-Query/blob/master/src/MinecraftPing.php
+# As well as the wiki: https://minecraft.wiki/w/Java_Edition_protocol/Server_List_Ping
+# The status itself is well-formed json, just pipe to jq
+
+# Uses xxd to assemble the binary parts of the message, plain text is interleaved
+
+SRV="$1"
+PORT=25565
+
+read_var_int() {
+    num=0
+    idx=0
+
+    while true; do
+        # No Multibyte Encoding, No splitting, no anything really
+        LC_ALL=C IFS= read -r -d '' -n 1 byt
+        if [[ "${#byt}" == 0 ]]; then
+            bytval=0
+        else
+            printf -v bytval %d "'${byt}"
+        fi
+
+        ((num |= ((bytval & 127) << (idx * 7))))
+        ((idx++))
+        if (((bytval & 128) != 128)); then
+            break
+        fi
+    done
+
+    REPLY="$num"
+}
+
+{
+    {
+        printf "00:" # start of blob
+        # Length = #Header + #Port + #Srv + Request
+        printf '%02x' $((5 + 1 + ${#SRV} + 3))
+        # Protocol Version
+        printf "00ff ffff 0f"
+        printf '%02x' "${#SRV}"
+    } | xxd -r
+    # Inline UTF-8 Server Address
+    printf '%s' "$SRV"
+    # Port; Status Handshake Ping
+    printf '00: %04x 01 0100' "$PORT" | xxd -r
+} | nc -N "$SRV" "$PORT" | {
+    read_var_int
+    read_var_int
+
+    # Length of reply
+    read_var_int
+    head -c "$REPLY"
+}
