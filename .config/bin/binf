@@ -1,0 +1,212 @@
+#!/usr/bin/env luajit
+local USAGE = [[
+Usage: binf FORMAT [ARGS...]
+Produce raw bytes from FORMAT
+
+Strings:
+    %s - String
+    %z - C-Style String (0-terminated)
+    %b - Byte
+
+Integers:
+    %c - Character
+    %w - 16-bit Word
+    %l - 32-bit Long
+    %q - 64-bit Quadword
+    (use Uppercase for big endian)
+    XX - Two hex digits for a byte
+
+Length operators:
+    %<format>[ - Accumulate Length for following arguments
+    ] - Close Length Group
+]]
+
+local bit = require("bit")
+local sb = require("string.buffer")
+local ffi = require("ffi")
+
+---@alias fmt
+---|"s"
+---|"z"
+---|"b"
+---|"c"
+---|"w"
+---|"l"
+---|"q"
+
+if not arg[1] or arg[1] == "--help" then
+    io.stderr:write(USAGE)
+    os.exit(1)
+end
+
+---@param message string
+local panic = function(message, ...)
+    io.stderr:write(message:format(...) .. "\n")
+    os.exit(1)
+end
+
+---@param s string|number
+---@return integer
+local checknum = function(s)
+    local as_n = tonumber(s)
+    if not as_n then
+        panic("Not a valid number: %s", s)
+    end
+
+    return as_n
+end
+
+local le_func = function(order)
+    return function(s)
+        local val = ffi.new("uint64_t", checknum(s))
+        local decomposed = {}
+        for i = 0, order - 1 do
+            local idx = i * 8
+            local mask = bit.lshift(0xff, idx)
+            table.insert(decomposed, tonumber(bit.rshift(bit.band(mask, val), idx)))
+        end
+
+        local c = string.char(unpack(decomposed))
+        return c
+    end
+end
+
+local be_func = function(order)
+    return function(s)
+        local val = ffi.new("uint64_t", checknum(s))
+        local decomposed = {}
+        for i = 0, order - 1 do
+            local idx = i * 8
+            local mask = bit.lshift(0xff, idx)
+            decomposed[order - i] = tonumber(bit.rshift(bit.band(mask, val), idx))
+        end
+
+        local c = string.char(unpack(decomposed))
+        return c
+    end
+end
+
+---@type table<fmt, fun(arg: string|number): string>
+local format_handlers = {
+    s = function(s)
+        return tostring(s)
+    end,
+    c = function(s)
+        return s:sub(1, 1)
+    end,
+    z = function(s)
+        return s .. "\0"
+    end,
+    b = function(s)
+        local val = checknum(s)
+        return string.char(val)
+    end,
+    w = le_func(2),
+    l = le_func(4),
+    q = le_func(8),
+    W = be_func(2),
+    L = be_func(4),
+    Q = be_func(8),
+}
+
+---@param i integer
+---@param arg string[]
+---@param idx integer
+---@param txt string
+---@param buf string.buffer
+---@param braces ([integer, string])[]
+local consume_format = function(i, arg, idx, txt, buf, braces)
+    local nxt = txt:sub(i + 1, i + 1)
+    local handler = format_handlers[nxt]
+    if not handler then
+        panic("%d:Invalid format: %s", i, nxt)
+    end
+    local brace = txt:sub(i + 2, i + 2) == "["
+    if brace then
+        braces[#braces + 1] = {
+            #buf,
+            nxt,
+        }
+
+        return i + 2, idx
+    else
+        if not arg[idx] then
+            panic("%d:Missing argument to format (No argument #%d)", i, idx - 1)
+        end
+
+        buf:put(handler(arg[idx]))
+        return i + 1, idx + 1
+    end
+end
+
+---@param i integer
+---@param txt string
+---@param buf string.buffer
+local consume_hex = function(i, txt, buf)
+    local start, stop = txt:find("%x+", i)
+
+    for j = start, stop, 2 do
+        local num = tonumber(txt:sub(j, j + 1), 16)
+        if num then
+            buf:put(string.char(num))
+        end
+    end
+
+    return stop or i
+end
+
+---@param i integer
+---@param txt string
+---@param buf string.buffer
+local consume_escape = function(i, txt, buf)
+    local nxt = txt:sub(i + 1, i + 1)
+    if nxt == "e" then
+        buf:put "\x1b"
+    elseif nxt == "n" then
+        buf:put "\n"
+    elseif nxt == "r" then
+        buf:put "\r"
+    elseif nxt == "t" then
+        buf:put "\t"
+    end
+
+    return i + 1
+end
+
+local buf = sb.new(4096)
+local braces = {}
+local format = arg[1]:gsub("%s", "")
+local idx = 2
+
+local i = 1
+while i <= #format do
+    local c = format:sub(i, i)
+    if c == "%" then
+        i, idx = consume_format(i, arg, idx, format, buf, braces)
+    elseif c:match("%x") then
+        i = consume_hex(i, format, buf)
+    elseif c == "[" then
+        panic("%d:Missing specifier before brace", i)
+    elseif c == "]" then
+        local last_brace = braces[#braces]
+        local start = last_brace[1]
+
+        local buf_as_str = buf:tostring()
+
+        local before = buf_as_str:sub(0, start)
+        local after = buf_as_str:sub(start + 1)
+
+        local formatter = format_handlers[last_brace[2]]
+
+        buf:set(before .. formatter(#buf - start) .. after)
+        braces[#braces] = nil
+    elseif c == "\\" then
+        i = consume_escape(i, format, buf)
+    else
+        panic("%d:Unrecognized token", i, c)
+    end
+
+    i = i + 1
+end
+
+io.stdout:write(tostring(buf))
