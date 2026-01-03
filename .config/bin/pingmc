@@ -36,6 +36,18 @@ read-varint() {
     REPLY="$num"
 }
 
+# The protocol looks like this:
+# Message 1: Connect
+# - Length of message (in bytes)
+# - 00: Packet ID
+# - ff ff ff 0f: Protocol version
+# - Length of address
+# - Address
+# - Port (unsigned short)
+# - 01: Request next state: Status
+#
+# Message 2: Request Information
+# 01 00: Handshake, Status
 binf '%b[00ff ffff 0f %b[%s] %w 01] 0100' "$SRV" "$PORT" |
     nc -N "$SRV" "$PORT" | {
     read-varint
