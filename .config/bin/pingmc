@@ -36,17 +36,8 @@ read-varint() {
     REPLY="$num"
 }
 
-{
-    # Message Length, Protocol Version, Address Length
-    printf "00: %02x 00ff ffff 0f %02x" \
-        $((5 + 1 + ${#SRV} + 3)) "${#SRV}" |
-        xxd -r
-
-    printf '%s' "$SRV" # Address, assumed to be UTF-8
-
-    # Port, Status, Handshake, finally: Request Information
-    printf '00: %04x 01 0100' "$PORT" | xxd -r
-} | nc -N "$SRV" "$PORT" | {
+binf '%b[00ff ffff 0f %b[%s] %w 01] 0100' "$SRV" "$PORT" |
+    nc -N "$SRV" "$PORT" | {
     read-varint
     read-varint
 
