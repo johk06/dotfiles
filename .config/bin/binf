@@ -8,16 +8,18 @@ Strings:
     %z - C-Style String (0-terminated)
     %b - Byte
 
-Integers:
+Numbers:
     %c - Character
     %w - 16-bit Word
     %l - 32-bit Long
     %q - 64-bit Quadword
+    %f - 32-bit Float
+    %d - 64-bit Double
     (use Uppercase for big endian)
     XX - Two hex digits for a byte
 
 Length operators:
-    %<format>[ - Accumulate Length for following arguments
+    %<format>[(offset,factor) - Accumulate Length for following arguments
     ] - Close Length Group
 ]]
 
@@ -33,6 +35,9 @@ local ffi = require("ffi")
 ---|"w"
 ---|"l"
 ---|"q"
+---|"W"
+---|"L"
+---|"Q"
 
 if not arg[1] or arg[1] == "--help" then
     io.stderr:write(USAGE)
@@ -53,9 +58,10 @@ local checknum = function(s)
         panic("Not a valid number: %s", s)
     end
 
-    return as_n
+    return as_n or 0
 end
 
+---@return fun(s: string): string
 local le_func = function(order)
     return function(s)
         local val = ffi.new("uint64_t", checknum(s))
@@ -71,6 +77,7 @@ local le_func = function(order)
     end
 end
 
+---@return fun(s: string): string
 local be_func = function(order)
     return function(s)
         local val = ffi.new("uint64_t", checknum(s))
@@ -107,29 +114,60 @@ local format_handlers = {
     W = be_func(2),
     L = be_func(4),
     Q = be_func(8),
+
+    f = function(s)
+        return ffi.string(ffi.new("float[1]", checknum(s)), 4)
+    end,
+    d = function(s)
+        return ffi.string(ffi.new("double[1]", checknum(s)), 8)
+    end
 }
+
+---@class length_marker
+---@field start integer
+---@field type fmt
+---@field offset integer
+---@field factor number
 
 ---@param i integer
 ---@param arg string[]
 ---@param idx integer
 ---@param txt string
 ---@param buf string.buffer
----@param braces ([integer, string])[]
+---@param braces (length_marker)[]
 local consume_format = function(i, arg, idx, txt, buf, braces)
     local nxt = txt:sub(i + 1, i + 1)
-    local handler = format_handlers[nxt]
-    if not handler then
-        panic("%d:Invalid format: %s", i, nxt)
-    end
     local brace = txt:sub(i + 2, i + 2) == "["
     if brace then
+        local ret_offset = 0
+        local offset, factor = 0, 1
+        if txt:sub(i + 3, i + 3) == "(" then
+            local arith_start, arith_end, offset_text, factor_text = txt:find("%(([+-]?%d+),?(%d*)%)")
+            if offset_text then
+                offset = checknum(offset_text)
+                ret_offset = (arith_end - arith_start) + 1
+            end
+
+            if factor_text and #factor_text > 0 then
+                factor = 1/checknum(factor_text)
+            end
+        end
+
         braces[#braces + 1] = {
-            #buf,
-            nxt,
+            start = #buf,
+            type = nxt,
+            offset = offset,
+            factor = factor
         }
 
-        return i + 2, idx
+
+        return i + 2 + ret_offset, idx
     else
+        local handler = format_handlers[nxt]
+        if not handler then
+            panic("%d:Invalid format: %s", i, nxt)
+        end
+
         if not arg[idx] then
             panic("%d:Missing argument to format (No argument #%d)", i, idx - 1)
         end
@@ -174,9 +212,11 @@ local consume_escape = function(i, txt, buf)
 end
 
 local buf = sb.new(4096)
-local braces = {}
 local format = arg[1]:gsub("%s", "")
+
 local idx = 2
+---@type length_marker[]
+local braces = {}
 
 local i = 1
 while i <= #format do
@@ -189,24 +229,25 @@ while i <= #format do
         panic("%d:Missing specifier before brace", i)
     elseif c == "]" then
         local last_brace = braces[#braces]
-        local start = last_brace[1]
+        local start = last_brace.start
 
         local buf_as_str = buf:tostring()
 
         local before = buf_as_str:sub(0, start)
         local after = buf_as_str:sub(start + 1)
 
-        local formatter = format_handlers[last_brace[2]]
+        local formatter = format_handlers[last_brace.type]
 
-        buf:set(before .. formatter(#buf - start) .. after)
+        local len = (#buf - start) * last_brace.factor + last_brace.offset
+
+        buf:set(before .. formatter(len) .. after)
         braces[#braces] = nil
     elseif c == "\\" then
         i = consume_escape(i, format, buf)
     else
-        panic("%d:Unrecognized token", i, c)
+        panic("%d:Unrecognized token: %s", i, c)
     end
 
     i = i + 1
 end
-
 io.stdout:write(tostring(buf))
