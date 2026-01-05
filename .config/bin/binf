@@ -149,7 +149,7 @@ local consume_format = function(i, arg, idx, txt, buf, braces)
             end
 
             if factor_text and #factor_text > 0 then
-                factor = 1/checknum(factor_text)
+                factor = 1 / checknum(factor_text)
             end
         end
 
@@ -198,14 +198,22 @@ end
 ---@param buf string.buffer
 local consume_escape = function(i, txt, buf)
     local nxt = txt:sub(i + 1, i + 1)
-    if nxt == "e" then
-        buf:put "\x1b"
-    elseif nxt == "n" then
-        buf:put "\n"
-    elseif nxt == "r" then
-        buf:put "\r"
-    elseif nxt == "t" then
-        buf:put "\t"
+    local escapes = {
+        ["0"] = "\x00",
+        ["z"] = "\x00\x00",
+        ["Z"] = "\x00\x00\x00\x00",
+        ["a"] = "\a",
+        ["e"] = "\x1b",
+        ["n"] = "\n",
+        ["r"] = "\r",
+        ["t"] = "\t",
+    }
+
+    local val = escapes[nxt]
+    if val then
+        buf:put(val)
+    else
+        panic("%d:Invalid Escape: %s", i, nxt)
     end
 
     return i + 1
