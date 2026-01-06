@@ -44,6 +44,8 @@ bindsym $mod+Shift+F exec $sc/set-gaps.sh 0
 bindsym $mod+A resize grow width 64px; resize grow height 64px
 bindsym $mod+X resize shrink width 64px; resize shrink height 64px 
 
+bindsym $mod+Equal resize set width 50ppt; resize set height 50ppt
+
 bindsym $mod+Backspace focus parent
 bindsym $mod+Delete focus child
 

@@ -34,6 +34,8 @@ mode "config" {
 
     bindsym Plus opacity plus 0.05
     bindsym Minus opacity minus 0.05
+
+    bindsym P exec $sc/reload-passwords.sh; mode "default"
 }
 
 bindsym $mod+C mode "config"
