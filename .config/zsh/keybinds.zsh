@@ -64,9 +64,13 @@ function zle-keymap-select {
             ;;
     esac
 }
-# set initial cursor shape
-zle-keymap-select
 zle -N zle-keymap-select
+
+# set initial cursor shape when line is opened
+function zle-line-init {
+    zle-keymap-select
+}
+zle -N zle-line-init
 # }}}
 
 # Keep majority of Emacs-Style bindings {{{
