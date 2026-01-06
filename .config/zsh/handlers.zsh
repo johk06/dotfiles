@@ -147,21 +147,6 @@ function _ignore_irrelevant_history {
 
 zshaddhistory_functions+=(_ignore_irrelevant_history)
 
-function zle-isearch-update {
-    # display that line, even if we're manually overwriting it
-    zle -M " "
-    print -nP "%F{8}^%F{magenta}$[HISTCMD - HISTNO]%f cmds ago"
-}
-
-function zle-isearch-exit {
-    # reset after exit
-    zle -M ""
-}
-
-zle -N zle-isearch-update
-zle -N zle-isearch-exit
-
-
 # use bat as a pager for man
 export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 export MANROFFOPT='-c'

@@ -1,7 +1,10 @@
 # wrappers around fzf for my most common use cases
 
-FZF_DEFAULT_OPTS="--pointer='' --no-scrollbar --info=inline-right --no-separator --border=none --preview-border=line --height=~50% --no-bold"
-FZF_DEFAULT_OPTS+=" --color="prompt:cyan,fg:white,bg:black,bg+:gray,gutter:black,hl:yellow:underline,hl+:yellow:underline,info:magenta,border:gray,query:white:regular,preview-fg:white,preview-bg:black,spinner:cyan,marker:magenta,header:white
+FZF_DEFAULT_OPTS="--layout=reverse --info=inline-right --preview-border=line --height=~50% --no-bold"
+FZF_DEFAULT_OPTS+=" --no-scrollbar --no-separator --border=none --pointer=''"
+FZF_DEFAULT_OPTS+=" --color=prompt:cyan,fg:white,bg:black,bg+:gray,gutter:black,border:gray"
+FZF_DEFAULT_OPTS+=",hl:yellow:underline,hl+:yellow:underline,info:magenta,query:white"
+FZF_DEFAULT_OPTS+=",preview-fg:white,preview-bg:black,spinner:cyan,marker:magenta,header:white"
 
 export FZF_DEFAULT_OPTS
 
@@ -40,10 +43,10 @@ function _fzf_change_dir {
 }
 
 zle -N fzf-change-dir _fzf_change_dir
-bindkey "^[c" fzf-change-dir
+bindkey "\e " fzf-change-dir
 
 function _fzf_find_path {
-    REPLY="$(fd $@ | fzf -q "$1" --prompt="file: " --preview='bat -p --color=always -- {}')"
+    REPLY="$(fd | fzf -q "$1" --prompt="file: " --preview='bat -p --color=always -- {}')"
 }
 
 function _fzf_complete_path {
@@ -55,7 +58,7 @@ bindkey "^[f" fzf-insert-path
 
 # search shell history
 function _fzf_shell_hist {
-    local res="$(fc -n -l $HISTSIZE | awk '!seen[$2]++' | fzf --no-sort --tac --prompt="hist: " -q "^$BUFFER")"
+    local res="$(fc -n -l 1 | awk '!seen[$0]++' | fzf --no-sort --tac --prompt="hist: " -q "$BUFFER")"
     if [[ -n "$res" ]]; then
         BUFFER="${res}"
         zle end-of-line
@@ -63,6 +66,7 @@ function _fzf_shell_hist {
     zle reset-prompt
 }
 zle -N fzf-shell-hist _fzf_shell_hist
-bindkey '^[/' fzf-shell-hist
+bindkey '\er' fzf-shell-hist
+bindkey '\e/' fzf-shell-hist
 
 export _ZO_FZF_OPTS="$FZF_DEFAULT_OPTS --prompt='cd: ' --preview='lsd -l {2}' --no-sort"

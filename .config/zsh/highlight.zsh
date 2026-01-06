@@ -1,5 +1,5 @@
 typeset -A ZSH_HIGHLIGHT_STYLES=(
-    unknown-token 'fg=red,underline'
+    unknown-token 'fg=9,underline'
     reserved-word 'fg=cyan'
     alias 'fg=fg'
     suffix-alias 'fg=fg'
@@ -59,4 +59,7 @@ source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zs
 
 zle_highlight=(
 isearch:"bg=8"
+region:"bg=8"
+special:"fg=8"
+paste:""
 )

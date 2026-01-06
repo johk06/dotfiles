@@ -29,7 +29,7 @@ function bn {
 
 # list recursive
 function lr {
-    command lsd --tree --depth 3 --hyperlink=always "$@" | less -rFi
+    command lsd --tree --depth 3 -t --hyperlink=always "$@" | less -rFi
 }
 
 # list hierarchy

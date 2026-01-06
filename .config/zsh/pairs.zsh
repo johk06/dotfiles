@@ -1,20 +1,20 @@
 # my own autopair system
 
 declare -gA AUTOPAIR_PAIRS=(
-    ['`']='`'
-    ['"']='"'
-    ["'"]="'"
-    ["("]=")"
-    ["{"]="}"
-    ["["]="]"
+    \`  \`
+    \"  \"
+    \'  \'
+    \(  \)
+    \{  \}
+    "["  "]"
 )
 declare -gA AUTOPAIR_PAIRS_INV=(
-    ['`']='`'
-    ['"']='"'
-    ["'"]="'"
-    [")"]="("
-    ["}"]="{"
-    ["]"]="["
+    \` \`
+    \" \"
+    \' \'
+    \) \(
+    \} \{
+    "]" "["
 )
 
 function _autopair_line_is_balanced {
@@ -32,8 +32,8 @@ function _autopair_line_is_balanced {
     else
         local l2len="${#lbuf//[^$2]}"
         local r2len="${#rbuf//[^$1]}"
-        local ltotal=$[llen - l2len]
-        local rtotal=$[rlen - r2len]
+        local ltotal=$(( llen - l2len ))
+        local rtotal=$(( rlen - r2len ))
 
         (( ltotal < 0 )) && ltotal=0
         (( ltotal < rtotal )) && return 1

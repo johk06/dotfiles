@@ -102,7 +102,6 @@ function preexec {
     print -n "\e]133;C\a"
 
     # show current cmd in title
-    local cmd=(${(z)1})
     print -Pn "\e]0;${1}\a"
 }
 

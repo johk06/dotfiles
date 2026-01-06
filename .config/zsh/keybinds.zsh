@@ -1,37 +1,181 @@
-# vi mode plugin
-function zvm_config {
-    ZVM_NORMAL_MODE_CURSOR=$ZVM_CURSOR_BLINKING_BLOCK
-    ZVM_INSERT_MODE_CURSOR=$ZVM_CURSOR_BLINKING_BEAM
-    ZVM_VISUAL_MODE_CURSOR=$ZVM_CURSOR_BLOCK  
-    ZVM_VISUAL_LINE_MODE_CURSOR=$ZVM_CURSOR_BLOCK  
-    ZVM_OPPEND_MODE_CURSOR=$ZVM_CURSOR_UNDERLINE
-    ZVM_VI_SURROUND_BINDKEY=classic
-    ZVM_VI_HIGHLIGHT_BACKGROUND=8
-    zvm_bindkey vicmd "/" history-incremental-search-backward
-}
-function zvm_after_init {
-    source "$ZDOTDIR/pairs.zsh"
-}
+# Kitty is plenty fast
+KEYTIMEOUT=5
 
-source /usr/share/zsh/plugins/zsh-vi-mode/zsh-vi-mode.plugin.zsh
-
-# fish-like suggestions
+# Autosuggestions {{{
 source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
-zvm_bindkey viins '^ ' autosuggest-accept
+bindkey -M viins '^ ' autosuggest-accept
 ZSH_AUTOSUGGEST_STRATEGY=(history completion)
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=8,bold"
+# }}}
 
-# history
+# Pairs {{{
+source "$ZDOTDIR/pairs.zsh"
+# }}}
+
+# Arrow Keys for History {{{
 zle -N up-line-or-beginning-search
 zle -N down-line-or-beginning-search
 autoload -U up-line-or-beginning-search
 autoload -U down-line-or-beginning-search
-bindkey "^[[A" up-line-or-beginning-search
-bindkey "^[[B" down-line-or-beginning-search
+bindkey "\e[A" up-line-or-beginning-search
+bindkey "\e[B" down-line-or-beginning-search
+# }}}
 
+# Show isearch Status {{{
+function zle-isearch-update {
+    # display that line, even if we're manually overwriting it
+    zle -M " "
+    print -nP "%F{8}^%F{magenta}$[HISTCMD - HISTNO]%f cmds ago"
+}
 
-# general keybinds
-bindkey '^Z' push-line
+function zle-isearch-exit {
+    # reset after exit
+    zle -M ""
+}
 
-# dont delete as much with C-w
-WORDCHARS="*?_-.[]~=!#$%^(){}"
+zle -N zle-isearch-update
+zle -N zle-isearch-exit
+# }}}
+
+# Edit in $EDITOR {{{
+function my-edit-line {
+    local tmpfile="$(mktemp "${ZCACHEDIR}/command-XXXX.zsh")"
+    echo "$BUFFER" >! "$tmpfile"
+
+    "$EDITOR" "$tmpfile" </dev/tty
+    BUFFER="$(cat "$tmpfile")"
+    rm "$tmpfile"
+}
+zle -N my-edit-line
+# Open
+bindkey -M viins '^O' my-edit-line
+# }}}
+
+# Set cursor based on keymap {{{
+function zle-keymap-select {
+    case "$KEYMAP" in
+        vicmd) printf '\e[2 q';;
+        visual) printf '\e[2 q';;
+        *)
+            case "$ZLE_STATE" in
+                *overwrite*) printf '\e[4 q';;
+                *) printf '\e[6 q';;
+            esac
+            ;;
+    esac
+}
+# set initial cursor shape
+zle-keymap-select
+zle -N zle-keymap-select
+# }}}
+
+# Keep majority of Emacs-Style bindings {{{
+bindkey -M viins '^A' beginning-of-line
+bindkey -M viins '^E' end-of-line
+bindkey -M viins '^B' backward-char
+bindkey -M viins '^F' forward-char
+bindkey -M viins '^F' forward-char
+# the insert mode compatibility doesn't apply
+bindkey -M viins '^W' backward-kill-word
+bindkey -M viins '^U' backward-kill-line
+bindkey -M viins '^K' kill-line
+
+# History
+bindkey -M viins '^R' history-incremental-search-backward
+bindkey -M viins '^S' history-incremental-search-forward
+bindkey -M viins '^P' up-line-or-beginning-search
+bindkey -M viins '^N' down-line-or-beginning-search
+# }}}
+
+# ^A and ^X from Vim {{{
+function my-get-cur-word-boundary {
+    buffer=$1
+    local spos=$CURSOR epos=$CURSOR
+    local pattern='[0-9a-zA-Z_]'
+
+    if ! [[ "${buffer:${CURSOR}:1}" =~ $pattern ]]; then
+        pattern="[^${pattern:1:-1} ]"
+    fi
+
+    for ((; $spos >= 0; spos--)); do
+        [[ "${buffer:${spos}:1}" =~ $pattern ]] || break
+    done
+    for ((; $epos < $#buffer; epos++)); do
+        [[ "${buffer:${epos}:1}" =~ $pattern ]] || break
+    done
+
+    ((spos++))
+    reply=($spos $epos)
+}
+function my-change-value {
+    my-get-cur-word-boundary "$BUFFER"
+    local start=${reply[1]}
+    local end=${reply[2]}
+    if [[ $start != 0 && ${BUFFER:$((start-1)):1} == [+-] ]]; then
+        ((start --))
+    fi
+
+    if ((start >= end)); then
+        return
+    fi
+
+    local len=$((end - start))
+    local word=${BUFFER:${start}:${len}}
+    local replacement
+
+    local count=${NUMERIC:-1}
+    local inc=0
+    if [[ "$KEYS" == $'\x01' ]]; then
+        inc=1
+    fi
+
+    if [[ "$word" =~ '^[0-9]+$'
+        || "$word" =~ '^0x[0-9a-fA-F]+$'
+        || "$word" =~ '^0b[01]+$' ]]; then
+        local as_num=$(($word))
+        local base=10 prefix=""
+
+        if [[ "$word" == "0x"* ]]; then
+            base=16
+            prefix=0x
+        elif [[ "$word" == "0b"* ]]; then
+            base=2
+            prefix=0b
+        fi
+
+        local changed_num
+        if ((inc)); then
+            changed_num=$((as_num + count))
+        else
+            if [[ $base != 10 ]]; then
+                # Don't allow decrementing anything but base 10 down past 0
+                changed_num=$((as_num == 0 ? 0 : as_num - count))
+            else
+                changed_num=$((as_num - count))
+            fi
+        fi
+        eval replacement='${prefix}$(( [##${base}] changed_num))'
+    else
+        replacement=$word
+    fi
+
+    BUFFER="${BUFFER:0:$start}$replacement${BUFFER:$end}"
+}
+
+zle -N my-change-value
+bindkey -M vicmd ^A my-change-value
+bindkey -M vicmd ^X my-change-value
+# }}}
+
+# Keep line but still run the command
+bindkey "\e^M" accept-and-hold
+# Like "suspending" the current command
+bindkey '^Z' push-input
+
+# Don't delete as much with C-w
+WORDCHARS="*?_.[]~=!#$%^(){}"
+
+# TODO: Unused and easy to reach keymaps:
+# ^T
+# ^Y
+# basically all of the meta-keys
