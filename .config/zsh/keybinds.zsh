@@ -1,4 +1,6 @@
 # Kitty is plenty fast
+# NOTE: This makes all multi key chords that do not switch modes basically impossible
+# Excluding those builtin like `cc`
 KEYTIMEOUT=5
 
 # Autosuggestions {{{
@@ -38,7 +40,7 @@ zle -N zle-isearch-exit
 # }}}
 
 # Edit in $EDITOR {{{
-function my-edit-line {
+function jhk-edit-line {
     local tmpfile="$(mktemp "${ZCACHEDIR}/command-XXXX.zsh")"
     echo "$BUFFER" >! "$tmpfile"
 
@@ -46,9 +48,9 @@ function my-edit-line {
     BUFFER="$(cat "$tmpfile")"
     rm "$tmpfile"
 }
-zle -N my-edit-line
+zle -N jhk-edit-line
 # Open
-bindkey -M viins '^O' my-edit-line
+bindkey -M viins '^O' jhk-edit-line
 # }}}
 
 # Set cursor based on keymap {{{
@@ -73,6 +75,36 @@ function zle-line-init {
 zle -N zle-line-init
 # }}}
 
+# Additional Textobjects {{{
+function map-textobjects {
+    local fn="$1"; shift
+    autoload -U "$fn"
+    zle -N "$fn"
+    for mode in visual viopp; do
+        for obj in "$@"; do
+            bindkey -M "$mode" "a$obj" "$fn"
+            bindkey -M "$mode" "i$obj" "$fn"
+        done
+    done
+}
+
+# These files ship with zsh
+map-textobjects select-quoted \' \" \`
+map-textobjects select-bracketed \
+    '(' ')' '[' ']' '{' '}' '<' '>' 'b' 'B'
+
+autoload -U surround
+zle -N delete-surround surround
+zle -N add-surround surround
+zle -N change-surround surround
+
+# shorter, shell-y-er
+bindkey -M vicmd s add-surround
+bindkey -M vicmd S change-surround
+bindkey -M vicmd z delete-surround
+bindkey -M visual S add-surround
+# }}}
+
 # Keep majority of Emacs-Style bindings {{{
 bindkey -M viins '^A' beginning-of-line
 bindkey -M viins '^E' end-of-line
@@ -92,7 +124,7 @@ bindkey -M viins '^N' down-line-or-beginning-search
 # }}}
 
 # ^A and ^X from Vim {{{
-function my-get-cur-word-boundary {
+function jhk-get-cur-word-boundary {
     buffer=$1
     local spos=$CURSOR epos=$CURSOR
     local pattern='[0-9a-zA-Z_]'
@@ -111,8 +143,8 @@ function my-get-cur-word-boundary {
     ((spos++))
     reply=($spos $epos)
 }
-function my-change-value {
-    my-get-cur-word-boundary "$BUFFER"
+function jhk-change-value {
+    jhk-get-cur-word-boundary "$BUFFER"
     local start=${reply[1]}
     local end=${reply[2]}
     if [[ $start != 0 && ${BUFFER:$((start-1)):1} == [+-] ]]; then
@@ -166,9 +198,9 @@ function my-change-value {
     BUFFER="${BUFFER:0:$start}$replacement${BUFFER:$end}"
 }
 
-zle -N my-change-value
-bindkey -M vicmd ^A my-change-value
-bindkey -M vicmd ^X my-change-value
+zle -N jhk-change-value
+bindkey -M vicmd ^A jhk-change-value
+bindkey -M vicmd ^X jhk-change-value
 # }}}
 
 # Keep line but still run the command
