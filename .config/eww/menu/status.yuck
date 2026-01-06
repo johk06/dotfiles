@@ -52,7 +52,7 @@
 (defwidget uptime-time [title]
     (box :orientation "v" :space-evenly false
         (label :class "title" :text title)
-        (label :class "text" :text {formattime(EWW_TIME - boottime, "Up for %H hours, %M minutes", "UTC")})))
+        (label :class "text" :text {formattime(EWW_TIME - BOOTTIME, "Up for %H hours, %M minutes", "UTC")})))
 
 (defwidget status-user [] (box :class "section" :orientation "v" :space-evenly false
     (uptime-time :title "Welcome ${USER}!")

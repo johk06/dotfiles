@@ -1,9 +1,9 @@
 (defvar mode-names '{
-"default": "Window",
+"default": "Normal",
 "media": "Media",
 "screenshot": "Print",
-"clipboard":"Clipboard",
-"config":"Options",
+"clipboard":"Yank",
+"config":"Config",
 "insert": "Insert"
 }')
 
@@ -42,7 +42,8 @@
     {"keys": "m", "action": "Mirror Screen"},
     {"keys": "t", "action": "Theme"},
     {"keys": "w", "action": "Wallpaper"},
-    {"keys": "r", "action": "Random"}
+    {"keys": "r", "action": "Random"},
+    {"keys": "p", "action": "Clear Passwords"}
 ],
 "clipboard": [
     {"keys": "<M-*", "action": "Selection", "mod": true},
@@ -71,7 +72,7 @@
 (defwidget mode-hints []
     (revealer :reveal {mode.change != "default"} 
         :transition "slideleft" :duration "200ms"
-        (box :space-evenly false :class "mode-hints"
+        (box :space-evenly false
             (for desc in {mode-descs[mode.change]}
                 (box :space-evenly false :class "mode-box"
                     (label :text "${desc.keys}" :class {desc.mod?:false ? "mode-mod" : "mode-keys"})
@@ -79,6 +80,7 @@
 
 (defwidget mode-symbol []
     (box :space-evenly false
-        (label 
+        (button 
+            :onclick "swaymsg mode default"
             :class "mode-${mode.change}"
-            :text "${mode-names[mode.change]}")))
+            "${mode-names[mode.change]}")))

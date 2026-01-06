@@ -9,6 +9,12 @@ import gi
 gi.require_version("Gtk", "3.0")
 from gi.repository import Gtk
 
+def safe_int(val):
+    try:
+        return int(val)
+    except Exception:
+        return 0
+
 REGEX_NAMES = [
     ("^Minecraft.*", "minecraft"),
 ]
@@ -108,9 +114,9 @@ def get_for_ws(workspace: i3ipc.Con, output):
 def sort_by_name(ws):
     name = ws["ws"]
     if name[0] == "s":
-        return int(name[1:]) - 1000
+        return safe_int(name[1:]) - 1000
     else:
-        return int(name)
+        return safe_int(name)
 
 def wsicon(name):
     if name[0] == "s":

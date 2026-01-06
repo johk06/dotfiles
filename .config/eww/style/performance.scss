@@ -2,8 +2,8 @@
     trough {
         all: unset;
         min-height: .5rem;
-        margin-left: 2rem;
-        margin-right: 2rem;
+        margin-left: 1.2rem;
+        margin-right: 1.2rem;
         margin-bottom: .4rem;
         border-radius: 12px;
         background-color: $bg3;
@@ -18,7 +18,7 @@
 .perf-label {
     @extend .text;
     margin-top: .6rem;
-    margin-left: 2.2rem;
+    margin-left: 1.2rem;
 }
 .perf-label-right {
     @extend .text;

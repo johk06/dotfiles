@@ -1,48 +1,21 @@
-.mode-hints {
-
+@mixin mode($name, $color) {
+    .mode-#{$name} {
+        @extend .button;
+        padding: 0.07rem 0.85rem 0.07rem 0.85rem;
+        min-width: 3.5rem;
+        background-color: mix($bg1, $color);
+        &:hover {
+            background-color: mix($bg1, $color, 90%);
+        }
+    }
 }
 
-.mode {
-    @extend .button;
-    padding: 0.07rem 0.85rem 0.07rem 0.85rem;
-}
-
-.mode-default { @extend .mode; }
-
-.mode-media {
-    @extend .mode;
-    background-color: $accent;
-    color: $inv;
-    &:hover { background-color: fade($accent); }
-}
-
-.mode-screenshot {
-    @extend .mode;
-    background-color: $lblue;
-    color: $inv;
-    &:hover { background-color: fade($lblue); }
-}
-
-.mode-config {
-    @extend .mode;
-    color: $inv;
-    background-color: $green;
-    &:hover { background-color: fade($green); }
-}
-
-.mode-insert {
-    @extend .mode;
-    color: $inv;
-    background-color: $yellow;
-    &:hover { background-color: fade($yellow); }
-}
-
-.mode-clipboard {
-    @extend .mode;
-    color: $inv;
-    background-color: $pink;
-    &:hover { background-color: fade($pink); }
-}
+@include mode(default,    $bg1);
+@include mode(media,      $purple);
+@include mode(screenshot, $lblue);
+@include mode(config,     $yellow);
+@include mode(insert,     $pink);
+@include mode(clipboard,  $orange);
 
 .mode-keys {
     color: $lblue;

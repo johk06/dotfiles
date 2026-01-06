@@ -30,33 +30,27 @@
     (box :hexpand true :space-evenly false :orientation "v"
         (box :orientation "v" :hexpand true :class "section" :space-evenly false
             (label :class "text" :text "${perf-pcount} Processes")
-            (colored-scale 
+            (colored-scale :value {EWW_CPU.avg}
                 :temp {EWW_TEMPS[cpu-sensor]}
-                :value {EWW_CPU.avg}
-                :left "cpu: ${round(EWW_CPU.avg, 1)}%"
+                :left "CPU: ${round(EWW_CPU.avg, 1)}%"
                 :right "${EWW_TEMPS[cpu-sensor]}°C")
-            (colored-scale 
+            (colored-scale :value {EWW_RAM.used_mem_perc}
                 :class "mem" 
-                :value {EWW_RAM.used_mem_perc}
-                :left "mem: ${round(EWW_RAM.used_mem_perc, 1)}%"
+                :left "Mem: ${round(EWW_RAM.used_mem_perc, 1)}%"
                 :right "${round(EWW_RAM.used_mem / mem-gb, 1)}GB / ${round(EWW_RAM.total_mem / mem-gb, 1)}GB")
-            (colored-scale
+            (colored-scale :value {perf-gpu?.usage?:0}
                 :temp {EWW_TEMPS[gpu-sensor]} 
-                :value {perf-gpu?.usage?:0}
-                :left "gpu: ${perf-gpu?.usage?:"?"}%"
+                :left "GFX: ${perf-gpu?.usage?:"?"}%"
                 :right "${EWW_TEMPS[gpu-sensor]}°C")
-            (colored-scale 
+            (colored-scale :value {(perf-gpu.mem_used / perf-gpu.mem_total) * 100}
                 :class "mem" 
-                :value {(perf-gpu.mem_used / perf-gpu.mem_total) * 100}
-                :left "vmem: ${round((perf-gpu.mem_used / perf-gpu.mem_total) * 100, 1)}%"
+                :left "Mem: ${round((perf-gpu.mem_used / perf-gpu.mem_total) * 100, 1)}%"
                 :right "${round(perf-gpu.mem_used / mem-gb, 1)}GB / ${round(perf-gpu.mem_total / mem-gb, 1)}GB")
-            (colored-scale 
+            (colored-scale :value {perf-net.sent_rel}
                 :class "net-up"
-                :value {perf-net.sent_rel}
-                :left "send: ${perf-net.sent_pretty}/s"
+                :left "Send: ${perf-net.sent_pretty}/s"
                 :right "Total: ${perf-net.total_sent_pretty}")
-            (colored-scale 
+            (colored-scale :value {perf-net.recv_rel}
                 :class "net-down" 
-                :value {perf-net.recv_rel}
-                :left "recv: ${perf-net.recv_pretty}/s"
+                :left "Recv: ${perf-net.recv_pretty}/s"
                 :right "Total: ${perf-net.total_recv_pretty}"))))

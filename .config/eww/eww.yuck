@@ -5,7 +5,7 @@
 (defpoll HOME :interval "200h" 'echo "$HOME"')
 (defpoll HOSTNAME :interval "200h" 'hostname')
 (defpoll USER :interval "200h" 'whoami')
-(defpoll boottime :interval "200h" "awk '/btime/ {print $2}' /proc/stat")
+(defpoll BOOTTIME :interval "200h" "awk '/btime/ {print $2}' /proc/stat")
 
 (defwidget hsep [height]
     (box :class "hsep" :style "margin-top: ${height / 2}; margin-bottom: ${height / 2}"))
