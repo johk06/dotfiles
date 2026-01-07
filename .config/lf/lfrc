@@ -103,6 +103,7 @@ map gc cd ~/.config
 map gD cd ~/Documents/
 map gw cd ~/ws
 map gm cd-eval /run/media/$USER/
+map gd cd /dev/disk/by-label/
 map gM cd-eval \$XDG_RUNTIME_DIR/gvfs
 map g<space> fzf-cd
 # }}}
@@ -121,7 +122,7 @@ map X push :glob-unselect<space>
 map F push :select<space>
 map <space>f fzf-select
 map <space>/ rg-select
-map <space>z zi
+map Z zi
 map z push :z<space>
 # }}}
 
@@ -178,6 +179,12 @@ map ax push :extract<space>
 map Is push :image-resize<space>
 map Ir push :image-rotate<space>
 map Im push :image-magick<space>
+# }}}
+
+# File systems ([b]lock devices) {{{
+map bm push :block-mount<space>
+map bu push :block-unmount<space>
+map be push :block-eject<space>
 # }}}
 
 # Open Externally {{{
