@@ -4,8 +4,7 @@ bindsym {
     $mod+Return          exec $term
     $mod+Shift+Return    exec $sc/exec-with --pid kitty $floating
     $mod+W               exec firefox
-    $mod+E               exec nautilus -w
-    $mod+Shift+E         exec $sc/exec-with --class org.gnome.Nautilus "nautilus -w" $floating
+    $mod+E               exec kitty zsh -ic lf
     $mod+Space           exec killall rofi || rofi -show drun
     $mod+Shift+Semicolon exec killall rofi || rofi -show sys
     $mod+Semicolon       exec gtklock -d
