@@ -98,11 +98,11 @@ zle -N delete-surround surround
 zle -N add-surround surround
 zle -N change-surround surround
 
-# shorter, shell-y-er
-bindkey -M vicmd s add-surround
-bindkey -M vicmd S change-surround
-bindkey -M vicmd z delete-surround
-bindkey -M visual S add-surround
+# shorter, shell-y-er, [q]uote
+bindkey -M vicmd q add-surround
+bindkey -M vicmd Q change-surround
+bindkey -M vicmd s delete-surround # [s]trip
+bindkey -M visual q add-surround
 # }}}
 
 # Keep majority of Emacs-Style bindings {{{
