@@ -199,7 +199,6 @@ local ensure_installed = {
     "gitcommit",
     "jq",
     "json",
-    "jsonc",
     "latex",
     "lua",
     "luadoc",
@@ -212,20 +211,30 @@ local ensure_installed = {
     "query",
     "regex",
     "scss",
-    "vim", -- although bundled with neovim, a newer version is often needed
+
+    -- although bundled with neovim, a newer version is often needed
+    -- (mainly for compatibility with newer queries)
+    "vim",
     "vimdoc",
 }
 -- }}}
 
+---@param buf integer
+---@param language string
 local attach = function(buf, language)
+    local bo = vim.bo[buf]
     if not vim.treesitter.language.add(language) then
-        vim.bo[buf].syntax = "ON"
+        bo.syntax = "ON"
         return false
     end
 
     vim.treesitter.start(buf, language)
-    vim.bo[buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+    if vim.treesitter.query.get(language, "indent") ~= nil then
+        bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+    end
+
     -- Treesitter makes sure spell checking is constrained to the relevant parts
+    -- So it generally should be fine to enable
     vim.opt_local.spell = true
 
     return true
@@ -242,24 +251,21 @@ M.init = function()
                 },
                 filetype = "mail",
             }
-            package.loaded["nvim-treesitter.parsers"].qin = {
-                install_info = {
-                    url = "~/ws/qin/tree-sitter-qin/",
-                },
-                filetype = "qin"
-            }
         end
     })
     local ts = require("nvim-treesitter")
     ts.install(ensure_installed)
+    local parsers = require("nvim-treesitter.parsers")
 
     require("config.utils").autogroup("config.treesitter", {
         FileType = function(ev)
             local buf = ev.buf
             local ft = vim.bo[buf].ft
 
+
             local language = vim.treesitter.language.get_lang(ft) or ft
-            if not attach(buf, language) then
+            if not attach(buf, language)
+                and parsers[language] then
                 ts.install(language):await(function()
                     attach(buf, language)
                 end)
