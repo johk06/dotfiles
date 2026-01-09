@@ -1,7 +1,7 @@
 (defvar ws-overview-reveal false)
-
-(defvar overview-ws-width 193)
-(defvar overview-ws-height 109)
+;; clean upscale of 16:9 see workspace.scss
+(defvar overview-ws-width 192)
+(defvar overview-ws-height 108)
 
 (defwidget ws-win [win ws]
     (box :style "
@@ -15,8 +15,7 @@
         :vexpand false
         :halign "start"
         :valign "start"
-        (eventbox
-        :tooltip "${win.name}"
+        (eventbox :tooltip "${win.name}"
             :onclick "swaymsg [con_id=${win.id}] focus >/dev/null&"
             (image
                 :path {win.icon}
@@ -24,7 +23,6 @@
                 :halign "center"
                 :image-width {round(win.rect.width * overview-ws-width / 3, 0)}
                 :image-height {round(win.rect.height * overview-ws-height / 3, 0)}))))
-
 
 (defwidget ws-box [ws]
     (box :class "workspace ${ws.focused ? "active" : ""}"

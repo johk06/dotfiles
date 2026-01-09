@@ -3,8 +3,9 @@
     border-radius: 12px;
     padding: .2rem;
     margin: .4rem;
-    min-width: 193px;
-    min-height: 109px;
+    // clean upscale of 16:9 see popups/workspace.yuck
+    min-width: 190px;
+    min-height: 108px;
     border: 2px solid $bg1;
 
     &.active {

@@ -1,6 +1,6 @@
 (deflisten perf-net "./bin/netspeed.py")
 (deflisten perf-gpu "./bin/gpu.sh")
-(defpoll perf-pcount :run-while perf-revealed :interval "4s" "pgrep --count .")
+(defpoll perf-pcount :run-while perf-revealed :interval "4s" "LIBPROC_HIDE_KERNEL=1 pgrep --count .")
 
 (defvar gpu-sensor "AMDGPU_JUNCTION")
 (defvar cpu-sensor "ASUSEC_CPU")
@@ -29,7 +29,7 @@
 (defwidget performance-panel []
     (box :hexpand true :space-evenly false :orientation "v"
         (box :orientation "v" :hexpand true :class "section" :space-evenly false
-            (label :class "text" :text "${perf-pcount} Processes")
+            (label :class "text" :text "${perf-pcount} Userspace Processes")
             (colored-scale :value {EWW_CPU.avg}
                 :temp {EWW_TEMPS[cpu-sensor]}
                 :left "CPU: ${round(EWW_CPU.avg, 1)}%"
