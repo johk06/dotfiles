@@ -229,7 +229,7 @@ local attach = function(buf, language)
     end
 
     vim.treesitter.start(buf, language)
-    if vim.treesitter.query.get(language, "indent") ~= nil then
+    if vim.treesitter.query.get(language, "indents") ~= nil then
         bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
     end
 
