@@ -82,18 +82,17 @@ end
 local function update_title()
     local buf = api.nvim_get_current_buf()
     local name, kind, show_modified = utils.format_buf_name(buf)
-    name = name and esc(name)
 
     local changed = vim.bo[buf].modified
     local readonly = vim.bo[buf].readonly or not vim.bo[buf].modifiable
 
-    return string.format("%%#SlI%s#%s %%#SlIText#%s%s%s",
+    return string.format("%%#SlI%s#(%s) %%#SlIText#%s%s%s",
         utils.btypehighlights[kind],
-        utils.btypesymbols[kind],
-        (name or "[-]"),
-        (readonly and show_modified and "%#SlIReadonly#[ro]" or ""),
-        (show_modified and not readonly
-            and (changed and "%#SlIChanged##" or (" "))
+        utils.btypenames[kind],
+        name and esc(name) or "[-]",
+        (readonly and show_modified) and "%#SlIReadonly# [ro]" or "",
+        (show_modified
+            and (changed and "%#SlIChanged#~" or (" "))
             or "")
     )
 end

@@ -137,6 +137,17 @@ M.btypesymbols = {
     term = "!",
 }
 
+M.btypenames = {
+    empty = "Empty",
+    git = "Git",
+    help = "Help",
+    list = "List",
+    oil = "Dir",
+    reg = "File",
+    special = "Special",
+    term = "Term",
+}
+
 -- }}}
 
 -- highlight file path {{{
@@ -296,7 +307,6 @@ function M.highlight_fname(path, entry, is_hidden)
 
     return "FileTypeNormal"
 end
-
 -- }}}
 
 -- easier mapping {{{

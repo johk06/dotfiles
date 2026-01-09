@@ -1,9 +1,5 @@
 local api = vim.api
 local utils = require("config.utils")
-local getbufname = utils.format_buf_name
-local btypehighlights = utils.btypehighlights
----@module "grapple.init"
-local grapple = require("grapple")
 
 --[[ Rationale {{{
 Most bufferline plugins don't do everything I want out of the box.
@@ -29,7 +25,6 @@ _G.Tabs_for_idx = {} -- mapping of tab indices in the buffer line to tab ids
 
 ---@type table<integer, integer>
 _G.Short_for_bufs = {} -- reverse lookup of buffer names
-local grapple_tags     -- lookup tags
 
 local sections
 local function redraw()
@@ -65,7 +60,7 @@ local function update_buflist()
 
         local current = b == active_buf
         local wincount = buf_wincounts[b] or 0
-        local name, kind, show_modified = getbufname(b, true)
+        local name, kind, show_modified = utils.format_buf_name(b, true)
 
         -- avoid duplicated names like the plague
         if seen_names[name] then
@@ -81,36 +76,16 @@ local function update_buflist()
         name = name and name:gsub("%%", "%%%%")
 
         local hlprefix = current and "SlA" or "SlI"
-        local changed = vim.bo[b].modified
-        local readonly = vim.bo[b].readonly or not vim.bo[b].modifiable
+        local changed = bo.modified
 
-        -- try to add them every time while we do not have any
-        if not grapple_tags then
-            grapple_tags = grapple.tags()
-        end
-
-        local grapple_mark = ""
-        local mark = grapple.find { buffer = b }
-        if mark then
-            for i, tag in ipairs(grapple_tags) do
-                if tag.path == mark.path then
-                    grapple_mark = string.format("%%#%sGrapple#'%d", hlprefix, i)
-                    break
-                end
-            end
-        end
-
-
-        local res = string.format("%s%%#%s#%d %%#%s#%s%%#%s#%s %s%s%s",
+        local res = string.format("%s%%#%s#%d %%#%s#%s%%#%s# %s%s",
             current and "%#SlASL#" or (count > 1 and "%#SlASL#|" or " "),
-            hlprefix .. btypehighlights[kind],
+            hlprefix .. utils.btypehighlights[kind],
             count,
             hlprefix .. (alt_buf == b and "Alt" or "") .. (wincount == 0 and "Hidden" or "Text"),
             (name or "[-]"),
             hlprefix .. (wincount == 0 and "Hidden" or "Text"),
-            grapple_mark,
-            (readonly and show_modified and "%#" .. hlprefix .. "Readonly#[ro]" or ""),
-            (show_modified and not readonly
+            (show_modified
                 and (changed and "%#" .. hlprefix .. "Changed#~" or " ")
                 or ""),
             current and "%#SlASR#" or " "
@@ -191,17 +166,7 @@ utils.autogroup("config.bufferline", {
         sections[3] = update_tablist()
         redraw()
     end),
-
-    User = {
-        pattern = "GrappleUpdate",
-        callback = function()
-            grapple_tags = grapple.tags()
-            sections[1] = update_buflist()
-            redraw()
-        end
-    }
 })
-
 
 sections = {
     "",
