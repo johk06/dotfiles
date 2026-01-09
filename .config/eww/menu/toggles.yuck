@@ -1,46 +1,10 @@
-(defpoll service-swayidle :interval "20m" "pgrep swayidle >/dev/null && echo true || echo false")
-(defpoll look-nightlight :interval "10m" "pgrep gammastep >/dev/null && echo true || echo false")
 (defvar nightlight-strengh 3000)
+(defpoll look-nightlight :interval "10m" "pgrep gammastep >/dev/null && echo true || echo false")
 (defpoll look-theme :interval "10m" "./bin/color.sh get")
 
-(defpoll cpu-governor :interval "20m" "cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor")
-
-(defvar cpu-governor-names '{
-"performance": "󰓅   Performance",
-"powersave": "󰾆   Efficiency"
-}')
-
-(defwidget toggle-panel []
-    (box :space-evenly false :orientation "vertical"
-        (box
-            (button :class "cbutton ${look-nightlight ? "active" : ""}"
-                :onclick "killall gammastep && ${EWW_CMD} update look-nightlight=false || { ${EWW_CMD} update look-nightlight=true; gammastep -O ${nightlight-strengh}& }"
-                "${look-nightlight ? "󰖔" : ""}   Nightlight")
-            (button :class "cbutton"
-                :onclick "./bin/color.sh"
-                :timeout "128s"
-                "${look-theme == "light" ? "" : "󰖔"}   Colorscheme"))
-
-        (box
-            (box :class "dual-cbutton ${service-swayidle ? "active" : ""}" :space-evenly false
-                (button :hexpand true
-                :onclick "killall swayidle && ${EWW_CMD} update service-swayidle=false || { ${EWW_CMD} update service-swayidle=true; swayidle -w& }"
-                    :onrightclick "${EWW_CMD} update perf-revealed=${!perf-revealed}"
-                    :timeout "16s"
-                "${service-swayidle ? "󰒲" : "󰒳"}    Go to Sleep")
-                (button
-                    :onclick "${EWW_CMD} update tasks-revealed=${!tasks-revealed}"
-                    {tasks-revealed ? "" : "" }))
-            (box :class "dual-cbutton${cpu-governor == "performance" ? " active" : ""}" :space-evenly false
-                (button :hexpand true
-                    :onclick "./bin/cpu_governor.sh ${cpu-governor == "performance" ? "powersave" : "performance"}; ${EWW_CMD} update cpu-governor=$(< /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor)"
-                    :onrightclick "${EWW_CMD} update perf-revealed=${!perf-revealed}"
-                    :timeout "16s"
-                    {cpu-governor-names[cpu-governor]})
-                (button
-                    :onclick "${EWW_CMD} update perf-revealed=${!perf-revealed}"
-                    {perf-revealed ? "" : "" })))))
-
+;; For any of these processes: determine if they are running
+(defpoll service-swayidle :interval "20m"
+    "pgrep swayidle >/dev/null && echo true || echo false")
 (defpoll service-blueman :run-while {perf-revealed} :interval "20m"
     `pgrep blueman-applet >/dev/null 2>&1 && echo true || echo false`)
 (defpoll service-networkmanager :run-while {perf-revealed} :interval "20m"
@@ -52,6 +16,29 @@
 (defpoll service-udiskie :run-while {perf-revealed} :interval "20m"
     `pgrep -f 'udiskie' >/dev/null 2>&1 && echo true || echo false`)
 
+
+(defwidget look-toggle-buttons []
+    (box :space-evenly false :orientation "vertical"
+        (box
+            (button :class "cbutton ${look-nightlight ? "active" : ""}"
+                :onclick "killall gammastep && ${EWW_CMD} update look-nightlight=false || { ${EWW_CMD} update look-nightlight=true; gammastep -O ${nightlight-strengh}& }"
+                "${look-nightlight ? "󰖔" : ""}   Nightlight")
+            (button :class "cbutton"
+                :onclick "./bin/color.sh"
+                :timeout "128s"
+                "${look-theme == "light" ? "" : "󰖔"}   Colorscheme"))))
+
+(defwidget tasks-toggle-button []
+    (box :class "dual-cbutton ${service-swayidle ? "active" : ""}" :space-evenly false
+        (button :hexpand true
+            :onclick "killall swayidle && ${EWW_CMD} update service-swayidle=false || { ${EWW_CMD} update service-swayidle=true; swayidle -w& }"
+            :onrightclick "${EWW_CMD} update perf-revealed=${!perf-revealed}"
+            :timeout "16s"
+            "${service-swayidle ? "󰒲" : "󰒳"}    Go to Sleep")
+        (button
+            :onclick "${EWW_CMD} update tasks-revealed=${!tasks-revealed}"
+            {tasks-revealed ? "" : "" })))
+
 (defwidget pid-toggle [running to-kill command var text]
     (box :space-evenly false :halign "start" :style "margin-left: 1rem; padding: .2rem;"
         (checkbox :checked {running}
@@ -59,16 +46,6 @@
             :onunchecked "pkill ${to-kill}&& ${EWW_CMD} update ${var}=false"
             :onchecked "${command}& ${EWW_CMD} update ${var}=true")
         (label :class "text" :text {text})))
-
-(defwidget pref-toggle [enabled name text]
-    (box :space-evenly false :halign "start" :style "margin-left: 1rem; padding: .2rem;"
-        (checkbox :checked {enabled}
-            :timeout "16s"
-            :onunchecked "${EWW_CMD} update ${name}=false"
-            :onchecked "${EWW_CMD} update ${name}=true")
-        (label :class "text" :text {text})))
-
-
 (defwidget tasks-panel []
     (box :space-evenly false :orientation "vertical" :class "section" :style "padding: .8rem;"
         (pid-toggle

@@ -1,7 +1,7 @@
 (defwidget clock []
     (box :space-evenly false
         (button 
-            :onclick "bin/popup.sh settings-panel settings-panel-shown open"
+            :onclick "bin/popup.sh settings-panel settings-panel-open open"
             :timeout "16s"
             :class "button"
             {formattime(EWW_TIME, "%b %d, %H:%M")})))

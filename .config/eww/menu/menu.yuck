@@ -9,15 +9,14 @@
 (include "menu/vpn.yuck")
 (include "menu/wifi.yuck")
 
-(defvar settings-panel-shown false)
-;; (defvar settings-section 0)
+(defvar settings-panel-open false)
+
 (defvar bt-revealed false)
 (defvar wifi-revealed false)
 (defvar tasks-revealed false)
 (defvar perf-revealed false)
 (defvar vpn-revealed false)
 (defvar valent-revealed false)
-
 (defvar agenda-revealed true)
 
 (defwidget battery-circle [percentage charging]
@@ -28,9 +27,28 @@
                 : (percentage < 80 ? "medium" : "high"))}"
         (label :text {charging ? bat-charging[(percentage - percentage % 10) / 10] : bat-discharging[(percentage - percentage % 10) / 10]})))
 
-(defwidget qmenu [] (eventbox :onhoverlost "./bin/popup.sh settings-panel settings-panel-shown close&"
+(defwidget qmenu-right [] 
+    (box :orientation "v" :space-evenly false
+        (status-panel)
+        (mpris-panel)
+        (audio-panel)
+
+        (look-toggle-buttons)
+        (box (tasks-toggle-button) (perf-toggle-button))
+        (revealer :reveal {tasks-revealed} :transition "slidedown" (tasks-panel))
+        (revealer :reveal {perf-revealed} :transition "slidedown" (performance-panel))
+
+        (box (bt-toggle-button) (wifi-toggle-button))
+        (revealer :reveal {bt-revealed} :transition "slidedown" (bluetooth-panel))
+        (revealer :reveal {wifi-revealed} :transition "slidedown" (wifi-panel))
+
+        (box (vpn-toggle-button) (valent-toggle-button))
+        (revealer :reveal {valent-revealed} :transition "slidedown" (valent-panel))
+        (revealer :reveal {vpn-revealed} :transition "slidedown" (vpn-panel))))
+
+(defwidget qmenu [] (eventbox :onhoverlost "./bin/popup.sh settings-panel settings-panel-open close&"
     (revealer 
-        :reveal {settings-panel-shown}
+        :reveal {settings-panel-open}
         :transition "slideleft"
         (box (box :class "right-panel" 
             :orientation "h" 
@@ -40,24 +58,7 @@
                 :transition "slideleft"
                 (box :space-evenly false :vexpand true
                     (agenda-section)))
-            (box :orientation "v" :space-evenly false
-                (status-panel)
-                (mpris-panel)
-                (audio-panel)
-                (toggle-panel)
-                (revealer :reveal {tasks-revealed} :transition "slidedown" (tasks-panel))
-                (revealer :reveal {perf-revealed} :transition "slidedown" (performance-panel))
-                (box 
-                    (bt-toggle-button) 
-                    (wifi-toggle-button))
-                (revealer :reveal {bt-revealed} :transition "slidedown" (bluetooth-panel))
-                (revealer :reveal {wifi-revealed} :transition "slidedown" (wifi-panel))
-                (box
-                    (vpn-toggle-button)
-                    (valent-toggle-button))
-                (revealer :reveal {valent-revealed} :transition "slidedown" (valent-panel))
-                (revealer :reveal {vpn-revealed} :transition "slidedown" (vpn-panel)))
-        )))))
+            (qmenu-right))))))
 
 (defwindow settings-panel 
     :monitor '["DP-1", "eDP-1", 0]'
@@ -83,4 +84,4 @@
     :stacking "overlay"
     :exclusive false
     (eventbox 
-        :onhover "./bin/popup.sh settings-panel settings-panel-shown open& disown"))
+        :onhover "./bin/popup.sh settings-panel settings-panel-open open& disown"))
