@@ -26,7 +26,9 @@ M.opts = {
     },
     visualSelectionUsage = "operate-within-range",
     resultsSeparatorLineChar = " ",
-    keymaps = {},
+    keymaps = {
+        refresh = "<localleader>u"
+    },
     windowCreationCommand = "Split",
 }
 

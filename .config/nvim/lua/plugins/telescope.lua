@@ -163,6 +163,9 @@ opts.pickers = {
     lsp_document_symbols = default_config {
         entry_maker = custom "lsp_symbol_entries",
     },
+    lsp_dynamic_workspace_symbols = default_config {
+        entry_maker = custom "lsp_symbol_entries",
+    },
     diagnostics = default_config {
         entry_maker = custom "diagnostics_entries",
     },

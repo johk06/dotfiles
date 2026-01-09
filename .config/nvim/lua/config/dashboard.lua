@@ -514,11 +514,9 @@ M.show = function()
                 pos[1] = State.row
             end
 
-            if pos[2] ~= State.col then
-                pos[2] = State.col
-            end
+            pos[2] = State.col
 
-            api.nvim_win_set_cursor(win, pos)
+            pcall(api.nvim_win_set_cursor, win, pos)
         end,
         [{ "BufWinLeave", "BufHidden" }] = function()
             api.nvim_del_augroup_by_id(augroup)

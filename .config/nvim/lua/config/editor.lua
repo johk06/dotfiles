@@ -2,10 +2,8 @@
 Additional global functionality for Neovim
 }}} ]]
 
-local api = vim.api
 local ns = vim.api.nvim_create_namespace("config.editor")
 local sb = require("string.buffer")
-local utils = require("config.utils")
 
 local M = {}
 

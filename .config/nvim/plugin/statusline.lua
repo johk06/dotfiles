@@ -55,7 +55,7 @@ local function update_mode()
     local short = mode:sub(1, 1)
     local hl = mode_to_hl_group[short]
 
-    return string.format("%%#SlMode%s#%-2s",
+    return string.format("%%#SlMode%s#%-3s",
         hl,
         (has_multicursor and mc.numCursors() or "") .. (mode_to_name[mode] or short)
     )

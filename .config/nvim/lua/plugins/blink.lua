@@ -48,6 +48,8 @@ opts.cmdline = {
 }
 
 -- quick accept with <M-number>
+-- 0 for the first is *intentionally* not that easy to reach, as that is
+-- usually the least important candidate
 for i = 0, 9 do
     local action = {
         function(cmp)
