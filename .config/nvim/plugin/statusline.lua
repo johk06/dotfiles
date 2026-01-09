@@ -243,36 +243,37 @@ end
 
 -- Buffer and window local options {{{
 local function update_filetype()
-    local _ft = vim.bo.filetype
+    local bo = vim.bo
+    local wo = vim.wo
+
+    local _ft = bo.filetype
     local ft = _ft and _ft ~= "" and _ft or "[noft]"
 
-    local spell = vim.wo.spell and ("spl:%s "):format(vim.bo.spelllang) or ""
+    local spell = wo.spell and ("spl:%s "):format(bo.spelllang) or ""
 
-    local _enc = vim.bo.fileencoding
+    local _enc = bo.fileencoding
     local enc = _enc and _enc ~= "" and _enc or "utf-8"
 
-    local _tw = vim.bo.textwidth
+    local _tw = bo.textwidth
     local tw = _tw == 0 and "" or ("tw:%d "):format(_tw)
 
-    local indent = vim.bo.expandtab
-        and ("sw:%d"):format(vim.bo.shiftwidth)
+    local indent = bo.expandtab
+        and ("sw:%d"):format(bo.shiftwidth)
         or "tab"
 
-    local concealcursor = vim.wo.concealcursor
-    local cc = vim.opt_local.concealcursor:get()
-
-    if cc.n and cc.v and cc.i and cc.c then
+    local concealcursor = wo.concealcursor
+    if #concealcursor == 4 then
         concealcursor = "*"
     elseif concealcursor == "" then
         concealcursor = "_"
     end
 
-    local conceallevel = vim.wo.conceallevel
-    local conceal = conceallevel > 0 and ("hide:%s "):format(concealcursor) or ""
+    local conceallevel = wo.conceallevel
+    local conceal = conceallevel > 0 and ("cc:%s "):format(concealcursor) or ""
 
     return delim .. string.format("%%*%s %s %s %s%s%s%s",
         enc,
-        vim.bo.fileformat,
+        bo.fileformat,
         indent,
         tw,
         conceal,
@@ -286,12 +287,11 @@ end
 local function update_lsp_servers()
     local clients = vim.lsp.get_clients { bufnr = 0 }
 
-    ---@param c vim.lsp.Client
-    local names = vim.tbl_map(function(c)
-        return c.name
-    end, clients)
-
-    return #clients > 0 and (" (%s)"):format(table.concat(names, " ")) or ""
+    return #clients > 0
+        and (" (%s)"):format(table.concat(vim.tbl_map(function(c)
+            return c.name
+        end, clients), " "))
+        or ""
 end
 -- }}}
 
