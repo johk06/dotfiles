@@ -1,0 +1,11 @@
+#!/bin/sh
+
+SINK="$(pactl get-default-sink)"
+if ! pactl --format=json list sinks |
+    jq -e --arg sink "$SINK" \
+        '.[]| select(.name == $sink)|.active_port as $port| .ports.[]|select(.name == $port).type == "Headset"'
+    then
+    exit
+fi
+
+espeak-ng "$@"

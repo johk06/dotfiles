@@ -12,7 +12,7 @@ if [[ "$1" == close ]]; then
     eww -c "$EWW" update center-popup-reveal=false
     sleep 0.5
     
-    if [[ "$(eww -c get center-popup-reveal)" == false ]]; then
+    if [[ "$(eww -c "$EWW" get center-popup-reveal)" == false ]]; then
         eww -c "$EWW" close center-popup
     fi
     exit
