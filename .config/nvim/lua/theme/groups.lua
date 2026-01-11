@@ -94,8 +94,8 @@ local colorscheme = {
     Question                    = { fg = pal.fg0 },
     Warnings                    = { fg = col.orange },
     ErrorMsg                    = { fg = col.red },
-    MoreMSg                     = { fg = col.bright_gray },
-    ModeMSg                     = { fg = col.bright_gray },
+    MoreMsg                     = { fg = col.bright_gray },
+    ModeMsg                     = { italic = true, fg = pal.fg0 },
 
     -- popup menu
     Pmenu                       = { bg = pal.bg1, fg = pal.fg0 },
