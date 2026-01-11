@@ -5,10 +5,10 @@ local M = {
         "magick"
     },
     lazy = true,
-    ft = { "markdown", "typst", "html", "neorg", "typst" },
+    ft = { "markdown", "typst", "html", "neorg", "typst", "org" },
     opts = {
         processor = "magick_rock",
-        window_overlap_clear_enabled = true,
+        -- window_overlap_clear_enabled = true,
         window_overlap_clear_ft_ignore = {},
         max_width = 80,
         max_height = 10,
@@ -17,6 +17,9 @@ local M = {
             markdown = {
                 -- do not show them by default
                 enabled = false,
+            },
+            org = {
+                enabled = true
             }
         }
     }
