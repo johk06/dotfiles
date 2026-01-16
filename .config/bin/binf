@@ -200,13 +200,14 @@ local consume_escape = function(i, txt, buf)
     local nxt = txt:sub(i + 1, i + 1)
     local escapes = {
         ["0"] = "\x00",
-        ["z"] = "\x00\x00",
-        ["Z"] = "\x00\x00\x00\x00",
         ["a"] = "\a",
         ["e"] = "\x1b",
         ["n"] = "\n",
         ["r"] = "\r",
+        ["s"] = "\x20",
         ["t"] = "\t",
+        ["z"] = "\x00\x00",
+        ["Z"] = "\x00\x00\x00\x00",
     }
 
     local val = escapes[nxt]
@@ -253,7 +254,7 @@ while i <= #format do
     elseif c == "\\" then
         i = consume_escape(i, format, buf)
     else
-        panic("%d:Unrecognized token: %s", i, c)
+        panic("%d:Unrecognized Directive: %s", i, c)
     end
 
     i = i + 1

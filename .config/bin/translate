@@ -47,7 +47,7 @@ if __name__ == "__main__":
         metavar="LANGUAGE",
         type=str,
         dest="source",
-        help="Force source language instead of auto-detecting",
+        help="Source language (default auto)",
     )
     parser.add_argument(
         "-t",
@@ -56,11 +56,22 @@ if __name__ == "__main__":
         type=str,
         dest="target",
         default="EN",
-        help="Language to translate to (default EN)",
+        help="Target language (default EN)",
     )
-    parser.add_argument("-p", "--print-header", action="store_true")
-    parser.add_argument("-c", "--context", type=str)
-    parser.add_argument("-f", "--formality", type=str, choices=FORMALITIES)
+    parser.add_argument(
+        "-p",
+        "--print-header",
+        action="store_true",
+        help="Print source and target language for each chunk",
+    )
+    parser.add_argument("-c", "--context", type=str, help="Provide additional context")
+    parser.add_argument(
+        "-f",
+        "--formality",
+        type=str,
+        choices=FORMALITIES,
+        help="Target formality level",
+    )
     parser.add_argument(
         "-U",
         "--check-usage",
@@ -83,13 +94,14 @@ if __name__ == "__main__":
                 "of",
                 as_json["character_limit"],
             )
-        sys.exit(0)
-    elif args.list_languages:
+    if args.list_languages:
         response = requests.get(APIURL + "languages", headers={"Authorization": AUTH})
         if response.ok:
             for entry in response.json():
                 print(entry["language"], entry["name"])
-        sys.exit(0)
+
+    if args.list_languages or args.check_usage:
+        exit(0)
 
     params = {
         "target_lang": args.target,
@@ -110,4 +122,4 @@ if __name__ == "__main__":
             else:
                 if args.print_header:
                     print(f"{translation[0]} -> {args.target}:")
-                sys.stdout.write(translation[1])
+                print(translation[1])

@@ -173,8 +173,6 @@ def main():
     parser.add_argument("-C", "--get-color", action="store_true", dest="get_color")
     args = parser.parse_args()
 
-
-
     devs = find_vial_devices()
     if len(devs) == 0:
         print("No devices found", file=sys.stderr)
@@ -188,7 +186,9 @@ def main():
 
     if args.list_animations:
         for kbd in kbds:
-            print(f"{kbd.desc["product_string"]}: {", ".join([CODES2ANIMS[an] for an in kbd.supported_anims])}")
+            print(
+                f"{kbd.desc['product_string']}: {', '.join([CODES2ANIMS[an] for an in kbd.supported_anims])}"
+            )
 
     if args.color:
         if args.color in COLORNAMES:

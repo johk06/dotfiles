@@ -4,8 +4,6 @@
 # As well as the wiki: https://minecraft.wiki/w/Java_Edition_protocol/Server_List_Ping
 # The status itself is well-formed json, just pipe to jq
 
-# Uses xxd to assemble the binary parts of the message, plain text is interleaved
-
 SRV="$1"
 PORT="${2:-25565}"
 
@@ -13,7 +11,7 @@ read-varint() {
     num=0
     idx=0
 
-    # Ensure single bit ASCII, No splitting, read a single char(=byte)
+    # Ensure single byte ASCII, No splitting, read a single char(=byte)
     while LC_ALL=C IFS= read -r -d '' -n 1 byt; do
         # NOTE: bash uses NULL-terminated C-style strings, for e.g. zsh this
         # would actually be a string with just a single \0 in it, but that would also work
@@ -38,18 +36,18 @@ read-varint() {
 
 # The protocol looks like this:
 # Message 1: Connect
-# - Length of message (in bytes)
-# - 00: Packet ID
-# - ff ff ff 0f: Protocol version
-# - Length of address
-# - Address
-# - Port (unsigned short)
-# - 01: Request next state: Status
+# - %b[...]    : Length of message (in bytes)
+# - 00         : Packet ID
+# - ffff ff0f  : Protocol version
+# - %b[...]    : Length of address
+# - %s         : Address
+# - %w         : Port (unsigned short)
+# - 01         : Request next state: Status
 #
 # Message 2: Request Information
-# 01 00: Handshake, Status
+# - 01 00: Handshake, Status
 binf '%b[00ff ffff 0f %b[%s] %w 01] 0100' "$SRV" "$PORT" |
-    nc -N "$SRV" "$PORT" | {
+    nc -w 1 -N "$SRV" "$PORT" | {
     read-varint
     read-varint
 

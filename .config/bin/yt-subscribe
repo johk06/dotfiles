@@ -1,0 +1,5 @@
+#!/bin/sh
+
+printf '%s\n' "$@" |
+    parallel curl -s https://www.youtube.com/@{}/videos |
+    rg '"rssUrl":"([^"]+)"' -or '$1 ! yt' --color=never
