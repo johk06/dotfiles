@@ -1,0 +1,48 @@
+auto-reload yes
+cleanup-on-quit yes
+show-keymap-hint no
+
+# Format {{{
+swap-title-and-hints yes
+feedlist-format "%S%2U %t %> %T"
+articlelist-format "%F %D   %?T?%-16T ?%t"
+datetime-format "%b %d"
+
+feedlist-title-format "Feeds: %u unread, %t total%?F? matching filter '%F'&?%?T? - tag '%T'&?"
+articlelist-title-format "%T: %u unread, %t total"
+itemview-title-format "Article: '%T'"
+selecttag-format "%n %T %> (%f/%u)"
+selecttag-title-format "Select Tag"
+#}}}
+
+# Keybinds {{{
+bind T everywhere set-tag
+bind u everywhere toggle-article-read
+bind g everywhere home
+bind G everywhere end
+bind j everywhere down
+bind k everywhere up
+bind o everywhere set browser "w3m" ; open-in-browser
+bind O everywhere set browser "firefox" ; open-in-browser
+bind P everywhere set browser "mpv --force-window=immediate %u > /dev/null 2>&1 &" ; open-in-browser
+# }}}
+
+# Colors {{{
+color listfocus_unread  white color8  bold
+color listnormal_unread white default bold
+color listfocus         white color8
+
+color end-of-text-marker color8  default
+
+color info     white   color255
+color hint-key color12 color255
+color hint-key color12 color255
+
+highlight feedlist "^x" red default
+
+highlight article "^Title:.*$"  cyan    default bold
+highlight article "^(Author|Feed):" green   default
+highlight article "^Date:.*$"   color13 default
+highlight article "^Link:.*$"   blue    default
+highlight article "https?://[^ ]+" blue default
+#}}}
