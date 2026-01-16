@@ -1,15 +1,15 @@
 (deflisten clipboard "wl-paste -w bin/clipboard.sh")
 
-(defwidget clipboard-info [] 
+(defwidget clipboard-info []
     (box :space-evenly false :visible {mode.change == "default" || mode.change == "clipboard"}
         (button :class "text-button"
             :onclick "wl-copy -c"
             :onrightclick "xdg-open ${clipboard.data}"
             (box :space-evenly false
                 (label :class "text orange" :text '"+')
-                (stack :selected {clipboard.mime =~ "text/.*" ? 1 : 0 } 
+                (stack :selected {clipboard.mime =~ "text/.*" ? 1 : 0 }
                     :transition "none"
-                    :style "margin-left: .5rem" 
+                    :style "margin-left: .5rem"
                     (label :class "text" :text "(${clipboard.state == "nil" ? "Empty" : clipboard.mime})")
                     (box :space-evenly false
                         (label :limit-width 48

@@ -28,6 +28,7 @@ TERM_OVERRIDES = [
     ("^pms$", "multimedia-audio-player"),
     ("^ncmpcpp", "multimedia-audio-player"),
     ("^aerc$", "email"),
+    ("^newsboat$", "newsboat"),
 ]
 
 CLASS_OVERRIDES = {
