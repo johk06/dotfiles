@@ -62,3 +62,10 @@ autocmd("FocusLost", {
         vim.fn.setreg("*", vim.fn.getreg("\""))
     end
 })
+
+autocmd("VimEnter", {
+    pattern = "/dev/shm/pass.?*/?*.txt",
+    callback = function(ev)
+        vim.bo[ev.buf].filetype = "pass"
+    end
+})

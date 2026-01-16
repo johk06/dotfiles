@@ -96,6 +96,7 @@ local colorscheme = {
     ErrorMsg                    = { fg = col.red },
     MoreMsg                     = { fg = col.bright_gray },
     ModeMsg                     = { italic = true, fg = pal.fg0 },
+    Hidden                      = { fg = pal.bg0, bg = pal.bg0 },
 
     -- popup menu
     Pmenu                       = { bg = pal.bg1, fg = pal.fg0 },

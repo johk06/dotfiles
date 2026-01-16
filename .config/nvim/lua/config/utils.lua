@@ -93,18 +93,18 @@ function M.format_buf_name(buf, short)
 
     local normal_buf = vim.bo[buf].buftype == ""
     if name and name ~= "" then
-        if normal_buf then
-            local ret = expand_home(name)
-            if short then
-                ret = fn.fnamemodify(ret, ":t")
-            end
-            return ret, "reg", true
+        if bvar.special_bufname then
+            return bvar.special_bufname, "special", true
+        elseif normal_buf then
+                local ret = expand_home(name)
+                if short then
+                    ret = fn.fnamemodify(ret, ":t")
+                end
+                return ret, "reg", true
         else
             if vim.startswith(name, "oil-ssh://") then
                 local _, _, host, path = name:find("//([^/]+)/(.*)")
                 return "@" .. host .. ":" .. fn.fnamemodify(path, ":t"), "reg", true
-            elseif bvar.special_bufname then
-                return bvar.special_bufname, "special", true
             else
                 -- try to get smth reasonable for plugin provided buffers
                 return fn.fnamemodify(name, ":t"), "special", true
@@ -307,6 +307,7 @@ function M.highlight_fname(path, entry, is_hidden)
 
     return "FileTypeNormal"
 end
+
 -- }}}
 
 -- easier mapping {{{
