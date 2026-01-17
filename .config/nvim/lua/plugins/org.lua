@@ -167,22 +167,22 @@ opts.mappings.org = {
 -- }}}
 
 -- Custom Directives {{{
----@type table<string, fun(file: OrgFile, value: string|string[])>
+---@type table<string, fun(file: OrgFile, value: string|string[], buf: integer)>
 local custom_opts = {
-    language = function(file, value)
+    language = function(file, value, buf)
         if type(value) == "string" then
             if value:match("%s*%-%s*") then
-                vim.bo[file.buf].spelllang = ""
+                vim.bo[buf].spelllang = ""
             else
-                vim.bo[file.buf].spelllang = value:gsub("%s*,", ",")
+                vim.bo[buf].spelllang = value:gsub("%s*,", ",")
             end
         else
-            vim.bo[file.buf].spelllang = table.concat(value, ",")
+            vim.bo[buf].spelllang = table.concat(value, ",")
         end
     end,
-    width = function(file, value)
+    width = function(file, value, buf)
         if type(value) == "string" then
-            vim.bo[file.buf].textwidth = tonumber(value) or 0
+            vim.bo[buf].textwidth = tonumber(value) or 0
         end
     end
 }
@@ -191,8 +191,9 @@ local custom_opts = {
 local handle_custom_opts = function(file)
     for name, cb in pairs(custom_opts) do
         local val = file:get_directive(name)
+        local buf = file.buf > 0 and file.buf or 0
         if val then
-            cb(file, val)
+            cb(file, val, buf)
         end
     end
 end
