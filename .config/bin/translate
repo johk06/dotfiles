@@ -39,6 +39,43 @@ FORMALITIES = {
     "prefer_less",
 }
 
+
+def check_usage():
+    response = requests.get(APIURL + "usage", headers=HEADERS)
+    if response.ok:
+        as_json = response.json()
+        print(
+            f"{as_json['character_count'] / as_json['character_limit'] * 100:.2f}%",
+            as_json["character_count"],
+            "of",
+            as_json["character_limit"],
+        )
+
+
+def list_languages(kind):
+    response = requests.get(
+        APIURL + "languages",
+        headers={"Authorization": AUTH},
+        params={"type": kind},
+    )
+    if response.ok:
+        for entry in response.json():
+            print(entry["language"], entry["name"], sep="\t")
+
+
+def translate_input(files, params, print_header):
+    for file in files:
+        while chunk := file.read():
+            translation = request_translation([chunk], params)
+            if type(translation) is str:
+                sys.stderr.write(translation + "\n")
+                exit(1)
+            else:
+                if print_header:
+                    print(f"{translation[0]}:")
+                print(translation[1])
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument(
@@ -79,27 +116,20 @@ if __name__ == "__main__":
         help="Show used/available characters on account",
     )
     parser.add_argument(
-        "-l", "--list-languages", action="store_true", help="Print available languages"
+        "-l",
+        "--list-languages",
+        nargs="?",
+        const="target",
+        choices={"target", "source"},
+        help="Print available languages",
     )
     parser.add_argument("input_files", nargs="*", type=argparse.FileType("r"))
     args = parser.parse_args()
 
     if args.check_usage:
-        response = requests.get(APIURL + "usage", headers=HEADERS)
-        if response.ok:
-            as_json = response.json()
-            print(
-                f"{as_json['character_count'] / as_json['character_limit'] * 100:.2f}%",
-                as_json["character_count"],
-                "of",
-                as_json["character_limit"],
-            )
+        check_usage()
     if args.list_languages:
-        response = requests.get(APIURL + "languages", headers={"Authorization": AUTH})
-        if response.ok:
-            for entry in response.json():
-                print(entry["language"], entry["name"])
-
+        list_languages(args.list_languages)
     if args.list_languages or args.check_usage:
         exit(0)
 
@@ -112,14 +142,4 @@ if __name__ == "__main__":
 
     if not args.input_files:
         args.input_files = [sys.stdin]
-
-    for file in args.input_files:
-        while chunk := file.read():
-            translation = request_translation([chunk], params)
-            if type(translation) is str:
-                sys.stderr.write(translation + "\n")
-                exit(1)
-            else:
-                if args.print_header:
-                    print(f"{translation[0]} -> {args.target}:")
-                print(translation[1])
+    translate_input(args.input_files, params, args.print_header)
