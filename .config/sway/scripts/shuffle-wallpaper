@@ -1,0 +1,3 @@
+#!/bin/sh
+
+wallpaper both "$(find ~/.config/background/img -type f -print0 | shuf -z -n 1)"
