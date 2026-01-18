@@ -14,4 +14,6 @@ bindsym {
     $mod+Slash           exec killall rofi || rofi -show sway
     $mod+O               exec killall rofi || ~/.config/rofi/applets/files/run.sh
     $mod+Minus           exec killall rofi || ~/.config/rofi/applets/pass/run.sh
+
+    $mod+Comma           exec $eww/bin/popup.sh ws-overview-win ws-overview-reveal
 }
