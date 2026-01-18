@@ -149,6 +149,16 @@ ${dev.rate}W" : ""}"
             : (brightness < 80 ? "󰃟"
             : "󰃠"))))}))
 
+(defwidget status-recording []
+    (revealer :reveal recording :transition "slideright" :visible recording
+        (button :class "tiny-button red"
+            :onclick "kill ${recording-info.pid}"
+            :tooltip "Recording to ${recording-info.path}"
+            (box :space-evenly false
+                (label :text "󰄉" :style "min-width: .8rem;" :xalign 1) 
+                (label :style "min-width: 3.6rem;" :xalign 1
+                    :text "${formattime(EWW_TIME - recording-info.start, "%M:%S", "UTC")}")))))
+
 (defwidget status []
     (box :class "button" :space-evenly false :spacing 8
         (status-audio)
@@ -161,8 +171,4 @@ ${dev.rate}W" : ""}"
         (status-settings)
         (status-numen)
         (status-brightness)
-        (revealer :reveal recording :transition "slideright" :visible recording
-            (button :class "tiny-button red" :style "min-width: 6rem; margin-left: .5rem;"
-                :onclick "kill ${recording-info.pid}"
-                :tooltip "Recording to ${recording-info.path}"
-                "rec:  ${formattime(EWW_TIME - recording-info.start, "%M:%S", "UTC")}"))))
+        (status-recording)))
