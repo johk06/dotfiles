@@ -17,6 +17,7 @@
         :valign "start"
         (eventbox :tooltip "${win.name}"
             :onclick "swaymsg [con_id=${win.id}] focus >/dev/null&"
+            :onrightclick "swaymsg [con_id=${win.id}] move window to scratchpad >/dev/null&"
             (image
                 :path {win.icon}
                 :valign "center"
@@ -33,15 +34,36 @@
                 (box :halign "start" :valign "end"
                     (label :class "workspace-name" :text {ws.icon}))))))
 
+(defwidget ws-overview-scratch []
+    (stack :selected {sway.scratch_count > 0 ? 1 : 0}
+        :width overview-ws-width :height overview-ws-height
+        (box (label :class "text faint" :text "Scratch Empty"))
+        (box (scroll :vexpand true :vscroll true (box :orientation "v"
+            :space-evenly false
+            :style "padding: .5rem;"
+            :valign "start"
+            (for win in {sway.scratch}
+                (button :class "overview-scratch" :tooltip {win.name}
+                    :onclick "swaymsg '[con_id=${win.id}]' scratchpad show >/dev/null"
+                    (box :space-evenly false
+                        (image
+                            :style "margin-right: .4rem; margin-left: .4rem;"
+                            :path {win.icon}
+                            :image-width 16 :image-height 16)
+                        (label :limit-width 16
+                            :class "text" :text {win.name})))))))))
+
 (defwidget ws-overview []
     (eventbox
         :onhoverlost "./bin/popup.sh ws-overview-win ws-overview-reveal close&"
         (revealer
             :reveal {ws-overview-reveal}
             :transition "slidedown"
-            (box (box :class "popup-win"
-                (for ws in {sway.workspaces}
-                    (ws-box :ws {ws})))))))
+            (box (box :class "popup-win" :space-evenly false
+                (ws-overview-scratch)
+                (box
+                    (for ws in {sway.workspaces}
+                        (ws-box :ws {ws}))))))))
 
 (defwindow ws-overview-win
     :monitor '["DP-1", "eDP-1", 0]'

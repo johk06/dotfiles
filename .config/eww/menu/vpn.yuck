@@ -16,6 +16,15 @@
             :onclick "${EWW_CMD} update vpn-revealed=${!vpn-revealed}"
             {vpn-revealed ? "" : "" })))
 
+(defwidget vpn-entry [con]
+    (box :hexpand true :space-evenly false :halign "start"
+        (box :space-evenly false :style "margin-left: 1rem; padding: .2rem;"
+            (checkbox :checked {con.uuid == vpn.uuid} :class "select"
+                :timeout "16s"
+                :onchecked `${vpn.active ? "nmcli connection down '${vpn.name}';" : ""}nmcli connection up '${con.name}'`
+                :onunchecked {vpn.uuid == con.uuid ? "nmcli connection down '${vpn.name}'" : ""})
+            (label :class "text" :text {con.name}))))
+
 (defwidget vpn-panel []
     (box :space-evenly false :class "section" :orientation "v"
         (box :space-evenly false
@@ -33,10 +42,4 @@
             :vscroll true :hexpand true
             (box :orientation "v" :hexpand true :space-evenly false
                 (for vpn-con in vpns
-                    (box :hexpand true :space-evenly false :halign "start"
-                        (box :space-evenly false :style "margin-left: 1rem; padding: .2rem;"
-                            (checkbox :checked {vpn-con.uuid == vpn.uuid} :class "select"
-                                :timeout "16s"
-                                :onchecked `${vpn.active ? "nmcli connection down '${vpn.name}';" : ""}nmcli connection up '${vpn-con.name}'`
-                                :onunchecked {vpn.uuid == vpn-con.uuid ? "nmcli connection down '${vpn.name}'" : ""})
-                            (label :class "text" :text {vpn-con.name}))))))))
+                    (vpn-entry :con {vpn-con}))))))

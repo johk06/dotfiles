@@ -11,20 +11,17 @@ function get_active {
 }
 
 function list_vpns {
-    nmcli -g TYPE,ACTIVE,UUID,NAME connection show \
-        |while IFS=":" read -r type active uuid name; do
+    nmcli -g TYPE,ACTIVE,UUID,AUTOCONNECT,NAME connection show \
+        |while IFS=":" read -r type active uuid autoconnect name; do
             if [[ "$type" != "wireguard" ]]; then
                 continue
             fi
 
-            if [[ "$active" == "yes" ]]; then
-                bactive=true
-            else
-                bactive=false
-            fi
+            [[ "$active" == "yes" ]] && bactive=true || bactive=false
+            [[ "$autoconnect" == "yes" ]] && bauto=true || bauto=false
 
-            printf '{"active":%s,"name":"%s","uuid":"%s"}\n' \
-                "$bactive" "$name" "$uuid"
+            printf '{"active":%s,"autoconnect":%s,"name":"%s","uuid":"%s"}\n' \
+                "$bactive" "$bauto" "$name" "$uuid"
             done|jq -s 'sort_by(.name)'
 }
 

@@ -9,11 +9,13 @@ import gi
 gi.require_version("Gtk", "3.0")
 from gi.repository import Gtk
 
+
 def safe_int(val):
     try:
         return int(val)
     except Exception:
         return 0
+
 
 REGEX_NAMES = [
     ("^Minecraft.*", "minecraft"),
@@ -49,7 +51,7 @@ def get_icon(icon_name, size=48, fallback="window-manager"):
         return get_icon(None)
 
 
-def dump_con(w: i3ipc.Con, output: i3ipc.Con):
+def dump_con_desc(w: i3ipc.Con):
     if not w or not w.pid:
         return None, False
     app_id = w.app_id or w.window_class or None
@@ -72,6 +74,23 @@ def dump_con(w: i3ipc.Con, output: i3ipc.Con):
         else:
             app_id = "wayland"
 
+    return {
+        "float": w.type == "floating_con",
+        "app_id": app_id,
+        "id": w.id,
+        "name": w.name,
+        "pid": w.pid,
+        "focused": w.focused,
+        "icon": get_icon(app_id),
+        "marks": w.marks,
+    }
+
+
+def dump_con(w: i3ipc.Con, output: i3ipc.Con):
+    if not w or not w.pid:
+        return None, False
+    win = dump_con_desc(w)
+
     rect = {"x": 0, "y": 0, "width": 0, "height": 0}
 
     width_scale = output.rect.width
@@ -83,18 +102,7 @@ def dump_con(w: i3ipc.Con, output: i3ipc.Con):
     rect["width"] = w.rect.width / width_scale
     rect["height"] = w.rect.height / height_scale
 
-    win = {
-        "float": w.type == "floating_con",
-        "app_id": app_id,
-        "id": w.id,
-        "name": w.name,
-        "pid": w.pid,
-        "focused": w.focused,
-        "rect": rect,
-        "icon": get_icon(app_id),
-        "marks": w.marks,
-    }
-
+    win["rect"] = rect
     return win, w.focused
 
 
@@ -119,11 +127,25 @@ def sort_by_name(ws):
     else:
         return safe_int(name)
 
+
 def wsicon(name):
     if name[0] == "s":
         return chr(ord("α") + int(name[1:]) - 1)
     else:
         return str(name)
+
+
+def get_scratchpad(i3: i3ipc.Con):
+    ret = []
+    scratch = i3.scratchpad().floating_nodes
+
+    for node in scratch:
+        as_win = dump_con_desc(node)
+        if as_win:
+            ret.append(as_win)
+
+    return ret
+
 
 def update(i3, e):
     root = i3.get_tree()
@@ -165,12 +187,14 @@ def update(i3, e):
         )
 
     active, _ = dump_con(root.find_focused(), active_output)
+    scratch = get_scratchpad(root)
     print(
         json.dumps(
             {
                 "active": active or None,
                 "workspaces": sorted_ws,
-                "scratch_count": len(root.scratchpad().floating_nodes),
+                "scratch_count": len(scratch),
+                "scratch": scratch,
             }
         ),
         flush=True,

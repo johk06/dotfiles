@@ -34,3 +34,10 @@
         background-color: mix($bg3, $red, 80%);
     }
 }
+
+.overview-scratch {
+    @extend .button;
+    border-radius: 12px;
+    padding: .3rem;
+    margin: .1rem;
+}
