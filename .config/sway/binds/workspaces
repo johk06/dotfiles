@@ -11,8 +11,8 @@
 # []                    -> Previous/Next on current
 # ~/Tab                 -> Scratchpad
 
-bindsym $mod+Grave exec $sc/on-mark initial scratchpad show
-bindsym $mod+Shift+Grave exec $sc/scratch-numeric
+bindsym $mod+Grave exec $sc/scratch-numeric
+bindsym $mod+Shift+Grave exec $sc/on-mark initial scratchpad show
 bindsym $mod+Tab scratchpad show
 bindsym $mod+Shift+Tab move window to scratchpad
 

@@ -1,10 +1,17 @@
 #!/bin/sh
+
+popup="$XDG_CONFIG_HOME/eww/bin/popup.sh ws-overview-win ws-overview-reveal"
+
+$popup open
+
 n="$(wayinput -n -l 1)"
-[ -z "$n" ] && exit
+if [ -n "$n" ]; then
+    id="$(swaymsg -t get_tree | jq --argjson index "$n" \
+        '.nodes.[]|select(.name == "__i3")|.nodes[].floating_nodes[$index-1].id')"
 
-id="$(swaymsg -t get_tree | jq --argjson index "$n" \
-    '.nodes.[]|select(.name == "__i3")|.nodes[].floating_nodes[$index-1].id')"
-
-if [ "$id" != "null" ]; then
-    swaymsg "[con_id=$id]" scratchpad show
+    if [ "$id" != "null" ]; then
+        swaymsg "[con_id=$id]" scratchpad show
+    fi
 fi
+
+$popup close
