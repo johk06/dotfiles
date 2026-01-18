@@ -11,8 +11,8 @@
 # []                    -> Previous/Next on current
 # ~/Tab                 -> Scratchpad
 
-bindsym $mod+Grave scratchpad show
-bindsym $mod+Shift+Grave move window to scratchpad
+bindsym $mod+Grave exec $sc/on-mark initial scratchpad show
+bindsym $mod+Shift+Grave exec $sc/scratch-numeric
 bindsym $mod+Tab scratchpad show
 bindsym $mod+Shift+Tab move window to scratchpad
 
@@ -104,7 +104,7 @@ bindsym $mod+Ctrl+Up move window to workspace s4; workspace s4
 
 bindsym $mod+Bracketright exec $sc/in-order go next
 bindsym $mod+Bracketleft  exec $sc/in-order go prev
-bindsym $mod+Shift+Bracketright exec $sc/in-order move next
+bindsym $mod+Shift+Bracketright execs$sc/in-order move next
 bindsym $mod+Shift+Bracketleft  exec $sc/in-order move prev
 bindsym $mod+Ctrl+Bracketright exec $sc/in-order push next
 bindsym $mod+Ctrl+Bracketleft  exec $sc/in-order push prev

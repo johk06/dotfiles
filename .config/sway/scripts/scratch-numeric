@@ -1,0 +1,10 @@
+#!/bin/sh
+n="$(wayinput -n -l 1)"
+[ -z "$n" ] && exit
+
+id="$(swaymsg -t get_tree | jq --argjson index "$n" \
+    '.nodes.[]|select(.name == "__i3")|.nodes[].floating_nodes[$index-1].id')"
+
+if [ "$id" != "null" ]; then
+    swaymsg "[con_id=$id]" scratchpad show
+fi

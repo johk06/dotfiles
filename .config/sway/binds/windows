@@ -66,7 +66,7 @@ bindsym $mod+G exec $sc/on-mark initial move workspace current
 bindsym $mod+Shift+G exec $sc/on-mark search move workspace current
 
 # (T)ag, (M)ark is used for media
-bindsym $mod+T exec swaymsg mark $(wayinput -l -1 -t "Mark")
+bindsym $mod+T exec $sc/mark
 bindsym $mod+U exec $sc/unmark
 
 # Select-Based resize

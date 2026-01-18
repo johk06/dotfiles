@@ -1,0 +1,6 @@
+#!/bin/sh
+
+mark="$(swaymsg -t get_tree | jq -r \
+    '..| ((.nodes? // empty), (.floating_nodes? // empty))[] | select(.focused) |.marks[0]? // empty')"
+
+swaymsg mark "$(wayinput -l -1 -t "Mark" -d "$mark")"
