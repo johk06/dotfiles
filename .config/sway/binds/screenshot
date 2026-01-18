@@ -4,31 +4,31 @@ mode "screenshot" {
     bindsym Escape mode "default"
 
     # [S]creen
-    bindsym S exec $sc/screenshot.sh screen tmp clip; mode "default"
-    bindsym Ctrl+S exec $sc/screenshot.sh screen save; mode "default"
+    bindsym S exec $sc/screenshot screen tmp clip; mode "default"
+    bindsym Ctrl+S exec $sc/screenshot screen save; mode "default"
 
     # [V]isual
-    bindsym V exec $sc/screenshot.sh region tmp clip; mode "default"
-    bindsym Ctrl+V exec $sc/screenshot.sh region save; mode "default"
+    bindsym V exec $sc/screenshot region tmp clip; mode "default"
+    bindsym Ctrl+V exec $sc/screenshot region save; mode "default"
 
     # [W]indow
-    bindsym W exec $sc/screenshot.sh window tmp clip; mode "default"
-    bindsym Ctrl+W exec $sc/screenshot.sh window save; mode "default"
+    bindsym W exec $sc/screenshot window tmp clip; mode "default"
+    bindsym Ctrl+W exec $sc/screenshot window save; mode "default"
 
     # Record, always stores to disk
-    bindsym Shift+S exec $sc/record.sh screen; mode "default"
-    bindsym Shift+V exec $sc/record.sh select; mode "default"
+    bindsym Shift+S exec $sc/record screen; mode "default"
+    bindsym Shift+V exec $sc/record select; mode "default"
 
     # Scan/Pick various things
-    bindsym C exec $sc/pick-color.sh; mode "default"
-    bindsym Q exec $sc/scan-qr.sh; mode "default"
-    bindsym T exec $sc/ocr.sh; mode "default"
+    bindsym C exec $sc/pick-color; mode "default"
+    bindsym Q exec $sc/scan-qr; mode "default"
+    bindsym T exec $sc/ocr; mode "default"
 }
 
 # Shorthands if screenshot mode is not desirable
-bindsym Shift+Print exec $sc/screenshot.sh region tmp clip
-bindsym Ctrl+Print exec $sc/screenshot.sh screen tmp clip
-bindsym Mod1+Print exec $sc/screenshot.sh window tmp clip
+bindsym Shift+Print exec $sc/screenshot region tmp clip
+bindsym Ctrl+Print exec $sc/screenshot screen tmp clip
+bindsym Mod1+Print exec $sc/screenshot window tmp clip
 
 bindsym $mod+Print mode "screenshot"
 bindsym $mod+P mode "screenshot"

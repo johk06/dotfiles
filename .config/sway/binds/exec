@@ -10,7 +10,7 @@ bindsym {
     $mod+Semicolon       exec gtklock -d
     $mod+Period          exec swaync-client --close-latest
     $mod+Shift+Period    exec swaync-client --close-all
-    $mod+Mod1+Period     exec $sc/invoke-notification.sh
+    $mod+Mod1+Period     exec $sc/invoke-notification
     $mod+Slash           exec killall rofi || rofi -show sway
     $mod+O               exec killall rofi || ~/.config/rofi/applets/files/run.sh
     $mod+Minus           exec killall rofi || ~/.config/rofi/applets/pass/run.sh

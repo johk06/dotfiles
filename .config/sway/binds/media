@@ -1,6 +1,6 @@
 # vim: ft=swayconfig
 
-set $audio $sc/audio-popup.sh
+set $audio $sc/audio-popup
 
 # output
 bindsym --locked XF86AudioRaiseVolume        exec $audio DEFAULT_SINK raise 3
@@ -17,12 +17,12 @@ bindsym --locked Mod1+Ctrl+XF86AudioLowerVolume exec $audio DEFAULT_SOURCE lower
 bindsym --locked Mod1+XF86AudioMute             exec $audio DEFAULT_SOURCE mute
 
 # screen brightness
-bindsym --locked XF86MonBrightnessUp         exec $sc/brightness.sh set +5
-bindsym --locked XF86MonBrightnessDown       exec $sc/brightness.sh set -5
-bindsym --locked Shift+XF86MonBrightnessUp   exec $sc/brightness.sh set +20
-bindsym --locked Shift+XF86MonBrightnessDown exec $sc/brightness.sh set -20
-bindsym --locked Mod4+XF86MonBrightnessUp    exec $sc/brightness.sh set +50
-bindsym --locked Mod4+XF86MonBrightnessDown  exec $sc/brightness.sh set -50
+bindsym --locked XF86MonBrightnessUp         exec $sc/brightness set +5
+bindsym --locked XF86MonBrightnessDown       exec $sc/brightness set -5
+bindsym --locked Shift+XF86MonBrightnessUp   exec $sc/brightness set +20
+bindsym --locked Shift+XF86MonBrightnessDown exec $sc/brightness set -20
+bindsym --locked Mod4+XF86MonBrightnessUp    exec $sc/brightness set +50
+bindsym --locked Mod4+XF86MonBrightnessDown  exec $sc/brightness set -50
 
 # media players
 bindsym --locked XF86AudioPlay exec playerctl play-pause
@@ -48,8 +48,8 @@ mode "media" {
     Shift+K exec $audio             DEFAULT_SINK raise 10
     Shift+J exec $audio             DEFAULT_SINK lower 10
     M       exec $audio             DEFAULT_SINK mute
-    N       exec $sc/pulse-cycle.sh sink         next
-    Shift+N exec $sc/pulse-cycle.sh sink         prev
+    N       exec $sc/pulse-cycle sink         next
+    Shift+N exec $sc/pulse-cycle sink         prev
 
     # Input
     Mod1+K       exec $audio             DEFAULT_SOURCE raise 3
@@ -57,8 +57,8 @@ mode "media" {
     Mod1+Shift+K exec $audio             DEFAULT_SOURCE raise 10
     Mod1+Shift+J exec $audio             DEFAULT_SOURCE lower 10
     Mod1+M       exec $audio             DEFAULT_SOURCE mute
-    Mod1+N       exec $sc/pulse-cycle.sh source         next
-    Mod1+Shift+N exec $sc/pulse-cycle.sh source         prev
+    Mod1+N       exec $sc/pulse-cycle source         next
+    Mod1+Shift+N exec $sc/pulse-cycle source         prev
 
     # Seek
     S      exec playerctl  position 0
@@ -77,7 +77,7 @@ mode "media" {
     Shift+T exec playerctld unshift
 
     # Interact with mpd
-    P exec $sc/mpd-play.sh; mode "default"
+    P exec $sc/mpd-play; mode "default"
     Q exec ~/.config/rofi/applets/mpd/run.sh; mode "default"
 
     # Mute interactively 

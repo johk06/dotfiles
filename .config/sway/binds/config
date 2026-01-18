@@ -6,24 +6,24 @@ mode "config" {
     bindsym Escape mode "default" 
 
     # Brightness, similar to audio in ./media
-    bindsym K exec $sc/brightness.sh set +5
-    bindsym J exec $sc/brightness.sh set -5
-    bindsym Shift+K exec $sc/brightness.sh set +20
-    bindsym Shift+J exec $sc/brightness.sh set -20
-    bindsym Mod4+K exec $sc/brightness.sh set +50
-    bindsym Mod4+J exec $sc/brightness.sh set -50
+    bindsym K exec $sc/brightness set +5
+    bindsym J exec $sc/brightness set -5
+    bindsym Shift+K exec $sc/brightness set +20
+    bindsym Shift+J exec $sc/brightness set -20
+    bindsym Mod4+K exec $sc/brightness set +50
+    bindsym Mod4+J exec $sc/brightness set -50
 
     # Color temperature, N to enter a value in Kelvin
     bindsym N exec killall gammastep || gammastep -O 3000; mode "default"
-    bindsym Shift+N exec $sc/set-gamma.sh; mode "default"
+    bindsym Shift+N exec $sc/set-gamma; mode "default"
 
     # Gaps and Border values
-    bindsym G exec $sc/set-gaps.sh "$(wayinput -n -l -1 -t "Set Gaps")"; mode "default"
-    bindsym B exec $sc/toggle-border.sh; mode "default"
-    bindsym Shift+B exec $sc/toggle-border.sh deco; mode "default"
+    bindsym G exec $sc/set-gaps "$(wayinput -n -l -1 -t "Set Gaps")"; mode "default"
+    bindsym B exec $sc/toggle-border; mode "default"
+    bindsym Shift+B exec $sc/toggle-border deco; mode "default"
 
     # Mirror screen
-    bindsym M exec $sc/mirror.sh; mode "default"
+    bindsym M exec $sc/mirror; mode "default"
 
     # Theme
     bindsym T exec $eww/bin/color.sh; mode "default"
@@ -35,7 +35,7 @@ mode "config" {
     bindsym Plus opacity plus 0.05
     bindsym Minus opacity minus 0.05
 
-    bindsym P exec $sc/reload-passwords.sh; mode "default"
+    bindsym P exec $sc/reload-passwords; mode "default"
 }
 
 bindsym $mod+C mode "config"

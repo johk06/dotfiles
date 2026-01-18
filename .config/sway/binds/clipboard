@@ -7,8 +7,8 @@ mode "clipboard" {
     bindsym Escape mode "default"
 
     # Print, stay in the mode so that another operation can be specified
-    bindsym P exec $sc/print-clipboard.sh
-    bindsym Mod1+P exec $sc/print-clipboard.sh -p
+    bindsym P exec $sc/print-clipboard
+    bindsym Mod1+P exec $sc/print-clipboard -p
 
     # Copy the other clipboard
     bindsym Y exec wl-paste -n -p | wl-copy; mode "default"
@@ -20,22 +20,22 @@ mode "clipboard" {
     bindsym Mod1+I exec (wl-paste -n && wl-paste -n -p) | wl-copy -p; mode "default"
 
     # Exchange them
-    bindsym X exec $sc/exchange-clipboard.sh; mode "default"
+    bindsym X exec $sc/exchange-clipboard; mode "default"
     # And print the one specified
-    bindsym Mod1+X exec $sc/exchange-clipboard.sh; mode "default"; exec $sc/print-clipboard.sh -p
-    bindsym Shift+X exec $sc/exchange-clipboard.sh; mode "default"; exec $sc/print-clipboard.sh
+    bindsym Mod1+X exec $sc/exchange-clipboard; mode "default"; exec $sc/print-clipboard -p
+    bindsym Shift+X exec $sc/exchange-clipboard; mode "default"; exec $sc/print-clipboard
 
     # Edit the clipboard
-    bindsym E exec $sc/edit-clipboard.sh; mode "default"
-    bindsym Mod1+E exec $sc/edit-clipboard.sh -p; mode "default"
+    bindsym E exec $sc/edit-clipboard; mode "default"
+    bindsym Mod1+E exec $sc/edit-clipboard -p; mode "default"
 
     # Clear
     bindsym C exec wl-copy -c; mode "default"
     bindsym Mod1+C exec wl-copy -p -c; mode "default"
 
     # Make up for the lack of pipes in graphical environments
-    bindsym T exec $sc/translate.sh; mode "default"
-    bindsym Mod1+T exec $sc/translate.sh -p; mode "default"
+    bindsym T exec $sc/translate; mode "default"
+    bindsym Mod1+T exec $sc/translate -p; mode "default"
 }
 
 bindsym $mod+Y mode "clipboard"
