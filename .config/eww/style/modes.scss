@@ -5,7 +5,7 @@
         min-width: 3.5rem;
         background-color: mix($bg1, $color);
         &:hover {
-            background-color: mix($bg1, $color, 90%);
+            background-color: $color;
         }
     }
 }
@@ -36,7 +36,7 @@
 .mode-box {
     /* background-color: $bg1; */
     border-right: 1px solid $bg3;
-    padding: 0rem 1rem 0rem 1rem;
+    padding: 0rem .8rem 0rem .8rem;
     margin-top: 0.8rem;
     margin-bottom: 0.8rem;
 }

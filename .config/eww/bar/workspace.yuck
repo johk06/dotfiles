@@ -10,7 +10,7 @@
 
 (defwidget workspace-scratch []
     (button :style "min-width: 1.3rem;"
-        :class "button ${sway.scratch_count > 0 ? "good" : ""}"
+        :class "button ${sway.scratch_count > 0 ? "pink" : ""}"
         "~${sway.scratch_count}"))
 
 (defwidget workspace-list []
