@@ -19,6 +19,8 @@ suppress_default_binds = true
 [binds]
 q = quit
 
+d = close
+
 # Image navigation
 <Left> = prev
 <bracketleft> = prev
@@ -48,7 +50,7 @@ zz = zoom actual
 
 # Other commands
 f = fullscreen
-d = overlay
+<Shift+I> = overlay
 p = exec echo $imv_current_file
 c = center
 s = scaling next
@@ -63,3 +65,5 @@ r = reset
 # Slideshow control
 t = slideshow +1
 <Shift+T> = slideshow -1
+
+# vim: set ft=ini :

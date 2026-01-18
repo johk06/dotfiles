@@ -35,12 +35,13 @@ application/pdf)
     disown
     ;;
 image/*)
-    imv_pid="$(pgrep -f imv || echo)"
+    imv_pid="$(pidof imv-"${XDG_SESSION_TYPE,,}" || echo)"
     if [[ -z "$imv_pid" ]]; then
-        echo "$fx" | imv
+        echo "$fx" | imv &
+        disown
     else
-        imv-msg "$imv_pid" close all
-        imv-msg "$imv_pid" open "$fx"
+        # FIXME: imv performs shell expansions
+        imv-msg "$imv_pid" open "$(aescape "$fx")" next
         imv-msg "$imv_pid" next
     fi
     ;;
