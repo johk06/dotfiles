@@ -10,22 +10,22 @@
 (defvar mode-descs '{
 "default": [ ],
 "media": [
-    {"keys": "<M-*", "action": "Mic", "mod": true },
-    {"keys": "[jk] [0-9]", "action": "Volume"},
-    {"keys": "[mM]", "action": "Mute"},
-    {"keys": "[nN]", "action": "Device"},
-    {"keys": "<M-*", "action": "Other", "mod": true },
-    {"keys": "[tT]", "action": "Target"},
-    {"keys": "[shl]", "action": "Seek"},
-    {"keys": "[fb]", "action": "Track"},
+    {"keys": "M-*", "action": "Mic", "mod": true },
+    {"keys": "jk 0-9", "action": "Volume"},
+    {"keys": "mM", "action": "Mute"},
+    {"keys": "nN", "action": "Device"},
+    {"keys": "M-*", "action": "Other", "mod": true },
+    {"keys": "tT", "action": "Target"},
+    {"keys": "shl", "action": "Seek"},
+    {"keys": "fb", "action": "Track"},
     {"keys": "r", "action": "Repeat"},
     {"keys": "z", "action": "Shuffle"},
     {"keys": "q", "action": "Queue"},
     {"keys": "p", "action": "Play"}
 ],
 "screenshot": [
-    {"keys": "<C-*", "action": "To Disk", "mod": true },
-    {"keys": "<S-*", "action": "Video", "mod": true },
+    {"keys": "C-*", "action": "To Disk", "mod": true },
+    {"keys": "S-*", "action": "Video", "mod": true },
     {"keys": "s", "action": "Screen" },
     {"keys": "v", "action": "Visual" },
     {"keys": "w", "action": "Window" },
@@ -34,11 +34,11 @@
     {"keys": "t", "action": "Text"}
 ],
 "config": [
-    {"keys": "[jk]", "action": "Brightness"},
-    {"keys": "[nN]", "action": "Nighlight"},
+    {"keys": "jk", "action": "Brightness"},
+    {"keys": "nN", "action": "Nighlight"},
     {"keys": "g", "action": "Gaps"},
-    {"keys": "[bB]", "action": "Border"},
-    {"keys": "[-+]", "action": "Opacity"},
+    {"keys": "bB", "action": "Border"},
+    {"keys": "-+", "action": "Opacity"},
     {"keys": "m", "action": "Mirror Screen"},
     {"keys": "t", "action": "Theme"},
     {"keys": "w", "action": "Wallpaper"},
@@ -46,7 +46,7 @@
     {"keys": "p", "action": "Clear Passwords"}
 ],
 "clipboard": [
-    {"keys": "<M-*", "action": "Selection", "mod": true},
+    {"keys": "M-*", "action": "Selection", "mod": true},
     {"keys": "p", "action": "Print"},
     {"keys": "y", "action": "Copy other"},
     {"keys": "a", "action": "Append other"},
@@ -58,12 +58,11 @@
 ],
 "insert": [
     {"keys": "(M-)y", "action": "Clipboard"},
-    {"keys": "[dD]", "action": "Date"},
-    {"keys": "[tT]", "action": "Time"},
+    {"keys": "dD", "action": "Date"},
+    {"keys": "tT", "action": "Time"},
     {"keys": "p", "action": "Password"},
-    {"keys": "[sS]", "action": "Speech"}
-]
-}')
+    {"keys": "sS", "action": "Speech"}
+]}')
 
 (deflisten mode
     :initial '{"change": "default"}'
