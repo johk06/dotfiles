@@ -2,7 +2,7 @@
     (box :vexpand true :orientation "v" :valign "center" (box :space-evenly false :vexpand false
         (button :class "button tiny-circle ${(brightness < stop && brightness >= level) ? "active" : ""}"
             :tooltip "${level}%"
-            :onclick "~/.config/sway/scripts/brightness.sh rawset ${level}"
+            :onclick "~/.config/sway/scripts/brightness rawset ${level}"
             :timeout "128s"
             ""))))
 
@@ -21,7 +21,7 @@
             :class "slider with-handle shorter"
             :value {brightness}
             :timeout "128s"
-            :onchange "~/.config/sway/scripts/brightness.sh rawset {}"))
+            :onchange "~/.config/sway/scripts/brightness rawset {}"))
        (box
             (brightness-dot :level 10 :stop 50)
             (brightness-dot :level 50 :stop 100)

@@ -44,7 +44,7 @@
                 :class "popup-slider ${audio[audio-popup-kind].mute ? "muted" : ""}"
                 :value {audio[audio-popup-kind].vol})))))
 
-(defpoll brightness :interval "2000h" "~/.config/sway/scripts/brightness.sh get")
+(defpoll brightness :interval "2000h" "~/.config/sway/scripts/brightness get")
 (defwidget center-popup-brightness []
     (box :space-evenly false
         (themed-icon 
