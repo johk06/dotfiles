@@ -1,25 +1,20 @@
 # vim: ft=swayconfig
 
-# Operations
-# Mod+NR                -> Select
-# Mod+Shift+NR          -> Move to
-# Mod+Ctrl+NR           -> Move to and Select
-
-# Workspaces
-# 1-10                  -> Primary Monitor
-# Left, Down, Right, Up -> Secondary Monitor (Projector)
-# []                    -> Previous/Next on current
-# ~/Tab                 -> Scratchpad
-
+# Scratchpad {{{
+# Index
 bindsym $mod+Grave exec $sc/scratch-numeric
+# Show tagged
 bindsym $mod+Shift+Grave exec $sc/on-mark initial scratchpad show
+# Cycle
 bindsym $mod+Tab scratchpad show
+# Push
 bindsym $mod+Shift+Tab move window to scratchpad
+# }}}
 
 # Rename (bulk move of all windows)
 bindsym $mod+R exec swaymsg rename workspace to "$(wayinput -t "Rename to" -l -1)"
 
-# numeric {{{
+# Numeric {{{
 bindsym $mod+1 workspace number 1
 bindsym $mod+2 workspace number 2
 bindsym $mod+3 workspace number 3
@@ -85,7 +80,9 @@ bindsym $mod+Ctrl+7 move window to workspace number 7; workspace number 7
 bindsym $mod+Ctrl+8 move window to workspace number 8; workspace number 8
 bindsym $mod+Ctrl+9 move window to workspace number 9; workspace number 9
 bindsym $mod+Ctrl+0 move window to workspace number 10; workspace number 10
+# }}}
 
+# Secondary {{{
 bindsym $mod+Left workspace s1
 bindsym $mod+Down workspace s2
 bindsym $mod+Right workspace s3
@@ -102,12 +99,14 @@ bindsym $mod+Ctrl+Right move window to workspace s3; workspace s3
 bindsym $mod+Ctrl+Up move window to workspace s4; workspace s4
 # }}}
 
-bindsym $mod+Bracketright exec $sc/in-order go next
-bindsym $mod+Bracketleft  exec $sc/in-order go prev
-bindsym $mod+Shift+Bracketright execs$sc/in-order move next
+# Next / Previous {{{
+bindsym $mod+Bracketright       exec $sc/in-order go   next
+bindsym $mod+Bracketleft        exec $sc/in-order go   prev
+bindsym $mod+Shift+Bracketright exec $sc/in-order move next
 bindsym $mod+Shift+Bracketleft  exec $sc/in-order move prev
-bindsym $mod+Ctrl+Bracketright exec $sc/in-order push next
-bindsym $mod+Ctrl+Bracketleft  exec $sc/in-order push prev
+bindsym $mod+Ctrl+Bracketright  exec $sc/in-order push next
+bindsym $mod+Ctrl+Bracketleft   exec $sc/in-order push prev
+# }}}
 
 bindsym $mod+N workspace next
 bindsym $mod+Shift+N workspace prev

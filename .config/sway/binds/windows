@@ -7,7 +7,10 @@ bindsym $mod+Q kill
 
 # [D]etach
 bindsym $mod+D floating toggle; resize shrink width 800 height 600
+# Like the vim z* family of commands
+bindsym $mod+Z focus mode_toggle
 
+# Moving & Resizing {{{
 bindsym $mod+H focus left
 bindsym $mod+J focus down
 bindsym $mod+K focus up
@@ -30,6 +33,14 @@ bindsym $mod+Mod1+J exec $sc/swap down
 bindsym $mod+Mod1+K exec $sc/swap up
 bindsym $mod+Mod1+L exec $sc/swap right
 
+# Like vim for numbers
+bindsym $mod+A resize grow width 64px; resize grow height 64px
+bindsym $mod+X resize shrink width 64px; resize shrink height 64px 
+
+bindsym $mod+Equal resize set width 50ppt; resize set height 50ppt
+# }}}
+
+# Container Operations {{{
 # Rarely needed, mainly for tabs and floating windows
 bindsym $mod+S splitv
 bindsym $mod+V splith
@@ -40,23 +51,16 @@ bindsym $mod+F fullscreen
 # only hide gaps around window, see ./config for different gaps
 bindsym $mod+Shift+F exec $sc/set-gaps 0
 
-# Like vim for numbers
-bindsym $mod+A resize grow width 64px; resize grow height 64px
-bindsym $mod+X resize shrink width 64px; resize shrink height 64px 
-
-bindsym $mod+Equal resize set width 50ppt; resize set height 50ppt
-
 bindsym $mod+Backspace focus parent
 bindsym $mod+Delete focus child
-
-# Like the vim z* family of commands
-bindsym $mod+Z focus mode_toggle
+# }}}
 
 # Suspend a window's underlying process
 bindsym $mod+Mod1+Z exec $sc/stop-or-continue
 # Send an arbitrary signal
 bindsym $mod+Ctrl+Z exec $sc/signal-window
 
+# Tags {{{
 # Like VIM
 bindsym $mod+Apostrophe exec $sc/on-mark initial focus
 bindsym $mod+Shift+Apostrophe exec $sc/on-mark search focus
@@ -68,6 +72,7 @@ bindsym $mod+Shift+G exec $sc/on-mark search move workspace current
 # (T)ag, (M)ark is used for media
 bindsym $mod+T exec $sc/mark
 bindsym $mod+U exec $sc/unmark
+# }}}
 
 # Select-Based resize
 bindsym --whole-window $mod+Shift+BTN_RIGHT exec $sc/select-float-region
