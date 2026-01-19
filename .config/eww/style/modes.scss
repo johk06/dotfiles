@@ -5,7 +5,7 @@
         min-width: 3.5rem;
         background-color: mix($bg1, $color);
         &:hover {
-            background-color: $color;
+            background-color: mix($bg1, $color, 60%);
         }
     }
 }
