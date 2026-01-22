@@ -38,6 +38,13 @@ list() {
         done
 }
 
+stop() {
+    index="$1"
+    systemctl -o json --user list-timers |
+        jq --argjson idx "$index" '.[$idx-1].unit' -r |
+        parallel systemctl --user stop
+}
+
 mode=create
 while getopts ":l" o; do
     case "$o" in
