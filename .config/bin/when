@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 usage() {
-    echo "Usage: when [-l] DATE COMMAND" >&2
+    echo "Usage: when [-ld] TIMESPEC COMMAND" >&2
     exit 1
 }
 
@@ -46,9 +46,10 @@ stop() {
 }
 
 mode=create
-while getopts ":l" o; do
+while getopts ":ld" o; do
     case "$o" in
     l) mode=list ;;
+    d) mode=stop ;;
     *) usage ;;
     esac
 done
@@ -62,4 +63,7 @@ create)
     sched "$spec" "$@"
     ;;
 list) list ;;
+stop)
+    stop "$1"
+    ;;
 esac
