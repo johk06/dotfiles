@@ -75,13 +75,11 @@ sched-menu() {
         ;;
     notify)
         coproc {
-            out="$(yad --form --field=Time --field=Title --field=Message --field=Level:CB \
-                '' '' '' 'low!^normal!critical' --buttons-layout=edge --button=Schedule:0 --button=Abort:1)"
-            if $?; then
-                exit
-            fi
-            IFS="|" read -r time title msg level <<<"$out"
-            alert "$title" "$msg" "$level"
+            yad --form --field=Time --field=Title --field=Message --field=Level:CB \
+                '' '' '' 'low!^normal!critical' --buttons-layout=edge --button=Schedule:0 --button=Abort:1 |
+                while IFS="|" read -r time title msg level; do
+                    alert "$time" "$title" "$msg" "$level" >/dev/null 2>&1
+                done
         }
         ;;
     esac
