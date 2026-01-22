@@ -1,0 +1,58 @@
+#!/usr/bin/env bash
+
+usage() {
+    echo "Usage: when [-l] DATE COMMAND" >&2
+    exit 1
+}
+
+get_relative_timestamp() {
+    spec="$1"
+    inc="$2"
+
+    time="$(date +"%Y-%m-%d %H:%M:%S" \
+        -d @"$(dc <<<"$spec $inc * $EPOCHSECONDS + p" | cut -d. -f1)")"
+}
+
+sched() {
+    spec="$1"
+    shift
+    case "$spec" in
+    *h) get_relative_timestamp "${spec:0:-1}" 3600 ;;
+    *m) get_relative_timestamp "${spec:0:-1}" 60 ;;
+    *s) get_relative_timestamp "${spec:0:-1}" 1 ;;
+    *:*) time="$(date +"%Y-%m-%d $spec:00")" ;;
+    *) echo "Invalid timespec: $spec" >&2 ;;
+    esac
+
+    systemd-run --user --on-calendar="$time" "$@"
+}
+
+list() {
+    systemctl -o json --user list-timers |
+        jq -r '.[]|"\(.next / 1000000|strftime("%Y-%m-%d %H:%M:%S")) \(.activates)"' |
+        while read -r date time svc; do
+            echo -n "$time "
+            grep "^ExecStart" "$XDG_RUNTIME_DIR/systemd/transient/$svc" |
+                tail -n 1 |
+                cut -d= -f2-
+        done
+}
+
+mode=create
+while getopts ":l" o; do
+    case "$o" in
+    l) mode=list ;;
+    *) usage ;;
+    esac
+done
+shift $((OPTIND - 1))
+
+case "$mode" in
+create)
+    spec=$1
+    shift
+    [ -n "$spec" ] || usage
+    sched "$spec" "$@"
+    ;;
+list) list ;;
+esac
