@@ -68,9 +68,9 @@ sched-menu() {
             List "Show currently schedule Jobs" application-text sched/list "ls"
         ;;
     list)
-        atq | while read -r id wday month day time year queue user; do
+        when -l | while read -r time cmd args; do
             printf "$MENUFMT" \
-                "$time on $wday $month $day" "by $user in queue $queue" suspend sched/task/"$id" ""
+                "$time : $cmd" "$args" suspend ""
         done
         ;;
     notify)
@@ -81,29 +81,8 @@ sched-menu() {
                 exit
             fi
             IFS="|" read -r time title msg level <<<"$out"
-            printf 'timed-out %q %q %q' "$title" "$msg" "$level" | at "$time"
+            alert "$title" "$msg" "$level"
         }
-        ;;
-    task)
-        IFS=/ read -r id action <<<"$task"
-        case "$action" in
-        "")
-            printf "$MENUFMT" \
-                View "Show Commands to run" shellscript sched/task/"$id"/view "edit" \
-                Delete "Unschedule Job" emblem-remove sched/task/"$id"/rm ""
-            ;;
-        view)
-            coproc {
-                local file="$(mktemp --suffix=.sh)"
-                at -c "$id" >"$file"
-                xdg-open "$file"
-            }
-            ;;
-        rm)
-            atrm "$id"
-            sched-menu list
-            ;;
-        esac
         ;;
     esac
 }

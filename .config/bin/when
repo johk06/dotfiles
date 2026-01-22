@@ -23,13 +23,14 @@ sched() {
     *:*) time="$(date +"%Y-%m-%d $spec:00")" ;;
     *) echo "Invalid timespec: $spec" >&2 ;;
     esac
+    echo "$time"
 
     systemd-run --user --on-calendar="$time" "$@"
 }
 
 list() {
     systemctl -o json --user list-timers |
-        jq -r '.[]|"\(.next / 1000000|strftime("%Y-%m-%d %H:%M:%S")) \(.activates)"' |
+        jq -r '.[]|"\(.next / 1000000|strflocaltime("%Y-%m-%d %H:%M:%S")) \(.activates)"' |
         while read -r date time svc; do
             echo -n "$time "
             grep "^ExecStart" "$XDG_RUNTIME_DIR/systemd/transient/$svc" |
