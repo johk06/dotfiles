@@ -21,9 +21,11 @@ sched() {
     *m) get_relative_timestamp "${spec:0:-1}" 60 ;;
     *s) get_relative_timestamp "${spec:0:-1}" 1 ;;
     *:*) time="$(date +"%Y-%m-%d $spec:00")" ;;
-    *) echo "Invalid timespec: $spec" >&2 ;;
+    *)
+        echo "Invalid timespec: $spec" >&2
+        exit 1
+        ;;
     esac
-    echo "$time"
 
     systemd-run --user --on-calendar="$time" "$@"
 }
