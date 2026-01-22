@@ -1,0 +1,19 @@
+#!/bin/sh
+
+MESSAGE="$1"
+DESCRIPTION="$2"
+SEVERITY="$3"
+
+SOUNDTHEME=/usr/share/sounds/freedesktop/stereo/
+case "$SEVERITY" in
+    critical) SOUND="$SOUNDTHEME/alarm-clock-elapsed.oga";;
+    normal) SOUND="$SOUNDTHEME/bell.oga";;
+esac
+
+if [ -n "$SOUND" ]; then
+    paplay "$SOUND" --client-name="Alarm" &
+    PID=$!
+fi
+
+notify-send "$MESSAGE" "$DESCRIPTION" -u "$SEVERITY" --wait
+kill "$PID"

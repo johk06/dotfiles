@@ -81,7 +81,7 @@ sched-menu() {
                 exit
             fi
             IFS="|" read -r time title msg level <<<"$out"
-            printf 'notify-send %q %q -u %q' "$title" "$msg" "$level" | at "$time"
+            printf 'timed-out %q %q %q' "$title" "$msg" "$level" | at "$time"
         }
         ;;
     task)
