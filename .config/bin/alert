@@ -1,0 +1,5 @@
+#!/bin/sh
+
+timeout="$1"
+shift
+when "$timeout" timed-out "$@"
