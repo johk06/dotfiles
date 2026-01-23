@@ -5,10 +5,10 @@
     :text "${mpris.playing ? "≈" : "="}${mpris.shuffle ? "?" : ""}"))
 
 (defwidget mpris-title [text]
-    (label :limit-width 30 :text
-        {mpris.loop == "track" ? "(${text})"
-            : (mpris.loop == "list" ? "[${text}]"
-                : text)}))
+    (box :space-evenly false
+        {mpris.loop == "track" ? "(" : (mpris.loop == "list" ? "[" : "")}
+        (label :limit-width 30 :text text)
+        {mpris.loop == "track" ? ")" : (mpris.loop == "list" ? "]" : "")}))
 
 (defwidget mpris-current []
     (revealer :reveal {mpris.has_player} :transition "slideright"
