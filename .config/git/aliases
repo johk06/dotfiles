@@ -1,0 +1,5 @@
+[alias]
+a = add 
+ai = add -p
+
+; vim: set ft=gitconfig :

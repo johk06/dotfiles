@@ -1,6 +1,13 @@
+[include]
+path = ./aliases
+
 [user]
 email = jhk06@mailbox.org
 name = jhk
+
+[grep]
+heading = true
+lineNumber = true
 
 [init]
 defaultbranch = main
@@ -16,3 +23,10 @@ help = italic white
 meta = brightblue
 frag = bold brightmagenta
 func = bold white
+
+[color "grep"]
+filename = "cyan"
+match = "bold yellow"
+lineNumber = "magenta"
+separator = "brightblack"
+selected = "white" # otherwise git produces brightwhite
