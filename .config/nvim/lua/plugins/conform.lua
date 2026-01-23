@@ -24,7 +24,7 @@ M.opts = {
         json  = { "jq" },
         sh    = { "shfmt" },
         toml  = { "taplo" },
-        typst = { "prettypst" },
+        typst = { "typstyle" },
         xml   = { "xmllint" },
     },
     default_format_opts = {

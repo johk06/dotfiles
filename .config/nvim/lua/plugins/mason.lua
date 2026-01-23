@@ -4,7 +4,7 @@ local mason_PATH = vim.fn.stdpath("data") .. "/mason/bin"
 ---@type table<string, string|false>
 ---All the programs that need to be available
 local needed_programs = {
-    prettypst = false,
+    typstyle = false,
 }
 
 ---@param pkg Package
