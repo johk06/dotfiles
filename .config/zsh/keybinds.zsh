@@ -3,9 +3,53 @@
 # Excluding those builtin like `cc`
 KEYTIMEOUT=5
 
+function bindall {
+    bindkey -M viins "$@"
+    bindkey -M vicmd "$@"
+}
+
+# Short Widgets {{{
+# Mostly for quick and dirty directory navigation
+
+function jhk-fg-proc {
+    if ((${#jobstates} < 1)); then
+        zle -M "No running jobs"
+        return
+    fi
+
+    fg
+}
+zle -N jhk-fg-proc
+
+function jhk-push-tmp {
+    pushd ~tmp >/dev/null 2>&1
+    zle reset-prompt
+    zle redisplay
+}
+zle -N jhk-push-tmp
+function jhk-push-parent {
+    pushd .. >/dev/null 2>&1
+    zle reset-prompt
+    zle redisplay
+}
+zle -N jhk-push-parent
+
+function jhk-pop-dir {
+    popd >/dev/null 2>&1
+    zle reset-prompt
+    zle redisplay
+}
+zle -N jhk-pop-dir
+
+bindall ^Xf jhk-fg-proc
+bindall ^Xt jhk-push-tmp
+bindall ^Xp jhk-push-parent
+bindall ^Xh jhk-pop-dir
+# }}}
+
 # Autosuggestions {{{
 source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
-bindkey -M viins '^ ' autosuggest-accept
+bindall -M viins '^ ' autosuggest-accept
 ZSH_AUTOSUGGEST_STRATEGY=(history completion)
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=8,bold"
 # }}}
@@ -19,8 +63,8 @@ zle -N up-line-or-beginning-search
 zle -N down-line-or-beginning-search
 autoload -U up-line-or-beginning-search
 autoload -U down-line-or-beginning-search
-bindkey "\e[A" up-line-or-beginning-search
-bindkey "\e[B" down-line-or-beginning-search
+bindall "\e[A" up-line-or-beginning-search
+bindall "\e[B" down-line-or-beginning-search
 # }}}
 
 # Show isearch Status {{{
@@ -53,8 +97,14 @@ zle -N jhk-edit-line
 bindkey -M viins '^O' jhk-edit-line
 # }}}
 
-# Set cursor based on keymap {{{
+# Keymap Hook {{{
+# Set Cursor and KEYTIMEOUT
 function zle-keymap-select {
+    # Allow exiting insert mode to be fast while keeping the possibility for longer normal mode maps there
+    # case "$KEYMAP" in
+    #     viins) KEYTIMEOUT=1;;
+    #     *) KEYTIMEOUT=100;;
+    # esac
     case "$KEYMAP" in
         vicmd) printf '\e[2 q';;
         visual) printf '\e[2 q';;
@@ -204,9 +254,9 @@ bindkey -M vicmd ^X jhk-change-value
 # }}}
 
 # Keep line but still run the command
-bindkey "\e^M" accept-and-hold
+bindall "\e^M" accept-and-hold
 # Like "suspending" the current command
-bindkey '^Z' push-input
+bindall '^Z' push-input
 
 # Don't delete as much with C-w
 WORDCHARS="*?_.[]~=!#$%^(){}"
