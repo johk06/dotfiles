@@ -10,6 +10,7 @@ psvar=(
     ""            # 9 current dir readable
     "12"          # 10 color based on return status
     ""            # 11 symbol/text to be used for return status
+    ""            # 12 git stashed
 )
 
 
@@ -19,13 +20,14 @@ function _update_git_status {
     # returns 0 if dir ignored and 1 if not but still git
     if (($? == 1)); then
         local type gstatus submod file
-        local modified="" deleted="" added="" renamed="" smodified="" sdeleted="" sadded="" _branch branch="" remote="" ahead="" behind=""
-        git status --porcelain=v2 --untracked-files=no --ignored=no --branch . 2>/dev/null \
+        local modified="" deleted="" added="" renamed="" smodified="" sdeleted="" sadded="" _branch branch="" remote="" ahead="" behind="" stashed
+        git status --porcelain=v2 --show-stash --untracked-files=no --ignored=no --branch . 2>/dev/null \
             | while read -r type gstatus submod _ _ _ file; do
             case "$type" in
                 (\#)
                     case "$gstatus" in
                         (branch.oid);;
+                        (stash) stashed="$submod";;
                         (branch.head) branch="$submod";;
                         (branch.upstream) upstream="$submod";;
                         (branch.ab)
@@ -58,8 +60,8 @@ function _update_git_status {
             esac
         done
 
-        printf "%s;%s;%s;%s;%s;%s;%s\n" \
-            "$branch" "$modified$smodified" "$deleted$sdeleted" "$added$sadded" "$renamed" "$ahead" "$behind"
+        printf "%s;%s;%s;%s;%s;%s;%s;%s\n" \
+            "$branch" "$modified$smodified" "$deleted$sdeleted" "$added$sadded" "$renamed" "$ahead" "$behind" "$stashed"
     else
         echo
     fi
@@ -69,8 +71,10 @@ function _update_git_status {
 PROMPT=$'%{\e]133;A\a%}' # OSC133 start
 # current working directory [ro]
 PROMPT+="%F{cyan}%(6~|%-1~/…/%24<..<%3~%<<|%6~)%u%(9V. %F{11}[ro].)"
-# git status: [+ahead] [-behind] HEAD [+added] [~changed] [-removed] [->moved]
-PROMPT+="%(2V.%F{8} /%(7V.%F{green}+%7v .)%(8V.%F{red}-%8v .)%F{white}%2v%(5V. %F{green}+%5v.)%(3V. %F{yellow}~%3v.)%(4V. %F{red}-%4v.)%(6V. %F{magenta}->%6v.).)"
+# git status: [+ahead] [-behind] HEAD
+PROMPT+="%(2V.%F{8} /%(7V.%F{green}+%7v .)%(8V.%F{red}-%8v .)%F{white}%2v"
+# git status: [+added] [~changed] [-removed] [->moved] [_stashed]
+PROMPT+="%(5V. %F{green}+%5v.)%(3V. %F{yellow}~%3v.)%(4V. %F{red}-%4v.)%(6V. %F{magenta}->%6v.).)%(12V.%F{12} _%12v.)"
 # processes, time taken, date
 PROMPT+="%F{8} |%(1j. %F{12}&%j.) %f%1v%F{8}, %F{%10v}%11v"
 # prompt symbol
@@ -170,6 +174,7 @@ function TRAPUSR1 {
     psvar[6]=${tmp[5]}
     psvar[7]=${tmp[6]}
     psvar[8]=${tmp[7]}
+    psvar[12]=${tmp[8]}
 
     _PROMPTPROC=0
 
