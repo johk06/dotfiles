@@ -21,8 +21,9 @@ configuration {
     kb-custom-1: "Shift+Return";
     kb-custom-2: "Ctrl+Return";
     line-margin: 10;
-    modes: [drun,sway,marks,sys];
+    modes: [drun,sway,marks,calc,sys];
     display-drun: "run";
+
     drun {
         display-name: "󰌧";
     }
@@ -31,6 +32,12 @@ configuration {
     }
     marks {
         display-name: "󰃃";
+    }
+    calc {
+        display-name: "󱖦";
+        calc-command: "wl-copy '{result}'";
+        reuse-result: true;
+        terse: true;
     }
     sys {
         display-name: "";

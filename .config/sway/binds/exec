@@ -12,6 +12,7 @@ bindsym {
     $mod+Shift+Period    exec swaync-client --close-all
     $mod+Mod1+Period     exec $sc/invoke-notification
     $mod+Slash           exec killall rofi || rofi -show sway
+    $mod+Shift+Slash     exec killall rofi || rofi -show calc
     $mod+O               exec killall rofi || ~/.config/rofi/applets/files/run.sh
     $mod+Minus           exec killall rofi || ~/.config/rofi/applets/pass/run.sh
 
