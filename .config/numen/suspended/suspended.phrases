@@ -1,1 +1,4 @@
-begin voice command: run ~/.config/sway/scripts/toggle-numen &
+begin voice command: run espeak "voice command ready"; ~/.config/sway/scripts/toggle-numen &
+status: run espeak "voice command stopped, resume using 'begin voice command'"
+
+terminate voice command: run espeak "voice command terminating, goodbye"; ~/.config/sway/scripts/toggle-numen kill &

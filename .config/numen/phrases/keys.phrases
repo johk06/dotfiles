@@ -7,18 +7,18 @@ edge: press e
 fee: press f
 good: press g
 hail: press h
-ice: press i
+is: press i
 joy: press j
 kid: press k
 lake: press l
 man: press m
 need: press n
-of: press o
+on: press o
 pain: press p
 quad: press q
 road: press r
 sun: press s
-tea: press t
+tough: press t
 us: press u
 void: press v
 wish: press w
@@ -27,7 +27,7 @@ yew: press y
 zed: press z
 # }}}
 
-# Common pairs of letters {
+# Common pairs of letters {{{
 # Consonant digraphs
 shine: press s h
 thorn: press t h
@@ -39,6 +39,9 @@ faff: press f f
 sass: press s s
 ing: press n g
 ack: press c k
+state: press s t
+age: press a g e
+shawn: press t i o n
 
 # Vowel digraphs
 fool: press o o
@@ -46,8 +49,9 @@ our: press o u
 eel: press e e
 eat: press e a
 err: press e r
+ire: press i r
 orc: press o r
-# }
+# }}}
 
 # Numbers {{{
 naught: press 0
@@ -118,11 +122,16 @@ point: press period
 same: press equal
 # }}}
 
+# Common Punctuation combinations {{{
+next: press comma space
+# }}}
+
 space: press space
 yes: press Return
 tab: press Tab
 
 back: press BackSpace
+cut: press BackSpace BackSpace
 del: press Delete
 term word: press control+w
 term all: press control+u
@@ -132,7 +141,7 @@ wipe word: press control+Delete
 wipe all: press control+shift+Delete
 
 quit: stick off \
-	press Escape
+    press Escape
 
 meta: mod alt
 com: mod ctrl
@@ -153,7 +162,7 @@ post: press control+Right
 prime: press Home
 fine: press End
 
-next: press Next
+following: press Next
 previous: press Prior
 
 # vim: ft=conf

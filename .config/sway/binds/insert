@@ -4,7 +4,7 @@ mode "insert" {
     bindsym Escape mode "default" 
 
     bindsym S exec $sc/toggle-numen; mode "default"
-    bindsym Shift+S exec killall numen&& eww update numen-state=off; mode "default"
+    bindsym Shift+S exec $sc/toggle-numen kill; mode "default"
 
     bindsym D exec date +"type %Y-%m-%d" | dotool; mode "default"
     bindsym Shift+D exec date +"type %b %d %Y, %H:%M %Z" | dotool; mode "default"

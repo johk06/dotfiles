@@ -96,7 +96,7 @@ ${dev.rate}W" : ""}"
         :class "tiny-button ${numen-state == "listening" ? "active" : (numen-state == "off" ? "inactive" : "" )}"
         :onclick "~/.config/sway/scripts/toggle-numen" :timeout "128s"
         :tooltip "Numen is ${numen-state}"
-        :onrightclick "killall numen; ${EWW_CMD} update numen-state=off"
+        :onrightclick "~/.config/sway/scripts/toggle-numen kill"
         {numen-state == "listening" ? "" : "󰩅"}))
 
 (defwidget status-service-toggle [running to-kill cmd var symbols ?tooltip]

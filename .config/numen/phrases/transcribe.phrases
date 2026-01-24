@@ -61,4 +61,5 @@ rewind: eval /etc/numen/scripts/transcripts | sed 's/./ Left/g; s/^/press/; q'
 # Ignore this, vosk-model-small-en-us-0.15 can output huh after a long silence.
 huh:
 
-end voice command: run ~/.config/sway/scripts/toggle-numen
+end voice command:  run espeak-ng "voice command stopped"; ~/.config/sway/scripts/toggle-numen
+status: run espeak "voice command active, suspend using 'end voice command'"

@@ -2,6 +2,13 @@
 
 FILE="$XDG_CACHE_HOME/.numen_listening"
 
+if [ "$1" == "kill" ]; then
+    killall numen
+    eww update numen-state=off
+    unlink "$FILE"
+    exit
+fi
+
 if [ -f "$FILE" ]; then
     unlink "$FILE"
     sleep 0.5
