@@ -86,7 +86,7 @@ zle -N zle-isearch-exit
 # Edit in $EDITOR {{{
 function jhk-edit-line {
     local tmpfile="$(mktemp "${ZCACHEDIR}/command-XXXX.zsh")"
-    echo "$BUFFER" >! "$tmpfile"
+    <<< "$BUFFER" >! "$tmpfile"
 
     "$EDITOR" "$tmpfile" </dev/tty
     BUFFER="$(cat "$tmpfile")"
