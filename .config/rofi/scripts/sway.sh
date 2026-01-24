@@ -34,8 +34,15 @@ if ((ROFI_RETV == 0)); then
         printf "%s\n%s$ICON%s$INFO%s\t" "$name" "$workspace - $class" "$icon" "$id"
     done < <(swaymsg -t get_tree | jq -r "$JQ_QUERY")
 else
-    if ((ROFI_RETV == 10)); then
+    case "$ROFI_RETV" in
+    10)
         swaymsg "[con_id=$ROFI_INFO] move to workspace current" >/dev/null
-    fi
-    swaymsg "[con_id=$ROFI_INFO] focus" >/dev/null
+        ;;
+    11)
+        swaymsg "swap container with con_id $ROFI_INFO" >/dev/null 2>&1
+        ;;
+    *)
+        swaymsg "[con_id=$ROFI_INFO] focus" >/dev/null
+        ;;
+    esac
 fi
