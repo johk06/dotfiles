@@ -12,27 +12,28 @@ window {
 
 mainbox {
     spacing: 10px;
-    children: [listbox];
+    children: [listbox, mode-switcher];
     background-color: @bg0;
     orientation: horizontal;
 }
 
 listbox {
-    children: [listview, entrybox, mode-switcher];
+    children: [listview, entrybox];
     expand: true;
     background-color: transparent;
 }
 mode-switcher {
     background-color: transparent;
+    orientation: vertical;
     background-color: @bg0;
     border-radius: 12px;
 }
 button {
     background-color: @bg0;
     border-radius: 18px;
-    padding: 0.5em 0.9em 0.5em 0.6em;
     text-color: @fg0;
-    width: 5em;
+    width: 2em;
+    horizontal-align: 0.5;
 }
 button selected {
     background-color: @selected;
@@ -83,43 +84,60 @@ entrybox {
     expand: false;
     background-color: transparent;
     orientation: horizontal;
-    children: [entry, prompt, num-filtered-rows, num-rows];
+    children: [entrycount, entryline];
+    padding: 0 0 12px 0;
+}
+
+entryline {
+    children: [message, entry];
+    background-color: transparent;
+    margin: 0em 0em 0em 1em;
+    vertical-align: 1;
+}
+
+entrycount {
+    children: [num-rows, num-filtered-rows];
+    expand: false;
+    background-color: transparent;
+    margin: 0em 0em 0em 1em;
+    horizontal-align: 1;
+    width: 2em;
 }
 
 num-filtered-rows {
     background-color: inherit;
-    padding: 0em 1em 0em 0em;
-    color: @accent;
+    color: @fg0;
+    padding: 8px 0;
 }
 
 num-rows {
     background-color: inherit;
-    padding: 0em 1em 0em 0em;
     color: @fg3;
+    padding: 8px 0;
 }
+
 entry {
     expand: true;
+    vertical-align: 1;
     background-color: @bg0;
     text-color: @fg0;
     cursor: text;
-    placeholder: "search";
+    placeholder: "/Search";
     placeholder-color: @fg3;
-    padding: 12px;
-    margin: 0px 12px 0px 12px;
+    padding: 8px 0 ;
 }
 
 message {
-    text-color: @fg0;
-    background-color: transparent;
-}
-textbox {
-    vertical-align: 0.5;
-    horizontal-align: 1;
-}
-
-prompt {
     background-color: @bg0;
     horizontal-align: 0.5;
     vertical-align: 0.5;
-    text-color: @fg0;
+    text-color: @fg3;
+    padding: 8px 0;
+
+}
+textbox {
+    text-color: @fg3;
+    vertical-align: 0.5;
+    horizontal-align: 0;
+    background-color: transparent;
 }

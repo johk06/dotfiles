@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 
-PROMPT="\0prompt\x1f"
 ICON="\0icon\x1f"
 ACTIVE="\0active\x1f"
 SET_DELIM="\0delim\x1f"

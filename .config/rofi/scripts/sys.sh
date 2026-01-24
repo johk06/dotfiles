@@ -16,7 +16,7 @@ print-menu() {
 power-menu() {
     IFS=/ read -r subitem answer <<<"$1"
     if [[ -z "$answer" ]]; then
-        printf '\0prompt\x1fDo you want to %s?\t' "$subitem"
+        printf '\0message\x1fDo you want to %s?\t' "$subitem"
         printf '%s\0icon\x1f%s\x1finfo\x1f%s\t' \
             Yes dialog-yes "session/$1/yes" \
             No cancel "session/$1/no"

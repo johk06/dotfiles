@@ -50,12 +50,12 @@ parse_flags() {
             ;;
         esac
     done
-    printf '\0prompt\x1f%s\n' "$FLAGS"
+    printf '\0message\x1f%s\n' "$FLAGS"
 }
 
 if ((ROFI_RETV == 0)); then
     printf '\0use-hot-keys\x1ftrue\n'
-    printf '\0prompt\x1f[]\n'
+    printf '\0message\x1f[]\n'
     list_files ""
 else
     case "$ROFI_RETV" in

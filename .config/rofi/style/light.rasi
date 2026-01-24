@@ -27,7 +27,7 @@ fg3: #616e88;
 bg0: @nord6;
 bg1: @nord5;
 bg2: @nord4;
-bg3: #929aaa;
+bg3: #C0C7D5;
 accent: @nord7;
 invert: @nord0;
 selected: @bg2;

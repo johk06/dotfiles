@@ -11,10 +11,12 @@ select(.pid) + {ws: $name}
 | "\(.id)\t\(.name)\t\(.app_id? // .window_properties.class)\t\(.ws)"
 JQ
 
+USAGE="Select Windows: (S- Grab) (C- Swap)"
+
 if ((ROFI_RETV == 0)); then
     echo -en "\0use-hot-keys\x1ftrue\n\0delim\x1f\t\n"
+    printf '\0message\x1f%s\t' "$USAGE"
     while IFS=$'\t' read -r id name class ws; do
-
         icon="$class"
         if [[ "$class" == "kitty" ]]; then
             case "$name" in

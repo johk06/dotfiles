@@ -7,5 +7,6 @@ configuration {
     kb-row-up:"Up,Alt+k";
     mute {
         fallback-icon: "org.pulseaudio.pavucontrol";
+        display-name: "";
     }
 }

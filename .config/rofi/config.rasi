@@ -23,5 +23,20 @@ configuration {
     line-margin: 10;
     modes: [drun,sway,marks,sys];
     display-drun: "run";
+    drun {
+        display-name: "󰌧";
+    }
+    sway {
+        display-name: "󱂬";
+    }
+    marks {
+        display-name: "󰃃";
+    }
+    sys {
+        display-name: "";
+    }
+    pass {
+        display-name: "󱀰";
+    }
 }
 @theme "~/.config/rofi/style/theme.rasi"
