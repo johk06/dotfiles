@@ -53,7 +53,7 @@ def get_icon(icon_name, size=48, fallback="window-manager"):
 
 def dump_con_desc(w: i3ipc.Con):
     if not w or not w.pid:
-        return None, False
+        return None
     app_id = w.app_id or w.window_class or None
     app_id = CLASS_OVERRIDES.get(app_id, app_id)
 
@@ -137,7 +137,7 @@ def wsicon(name):
 
 def get_scratchpad(i3: i3ipc.Con):
     ret = []
-    scratch = i3.scratchpad().floating_nodes
+    scratch = i3.scratchpad().descendants()
 
     for node in scratch:
         as_win = dump_con_desc(node)
