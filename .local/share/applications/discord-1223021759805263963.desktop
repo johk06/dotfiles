@@ -1,7 +1,0 @@
-[Desktop Entry]
-Name=Game 1223021759805263963
-Exec=/usr/bin/lemonade-qt %u
-Type=Application
-NoDisplay=true
-Categories=Discord;Games;
-MimeType=x-scheme-handler/discord-1223021759805263963;

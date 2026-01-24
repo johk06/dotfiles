@@ -1,8 +1,0 @@
-[Desktop Entry]
-Name=Humankind
-Comment=Play this game on Steam
-Exec=env VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/radeon_icd.i686.json:/usr/share/vulkan/icd.d/radeon_icd.x86_64.json steam steam://rungameid/1124300
-Icon=steam_icon_1124300
-Terminal=false
-Type=Application
-Categories=Game;

@@ -1,9 +1,0 @@
-[Desktop Entry]
-Name=Sid Meier's Civilization V
-Comment=Play this game on Steam
-Exec=env VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/radeon_icd.i686.json:/usr/share/vulkan/icd.d/radeon_icd.x86_64.json steam steam://rungameid/8930
-Icon=steam_icon_8930
-Terminal=false
-Type=Application
-Categories=Game;
-Keywords=civ5;civ;civilization;sid;

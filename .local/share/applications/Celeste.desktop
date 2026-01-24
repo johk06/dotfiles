@@ -1,8 +1,0 @@
-[Desktop Entry]
-Name=Celeste
-Comment=Play this game on Steam
-Exec=steam steam://rungameid/504230
-Icon=celeste
-Terminal=false
-Type=Application
-Categories=Game;

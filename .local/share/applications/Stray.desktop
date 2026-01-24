@@ -1,9 +1,0 @@
-[Desktop Entry]
-Name=Stray
-Comment=Play this game on Steam
-Exec=env VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/radeon_icd.i686.json:/usr/share/vulkan/icd.d/radeon_icd.x86_64.json steam steam://rungameid/1332010
-Icon=steam_icon_1332010
-Categories=Game;
-Keywords=stray;
-Type=Application
-Terminal=false

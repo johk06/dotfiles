@@ -1,8 +1,0 @@
-[Desktop Entry]
-Name=Shadow of the Tomb Raider
-Comment=Play this game on Steam
-Exec=steam steam://rungameid/750920
-Icon=ShadowOfTheTombRaider
-Terminal=false
-Type=Application
-Categories=Game;
