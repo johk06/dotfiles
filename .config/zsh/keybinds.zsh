@@ -78,7 +78,10 @@ function jhk-opt-run-help {
     esac
 
     if [[ -n "$program" && -n "$option" ]]; then
-        manopt "$program" "$option"
+        manopt "$program" "$option" 2>/dev/null
+        if [[ $? != 0 ]]; then
+            zle -M "Failed to get manpage for $program"
+        fi
     fi
 }
 zle -N jhk-opt-run-help
