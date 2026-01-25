@@ -1,0 +1,7 @@
+[core]
+sshCommand = ssh -i ~/.ssh/id_uni
+
+[include]
+path = ./uni.secret
+
+; vim: set ft=gitconfig :
