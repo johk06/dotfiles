@@ -1,0 +1,46 @@
+{{with.Message -}}
+    {{printf "> \033[3m%s\033[0m" . -}}
+{{end -}}
+{{with .Stat -}}
+    {{if gt .Size 1073741824 -}}
+        {{printf "\033[31;1m%6s" (.Size | humanize) -}}
+    {{else if gt .Size 65536 -}}
+        {{printf "\033[91m%6s" (.Size | humanize) -}}
+    {{else -}}
+        {{printf "%6s" (.Size | humanize) -}}
+    {{end -}}
+    {{printf "\033[0m " -}}
+    {{printf "\033[37m%s" (substr .Permissions 0 1) -}}
+
+    {{printf "\033[33m%s" (substr .Permissions 1 1) -}}
+    {{printf "\033[91m%s" (substr .Permissions 2 1) -}}
+    {{printf "\033[32m%s" (substr .Permissions 3 1) -}}
+
+    {{printf "\033[33m%s" (substr .Permissions 4 1) -}}
+    {{printf "\033[91m%s" (substr .Permissions 5 1) -}}
+    {{printf "\033[32m%s" (substr .Permissions 6 1) -}}
+
+    {{printf "\033[33m%s" (substr .Permissions 7 1) -}}
+    {{printf "\033[91m%s" (substr .Permissions 8 1) -}}
+    {{printf "\033[32m%s" (substr .Permissions 9 1) -}}
+
+    {{printf " \033[95m%s \033[34m%s\033[0m" .User .Group -}}
+    {{with .Target -}}
+        {{printf " \033[97m->\033[0m %s" . -}}
+    {{end -}}
+
+{{end -}}
+
+{{.SPACER -}}
+{{printf "%-8s " .Keys -}}
+
+{{with .Progress -}}{{join . " " -}}{{end -}}
+
+{{with .Select -}}{{len . | printf "\033[107m %dv \033[0m"}}{{end -}}
+{{with .Copy -}}{{len . | printf "\033[7;33m %dy \033[0m"}}{{end -}}
+{{with .Cut -}}{{len . | printf "\033[7;31m %dd \033[0m"}}{{end -}}
+{{with .Filter -}}{{join . " "}}{{end -}}
+{{printf "\033[0m %s" df -}}
+{{printf " | %2d/%-2d (.%2d)" .Index .Total .Hidden -}}
+
+{{/* vim: ft=gotmpl : */}}

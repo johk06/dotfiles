@@ -64,7 +64,7 @@ function prop {
 }
 
 function section {
-    print -P "\n%F{${2:-green}}%B## $1\e[0m"
+    print -P "\n%F{${2:-green}}%B| $1\e[0m"
     ((H-=2))
     ((Y+=2))
 }
@@ -380,7 +380,7 @@ function preview_sqlite {
             continue
         fi
         if [[ "$curtbl" != "$table" ]]; then
-            section "$table" 15
+            section "$table" 7
             curtbl="$table"
         fi
         type="${ctype:l}"
