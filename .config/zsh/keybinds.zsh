@@ -45,6 +45,44 @@ bindall ^Xf jhk-fg-proc
 bindall ^Xt jhk-push-tmp
 bindall ^Xp jhk-push-parent
 bindall ^Xh jhk-pop-dir
+
+# Like run-help, but show help for an option
+function jhk-opt-run-help {
+    local cmd=(${(z)${LBUFFER}})
+
+    local -a command
+    local option
+    for ((i=(${#cmd}); i > 0; i--)); do
+        local arg=${cmd[$i]}
+        if [[ "$arg" == "|"
+            || "$arg" == ";"
+            || "$arg" == "&&"
+            || "$arg" == "&"
+            || "$arg" == "||" ]]; then
+            break
+        fi
+
+        case "$arg" in
+            -*) if [[ -z "$option" ]]; then
+                option="$arg"
+                fi;;
+            *) command+=("$arg");;
+        esac
+    done
+
+    local program
+    case "${command[-1]}" in
+        ssh) program="${command[-3]}";;
+        sudo) program="${command[-2]}";;
+        *) program="${command[-1]}"
+    esac
+
+    if [[ -n "$program" && -n "$option" ]]; then
+        manopt "$program" "$option"
+    fi
+}
+zle -N jhk-opt-run-help
+bindall ^Xm jhk-opt-run-help
 # }}}
 
 # Autosuggestions {{{
@@ -97,14 +135,8 @@ zle -N jhk-edit-line
 bindkey -M viins '^O' jhk-edit-line
 # }}}
 
-# Keymap Hook {{{
-# Set Cursor and KEYTIMEOUT
+# Set Cursor based on mode {{{
 function zle-keymap-select {
-    # Allow exiting insert mode to be fast while keeping the possibility for longer normal mode maps there
-    # case "$KEYMAP" in
-    #     viins) KEYTIMEOUT=1;;
-    #     *) KEYTIMEOUT=100;;
-    # esac
     case "$KEYMAP" in
         vicmd) printf '\e[2 q';;
         visual) printf '\e[2 q';;
@@ -148,11 +180,11 @@ zle -N delete-surround surround
 zle -N add-surround surround
 zle -N change-surround surround
 
-# shorter, shell-y-er, [q]uote
-bindkey -M vicmd q add-surround
-bindkey -M vicmd Q change-surround
-bindkey -M vicmd s delete-surround # [s]trip
+# NOTE: I cannot use ys &c due to the $KEYTIMEOUT but this is shorter anyways
+bindkey -M vicmd  q add-surround    # [q]uote
 bindkey -M visual q add-surround
+bindkey -M vicmd  Q change-surround
+bindkey -M vicmd  s delete-surround # [s]trip
 # }}}
 
 # Keep majority of Emacs-Style bindings {{{

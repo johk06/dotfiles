@@ -76,6 +76,16 @@ function cleanhist {
         | sort -nk 1 | sed 's/^\s*[0-9]*\s*//'
 }
 
+# search for an option or similar in a man page
+function manopt {
+    local page="$1"
+    local opt="$2"
+
+    local pattern="^\s+$opt|,\s+$opt|\s+$opt"
+
+    LESS="+/$pattern" man "$page"
+}
+
 source $ZDOTDIR/handlers.zsh
 
 source "$ZDOTDIR/mods/fs.zsh"
