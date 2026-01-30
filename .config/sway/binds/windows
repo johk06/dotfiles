@@ -1,13 +1,14 @@
 # vim: ft=swayconfig
 
 # Bindings for window management
-# Not including ./binds/workspaces
+# That means operations that affect an individual window and not much else
 
+# [Q]uit
 bindsym $mod+Q kill
 
 # [D]etach
 bindsym $mod+D floating toggle; resize shrink width 800 height 600
-# Like the vim z* family of commands
+# Like the vim z* family of commands, alternatively, change the Z-Coordinate
 bindsym $mod+Z focus mode_toggle
 
 # Moving & Resizing {{{
@@ -37,6 +38,12 @@ bindsym $mod+Mod1+L exec $sc/swap right
 bindsym $mod+A resize grow width 64px; resize grow height 64px
 bindsym $mod+X resize shrink width 64px; resize shrink height 64px 
 
+# NOTE: Focus needs to be on the container group that needs to be equaled
+# e.g. In a situation like this:
+# [Win1]  [ Win3 ]
+# [Win2]  [      ]
+# D-= will only resize the general splits to be equal when focus is on the right window
+# or the container containing both on the left
 bindsym $mod+Equal resize set width 50ppt; resize set height 50ppt
 # }}}
 
@@ -51,6 +58,8 @@ bindsym $mod+F fullscreen
 # only hide gaps around window, see ./config for different gaps
 bindsym $mod+Shift+F exec $sc/set-gaps 0
 
+# These seem annoying to type, but with Backspace and Delete as taps
+# on the shift keys they're quite natural as forward/back-like actions
 bindsym $mod+Backspace focus parent
 bindsym $mod+Delete focus child
 # }}}
@@ -75,4 +84,4 @@ bindsym $mod+U exec $sc/unmark
 # }}}
 
 # Select-Based resize
-bindsym --whole-window $mod+Shift+BTN_RIGHT exec $sc/select-float-region
+# bindsym --whole-window $mod+Shift+BTN_RIGHT exec $sc/select-float-region

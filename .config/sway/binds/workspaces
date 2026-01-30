@@ -1,9 +1,17 @@
 # vim: ft=swayconfig
 
+# For ordered workspaces:
+# D-   selects
+# D-S- moves window there
+# D-C- pushes window there (moves and then selects)
+# D-M- is unmapped for now, but I may use it in the future (TODO)
+
 # Scratchpad {{{
-# Index
+# Uses ~ (for direct indexing) and Tab (for cycling and pushing)
+
+# Index directly
 bindsym $mod+Grave exec $sc/scratch-numeric
-# Show tagged
+# Show by tag
 bindsym $mod+Shift+Grave exec $sc/on-mark initial scratchpad show
 # Cycle
 bindsym $mod+Tab scratchpad show
@@ -15,6 +23,7 @@ bindsym $mod+Shift+Tab move window to scratchpad
 bindsym $mod+R exec swaymsg rename workspace to "$(wayinput -t "Rename to" -l -1)"
 
 # Numeric {{{
+# On the primary monitor
 bindsym $mod+1 workspace number 1
 bindsym $mod+2 workspace number 2
 bindsym $mod+3 workspace number 3
@@ -83,6 +92,8 @@ bindsym $mod+Ctrl+0 move window to workspace number 10; workspace number 10
 # }}}
 
 # Secondary {{{
+# The arrow keys are nice for this since they're out of the way,
+# but still present an ordered list
 bindsym $mod+Left workspace s1
 bindsym $mod+Down workspace s2
 bindsym $mod+Right workspace s3
@@ -100,6 +111,7 @@ bindsym $mod+Ctrl+Up move window to workspace s4; workspace s4
 # }}}
 
 # Next / Previous {{{
+# This very nicely mirrors Vim
 bindsym $mod+Bracketright       exec $sc/in-order go   next
 bindsym $mod+Bracketleft        exec $sc/in-order go   prev
 bindsym $mod+Shift+Bracketright exec $sc/in-order move next
@@ -108,5 +120,6 @@ bindsym $mod+Ctrl+Bracketright  exec $sc/in-order push next
 bindsym $mod+Ctrl+Bracketleft   exec $sc/in-order push prev
 # }}}
 
+# TODO: not sure if this is actually useful, I barely use it
 bindsym $mod+N workspace next
 bindsym $mod+Shift+N workspace prev

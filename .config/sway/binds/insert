@@ -1,5 +1,8 @@
 # vim: ft=swayconfig
 
+# Type in various things
+# NOTE: this can be quite dangerous since this is raw input
+
 mode "insert" {
     bindsym Escape mode "default" 
 

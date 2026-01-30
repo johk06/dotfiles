@@ -1,6 +1,7 @@
 # vim: ft=swayconfig
 
 # Configure various aspects of sway at runtime
+# Basically a catch-all map for various adjustements
 
 mode "config" {
     bindsym Escape mode "default" 
@@ -17,7 +18,7 @@ mode "config" {
     bindsym N exec killall gammastep || gammastep -O 3000; mode "default"
     bindsym Shift+N exec $sc/set-gamma; mode "default"
 
-    # Gaps and Border values
+    # Gaps and Borders
     bindsym G exec $sc/set-gaps "$(wayinput -n -l -1 -t "Set Gaps")"; mode "default"
     bindsym B exec $sc/toggle-border; mode "default"
     bindsym Shift+B exec $sc/toggle-border deco; mode "default"
@@ -41,4 +42,4 @@ mode "config" {
 bindsym $mod+C mode "config"
 
 # hack for gtklock sometimes freezing after suspend
-bindsym --locked $mod+Ctrl+Alt+R exec pkill -9 gtklock&&gtklock
+bindsym --locked $mod+Ctrl+Mod4+R exec pkill -9 gtklock&&gtklock

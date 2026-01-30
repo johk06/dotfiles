@@ -1,7 +1,7 @@
 # vim: ft=swayconfig
 
-# manage various aspects related to the clipboard
-# generally anything under <M-* is related to the primary selectio
+# Manage various aspects related to the clipboard
+# Generally anything under <M-* is related to the primary selection (Middle-Click paste)
 
 mode "clipboard" {
     bindsym Escape mode "default"
@@ -14,13 +14,17 @@ mode "clipboard" {
     bindsym Y exec wl-paste -n -p | wl-copy; mode "default"
     bindsym Mod1+Y exec wl-paste -n | wl-copy -p; mode "default"
 
+    # Append the other selection
     bindsym A exec (wl-paste -n && wl-paste -n -p) | wl-copy; mode "default"
     bindsym Mod1+A exec (wl-paste -n -p && wl-paste -n) | wl-copy -p; mode "default"
+
+    # Prepend it (in Ed-Terminology [I]nsert it)
     bindsym I exec (wl-paste -n -p && wl-paste -n) | wl-copy; mode "default"
     bindsym Mod1+I exec (wl-paste -n && wl-paste -n -p) | wl-copy -p; mode "default"
 
     # Exchange them
     bindsym X exec $sc/exchange-clipboard; mode "default"
+
     # And print the one specified
     bindsym Mod1+X exec $sc/exchange-clipboard; mode "default"; exec $sc/print-clipboard -p
     bindsym Shift+X exec $sc/exchange-clipboard; mode "default"; exec $sc/print-clipboard

@@ -1,20 +1,34 @@
 # vim: ft=swayconfig
 
-bindsym {
-    $mod+Return          exec $term
-    $mod+Shift+Return    exec $sc/exec-with --pid kitty $floating
-    $mod+W               exec firefox
-    $mod+E               exec kitty zsh -ic lf
-    $mod+Space           exec killall rofi || rofi -show drun
-    $mod+Shift+Semicolon exec killall rofi || rofi -show sys
-    $mod+Semicolon       exec gtklock -d
-    $mod+Period          exec swaync-client --close-latest
-    $mod+Shift+Period    exec swaync-client --close-all
-    $mod+Mod1+Period     exec $sc/invoke-notification
-    $mod+Slash           exec killall rofi || rofi -show sway
-    $mod+Shift+Slash     exec killall rofi || rofi -show calc
-    $mod+O               exec killall rofi || ~/.config/rofi/applets/files/run.sh
-    $mod+Minus           exec killall rofi || ~/.config/rofi/applets/pass/run.sh
+# Basic run program actions
 
-    $mod+Comma           exec $eww/bin/popup.sh ws-overview-win ws-overview-reveal
-}
+# Terminal
+bindsym $mod+Return          exec $term
+bindsym $mod+Shift+Return    exec $sc/exec-with --pid $term $floating
+
+# [W]eb
+bindsym $mod+W               exec firefox
+
+# [E]xplore, yes this is a shitty windows-like map
+bindsym $mod+E               exec kitty zsh -ic lf
+
+# Always quick to lock
+bindsym $mod+Semicolon       exec gtklock -d
+
+# Notifications
+bindsym $mod+Period          exec swaync-client --close-latest
+bindsym $mod+Shift+Period    exec swaync-client --close-all
+bindsym $mod+Mod1+Period     exec $sc/invoke-notification
+
+# The default applet
+bindsym $mod+Space           exec killall rofi || rofi -show drun
+bindsym $mod+Shift+Semicolon exec killall rofi || rofi -show sys
+bindsym $mod+Slash           exec killall rofi || rofi -show sway
+bindsym $mod+Shift+Slash     exec killall rofi || rofi -show calc
+
+# Specialized applets
+bindsym $mod+O               exec killall rofi || ~/.config/rofi/applets/files/run.sh
+bindsym $mod+Minus           exec killall rofi || ~/.config/rofi/applets/pass/run.sh
+
+# Show overview popup
+bindsym $mod+Comma           exec $eww/bin/popup.sh ws-overview-win ws-overview-reveal
