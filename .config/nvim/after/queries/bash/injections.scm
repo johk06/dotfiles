@@ -17,7 +17,7 @@
   (#offset! @injection.content 0 1 0 -1)
   (#set! injection.language "jq"))
 
-; Basically the same for awk, but also do it for all forms of awk
+; Basically the same for awk
 (command
   name: (command_name) @_command
   argument: [
@@ -30,11 +30,11 @@
     (concatenation
       (raw_string) @injection.content)
   ]
-  (#any-of? @_command "awk" "gawk" "nawk")
+  (#any-of? @_command "awk" "gawk" "mawk" "nawk")
   (#offset! @injection.content 0 1 0 -1)
   (#set! injection.language "awk"))
 
-; Languages that take a -c argument
+; All other languages that take a -c argument
 ((command
   name: (command_name) @_command @injection.language
   argument: (word) @_arg

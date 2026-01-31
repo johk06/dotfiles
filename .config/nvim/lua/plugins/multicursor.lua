@@ -61,7 +61,7 @@ local map_select_operator = function(keys, capture, desc)
                 region[2][2]
             })
         end)
-    end, { desc = desc })
+    end, { desc = desc, no_repeated = true })
 end
 
 function M.config()
