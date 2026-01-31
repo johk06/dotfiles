@@ -31,7 +31,6 @@ if parser then
 end
 -- }}}
 
-if not vim.b[buf].did_preview then
-    vim.cmd.TypstPreview()
-    vim.b[buf].did_preview = true
-end
+local map = require("config.utils").ft_mapper()
+map("n", "<localleader>p", "<cmd>TypstPreviewToggle<cr>")
+map("n", "<localleader>P", "<cmd>TypstPreview<cr>")
