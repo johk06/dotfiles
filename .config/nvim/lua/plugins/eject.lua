@@ -11,12 +11,12 @@ M.config = function()
             local lcount = range[3] - range[1]
 
             local win
-            if lcount < 5 then
+            if lcount < 4 then
                 local columns = vim.o.columns
                 local lines = vim.api.nvim_buf_get_lines(target, range[1], range[3] + 1, false)
                 local max_len = vim.iter(lines):map(function(s)
                     return #s
-                end):fold(math.floor(columns / 4), function(cur, val)
+                end):fold(math.floor(columns / 6), function(cur, val)
                     return math.max(cur, val)
                 end)
 
