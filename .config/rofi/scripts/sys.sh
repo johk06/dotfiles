@@ -68,7 +68,7 @@ sched-menu() {
             List "Show currently schedule Jobs" application-text sched/list "ls"
         ;;
     list)
-        when -l | while read -r time cmd args; do
+        when -l | while read -r idx time cmd args; do
             printf "$MENUFMT" \
                 "$time : $cmd" "$args" suspend ""
         done
