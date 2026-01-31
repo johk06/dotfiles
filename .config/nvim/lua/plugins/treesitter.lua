@@ -241,7 +241,7 @@ local attach = function(buf, language)
 end
 
 M.init = function()
-    require("config.utils").user_autogroup("config.treesitter", {
+    require("config.utils").user_autogroup("config.treesitter.update", {
         TSUpdate = function()
             package.loaded["nvim-treesitter.parsers"].mail = {
                 install_info = {
