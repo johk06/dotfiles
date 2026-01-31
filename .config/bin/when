@@ -1,7 +1,21 @@
 #!/usr/bin/env bash
 
+if [ -t 1 ]; then
+    COLOR_INDEX="\e[33m"
+    COLOR_TIME="\e[35m"
+    COLOR_RESET="\e[0m"
+    COLOR_ERROR="\e[31m"
+fi
+
 usage() {
-    echo "Usage: when [-ld] TIMESPEC COMMAND" >&2
+    echo "Usage: when [-ldre] TIMESPEC COMMAND" >&2
+    exit 1
+}
+
+SVCPATH=$XDG_RUNTIME_DIR/systemd/transient
+
+die() {
+    printf "$COLOR_ERROR%s$COLOR_RESET\n" "$1" >&2
     exit 1
 }
 
@@ -21,10 +35,7 @@ sched() {
     *m) get_relative_timestamp "${spec:0:-1}" 60 ;;
     *s) get_relative_timestamp "${spec:0:-1}" 1 ;;
     *:*) time="$(date +"%Y-%m-%d $spec:00")" ;;
-    *)
-        echo "Invalid timespec: $spec" >&2
-        exit 1
-        ;;
+    *) die "Invalid timespec: $spec" ;;
     esac
 
     systemd-run --user --on-calendar="$time" "$@"
@@ -32,27 +43,50 @@ sched() {
 
 list() {
     systemctl -o json --user list-timers |
-        jq -r '.[]|"\(.next / 1000000|strflocaltime("%Y-%m-%d %H:%M:%S")) \(.activates)"' |
-        while read -r date time svc; do
-            echo -n "$time "
-            grep "^ExecStart" "$XDG_RUNTIME_DIR/systemd/transient/$svc" |
+        jq -r 'to_entries[]|"\(.key + 1) \(.value.next / 1000000|strflocaltime("%Y-%m-%d %H:%M:%S")) \(.value.activates)"' |
+        while read -r nr date time svc; do
+            printf "$COLOR_INDEX%d$COLOR_RESET $COLOR_TIME%s$COLOR_RESET " \
+                "$nr" "$time"
+            grep "^ExecStart" "$SVCPATH/$svc" |
                 tail -n 1 |
                 cut -d= -f2-
         done
 }
 
+get_unit() {
+    IFS=$'\t' read -r timer service < <(systemctl -o json --user list-timers |
+        jq --argjson idx "$1" '.[$idx-1]|"\(.unit)\t\(.activates)"' -r)
+    [[ "$timer" == "null" ]] && die "No such timer: $1"
+}
+
 stop() {
-    index="$1"
-    systemctl -o json --user list-timers |
-        jq --argjson idx "$index" '.[$idx-1].unit' -r |
-        parallel systemctl --user stop
+    get_unit "$1"
+    systemctl --user stop "$timer"
+}
+
+edit() {
+    get_unit "$1"
+    if "$EDITOR" "$SVCPATH/$service"; then
+        systemctl --user daemon-reload
+        systemctl --user restart "$timer"
+    fi
+}
+
+resched() {
+    get_unit "$1"
+    if "$EDITOR" "$SVCPATH/$timer"; then
+        systemctl --user daemon-reload
+        systemctl --user restart "$timer"
+    fi
 }
 
 mode=create
-while getopts ":ld" o; do
+while getopts ":lder" o; do
     case "$o" in
     l) mode=list ;;
     d) mode=stop ;;
+    e) mode=edit ;;
+    r) mode=resched ;;
     *) usage ;;
     esac
 done
@@ -66,7 +100,7 @@ create)
     sched "$spec" "$@"
     ;;
 list) list ;;
-stop)
-    stop "$1"
-    ;;
+edit) edit "$1" ;;
+resched) resched "$1" ;;
+stop) stop "$1" ;;
 esac
