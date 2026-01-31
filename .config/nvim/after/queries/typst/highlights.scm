@@ -1,21 +1,17 @@
 ; extends
 
-(formula
-  (ident) @constant.typst
-  (#jhk-typst-set-symbol-conceal! @constant.typst))
+((field
+  (ident)
+  field: (ident)) @constant
+  (#has-ancestor? @constant formula)
+  (#jhk-typst-set-symbol-conceal! @constant))
 
-(formula
-  (field
-    (ident)
-    field: (ident)) @constant.typst
-  (#jhk-typst-set-symbol-conceal! @constant.typst))
+(call
+  item: (ident) @function.call
+  (#has-ancestor? @function.call formula)
+  (#jhk-typst-set-symbol-conceal! @function.call))
 
-(formula
-  (call
-    item: (ident) @function.call.typst
-    (#jhk-typst-set-symbol-conceal! @function.call.typst)))
-
-(formula
-  (attach
-    (ident) @constant.typst
-    (#jhk-typst-set-symbol-conceal! @constant.typst)))
+((ident) @constant
+  (#has-ancestor? @constant formula)
+  (#not-has-parent? @constant field)
+  (#jhk-typst-set-symbol-conceal! @constant))
