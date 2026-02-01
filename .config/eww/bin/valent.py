@@ -65,7 +65,8 @@ class ValentDevice:
         do_reprint()
 
     def is_connected(self):
-        return self.state & 1 == 1
+        # paired and connected
+        return self.state & 3 == 3
 
     def to_data(self):
         return {

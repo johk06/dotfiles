@@ -7,4 +7,4 @@
                 :class "button ${sway.active != "null" && sway.active.marks[0] == mark ? " active" : ""}" 
                 :style "transition: none;"
                 :onclick `swaymsg '[con_mark=${mark}] focus'`
-                "#${mark}"))))
+                "'${mark}"))))

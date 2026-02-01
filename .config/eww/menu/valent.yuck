@@ -21,12 +21,15 @@
                 (label :class "title" :text {dev.name} :limit-width 16)
                 (label :class "text" :text {dev.name})))
         (box :space-evenly false :hexpand true
+            (box :hexpand true :space-evenly false
+                (button :class "button ${dev.connected ? "active" : ""}"
+                    {dev.connected ? "󰏲   Connected" : "    Connect"}))
             (button :class "button"
                 :onclick `${valent-call} ${dev.path} org.gtk.Actions Activate 'sava{sv}' share.text 1 s "$(wl-paste)" 0`
-                "󰅇   Send Clipboard")
+                "󰅇   Clipboard")
             (button :class "button"
                 :onclick `${valent-call} ${dev.path} org.gtk.Actions Activate 'sava{sv}' share.uri 1 s "$(wl-paste)" 0`
-                "󰌷   Send URI") )))
+                "󰌷   URI") )))
 
 (defwidget valent-panel []
     (box :space-evenly false :class "section" :orientation "vertical"
