@@ -43,5 +43,12 @@
 
 .mark {
     @extend .button;
-    margin-right: 0.4rem;
+    background-color: $bg-faint;
+    &:hover {
+        background-color: $bg1;
+    }
+    &.active {
+        color: $fg0;
+        background-color: mix($bg-faint, $yellow);
+    }
 }
