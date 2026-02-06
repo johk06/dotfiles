@@ -1,5 +1,5 @@
 {{with.Message -}}
-    {{printf "> \033[3m%s\033[0m" . -}}
+    {{printf "%s\033[0m " . -}}
 {{end -}}
 {{with .Stat -}}
     {{if gt .Size 1073741824 -}}
@@ -43,4 +43,6 @@
 {{printf "\033[0m %s" df -}}
 {{printf " | %2d/%-2d (.%2d)" .Index .Total .Hidden -}}
 
-{{/* vim: ft=gotmpl : */}}
+{{/*
+vim: ft=gotmpl :
+*/}}

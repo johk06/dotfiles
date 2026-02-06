@@ -43,7 +43,7 @@ set mouse
 # }}}
 
 source "~/.config/lf/fmt.conf"
-set rulerfile true
+set rulerfile "~/.config/lf/ruler"
 source "~/.config/lf/commands.conf"
 
 set ratios '1:2:3'
