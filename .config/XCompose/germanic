@@ -7,6 +7,10 @@
 <Multi_key> <A> <minus> <e> : "Ǣ"
 <Multi_key> <A> <minus> <E> : "Ǣ"
 
+# and add them for ø cause why not
+<Multi_key> <minus> <slash> <o> : "ø̄"
+<Multi_key> <minus> <slash> <O> : "Ø̄"
+
 # ƿynn, going of the shape
 <Multi_key> <p> <w> : "ƿ"
 <Multi_key> <P> <w> : "Ƿ"
@@ -22,9 +26,6 @@
 # fix weird macrons for y
 <Multi_key> <minus> <y> : "ȳ"
 <Multi_key> <minus> <Y> : "Ȳ"
-# and add them for ø cause why not
-<Multi_key> <minus> <slash> <o> : "ø̄"
-<Multi_key> <minus> <slash> <O> : "Ø̄"
 
 # Ligatures for the, that and this
 <Multi_key> <y> <e> : "yͤ"

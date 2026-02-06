@@ -53,19 +53,19 @@
 <Multi_key> <asterisk> <Q> : "Ψ"
 <Multi_key> <asterisk> <W> : "Ω"
 
-# archaic greek letters, double @
+# archaic greek letters, with a dot before
 # digamma
-<Multi_key> <asterisk> <asterisk> <w> : "ϝ"
-<Multi_key> <asterisk> <asterisk> <W> : "Ϝ"
+<Multi_key> <asterisk> <period> <w> : "ϝ"
+<Multi_key> <asterisk> <period> <W> : "Ϝ"
 # qoppa
-<Multi_key> <asterisk> <asterisk> <q> : "ϙ"
-<Multi_key> <asterisk> <asterisk> <Q> : "Ϙ"
+<Multi_key> <asterisk> <period> <q> : "ϙ"
+<Multi_key> <asterisk> <period> <Q> : "Ϙ"
 # san
-<Multi_key> <asterisk> <asterisk> <s> : "ϻ"
-<Multi_key> <asterisk> <asterisk> <S> : "Ϻ"
+<Multi_key> <asterisk> <period> <s> : "ϻ"
+<Multi_key> <asterisk> <period> <S> : "Ϻ"
 # sampi, i know its probably /ss/ or /s:/, but it looks like <T>
-<Multi_key> <asterisk> <asterisk> <t> : "ͳ"
-<Multi_key> <asterisk> <asterisk> <T> : "Ͳ"
+<Multi_key> <asterisk> <period> <t> : "ͳ"
+<Multi_key> <asterisk> <period> <T> : "Ͳ"
 
 # accents etc
 <Multi_key> <asterisk> <asciitilde> : U0342       # ᾶ
