@@ -40,6 +40,17 @@ mode "clipboard" {
     # Make up for the lack of pipes in graphical environments
     bindsym T exec $sc/translate; mode "default"
     bindsym Mod1+T exec $sc/translate -p; mode "default"
+
+    # Play it in a media player, e.g. for youtube videos
+    # NOTE: `force-window=immediate` makes sure that it does not wait for the stream to load to shown a window
+    bindsym M exec mpv --force-window=immediate "$(wl-paste)"; mode "default"
+    bindsym Mod1+M exec mpv --force-window=immediate "$(wl-paste -p)"; mode "default"
+    # Play youtube playlists instead of just the video itself
+    bindsym Shift+M exec mpv --ytdl-raw-options='yes-playlist=' --force-window=immediate "$(wl-paste)"; mode "default"
+    bindsym Shift+Mod1+M exec mpv --ytdl-raw-options='yes-playlist=' --force-window=immediate "$(wl-paste -p)"; mode "default"
+
+    bindsym O exec xdg-open "$(wl-paste)"
+    bindsym Mod1+O exec xdg-open "$(wl-paste -p)"
 }
 
 bindsym $mod+Y mode "clipboard"

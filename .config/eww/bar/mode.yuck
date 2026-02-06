@@ -46,13 +46,14 @@
     {"keys": "p", "action": "Clear Passwords"}
 ],
 "clipboard": [
-    {"keys": "M-*", "action": "Selection", "mod": true},
+    {"keys": "M-*", "action": "Sel-", "mod": true},
     {"keys": "p", "action": "Print"},
-    {"keys": "y", "action": "Copy other"},
-    {"keys": "a", "action": "Append other"},
-    {"keys": "i", "action": "Insert other"},
+    {"keys": "y", "action": "Copy"},
+    {"keys": "a", "action": "Append"},
+    {"keys": "i", "action": "Prepend"},
     {"keys": "x", "action": "Exchange"},
     {"keys": "e", "action": "Edit"},
+    {"keys": "mo", "action": "Open"},
     {"keys": "c", "action": "Clear"},
     {"keys": "t", "action": "Translate"}
 ],
