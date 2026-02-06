@@ -81,18 +81,16 @@ SAVEHIST=8000
 
 # hashed directories (accessible via ~name)
 nameddirs=(
-    ["cfg"]="$HOME/.config"
+    ["tmp"]="$HOME/Tmp"
+    ["ws"]="$HOME/ws"
     ["dl"]="$HOME/Downloads"
     ["docs"]="$HOME/Documents"
     ["games"]="$HOME/Games"
-    ["jrnl"]="$HOME/Documents/journal/journal/"
     ["media"]="/run/media/$USER"
+    ["rt"]="$XDG_RUNTIME_DIR"
     ["mnt"]="/mnt"
+    ["cfg"]="$XDG_CONFIG_HOME"
     ["music"]="$HOME/Media/Music"
-    ["school"]="$HOME/Documents/school"
-    ["tmp"]="$HOME/Tmp"
-    ["tmp"]="$HOME/Tmp"
-    ["ws"]="$HOME/ws"
 )
 
 # my own config

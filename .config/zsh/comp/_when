@@ -1,0 +1,6 @@
+#compdef when
+_when() {
+    _arguments\
+        '1:'\
+        '*::: : _normal'
+}

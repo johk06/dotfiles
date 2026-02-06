@@ -17,7 +17,7 @@ alias \
 
 # Intelligently request stuff from the internet
 # Mainly to build up a more complex pipeline
-alias req='noglob cache - curl'
+alias req='noglob cache - curl -s'
 
 alias '#'="noglob qalc" # do math directly on the cmdline
 

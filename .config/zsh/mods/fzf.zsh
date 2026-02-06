@@ -49,7 +49,7 @@ bindkey "\e " fzf-change-dir
 
 # Processes {{{
 function fps {
-    LIBPROC_HIDE_KERNEL=1 ps -e -o pid:1= -o comm= -o cmd= |
+    LIBPROC_HIDE_KERNEL=1 ps -e -o pid= -o comm= -o cmd= |
         fzf -q "$1" --freeze-left=2 --freeze-right=1 --prompt="ps: " --accept-nth=1
 }
 
