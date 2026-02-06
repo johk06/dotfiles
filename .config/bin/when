@@ -13,6 +13,7 @@ usage() {
 }
 
 SVCPATH=$XDG_RUNTIME_DIR/systemd/transient
+SCRIPTPATH="$XDG_RUNTIME_DIR/when"
 
 die() {
     printf "$COLOR_ERROR%s$COLOR_RESET\n" "$1" >&2
@@ -27,9 +28,8 @@ get_relative_timestamp() {
         -d @"$(dc <<<"$spec $inc * $EPOCHSECONDS + p" | cut -d. -f1)")"
 }
 
-sched() {
-    spec="$1"
-    shift
+get_time() {
+    local spec="$1"
     case "$spec" in
     *h) get_relative_timestamp "${spec:0:-1}" 3600 ;;
     *m) get_relative_timestamp "${spec:0:-1}" 60 ;;
@@ -37,8 +37,28 @@ sched() {
     *:*) time="$(date +"%Y-%m-%d $spec:00")" ;;
     *) die "Invalid timespec: $spec" ;;
     esac
+}
 
-    systemd-run --user --on-calendar="$time" "$@"
+sched() {
+    get_time "$1"
+    shift
+
+    systemd-run --user --same-dir \
+        --on-calendar="$time" "$@"
+}
+
+script() {
+    get_time "$1"
+    [ ! -d "$SCRIPTPATH" ] && mkdir "$SCRIPTPATH"
+    local file="$SCRIPTPATH/when@$time.sh"
+    printf "#!/bin/sh\n# This script will be run at: %s\n\n" "$time" >"$file"
+    if "$EDITOR" "$file"; then
+        chmod +x "$file"
+        systemd-run --user --same-dir \
+            --on-calendar="$time" "$file"
+    else
+        rm "$file"
+    fi
 }
 
 list() {
@@ -81,12 +101,13 @@ resched() {
 }
 
 mode=create
-while getopts ":lder" o; do
+while getopts ":lders" o; do
     case "$o" in
-    l) mode=list ;;
     d) mode=stop ;;
     e) mode=edit ;;
+    l) mode=list ;;
     r) mode=resched ;;
+    s) mode=script ;;
     *) usage ;;
     esac
 done
@@ -103,4 +124,5 @@ list) list ;;
 edit) edit "$1" ;;
 resched) resched "$1" ;;
 stop) stop "$1" ;;
+script) script "$1" ;;
 esac
