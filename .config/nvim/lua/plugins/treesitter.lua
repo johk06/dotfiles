@@ -10,7 +10,8 @@ local textobjects = {
     ["ia"] = "@parameter.inner",
     ["aa"] = "@parameter.outer",
     -- variable
-    ["iv"] = "@assignment.lhs",
+    ["i="] = "@assignment.lhs",
+    ["iv"] = "@assignment.rhs",
     ["av"] = "@assignment.outer",
     -- comment
     ["ic"] = "@comment.inner",

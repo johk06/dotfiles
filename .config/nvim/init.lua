@@ -134,7 +134,6 @@ opt.cdpath = {
 opt.wildignore = {
     -- output formats
     "*.o",
-    "*.pdf",
 
     -- no need to edit directly
     ".git",

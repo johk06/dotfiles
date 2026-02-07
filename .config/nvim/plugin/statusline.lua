@@ -226,16 +226,13 @@ local function update_words()
     local words = count.visual_words or count.words
     local chars = count.visual_chars or count.chars
     local bytes = count.visual_bytes or count.bytes
-    local out = {}
 
-    table.insert(out, string.format("%s%%#SlWords#W%%* %s%%#SlChars#C%%* %s%%#SlLines#L%%* %s%%#SlBytes#B",
+    return string.format("%s%%#SlWords#W%%* %s%%#SlChars#C%%* %s%%#SlLines#L%%* %s%%#SlBytes#B",
         utils.format_size(words),
         utils.format_size(chars),
         utils.format_size(linecount),
         utils.format_size(bytes, 1024)
-    ))
-
-    return table.concat(out, " ")
+    )
 end
 -- }}}
 

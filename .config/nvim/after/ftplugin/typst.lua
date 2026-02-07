@@ -34,3 +34,4 @@ end
 local map = require("config.utils").ft_mapper()
 map("n", "<localleader>p", "<cmd>TypstPreviewToggle<cr>")
 map("n", "<localleader>P", "<cmd>TypstPreview<cr>")
+map("n", "<localleader>c", "<cmd>TypstPreviewSyncCursor<cr>")

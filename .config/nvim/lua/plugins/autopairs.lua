@@ -36,7 +36,7 @@ M.config = function()
     ap.get_rules("'")[1].not_filetypes = apostrophe_never_paired
 
     ap.add_rules{
-        rule.new("$", "$", double_dollar),
+        rule.new("$", "$", double_dollar):with_move(),
         rule.new("<", ">", xml_angles):with_pair():with_move()
     }
 end
