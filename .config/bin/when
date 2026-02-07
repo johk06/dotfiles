@@ -63,7 +63,7 @@ script() {
 
 list() {
     systemctl -o json --user list-timers |
-        jq -r 'to_entries[]|"\(.key + 1) \(.value.next / 1000000|strflocaltime("%Y-%m-%d %H:%M:%S")) \(.value.activates)"' |
+        jq -r 'to_entries[]|"\(.key + 1) \(.value| try (.next / 1000000|strflocaltime("%Y-%m-%d %H:%M:%S")) catch "? ?") \(.value.activates)"' |
         while read -r nr date time svc; do
             printf "$COLOR_INDEX%d$COLOR_RESET $COLOR_TIME%s$COLOR_RESET " \
                 "$nr" "$time"
@@ -117,8 +117,11 @@ case "$mode" in
 create)
     spec=$1
     shift
-    [ -n "$spec" ] || usage
-    sched "$spec" "$@"
+    if [ -n "$spec" ]; then
+        sched "$spec" "$@"
+    else
+        list
+    fi
     ;;
 list) list ;;
 edit) edit "$1" ;;
