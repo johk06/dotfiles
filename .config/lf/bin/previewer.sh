@@ -474,6 +474,8 @@ case "$MIMETYPE" in
     inode/x-empty|application/x-empty)
         print -P "%SEmpty\e[0m"
         ;;
+    inode*)
+        info "Special File: $MIMETYPE" ;;
     *octet-stream)
         preview_binary "$FILE" "$MIMETYPE"
         ;;
