@@ -17,14 +17,22 @@ if ((ROFI_RETV == 0)); then
             icon="internet-web-browser"
         fi
         printf "%s\n%s\0icon\x1f%s\x1finfo\x1f%s:%s\t" "$name" "$desc" "$icon" "$type" "$value"
-    done < "$BOOKMARKS_FILE"
+    done <"$BOOKMARKS_FILE"
+
+    while IFS=$'\t' read -r name url; do
+        printf '%s\n%s\0icon\x1f%s\x1finfo\x1f%s:%s\t' "$name" "in firefox" "firefox" "bookmark" "$url"
+    done < <(firefox-marks)
 else
-    if [[ -n "$ROFI_DATA" ]]; then
-        printf -v url "$ROFI_DATA" "$*"
+    IFS=":" read -r type value <<<"$ROFI_INFO"
+    if [[ "$type" == "bookmark" ]] || [[ -n "$ROFI_DATA" ]]; then
+        if [[ -z "$ROFI_DATA" ]]; then
+            url="$value"
+        else
+            printf -v url "$ROFI_DATA" "$*"
+        fi
         (launch-or-inside firefox firefox --new-window "$url" >/dev/null 2>&1) &
         disown
     else
-        IFS=":" read -r type value <<<"$ROFI_INFO"
         printf "\0data\x1f%s\t%s\0icon\x1ffsearch\x1fnonselectable\x1ftrue\t" "$value" "$1"
     fi
 fi

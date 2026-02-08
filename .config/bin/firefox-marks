@@ -1,0 +1,15 @@
+#!/bin/sh
+
+TMPDB="$XDG_CACHE_HOME/firefox-marks"
+[ ! -d "$TMPDB" ] && mkdir "$TMPDB"
+DBFILE="$TMPDB/db"
+
+cp ~/.mozilla/firefox/*.default-release/places.sqlite "$DBFILE"
+
+sqlite3 "$DBFILE" <<'SQL'
+.mode tab
+SELECT b.title, p.url
+FROM moz_bookmarks b
+JOIN moz_places p ON b.fk = p.id
+WHERE b.type = 1
+SQL
