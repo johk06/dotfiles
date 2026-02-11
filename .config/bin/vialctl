@@ -207,8 +207,8 @@ def cmd_anim(dev: VialKbd, args):
             print("Animation does not exist: " + anim, file=sys.stderr)
             exit(1)
     if speed:
-        speed = int(speed.rstrip("%"))
-        speed = int((speed * 255) / 100)
+        speed = float(speed.rstrip("%"))
+        speed = round((speed * 255) / 100)
         if speed > 255:
             print("Speed cannot be > 100", file=sys.stderr)
             exit(1)
@@ -216,24 +216,30 @@ def cmd_anim(dev: VialKbd, args):
     dev.set_animation(animcode, speed or None)
 
 
+def print_color(dev):
+    r, g, b = colorsys.hsv_to_rgb(
+        dev.cur_hsv[0] / 255.0, dev.cur_hsv[1] / 255.0, dev.cur_hsv[2] / 255.0
+    )
+    r = int(round(r * 255))
+    g = int(round(g * 255))
+    b = int(round(b * 255))
+    return f"#{r:02X}{g:02X}{b:02X}"
+
+
 def cmd_info(dev: VialKbd, args):
-    supported = [print_anim(a) for a in dev.supported_anims]
+    supported_anims = [print_anim(a) for a in dev.supported_anims]
     print(
         f"{dev.desc['product_string']}:",
-        "Animations: " + ", ".join(supported),
+        "\tColor: " + print_color(dev),
+        "\tAnimation: " + print_anim(dev.cur_mode) + f" @ {int((dev.cur_speed / 255) * 100):.1f}%",
+        "\tAnimations: " + ", ".join(supported_anims),
         sep="\n",
     )
 
 
 def cmd_color(dev: VialKbd, args):
     if not args:
-        r, g, b = colorsys.hsv_to_rgb(
-            dev.cur_hsv[0] / 255.0, dev.cur_hsv[1] / 255.0, dev.cur_hsv[2] / 255.0
-        )
-        r = int(round(r * 255))
-        g = int(round(g * 255))
-        b = int(round(b * 255))
-        print(f"#{r:02X}{g:02X}{b:02X}")
+        print(print_color(dev))
         return
 
     if args in COLORNAMES:
@@ -262,7 +268,7 @@ def main():
     info_cmd = cmd.add_parser("info", help="Show device info")
 
     color_cmd = cmd.add_parser("color", help="Set or get color")
-    color_cmd.add_argument("color", metavar="#RRGGBB[AA]", nargs="?")
+    color_cmd.add_argument("color", metavar="#RRGGBB", nargs="?")
 
     anim_cmd = cmd.add_parser("anim", help="Set or get animation")
     anim_cmd.add_argument("animation", metavar="ANIM[:speed[%]]", nargs="?")
@@ -292,7 +298,6 @@ def main():
 
         for kbd in kbds:
             handler(kbd, extra)
-
 
 
 if __name__ == "__main__":
