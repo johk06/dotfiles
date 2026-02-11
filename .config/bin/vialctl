@@ -15,6 +15,14 @@ class VialCmd:
     GET_LIGHTING = 0x08
 
 
+class LightingCmd:
+    RGB_GET_INFO = 0x40
+    RGB_GET_MODE = 0x41
+    RGB_SET_MODE = 0x41
+    RGB_GET_ANIM = 0x81
+    RGB_GET_SUPPORTED = 0x42
+
+
 # only those i care about rn
 ANIMATIONS = {
     "off": 0,
@@ -60,11 +68,12 @@ def is_rawhid(dev: hid.DeviceInfo):
     return not (dev["usage_page"] != 0xFF60 or dev["usage"] != 0x61)
 
 
-def find_vial_devices() -> list[hid.DeviceInfo]:
+def find_vial_devices(name: str) -> list[hid.DeviceInfo]:
     res: list[hid.DeviceInfo] = []
     for dev in hid.enumerate():
         if VIAL_SERIAL_MAGIC in dev["serial_number"] and is_rawhid(dev):
-            res.append(dev)
+            if not name or dev["product_string"].find(name):
+                res.append(dev)
 
     return res
 
@@ -72,14 +81,14 @@ def find_vial_devices() -> list[hid.DeviceInfo]:
 class VialKbd:
     def __init__(self, dev: hid.DeviceInfo):
         self.desc = dev
-        self.max_brightness = self.cur_speed = self.cur_mode = 0
-        self.cur_hsv = (0, 0, 0)
-        self.supported_anims = {0}
-        self.get_color_info()
+        self.supported_anims = self.get_supported_anims()
+        self.cur_mode, self.cur_speed, self.cur_hsv, self.cur_brightness = (
+            self.get_color_info()
+        )
 
     def msg(self, data: bytes) -> bytes:
         if len(data) > 32:
-            raise RuntimeError("Message length must be 32 bytes")
+            raise RuntimeError("Message length must be < 32 bytes")
 
         data += b"\x00" * (32 - len(data))  # padd
         with hid.Device(path=self.desc["path"]) as dev:
@@ -88,27 +97,43 @@ class VialKbd:
 
         return response
 
-    def get_color_info(self):
-        data = self.msg(struct.pack("BB", VialCmd.GET_LIGHTING, 0x40))[2:]
-
-        rgb_version = data[0] | (data[1] << 8)
-        assert rgb_version == 1
-
-        self.max_brightness = data[2]
+    def get_supported_anims(self):
+        supported_anims = {0}
         max_effect = 0
         while max_effect < 0xFFFF:
             data = self.msg(
-                struct.pack("<BBH", VialCmd.GET_LIGHTING, 0x42, max_effect)
+                struct.pack(
+                    "<BBH",
+                    VialCmd.GET_LIGHTING,
+                    LightingCmd.RGB_GET_SUPPORTED,
+                    max_effect,
+                )
             )[2:]
             for x in range(0, len(data), 2):
                 value = int.from_bytes(data[x : x + 2], byteorder="little")
                 if value != 0xFFFF:
-                    self.supported_anims.add(value)
+                    supported_anims.add(value)
                 max_effect = max(max_effect, value)
-        data = self.msg(struct.pack("BB", VialCmd.GET_LIGHTING, 0x41))[2:]
-        self.cur_mode = int.from_bytes(data[0:2], byteorder="little")
-        self.cur_speed = data[2]
-        self.cur_hsv = (data[3], data[4], data[5])
+
+        return supported_anims
+
+    def get_color_info(self):
+        data = self.msg(
+            struct.pack("BB", VialCmd.GET_LIGHTING, LightingCmd.RGB_GET_INFO)
+        )[2:]
+        max_brightness = data[2]
+
+        rgb_version = data[0] | (data[1] << 8)
+        assert rgb_version == 1
+
+        data = self.msg(
+            struct.pack("BB", VialCmd.GET_LIGHTING, LightingCmd.RGB_GET_MODE)
+        )[2:]
+        cur_mode = int.from_bytes(data[0:2], byteorder="little")
+        cur_speed = data[2]
+        cur_hsv = (data[3], data[4], data[5])
+
+        return (cur_mode, cur_speed, cur_hsv, max_brightness)
 
     def set_color(self, r: int, g: int, b: int):
         r_scaled, g_scaled, b_scaled = r / 255.0, g / 255.0, b / 255.0
@@ -121,7 +146,7 @@ class VialKbd:
             struct.pack(
                 "BBHBBBB",
                 VialCmd.SET_LIGHTING,
-                0x41,
+                LightingCmd.RGB_SET_MODE,
                 self.cur_mode,
                 self.cur_speed,
                 h,
@@ -162,75 +187,112 @@ def parse_hex_color(hex: str) -> (int, int, int):
     return r, g, b
 
 
+def print_anim(anim):
+    return f"{CODES2ANIMS[anim]} ({anim})"
+
+
+def cmd_anim(dev: VialKbd, args):
+    if not args:
+        print(print_anim(dev.cur_mode))
+        return
+
+    split = args.split(":")
+    anim = split[0]
+    speed = len(split) > 1 and split[1] or None
+    if re.match(r"\d+", anim):
+        animcode = int(anim)
+    else:
+        animcode = ANIMATIONS.get(anim, None)
+        if animcode is None:
+            print("Animation does not exist: " + anim, file=sys.stderr)
+            exit(1)
+    if speed:
+        speed = int(speed.rstrip("%"))
+        speed = int((speed * 255) / 100)
+        if speed > 255:
+            print("Speed cannot be > 100", file=sys.stderr)
+            exit(1)
+
+    dev.set_animation(animcode, speed or None)
+
+
+def cmd_info(dev: VialKbd, args):
+    supported = [print_anim(a) for a in dev.supported_anims]
+    print(
+        f"{dev.desc['product_string']}:",
+        "Animations: " + ", ".join(supported),
+        sep="\n",
+    )
+
+
+def cmd_color(dev: VialKbd, args):
+    if not args:
+        r, g, b = colorsys.hsv_to_rgb(
+            dev.cur_hsv[0] / 255.0, dev.cur_hsv[1] / 255.0, dev.cur_hsv[2] / 255.0
+        )
+        r = int(round(r * 255))
+        g = int(round(g * 255))
+        b = int(round(b * 255))
+        print(f"#{r:02X}{g:02X}{b:02X}")
+        return
+
+    if args in COLORNAMES:
+        color = COLORNAMES[args]
+    else:
+        try:
+            color = parse_hex_color(args)
+        except ValueError:
+            print("Invalid color: " + args, file=sys.stderr)
+            exit(1)
+
+    dev.set_color(*color)
+
+
+def cmd_list(devs: list[hid.DeviceInfo]):
+    for dev in devs:
+        print(f"{dev['product_string']}: {dev['path'].decode()}")
+
+
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("-l", "--list", action="store_true")
-    parser.add_argument("-c", "--color", metavar="[#]RRGGBB[AA]")
-    parser.add_argument("-a", "--animation", metavar="animation[:speed[%]]")
-    parser.add_argument(
-        "-L", "--list-animations", action="store_true", dest="list_animations"
-    )
-    parser.add_argument("-C", "--get-color", action="store_true", dest="get_color")
-    parser.add_argument(
-        "-A", "--get-animation", action="store_true", dest="get_animation"
-    )
+    parser.add_argument("-d", "--device")
+    cmd = parser.add_subparsers(dest="command", required=True)
+
+    list_cmd = cmd.add_parser("list", help="List available devices")
+    info_cmd = cmd.add_parser("info", help="Show device info")
+
+    color_cmd = cmd.add_parser("color", help="Set or get color")
+    color_cmd.add_argument("color", metavar="#RRGGBB[AA]", nargs="?")
+
+    anim_cmd = cmd.add_parser("anim", help="Set or get animation")
+    anim_cmd.add_argument("animation", metavar="ANIM[:speed[%]]", nargs="?")
+
     args = parser.parse_args()
 
-    devs = find_vial_devices()
+    devs = find_vial_devices(args.device)
     if len(devs) == 0:
         print("No devices found", file=sys.stderr)
         exit(1)
 
-    if args.list:
-        for dev in devs:
-            print(f"{dev['path'].decode()} {dev['product_string']}")
+    if args.command == "list":
+        cmd_list(devs)
+    else:
+        kbds = [VialKbd(dev) for dev in devs]
 
-    kbds = [VialKbd(dev) for dev in devs]
+        extra = None
+        match args.command:
+            case "info":
+                handler = cmd_info
+            case "color":
+                handler = cmd_color
+                extra = args.color
+            case "anim":
+                handler = cmd_anim
+                extra = args.animation
 
-    if args.list_animations:
         for kbd in kbds:
-            print(
-                f"{kbd.desc['product_string']}: {', '.join([CODES2ANIMS[an] for an in kbd.supported_anims])}"
-            )
+            handler(kbd, extra)
 
-    if args.color:
-        if args.color in COLORNAMES:
-            color = COLORNAMES[args.color]
-        else:
-            color = parse_hex_color(args.color)
-        for kbd in kbds:
-            kbd.set_color(*color)
-
-    if args.animation:
-        split = args.animation.split(":")
-        anim = split[0]
-        speed = len(split) > 1 and split[1] or None
-        if re.match(r"\d+", anim):
-            animcode = int(anim)
-        else:
-            animcode = ANIMATIONS.get(anim, None)
-            if animcode is None:
-                print("Animation does not exist: " + anim, file=sys.stderr)
-                exit(1)
-        if speed:
-            speed = int(speed.rstrip("%"))
-            speed = int((speed * 255) / 100)
-        for kbd in kbds:
-            kbd.set_animation(animcode, speed or None)
-
-    if args.get_color:
-        for kbd in kbds:
-            r, g, b = colorsys.hsv_to_rgb(
-                kbd.cur_hsv[0] / 255.0, kbd.cur_hsv[1] / 255.0, kbd.cur_hsv[2] / 255.0
-            )
-            r = int(round(r * 255))
-            g = int(round(g * 255))
-            b = int(round(b * 255))
-            print(f"#{r:02X}{g:02X}{b:02X}")
-
-    if args.get_animation:
-        for kbd in kbds:
-            print(kbd.get_animation())
 
 
 if __name__ == "__main__":
