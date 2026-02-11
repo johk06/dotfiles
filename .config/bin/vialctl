@@ -171,6 +171,9 @@ def main():
         "-L", "--list-animations", action="store_true", dest="list_animations"
     )
     parser.add_argument("-C", "--get-color", action="store_true", dest="get_color")
+    parser.add_argument(
+        "-A", "--get-animation", action="store_true", dest="get_animation"
+    )
     args = parser.parse_args()
 
     devs = find_vial_devices()
@@ -224,6 +227,10 @@ def main():
             g = int(round(g * 255))
             b = int(round(b * 255))
             print(f"#{r:02X}{g:02X}{b:02X}")
+
+    if args.get_animation:
+        for kbd in kbds:
+            print(kbd.get_animation())
 
 
 if __name__ == "__main__":
