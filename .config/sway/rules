@@ -16,4 +16,10 @@ for_window [app_id="nwg-icon-picker"] floating enable, resize set 300px 400px
 # mark certain windows by default
 for_window [app_id="gamescope"] mark game
 
+# These mostly live in the scratchpad, being able to automatically target them is nice
+for_window [app_id="kitty" title="^aerc"] mark email
+for_window [app_id="kitty" title="^newsboat"] mark news
+for_window [app_id="kitty" title="^iamb"] mark social
+for_window [app_id="kitty" title="^ncmpcpp"] mark music
+
 for_window [app_id="gcr-prompter"] focus
