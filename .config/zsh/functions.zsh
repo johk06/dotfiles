@@ -31,22 +31,6 @@ function c {
 function hex2chars {
     printf '0: %s' "$@" | xxd -r
 }
-
-function hlcolor {
-    while read -r hex; do
-        local red=$[ 0x${hex:1:2} ]
-        local green=$[ 0x${hex:3:2} ]
-        local blue=$[ 0x${hex:5:2} ]
-        local avg_bright=$[ (red + green + blue) / 3]
-
-        local foreground=7
-        if (( avg_bright > 128 )); then
-            foreground=0
-        fi
-        printf '\e[3%d;48;2;%d;%d;%dm%s\e[0m \e[38;2;%d;%d;%d;m%s\n' \
-            $foreground $red $green $blue $hex $red $green $blue $hex
-    done
-}
 # }}}
 
 # Process Utils {{{

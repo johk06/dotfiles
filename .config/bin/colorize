@@ -1,0 +1,35 @@
+#!/usr/bin/env luajit
+
+--[[
+Convert #rrggbb color codes on stdin to the same color,
+but with that color as the background on stdout
+]]
+
+local slice_to_num = function(s, i)
+    return tonumber(s:sub(i, i + 1), 16)
+end
+
+local chunk
+repeat
+    chunk = io.stdin:read("*L")
+    if not chunk then
+        break
+    end
+
+    local replaced = chunk:gsub("#%x%x%x%x%x%x", function(match)
+        local r = slice_to_num(match, 2)
+        local g = slice_to_num(match, 4)
+        local b = slice_to_num(match, 6)
+
+        -- Display already bright colors with a dark foreground
+        local fg = "39"
+        if (r + g + b) / 3 > 128 then
+            fg = "30"
+        end
+
+        return ("\x1b[48;2;%d;%d;%d;%sm%s\x1b[0m"):
+        format(r, g, b, fg, match)
+    end)
+
+    io.stdout:write(replaced)
+until not chunk
