@@ -11,8 +11,6 @@
 
 # Index directly
 bindsym $mod+Grave exec $sc/scratch-numeric
-# Show by tag
-bindsym $mod+Shift+Grave exec $sc/on-mark initial scratchpad show
 # Cycle
 bindsym $mod+Tab scratchpad show
 # Push

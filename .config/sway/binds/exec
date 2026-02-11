@@ -21,10 +21,16 @@ bindsym $mod+Shift+Period    exec swaync-client --close-all
 bindsym $mod+Mod1+Period     exec $sc/invoke-notification
 
 # The default applet
+# run programs, plain and simple
 bindsym $mod+Space           exec killall rofi || rofi -show drun
+# logout, power and other session controls
 bindsym $mod+Shift+Semicolon exec killall rofi || rofi -show sys
+# search windows
 bindsym $mod+Slash           exec killall rofi || rofi -show sway
+# qalculate wrapper
 bindsym $mod+Shift+Slash     exec killall rofi || rofi -show calc
+# custom and firefox bookmarks
+bindsym $mod+Shift+Grave     exec killall rofi || rofi -show marks
 
 # Specialized applets
 bindsym $mod+O               exec killall rofi || ~/.config/rofi/applets/files/run.sh
