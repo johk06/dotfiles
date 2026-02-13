@@ -288,6 +288,15 @@ bindkey -M vicmd ^A jhk-change-value
 bindkey -M vicmd ^X jhk-change-value
 # }}}
 
+# Get the arguments of the previous command
+function jhk-insert-last-cmdline {
+    zle insert-last-word -- -1 ${NUMERIC:-2} 1
+    zle beginning-of-line
+    RBUFFER=" $RBUFFER"
+}
+zle -N jhk-insert-last-cmdline
+bindall '^T' jhk-insert-last-cmdline
+
 # Keep line but still run the command
 bindall "\e^M" accept-and-hold
 # Like "suspending" the current command
