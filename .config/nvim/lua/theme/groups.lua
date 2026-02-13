@@ -441,7 +441,7 @@ add_with_prefix(colorscheme, "Dashboard", {
     FindFiles = { fg = col.light_blue },
     Oil       = { fg = col.teal },
     Agenda    = { fg = col.green },
-    GrepFiles = { fg = col.yellow },
+    Capture   = { fg = col.yellow },
     Quit      = { fg = col.orange },
 
     Actions   = { fg = pal.fg0, bg = pal.bg01 },

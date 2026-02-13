@@ -76,7 +76,19 @@ opts.org_agenda_custom_commands = {
     }
 }
 
-opts.org_capture_templates = {}
+opts.org_capture_templates = {
+    j = {
+        description = "Journal",
+        template = {
+            "#+author: Johanna",
+            "#+filetags: journal",
+            "#+created: %T",
+            "#+language: de",
+            "",
+        },
+        target = "~/org/journal/%<%Y>/%<%b-%d>.org"
+    }
+}
 
 --- Mappings {{{
 opts.mappings = {
@@ -204,6 +216,14 @@ M.config = function()
     local custom = require("config.plugins.orgmode")
     local eval = require("orgmode-eval")
     require("telescope").load_extension("orgmode")
+
+    --[[
+    Orgmode uses an in-process lsp server
+    This means that completion does *not* require any explicit integration 
+    and symbols can be searched
+    Hopefully they'll continue to add features to it
+    ]]
+    vim.lsp.enable("org")
 
     opts.ui.menu = { handler = custom.menu }
     opts.org_custom_exports = {

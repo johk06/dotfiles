@@ -130,7 +130,9 @@ local opts = {
     close_fold_kinds_for_ft = {
         default = { "imports", "marker" },
         ---@diagnostic disable-next-line: assign-type-mismatch Treesitter node names can be used too
-        c = { "preproc_include", "marker" }
+        c = { "preproc_include", "marker" },
+        ---@diagnostic disable-next-line: assign-type-mismatch
+        org = { "directive", "marker" },
     },
     provider_selector = function(bufnr, ft, bft)
         if ft == "qf" then

@@ -125,16 +125,11 @@ opts.sources = {
     default = { "lsp", "path", "lua_snippets", "buffer" },
     per_filetype = {
         oil = { "path", "buffer", "lua_snippets" },
-        org = { "orgmode", "lua_snippets", "buffer" },
         Input = { "omni" },
         css = css_sources,
         scss = css_sources,
     },
     providers = {
-        orgmode = {
-            module = "orgmode.org.autocompletion.blink",
-            fallbacks = { "buffer" },
-        },
         lua_snippets = {
             module = "config.plugins.blink-snippets",
         },

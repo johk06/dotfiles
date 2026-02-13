@@ -59,13 +59,13 @@ local ACTIONS = {
         hl = "Agenda"
     },
     {
-        "Search Files",
-        desc = "Search by file content",
-        key = "s",
+        "Capture",
+        desc = "Write about a topic",
+        key = "w",
         on_click = function()
-            require("telescope.builtin").live_grep()
+            Org.capture()
         end,
-        hl = "GrepFiles"
+        hl = "Capture"
     },
     {
         "Quit Neovim",
