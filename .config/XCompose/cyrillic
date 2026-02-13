@@ -88,4 +88,4 @@
 
 # Going off of looks mostly
 <Multi_key> <equal> <W> : "Ж"
-<Multi_key> <equal> <W> : "ж"
+<Multi_key> <equal> <w> : "ж"
