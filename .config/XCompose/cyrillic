@@ -1,9 +1,8 @@
 # vim: ft=xcompose
 
-# use = as the general leader key for cyrillic, like vim but reverse
+# use = as the general leader key for Cyrillic, like vim but reverse
 
-# russian cyrillic
-# use apostrophe for palatal, comma for postalveolar
+# Basic alphabet, nearest match {{{
 <Multi_key> <equal> <A> : "А"
 <Multi_key> <equal> <a> : "а"
 <Multi_key> <equal> <B> : "Б"
@@ -16,12 +15,6 @@
 <Multi_key> <equal> <d> : "д"
 <Multi_key> <equal> <E> : "Е"
 <Multi_key> <equal> <e> : "е"
-<Multi_key> <equal> <quotedbl> <E> : "Ё"
-<Multi_key> <equal> <quotedbl> <e> : "ё"
-<Multi_key> <equal> <colon> <E> : "Ё"
-<Multi_key> <equal> <colon> <e> : "ё"
-<Multi_key> <equal> <comma> <Z> : "Ж"
-<Multi_key> <equal> <comma> <z> : "ж"
 <Multi_key> <equal> <Z> : "З"
 <Multi_key> <equal> <z> : "з"
 <Multi_key> <equal> <I> : "И"
@@ -54,18 +47,32 @@
 <Multi_key> <equal> <h> : "х"
 <Multi_key> <equal> <C> : "Ц"
 <Multi_key> <equal> <c> : "ц"
-<Multi_key> <equal> <apostrophe> <C> : "Ч"
-<Multi_key> <equal> <apostrophe> <c> : "ч"
-<Multi_key> <equal> <comma> <S> : "Ш"
-<Multi_key> <equal> <comma> <s> : "ш"
-<Multi_key> <equal> <apostrophe> <S> : "Щ"
-<Multi_key> <equal> <apostrophe> <s> : "щ"
-<Multi_key> <equal> <quotedbl> <quotedbl> : "Ъ"
-<Multi_key> <equal> <quotedbl> <apostrophe> : "ъ"
-<Multi_key> <equal> <apostrophe> <quotedbl> : "Ь"
-<Multi_key> <equal> <apostrophe> <apostrophe> : "ь"
 <Multi_key> <equal> <y> : "ы"
 <Multi_key> <equal> <Y> : "Ы"
+# }}}
+
+# Like the ipa retroflex symbols
+<Multi_key> <equal> <comma> <Z> : "Ж"
+<Multi_key> <equal> <comma> <z> : "ж"
+<Multi_key> <equal> <comma> <S> : "Ш"
+<Multi_key> <equal> <comma> <s> : "ш"
+
+# Equivalent to e.g. polish
+<Multi_key> <equal> <apostrophe> <S> : "Щ"
+<Multi_key> <equal> <apostrophe> <s> : "щ"
+<Multi_key> <equal> <apostrophe> <C> : "Ч"
+<Multi_key> <equal> <apostrophe> <c> : "ч"
+
+# Convenient position that is empty
+<Multi_key> <equal> <bracketleft> : "ь"
+<Multi_key> <equal> <bracketright> : "ъ"
+<Multi_key> <equal> <braceleft> : "Ь"
+<Multi_key> <equal> <braceright> : "Ъ"
+
+<Multi_key> <equal> <quotedbl> <E> : "Ё"
+<Multi_key> <equal> <quotedbl> <e> : "ё"
+
+# Explicitly hard/soft vowels
 <Multi_key> <equal> <apostrophe> <E> : "Э"
 <Multi_key> <equal> <apostrophe> <e> : "э"
 <Multi_key> <equal> <apostrophe> <U> : "Ю"
@@ -73,8 +80,12 @@
 <Multi_key> <equal> <apostrophe> <A> : "Я"
 <Multi_key> <equal> <apostrophe> <a> : "я"
 
-# stealing some ideas from pinyin
+# Stealing some ideas from pinyin
 <Multi_key> <equal> <Q> : "Ч"
 <Multi_key> <equal> <q> : "ч"
 <Multi_key> <equal> <X> : "Ш"
 <Multi_key> <equal> <x> : "ш"
+
+# Going off of looks mostly
+<Multi_key> <equal> <W> : "Ж"
+<Multi_key> <equal> <W> : "ж"
