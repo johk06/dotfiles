@@ -11,7 +11,7 @@ button {
 }
 
 $trans: background-color 0.3s ease, color 0.3s ease;
-$radius: 1rem;
+$radius: 12px;
 $popup_shadow: rgba(0,0,0,0.5) 0px 2px 4px;
 
 .close-button {
@@ -22,8 +22,8 @@ $popup_shadow: rgba(0,0,0,0.5) 0px 2px 4px;
     min-width: 24px;
     min-height: 24px;
     transition: $trans;
-    margin-right: 1.5rem;
-    margin-top: 1.5rem;
+    margin-right: 1.2rem;
+    margin-top: 1.2rem;
 
     &:hover {
         background-color: $red;
@@ -35,7 +35,7 @@ $popup_shadow: rgba(0,0,0,0.5) 0px 2px 4px;
 
 .notification {
     border: unset;
-    margin: .9rem;
+    margin: .6rem;
     box-shadow: $popup_shadow;
     border-radius: $radius;
     transition: $trans;
@@ -68,7 +68,6 @@ $popup_shadow: rgba(0,0,0,0.5) 0px 2px 4px;
     color: $fg0;
     background-color: transparent;
     border-radius: $radius;
-    margin: 8px;
     padding: 6px;
 
     .image {
@@ -79,21 +78,23 @@ $popup_shadow: rgba(0,0,0,0.5) 0px 2px 4px;
     .app-icon {
         -gtk-icon-effect: none;
         -gtk-icon-shadow: 0 1px 4px black;
-        margin: .4rem;
+        margin: .1rem;
         color: $fg0;
     }
-    .summary {
-        color: $fg0;
-        font-weight: bold;
-        font-size: 1.2rem;
-        margin-bottom: .2rem;
-    }
-    .time {
-        margin-right: 30px;
-        color: $fg2;
-    }
-    .body {
-        color: $fg0;
+    .text-box {
+        .summary {
+            color: $fg0;
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin-bottom: .2rem;
+        }
+        .time {
+            margin-right: 30px;
+            color: $fg2;
+        }
+        .body {
+            color: $fg0;
+        }
     }
 
     progressbar {
@@ -213,9 +214,9 @@ $popup_shadow: rgba(0,0,0,0.5) 0px 2px 4px;
 }
 
 .notification-group-headers {
-    min-height: 2rem;
+    min-height: 1rem;
     margin: 0 1.2rem;
-    padding: 1rem;
+    padding: .5rem;
     .notification-group-icon {
         color: $fg0;
         background-color: $bg0;
@@ -229,15 +230,14 @@ $popup_shadow: rgba(0,0,0,0.5) 0px 2px 4px;
 .notification-group-buttons > button {
     min-height: 2rem;
     min-width: 3rem;
-    background-color: $bg2;
+    background-color: $bg1;
     color: $fg0;
     transition: $trans;
 }
 
 .notification-group-collapse-button {
     &:hover {
-        background-color: $lblue;
-        color: $inv;
+        background-color: $bg3;
     }
 }
 
