@@ -1,5 +1,8 @@
 [alias]
-a = add 
+a = add
 ai = add -p
+lg = log --pretty=brief
+st = status -s -uno
+sta = status -s --ignored
 
 ; vim: set ft=gitconfig :

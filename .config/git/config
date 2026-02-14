@@ -43,6 +43,13 @@ lineNumber = magenta
 separator = brightblack
 selected = white # otherwise git produces brightwhite
 
+[color "status"]
+updated = green
+changed = yellow
+added = bold yellow
+untracked = brightblack
+
+
 ; Allow it to override anything else
 [includeIf "gitdir:~/ws/uni/**"]
 path = ./uni
