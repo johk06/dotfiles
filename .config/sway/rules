@@ -13,9 +13,16 @@ for_window [app_id="nwg-icon-picker"] floating enable, resize set 300px 400px
 for_window [app_id="gcr-prompter"] focus
 
 # Games {{{
+for_window [con_mark="game"] \
+    move window to workspace number 10,\
+    fullscreen enable,\
+    focus
+
 for_window [app_id="gamescope"] mark game
+# Minecraft for some reason does not set an app_id, its title is generally like
+# "Minecraft* $version", so explicitly match empty app_id and require the
+# asterisk, as to avoid false positives
 for_window [app_id="^$" title="^Minecraft\*"] mark game
-for_window [con_mark="game"] move window to workspace number 10, fullscreen enable
 # }}}
 
 # These mostly live in the scratchpad, being able to automatically target them is nice
