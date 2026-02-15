@@ -1,7 +1,5 @@
 # vim: ft=swayconfig
 
-
-
 # Popups, float by default and maybe set size
 for_window [app_id="zenity"] floating enable
 for_window [app_id="yad"] floating enable
@@ -16,7 +14,7 @@ for_window [app_id="gcr-prompter"] focus
 
 # Games {{{
 for_window [app_id="gamescope"] mark game
-for_window [title="^Minecraft"] mark game
+for_window [app_id="^$" title="^Minecraft\*"] mark game
 for_window [con_mark="game"] move window to workspace number 10, fullscreen enable
 # }}}
 
