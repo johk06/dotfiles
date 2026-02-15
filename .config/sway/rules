@@ -1,9 +1,8 @@
 # vim: ft=swayconfig
 
 
-for_window [app_id="gamescope"] move window to workspace number 10
 
-# float
+# Popups, float by default and maybe set size
 for_window [app_id="zenity"] floating enable
 for_window [app_id="yad"] floating enable
 for_window [app_id="valent"] floating enable
@@ -13,13 +12,16 @@ for_window [app_id="org.pipewire.Helvum"] floating enable
 for_window [app_id="nm-connection-editor"] floating enable
 for_window [app_id="nwg-icon-picker"] floating enable, resize set 300px 400px
 
-# mark certain windows by default
+for_window [app_id="gcr-prompter"] focus
+
+# Games {{{
 for_window [app_id="gamescope"] mark game
+for_window [title="^Minecraft"] mark game
+for_window [con_mark="game"] move window to workspace number 10, fullscreen enable
+# }}}
 
 # These mostly live in the scratchpad, being able to automatically target them is nice
 for_window [app_id="kitty" title="^aerc"] mark email
 for_window [app_id="kitty" title="^newsboat"] mark news
 for_window [app_id="kitty" title="^iamb"] mark social
 for_window [app_id="kitty" title="^ncmpcpp"] mark music
-
-for_window [app_id="gcr-prompter"] focus
