@@ -26,6 +26,8 @@ M.opts = {
         toml  = { "taplo" },
         typst = { "typstyle" },
         xml   = { "xmllint" },
+        -- injecting sh leads to spacing issues
+        make  = { "trim_whitespace" }
     },
     default_format_opts = {
         lsp_format = "fallback",

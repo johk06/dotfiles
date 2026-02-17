@@ -341,13 +341,16 @@ command("OnWrite", function(args)
             for _, item in ipairs(cmd) do
                 table.insert(com, vim.fn.expand(item))
             end
-            vim.system(com, { text = true }, function(out)
-                if out.code ~= 0 then
-                    vim.schedule(function()
-                        utils.error("OnWrite", out.stderr)
-                    end)
-                end
-            end)
+            vim.system(
+                { vim.o.shell, vim.o.shellcmdflag, table.concat(com, " ") },
+                { text = true },
+                function(out)
+                    if out.code ~= 0 then
+                        vim.schedule(function()
+                            utils.error("OnWrite", out.stderr)
+                        end)
+                    end
+                end)
             return
         else
             api.nvim_cmd({

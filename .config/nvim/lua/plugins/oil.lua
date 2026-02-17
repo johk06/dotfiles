@@ -184,7 +184,12 @@ local function filter_items()
                 return false
             end
 
-            return vim.regex(filter):match_str(fname) == nil
+            local ok, regex = pcall(vim.regex, filter)
+            if ok then
+                return regex:match_str(fname) == nil
+            else
+                return false
+            end
         end)
     end
     vim.ui.input({

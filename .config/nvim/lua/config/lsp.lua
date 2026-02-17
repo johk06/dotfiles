@@ -235,7 +235,11 @@ local on_lsp_attached = function(ev)
         -- remove all the basic wildcards
         vim.opt_local.path:remove { "*", "../*" }
 
-        fn.chdir(vim.uri_to_fname(client.workspace_folders[1].uri))
+        local folder = vim.uri_to_fname(client.workspace_folders[1].uri)
+        -- that's basically always wrong
+        if folder ~= vim.env.HOME then
+            fn.chdir(folder)
+        end
     end
 
     for cmd, action in pairs(lsp_commands) do

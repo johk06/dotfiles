@@ -159,7 +159,7 @@ M.nvim_input = function(opts, callback)
     end
 
     local title = (opts.prompt and opts.prompt:gsub("%s*:%s*", "") or "Input")
-    local titlewidth = math.min(fn.strdisplaywidth(title), 12) + 2
+    local titlewidth = math.min(fn.strdisplaywidth(title), 20) + 2
     api.nvim_buf_set_extmark(titlebuf, ns, 0, 0, {
         virt_text = { { title, "Identifier" }, { ": ", "NonText" } },
         virt_text_win_col = 0
