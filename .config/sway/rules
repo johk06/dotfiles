@@ -11,8 +11,15 @@ for_window [app_id="nm-connection-editor"] floating enable
 for_window [app_id="nwg-icon-picker"]      floating enable, resize set 300px 400px
 
 # Make sure I do not type passwords into the wrong dialog
-for_window [app_id="gcr-prompter"] focus
-for_window [app_id="ssh-askpass"] focus
+set $popup-critical \
+    client.unfocused #bf616a #bf616a #bf616a #bf616a #bf616a,\
+    client.focused #ebcb8b #ebcb8b #ebcb8b #ebcb8b #ebcb8b,\
+    focus,\
+    sticky enable,\
+    border pixel 3
+
+for_window [app_id="gcr-prompter"] $popup-critical
+for_window [app_id="ssh-askpass"] $popup-critical
 
 # Games {{{
 for_window [con_mark="game"] \
