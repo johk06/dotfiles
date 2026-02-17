@@ -51,6 +51,7 @@ bindsym $mod+Equal resize set width 50ppt; resize set height 50ppt
 # Rarely needed, mainly for tabs and floating windows
 bindsym $mod+S splitv
 bindsym $mod+V splith
+# [B]oxed
 bindsym $mod+B layout toggle split tabbed
 
 # "real" fullscreen

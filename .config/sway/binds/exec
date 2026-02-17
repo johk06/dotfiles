@@ -11,6 +11,8 @@ bindsym $mod+W               exec firefox
 
 # [E]xplore, yes this is a shitty windows-like map
 bindsym $mod+E               exec kitty zsh -ic lf
+# Opening a temp folder is common
+bindsym $mod+Shift+E         exec kitty zsh -ic 'lf ~/Tmp/'
 
 # Always quick to lock
 bindsym $mod+Semicolon       exec gtklock -d

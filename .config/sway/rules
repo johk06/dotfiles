@@ -1,24 +1,28 @@
 # vim: ft=swayconfig
 
-# Popups, float by default and maybe set size
-for_window [app_id="zenity"] floating enable
-for_window [app_id="yad"] floating enable
-for_window [app_id="valent"] floating enable
-for_window [app_id=".*blueman.*"] floating enable
-for_window [app_id="pavucontrol"] floating enable
-for_window [app_id="org.pipewire.Helvum"] floating enable
+# Popups, float by default and maybe set size (if the window is too small or too big otherwise)
+for_window [app_id="zenity"]               floating enable
+for_window [app_id="yad"]                  floating enable
+for_window [app_id="valent"]               floating enable
+for_window [app_id=".*blueman.*"]          floating enable
+for_window [app_id="pavucontrol"]          floating enable
+for_window [app_id="org.pipewire.Helvum"]  floating enable
 for_window [app_id="nm-connection-editor"] floating enable
-for_window [app_id="nwg-icon-picker"] floating enable, resize set 300px 400px
+for_window [app_id="nwg-icon-picker"]      floating enable, resize set 300px 400px
 
+# Make sure I do not type passwords into the wrong dialog
 for_window [app_id="gcr-prompter"] focus
+for_window [app_id="ssh-askpass"] focus
 
 # Games {{{
 for_window [con_mark="game"] \
+    inhibit_idle open,\
     move window to workspace number 10,\
     fullscreen enable,\
     focus
 
 for_window [app_id="gamescope"] mark game
+
 # Minecraft for some reason does not set an app_id, its title is generally like
 # "Minecraft* $version", so explicitly match empty app_id and require the
 # asterisk, as to avoid false positives
@@ -26,7 +30,10 @@ for_window [app_id="^$" title="^Minecraft\*"] mark game
 # }}}
 
 # These mostly live in the scratchpad, being able to automatically target them is nice
-for_window [app_id="kitty" title="^aerc"] mark email
-for_window [app_id="kitty" title="^newsboat"] mark news
-for_window [app_id="kitty" title="^iamb"] mark social
-for_window [app_id="kitty" title="^ncmpcpp"] mark music
+for_window [app_id="kitty" title="^aerc"]     mark email~
+for_window [app_id="kitty" title="^newsboat"] mark news~
+for_window [app_id="kitty" title="^iamb"]     mark social~
+for_window [app_id="kitty" title="^ncmpcpp"]  mark music~
+
+# "Pinned" windows, they should automatically be registered for the scratchpad
+for_window [con_mark="~$"] move window to scratchpad, scratchpad show
