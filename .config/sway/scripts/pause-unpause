@@ -1,0 +1,15 @@
+#!/bin/sh
+
+if swaymsg -t get_outputs | jq 'map(.power|not)|any' -e; then
+    setting=enable
+else
+    if ! pgrep gtklock; then
+        gtklock -d
+    fi
+    setting=disable
+fi
+
+swaymsg -t get_outputs | jq '.[].name' -r |
+    while read -r name; do
+        swaymsg output "$name" "$setting"
+    done

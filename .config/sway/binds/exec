@@ -15,7 +15,9 @@ bindsym $mod+E               exec kitty zsh -ic lf
 bindsym $mod+Shift+E         exec kitty zsh -ic 'lf ~/Tmp/'
 
 # Always quick to lock
-bindsym $mod+Semicolon       exec gtklock -d
+bindsym $mod+Semicolon exec gtklock -d
+# A somewhat stronger version that also toggles the displays on and off
+bindsym --locked $mod+XF86AudioPlay exec $sc/pause-unpause
 
 # Notifications
 bindsym $mod+Period          exec swaync-client --close-latest
