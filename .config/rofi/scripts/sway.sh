@@ -8,7 +8,7 @@ read -r -d '' JQ_QUERY <<'JQ'
 .name as $name |..|
 ((.nodes? // empty) + (.floating_nodes? // empty))[] |
 select(.pid) + {ws: $name}
-| "\(.id)\t\(.name)\t\(.app_id? // .window_properties.class)\t\(.ws)"
+| "\(.id)\t\(.name)\t\(.app_id? // .window_properties.class)\t\(.ws)\t\(.marks|map("'" + .)|join(" "))"
 JQ
 
 USAGE="Select Windows: (S- Grab) (C- Swap)"
@@ -16,7 +16,7 @@ USAGE="Select Windows: (S- Grab) (C- Swap)"
 if ((ROFI_RETV == 0)); then
     echo -en "\0use-hot-keys\x1ftrue\n\0delim\x1f\t\n"
     printf '\0message\x1f%s\t' "$USAGE"
-    while IFS=$'\t' read -r id name class ws; do
+    while IFS=$'\t' read -r id name class ws marks; do
         icon="$class"
         if [[ "$class" == "kitty" ]]; then
             case "$name" in
@@ -26,6 +26,7 @@ if ((ROFI_RETV == 0)); then
             qalc) icon="qalculator" ;;
             aerc) icon=email ;;
             newsboat) icon=$name ;;
+            iamb*) icon=internet-chat ;;
             esac
         fi
 
@@ -33,7 +34,7 @@ if ((ROFI_RETV == 0)); then
         __i3_scratch) workspace="~scratch" ;;
         *) workspace="$ws" ;;
         esac
-        printf "%s\n%s$ICON%s$INFO%s\t" "$name" "$workspace - $class" "$icon" "$id"
+        printf "%s\n%s$ICON%s$INFO%s\t" "$name $marks" "$workspace - $class" "$icon" "$id"
     done < <(swaymsg -t get_tree | jq -r "$JQ_QUERY")
 else
     case "$ROFI_RETV" in
