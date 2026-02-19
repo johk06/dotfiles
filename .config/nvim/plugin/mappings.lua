@@ -93,9 +93,23 @@ map("n", "<M-j>", cmd_with_count("lnext"))
 map("n", "<M-k>", cmd_with_count("lprev"))
 
 -- Reuse [g]o [l]ist prefix, Uppercase for qflist, for more uses see ./lua/config/lsp.lua
--- Diagnostics
-map("n", "glE", function() vim.diagnostic.setqflist { open = true } end, { desc = "Qflist: Diagnostics ([E]rrors)" })
-map("n", "gle", function() vim.diagnostic.setloclist { open = true } end, { desc = "Loclist: Diagnostics ([E]rrors)" })
+-- Diagnostics, specify kind via register if needed
+
+---@param setter string
+local open_with_optional_severity = function(setter)
+    return function()
+        local severity = vim.diagnostic.severity
+        local kind = ({
+            e = severity.ERROR,
+            w = severity.WARN,
+            i = severity.INFO,
+            h = severity.HINT,
+        })[vim.v.register]
+        vim.diagnostic[setter] { open = true, severity = kind }
+    end
+end
+map("n", "glE", open_with_optional_severity("setqflist"), { desc = "Qflist: Errors" })
+map("n", "gle", open_with_optional_severity("setloclist"), { desc = "Loclist: Errors" })
 
 -- list all TODOs, only when followed by a description
 map("n", "glT", [[<cmd>silent grep! '\b(TODO\|HACK\|FIXME):'|cwin<cr>]], { desc = "Qflist: List TODOs" })
