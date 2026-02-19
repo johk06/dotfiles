@@ -18,8 +18,7 @@ return {
         local utils = require("config.utils")
         local map = utils.local_mapper(buf, { group = true })
 
-        -- goto header
-        map("n", "<localleader>h", function()
+        local goto_header = function(cmd)
             local params = vim.lsp.util.make_text_document_params(buf)
             client:request("textDocument/switchSourceHeader", params, function(err, res)
                 if err then
@@ -32,8 +31,14 @@ return {
                     return
                 end
 
-                vim.cmd.edit(vim.uri_to_fname(res))
+                cmd(vim.uri_to_fname(res))
             end)
-        end, { desc = "Lsp/Clangd: Switch between header and source" })
+        end
+
+        -- goto header
+        map("n", "<localleader>h", function() goto_header(vim.cmd.drop) end,
+            { desc = "Lsp/Clangd: Switch between header and source" })
+        map("n", "<localleader>H", function() goto_header(vim.cmd.Split) end,
+            { desc = "Lsp/Clangd: Split header and source" })
     end
 }
