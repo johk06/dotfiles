@@ -16,7 +16,7 @@ set $popup-critical \
     client.focused #ebcb8b #ebcb8b #ebcb8b #ebcb8b #ebcb8b,\
     focus,\
     sticky enable,\
-    border pixel 3
+    border pixel 2
 
 for_window [app_id="gcr-prompter"] $popup-critical
 for_window [app_id="ssh-askpass"] $popup-critical
