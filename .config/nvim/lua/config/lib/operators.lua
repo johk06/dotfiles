@@ -132,4 +132,21 @@ function M.map_function(keys, cb, opts, extra)
     end
 end
 
+Jhk.wrapped = {}
+
+---@param keys string
+---@param fn function
+---@param _opts vim.keymap.set.Opts?
+M.map_repeatable = function(keys, fn, _opts)
+    Ctx.funs[keys] = fn
+
+    local opts = _opts and vim.deepcopy(_opts) or {}
+    opts.expr = true
+    vim.keymap.set("n", keys, function()
+        Ctx.last = keys
+        vim.go.operatorfunc = "v:lua.Jhk.opfunc"
+        return "g@l"
+    end, opts)
+end
+
 return M

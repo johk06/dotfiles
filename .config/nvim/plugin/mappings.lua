@@ -6,7 +6,7 @@
  each of those should be a foldmarker section as well.
 
  Unused <space> mappings:
- - b, e, i, k, n, v, x, y, z
+ - b, e, i, k, v, x, y, z
  }}} ]]
 -- Declarations {{{
 local api = vim.api
@@ -85,6 +85,9 @@ map("n", bufleader, "<nop>")
 -- Quickfix: more mappings, larger lists
 map("n", "<C-j>", cmd_with_count("cnext"))
 map("n", "<C-k>", cmd_with_count("cprev"))
+
+map("n", "<space>n", cmd_with_count("cnfile"))
+map("n", "<space>N", cmd_with_count("cpfile"))
 map("n", "<space>0", "<cmd>cfirst<cr>")
 map("n", "<space>$", "<cmd>clast<cr>")
 
@@ -470,10 +473,16 @@ local insert_spaces = function(direction)
     local row = cursor[1] - 1
     local col = direction < 0 and cursor[2] or cursor[2] + 1
     api.nvim_buf_set_text(0, row, col, row, col, { spaces })
+
+    return "g@l"
 end
 
-map("n", "<<space>", function() insert_spaces(-1) end)
-map("n", "><space>", function() insert_spaces(1) end)
+operators.map_repeatable("<<space>", function()
+    insert_spaces(-1)
+end)
+operators.map_repeatable("><space>", function()
+    insert_spaces(1)
+end)
 -- }}}
 -- Set options {{{
 -- [c]onfigure
@@ -940,7 +949,7 @@ end
  - gmaa to duplicate an argument to a function, e.g. type `NULL` once and then gmaa it
  - gmm followed by an edit to create a slightly different copy of the current line
 
- As many people correctly pointed out, yyp not leaving the cursor in place makes this more difficult with builtins 
+ As many people correctly pointed out, yyp not leaving the cursor in place makes this more difficult with builtins
  This has the added benefit of leaving all the registers alone ]]
 operators.map_function("gm", multiply_operator, { hijack_count = true })
 operators.map_function("gM", multiply_operator, { hijack_count = true }, { before = true })
