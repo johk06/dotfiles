@@ -1,0 +1,23 @@
+#!/bin/sh
+
+usage() {
+    echo "Usage: wordrank [-l] FILE..."
+}
+
+while getopts ":l:n:" o; do
+    case "$o" in
+    l) MIN_LEN=$OPTARG ;;
+    *) usage ;;
+    esac
+done
+
+shift $((OPTIND - 1))
+if [ $# = 0 ]; then
+    set -- /dev/stdin
+fi
+
+tr -c '[:alnum:]' '[\n*]' <"$@" |
+    awk -v min="${MIN_LEN:-4}" 'length($0) > min' |
+    sort |
+    uniq -ci |
+    sort -nr
