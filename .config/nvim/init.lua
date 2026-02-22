@@ -70,7 +70,7 @@ o.numberwidth = 2
 o.relativenumber = true
 
 o.scrolloff = 8
-o.showmode = true
+o.showmode = false
 o.title = true
 o.undofile = true
 o.winborder = "rounded"
@@ -273,7 +273,7 @@ vim.ui.input = ui.nvim_input
 -- for some reason lazy deactivates it
 o.modeline = true
 
--- create this autocommand after neovim had a chance to read from stdin
+-- Create this autocommand after neovim had a chance to read from stdin
 if should_open_start_screen then
     vim.api.nvim_create_autocmd("User", {
         pattern = "LazyVimStarted",

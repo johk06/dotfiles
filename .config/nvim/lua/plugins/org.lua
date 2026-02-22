@@ -97,22 +97,26 @@ opts.mappings = {
     },
 }
 opts.mappings.agenda = {
-    org_agenda_day_view           = "<localleader>d",
-    org_agenda_month_view         = "<localleader>m",
-    org_agenda_week_view          = "<localleader>w",
-    org_agenda_year_view          = "<localleader>y",
-    org_agenda_filter             = "<localleader>/",
+    org_agenda_day_view   = "<localleader>d",
+    org_agenda_month_view = "<localleader>m",
+    org_agenda_week_view  = "<localleader>w",
+    org_agenda_year_view  = "<localleader>y",
+    org_agenda_filter     = "<localleader>/",
+
 
     -- I like my find motions, so keep [nN]
-    org_agenda_later              = ">",
-    org_agenda_earlier            = "<",
-    org_agenda_today              = ".",
-    org_agenda_goto_date          = "?",
+    org_agenda_later     = ">",
+    org_agenda_earlier   = "<",
+    org_agenda_today     = ".",
+    org_agenda_goto_date = "?",
 
-    org_agenda_add_note           = "o",
-    org_agenda_deadline           = "d",
-    org_agenda_schedule           = "s",
-    org_agenda_archive            = "A",
+
+    -- Override builtin commands that are meaningless anyways
+    org_agenda_add_note = "o",
+    org_agenda_deadline = "d",
+    org_agenda_schedule = "s",
+    org_agenda_archive  = "A",
+
 
     ---@diagnostic disable: assign-type-mismatch Type annotations do not match the docs
     org_agenda_set_effort         = false,
@@ -133,9 +137,12 @@ opts.mappings.note = {
     org_note_kill = "<localleader>q",
 }
 opts.mappings.org = {
-    org_toggle_heading                      = "<localleader>*",
+    org_open_at_point = "<cr>",
+
+
+    -- Inserting various things
     org_store_link                          = "<localleader>y",
-    org_insert_link                         = "<localleader>p",
+    org_insert_link                         = "<localleader>i",
     org_edit_special                        = "<localleader>e",
     org_add_note                            = "<localleader>n",
     org_archive_subtree                     = "<localleader>A",
@@ -144,40 +151,48 @@ opts.mappings.org = {
     org_insert_heading_respect_content      = "<localleader>h",
     org_insert_todo_heading_respect_content = "<localleader>d",
 
-    org_move_subtree_up                     = "<t",
-    org_move_subtree_down                   = ">t",
-    org_timestamp_down_day                  = "<d",
-    org_timestamp_up_day                    = ">d",
+
+    -- Moving around trees
+    org_move_subtree_up    = "<t",
+    org_move_subtree_down  = ">t",
+    org_timestamp_down_day = "<d",
+    org_timestamp_up_day   = ">d",
 
 
-    org_priority              = "cp",
-    org_schedule              = "c@",
-    org_deadline              = "c!",
-    org_time_stamp            = "y.",
-    org_time_stamp_inactive   = "g.",
-    org_set_tags_command      = "c:",
+    -- Properties and tags
+    org_schedule            = "c@",
+    org_deadline            = "c!",
+    org_priority            = "c#",
+    org_time_stamp          = "y.",
+    org_time_stamp_inactive = "g.",
+    org_set_tags_command    = "c:",
 
-    org_clock_in              = "<localleader>ci",
-    org_clock_out             = "<localleader>cq",
-    org_clock_cancel          = "<localleader>cc",
-    org_clock_goto            = "<localleader>cg",
 
-    org_export                = "<localleader>x",
-    org_babel_tangle          = "<localleader>X",
-    org_refile                = "<localleader>r",
+    -- Clocks
+    org_clock_in     = "<localleader>ci",
+    org_clock_out    = "<localleader>co",
+    org_clock_cancel = "<localleader>cc",
+    org_clock_goto   = "<localleader>cg",
 
-    org_open_at_point         = "<cr>",
+
+    -- Exporting
+    org_export       = "<localleader>x",
+    org_babel_tangle = "<localleader>X",
+    org_refile       = "<localleader>r",
+
 
     ---@diagnostic disable: assign-type-mismatch
     org_insert_todo_heading   = false,
     org_set_effort            = false,
     -- I prefer my own tab
     org_cycle                 = false,
+    -- This is just equivalent to csm} and csm]
     org_toggle_timestamp_type = false,
+    -- Not useful
+    org_toggle_heading        = false,
     ---@diagnostic enable
 }
 -- }}}
-
 -- Custom Directives {{{
 ---@type table<string, fun(file: OrgFile, value: string|string[], buf: integer)>
 local custom_opts = {
@@ -212,55 +227,60 @@ end
 -- }}}
 
 M.config = function()
-    local utils = require("config.utils")
+    local orgmode = require("orgmode")
     local custom = require("config.plugins.orgmode")
     local eval = require("orgmode-eval")
+    local utils = require("config.utils")
+
+    orgmode.setup(opts)
     require("telescope").load_extension("orgmode")
 
-    --[[
-    Orgmode uses an in-process lsp server
-    This means that completion does *not* require any explicit integration 
+    --[[ Orgmode supports an in-process lsp server now!
+    This means that completion does *not* require any explicit integration
     and symbols can be searched
-    Hopefully they'll continue to add features to it
-    ]]
+    Hopefully they'll continue to add features to it ]]
     vim.lsp.enable("org")
 
-    opts.ui.menu = { handler = custom.menu }
+    opts.ui.menu = {
+        handler = custom.menu
+    }
     opts.org_custom_exports = {
         t = custom.typst_exporter
     }
-    local orgmode = require("orgmode")
-    orgmode.setup(opts)
 
+    -- These range from funny to really useful for my purposes
     orgmode.links:add_type(custom.line_start_link)
     orgmode.links:add_type(custom.regex_search_link)
     orgmode.links:add_type(custom.manpage_link)
 
+    local on_org_loaded = function(ev)
+        vim.wo.conceallevel = 2
+        vim.wo.concealcursor = "nc"
+
+        local map = utils.local_mapper(ev.buf)
+        map("n", "<localleader>l", "<cmd>Telescope orgmode insert_link<cr>", { desc = "Org: Insert link (by search)" })
+        map("n", "<localleader>/", "<cmd>Telescope orgmode search_headings<cr>", { desc = "Org: Search headings" })
+
+        map("i", "<M-CR>", function()
+            orgmode.action("org_mappings.meta_return")
+        end)
+
+        map("n", "<space>e", eval.run_code_block)
+        map("n", "<space>E", eval.clear_buffer)
+
+        -- Mimic markdown and the builtin help files
+        map("n", "gO", custom.table_of_contents)
+
+        -- FIXME: this is not that fast as it waits for Org to parse the buffers
+        vim.defer_fn(function()
+            handle_custom_opts(orgmode.files:get(vim.api.nvim_buf_get_name(ev.buf)))
+        end, 1)
+    end
+
     utils.autogroup("config.orgmode", {
         FileType = {
             pattern = "org",
-            callback = function(ev)
-                vim.wo.conceallevel = 2
-                vim.wo.concealcursor = "nc"
-                local map = utils.local_mapper(ev.buf)
-                map("n", "<localleader>l", "<cmd>Telescope orgmode insert_link<cr>")
-                map("n", "<localleader>/", "<cmd>Telescope orgmode search_headings<cr>")
-
-                -- The default <cr> mapping is nothing but broken
-                map("i", "<cr>", "<cr>")
-
-                map("i", "<M-CR>", function()
-                    orgmode.action("org_mappings.meta_return")
-                end)
-
-                map("n", "<space>e", eval.run_code_block)
-                map("n", "<space>E", eval.clear_buffer)
-
-                -- Mimic markdown
-                map("n", "gO", custom.table_of_contents)
-
-                handle_custom_opts(orgmode.files:get(vim.api.nvim_buf_get_name(ev.buf)))
-            end
+            callback = on_org_loaded
         },
     })
 end
