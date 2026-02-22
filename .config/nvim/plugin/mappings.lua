@@ -682,9 +682,14 @@ local toggle_char_at_eol = function(char)
     return false
 end
 
--- TODO: evaluate whether this even makes sense
-map("i", "<M-;>", function() toggle_char_at_eol(";") end)
-map("i", "<M-,>", function() toggle_char_at_eol(",") end)
+local map_eol_toggle = function(char)
+    map("i", ("<M-%s>"):format(char), function() toggle_char_at_eol(char) end)
+end
+
+-- Most standard delimiters + escaping
+map_eol_toggle ","
+map_eol_toggle ";"
+map_eol_toggle "\\"
 
 -- Jump to previous spelling error and attempt to fix it
 -- remap needed for telescope to kick in
@@ -721,27 +726,15 @@ end
 map_search("<M-space>", "\\s*")
 map_search("<C-space>", "\\s\\+")
 
+-- [w]ord and [g]roup
 map_search("<M-w>", "\\<\\><Left><Left>")
 map_search("<M-g>", "\\(\\)<Left><Left>")
+
+-- Move to next part of :s
 map_search("<M-/>", function()
     local cmdline = fn.getcmdline()
     local replaced = cmdline:gsub("/*$", "/")
     fn.setcmdline(replaced, #replaced + 1)
-end)
-
--- cycle magic: default -> very -> plain -> default
-map_search("<M-m>", function()
-    local cmdline = fn.getcmdline()
-    local replacement
-    local modifier = cmdline:match("^\\([mMvV])")
-    if not modifier then
-        replacement = "\\v" .. cmdline
-    elseif modifier == "m" or modifier == "v" then
-        replacement = "\\V" .. cmdline:sub(3)
-    else
-        replacement = cmdline:sub(3)
-    end
-    fn.setcmdline(replacement)
 end)
 -- }}}
 -- Snippets {{{
@@ -750,14 +743,50 @@ map({ "n", "s", "i" }, "<M-space>", function() vim.snippet.jump(1) end)
 map({ "n", "s", "i" }, "<C-space>", function() vim.snippet.jump(-1) end)
 -- }}}
 --[[ Textobjects & Motions {{{
- Textobjects and motions are the heart of Vim, so it makes sense to optimize them more than almost everything else.
- This section has both abbreviations for, as well as new, motions and textobjects(mostly). ]]
+ Textobjects and motions are the heart of Vim, so it makes sense to optimize
+ them more than almost everything else. This section has both abbreviations
+ for, as well as new, motions and textobjects (mostly). ]]
 
+-- Delimiters {{{1
 -- % is annoying to press
 -- [m]atching, this may take some inspiration from helix :)
 map(obj, "m", "<plug>(matchup-%)")
 map(obj, "im", "<plug>(matchup-i%)")
 map(obj, "am", "<plug>(matchup-a%)")
+
+-- less annoying to type
+map(obj, "iq", [[i"]])
+map(obj, "aq", [[a"]])
+map(obj, "iQ", [[i']])
+map(obj, "aQ", [[a']])
+-- }}}
+
+--[[ Diagnostics {{{1
+ Examples:
+ - cid_<esc> to change an "unused variable" ]]
+map(obj, "id", textobjs.diagnostic)
+map(obj, "iDe", textobjs.diagnostic_error)
+map(obj, "iDw", textobjs.diagnostic_warn)
+map(obj, "iDi", textobjs.diagnostic_info)
+map(obj, "iDh", textobjs.diagnostic_hint)
+-- }}}
+--[[ Indents {{{1
+ very useful for python or other indent based languages
+ `a` includes one line above and below, except for filetypes like python or
+ lisps where only the above line is included by default.
+ `aI` always includes the line below too, even for python et cetera, useful for
+ object literals like dicts or lists or nested languages
+
+ If present, v:count specifies the amount of indent levels instead of the current cursor position
+ this is particularly useful for languages like python where
+ c1ii comes to mean "change in the topmost scope"
+ d2ai for example then means "delete this method"
+ NOTE: this uses shiftwidth, so it's not 100% reliable for files
+ that do not have the same shiftwidth or variations in its indent width ]]
+map(obj, "ii", textobjs.indent_inner)
+map(obj, "ai", textobjs.indent_outer)
+map(obj, "aI", textobjs.indent_outer_with_last)
+-- }}}
 
 --[[ turn the *Ncgn pattern into a nice and small textobject
  Operators that don't invalidate the match require `n` afterwards to move the cursor.
@@ -773,38 +802,6 @@ map("o", "#", function()
     return "\x1b#N" .. vim.v.operator .. "gN"
 end, { expr = true })
 
--- less annoying to type
-map(obj, "iq", [[i"]])
-map(obj, "aq", [[a"]])
-map(obj, "iQ", [[i']])
-map(obj, "aQ", [[a']])
-
---[[ target the area of a diagnostic with a textobject
- `id` matches every type
- Examples:
- - cid_<esc> to change an "unused variable" ]]
-map(obj, "id", textobjs.diagnostic)
-map(obj, "iDe", textobjs.diagnostic_error)
-map(obj, "iDw", textobjs.diagnostic_warn)
-map(obj, "iDi", textobjs.diagnostic_info)
-map(obj, "iDh", textobjs.diagnostic_hint)
-
---[[ indents, very useful for python or other indent based languages
- `a` includes one line above and below, except for filetypes like python or
- lisps where only the above line is included by default.
- `aI` always includes the line below too, even for python et cetera, useful for
- object literals like dicts or lists or nested languages
-
- If present, v:count specifies the amount of indent levels instead of the current cursor position
- this is particularly useful for languages like python where
- c1ii comes to mean "change in the topmost scope"
- d2ai for example then means "delete this method"
- NOTE: this uses shiftwidth, so it's not 100% reliable for files
- that do not have the same shiftwidth or variations in its indent width ]]
-map(obj, "ii", textobjs.indent_inner)
-map(obj, "ai", textobjs.indent_outer)
-map(obj, "aI", textobjs.indent_outer_with_last)
-
 -- a foldmarker section - *not* a fold
 map(obj, "iz", textobjs.foldmarker_inner)
 map(obj, "az", textobjs.foldmarker_outer)
@@ -813,19 +810,18 @@ map(obj, "az", textobjs.foldmarker_outer)
 map(obj, "i-", textobjs.create_pattern_obj("([-_]?)%w+([-_]?)"))
 map(obj, "a-", textobjs.create_pattern_obj("()[-_]?%w+[-_]?()"))
 
--- object chain, most languages, NOTE: does not include lua `:`
+-- Object chain, most languages, NOTE: does not include lua `:`
 -- This can also be taken as a generic identifier object
 -- For languages that do not include e.g. -
 map(obj, "i.", textobjs.create_pattern_obj("()[%w._]+()"))
 map(obj, "a.", textobjs.create_pattern_obj("()%s*[%w._]+%s*()"))
 
--- path component, last / is optional
+-- Path component, last / is optional
 map(obj, "i/", textobjs.create_pattern_obj("(/)[^/]+(/?)"))
 map(obj, "a/", textobjs.create_pattern_obj("/()[^/]+()/?"))
 
-
 --[[ Numbers
-Inner variant preserves the sign of the number as well as any potential type prefix (0x) etc ]]
+ Inner variant preserves the sign of the number as well as any potential type prefix (0x) etc ]]
 map(obj, "in", textobjs.create_pattern_obj {
     "([+-]?0x)%x+()",    -- decimal int
     "([+-]?0b)[01]+()",  -- binary int
@@ -943,7 +939,9 @@ end
  Examples:
  - gmaa to duplicate an argument to a function, e.g. type `NULL` once and then gmaa it
  - gmm followed by an edit to create a slightly different copy of the current line
-   As many people correctly pointed out, yyp not leaving the cursor in place makes this more difficult with builtins ]]
+
+ As many people correctly pointed out, yyp not leaving the cursor in place makes this more difficult with builtins 
+ This has the added benefit of leaving all the registers alone ]]
 operators.map_function("gm", multiply_operator, { hijack_count = true })
 operators.map_function("gM", multiply_operator, { hijack_count = true }, { before = true })
 
