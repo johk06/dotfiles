@@ -262,8 +262,9 @@ require("lazy").setup("plugins", {
 })
 -- }}}
 -- Load Config {{{
-require("config.lsp")    -- language servers
-require("config.editor") -- extra features
+require("config.lsp")        -- language servers
+require("config.editor")     -- extra features
+require("config.langabbrev") -- smart insert mode abbreviations
 
 -- load UI components
 local ui = require("config.lib.ui")
