@@ -31,15 +31,17 @@ vim.env.EDITOR = "nvr"
 vim.env.GIT_EDITOR = "nvr -cc Sp -c 'se bufhidden=delete' --remote-wait"
 -- }}}
 
--- only open the welcome screen if stdin is empty
--- and there are no command line arguments
+-- Only open the welcome screen if stdin is empty
+-- and if there are no command line arguments
 local should_open_start_screen = vim.fn.argc() == 0
-vim.api.nvim_create_autocmd("StdinReadPre", {
-    once = true,
-    callback = function()
-        should_open_start_screen = false
-    end
-})
+if should_open_start_screen then
+    vim.api.nvim_create_autocmd("StdinReadPre", {
+        once = true,
+        callback = function()
+            should_open_start_screen = false
+        end
+    })
+end
 
 local opt = vim.opt
 local o = vim.o
@@ -51,38 +53,27 @@ g.maplocalleader = "\\"
 -- Basic options {{{
 o.cursorline = true
 o.cursorlineopt = "number"
+
 o.expandtab = true
+o.shiftwidth = 4
+
 o.hlsearch = true
 o.ignorecase = true
+o.smartcase = true
 o.incsearch = true
+
 o.mouse = "ar"
 o.mousemodel = "extend"
+
 o.number = true
 o.numberwidth = 2
 o.relativenumber = true
+
 o.scrolloff = 8
-o.shiftwidth = 4
-o.showmode = false
-o.smartcase = true
+o.showmode = true
 o.title = true
 o.undofile = true
 o.winborder = "rounded"
-vim.filetype.add {
-    extension = {
-        psv = "psv",
-        qalc = "qalc"
-    },
-}
--- }}}
-
--- Wrapping {{{
--- wrap at whitespace, indent wrapped lines and show an indicator
-o.wrap = true
-o.linebreak = true
-o.breakindent = true
-o.breakindentopt = "sbr"
-o.showbreak = ""
--- }}}
 
 -- I don't know why this isn't the default, much more intuitive in my opinion
 o.splitright = true
@@ -93,7 +84,27 @@ shm:append("S") -- hide search count
 shm:append("s") -- hide search hit x
 shm:append("q") -- hide macro
 
--- Characters {{{
+-- TODO: maybe? This allows me to have project specific settings
+o.exrc = true
+-- }}}
+-- Extra Filetypes {{{
+vim.filetype.add {
+    extension = {
+        psv = "psv",
+        ripe = "ripe",
+        qalc = "qalc"
+    },
+}
+-- }}}
+-- Wrapping {{{
+-- wrap at whitespace, indent wrapped lines and show an indicator
+o.wrap = true
+o.linebreak = true
+o.breakindent = true
+o.breakindentopt = "sbr"
+o.showbreak = ""
+-- }}}
+-- Display {{{
 opt.fillchars = {
     -- it's visible from the gaps anyways
     diff = " ",
@@ -108,7 +119,13 @@ opt.listchars = {
     tab = "󰌒 ",
     trail = "·",
 }
--- }}}
+
+opt.guicursor = {
+    "n-o-v:block",            -- normal, o-pending, visual: block
+    "r-t:hor20",              -- replace, terminal: underscore
+    "i-c-ci-cr:ver10",        -- insert, command: bar
+    "n-c-ci-cr-r-v:blinkon1", -- all except o-pending: blink
+}
 
 opt.diffopt = {
     "filler",
@@ -116,8 +133,8 @@ opt.diffopt = {
     "closeoff",
     "context:4", -- 6 is a bit too much for me
 }
-
--- Search {{{
+-- }}}
+-- File Search {{{
 -- current directory, children and parent
 opt.path = {
     ".",
@@ -139,15 +156,7 @@ opt.wildignore = {
     ".git",
 }
 -- }}}
-
-opt.guicursor = {
-    "n-o-v:block",            -- normal, o-pending, visual: block
-    "r-t:hor20",              -- replace, terminal: underscore
-    "i-c-ci-cr:ver10",        -- insert, command: bar
-    "n-c-ci-cr-r-v:blinkon1", -- all except o-pending: blink
-}
-
--- ftplugins {{{
+-- Filetype Plugins {{{
 g.c_syntax_for_h = true -- i use C more than C++
 
 -- make manpage formatting decent
@@ -156,8 +165,27 @@ g.ft_man_folding_enable = 1
 
 g.loaded_spellfile_plugin = 1 -- use my own code instead
 -- }}}
-
--- Lazy {{{
+-- Diagnostics {{{
+local hlgroups = {
+    "DiagnosticSignError",
+    "DiagnosticSignWarn",
+    "DiagnosticSignInfo",
+    "DiagnosticSignHint",
+}
+vim.diagnostic.config {
+    virtual_text = {
+        prefix = "!",
+    },
+    signs = {
+        numhl = hlgroups,
+        text = { "", "", "", "" }
+    },
+    float = {
+        border = "rounded",
+    }
+}
+-- }}}
+-- Load Lazy {{{
 -- use lazy for the remaining config
 -- all the package definitions in ./lua/plugins/ will be loaded
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
@@ -233,28 +261,6 @@ require("lazy").setup("plugins", {
     }
 })
 -- }}}
-
--- Diagnostics {{{
-local hlgroups = {
-    "DiagnosticSignError",
-    "DiagnosticSignWarn",
-    "DiagnosticSignInfo",
-    "DiagnosticSignHint",
-}
-vim.diagnostic.config {
-    virtual_text = {
-        prefix = "!",
-    },
-    signs = {
-        numhl = hlgroups,
-        text = { "", "", "", "" }
-    },
-    float = {
-        border = "rounded",
-    }
-}
--- }}}
-
 -- Load Config {{{
 require("config.lsp")    -- language servers
 require("config.editor") -- extra features
@@ -268,12 +274,14 @@ vim.ui.input = ui.nvim_input
 o.modeline = true
 
 -- create this autocommand after neovim had a chance to read from stdin
-vim.api.nvim_create_autocmd("User", {
-    pattern = "LazyVimStarted",
-    once = true,
-    callback = function()
-        if should_open_start_screen then
-            require("config.dashboard").show()
+if should_open_start_screen then
+    vim.api.nvim_create_autocmd("User", {
+        pattern = "LazyVimStarted",
+        once = true,
+        callback = function()
+            if should_open_start_screen then
+                require("config.dashboard").show()
+            end
         end
-    end
-})
+    })
+end
