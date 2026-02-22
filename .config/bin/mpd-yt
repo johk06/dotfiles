@@ -1,10 +1,10 @@
 #!/bin/sh
 
 if [ -z "$2" ] || [ "$2" = "-" ]; then
-    TMPDIR="$HOME/.cache/yt-mpd"
-    [ ! -d "$TMPDIR" ] && mkdir -p "$TMPDIR"
+    TMP="$XDG_CACHE_HOME/yt-mpd"
+    [ ! -d "$TMP" ] && mkdir -p "$TMP"
 
-    OUTDIR="$TMPDIR/$(date +%s)"
+    OUTDIR="$TMP/$(date +%s)"
 else
     OUTDIR="$2"
 fi
@@ -12,7 +12,7 @@ fi
 mkdir -p "$OUTDIR"
 cd "$OUTDIR" || exit 1
 
-URL="$1"
+URL="$1"; shift 2
 yt-dlp -x "$URL" "$@" --no-simulate --embed-metadata --embed-thumbnail --print after_move:filepath |
     while read -r filename; do
         # adding files by path requires local socket connection
