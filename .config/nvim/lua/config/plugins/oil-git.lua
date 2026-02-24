@@ -282,7 +282,7 @@ local navigate_changed =
             local ent = oil.get_entry_on_line(buf, i)
             if ent then
                 local st = for_cur_buf[ent.name]
-                if st[1] ~= " " or st[2] ~= " " then
+                if st and (st[1] ~= " " or st[2] ~= " ") then
                     api.nvim_win_set_cursor(0, { i, 0 })
                     break
                 end
