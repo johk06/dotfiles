@@ -345,6 +345,9 @@ M.opts.keymaps = {
     -- mirror the commands in lua/plugins/git.lua
     ["<space>gs"]      = function() git_command("add") end,
     ["<space>gu"]      = function() git_command("reset --") end,
+
+    ["[g"]             = function() require("config.plugins.oil-git").prev_changed() end,
+    ["]g"]             = function() require("config.plugins.oil-git").next_changed() end,
 }
 -- }}}
 

@@ -1,8 +1,7 @@
 local M = {}
 
 --[[
-Show git status of a file as virtual text
-]]
+Show git status of a file as virtual text ]]
 
 local api = vim.api
 local oil = require("oil")
@@ -12,6 +11,7 @@ local ns = api.nvim_create_namespace("config.oil.git")
 ---@field [1] string index
 ---@field [2] string worktree
 ---@field [3] string? description
+---@field [4] number? count
 
 ---@alias config.oil.git.status table<string, config.oil.git.entry>|true
 
@@ -56,12 +56,15 @@ local function set_signs(buf, status)
 
         local worktree = codes[1]
         local index = codes[2]
+        -- Show the count of changed files for directories
+        local show_for_index = codes[4] and tostring(codes[4]) or index
+
         api.nvim_buf_set_extmark(buf, ns, i - 1, 0, {
             end_col = 0,
             end_line = i - 1,
             virt_text = {
-                { worktree, "OilGit" .. hl_for_status[worktree] },
-                { index,    "OilGit" .. hl_for_status[index] },
+                { worktree,       "OilGit" .. hl_for_status[worktree] },
+                { show_for_index, "OilGit" .. hl_for_status[index] },
                 { " " }
             },
             virt_text_pos = "inline",
@@ -107,6 +110,8 @@ local function get_git_status(cb, dir)
 
             ---@type config.oil.git.status
             local status = {}
+
+            local dirs = {}
             for line in vim.gsplit(out.stdout, "\n") do
                 if line == "" then
                     goto continue
@@ -123,6 +128,7 @@ local function get_git_status(cb, dir)
 
                 if dirstart then
                     file = file:sub(1, dirstart - 1)
+                    dirs[file] = (dirs[file] or 0) + 1
                     if not status[file] then
                         status[file] = { index == "?" and " " or index, worktree }
                     else
@@ -144,6 +150,12 @@ local function get_git_status(cb, dir)
 
                 ::continue::
             end
+
+            for d, cnt in pairs(dirs) do
+                status[d][4] = cnt
+            end
+
+
             cb(status)
         end)
 end
@@ -250,6 +262,39 @@ end
 ---@param buf integer?
 M.reload = function(buf)
     update_buf(buf or api.nvim_get_current_buf())
+end
+
+
+local navigate_changed =
+    require("nvim-treesitter-textobjects.repeatable_move")
+    .make_repeatable_move(function(opts)
+        local buf = api.nvim_get_current_buf()
+        local for_cur_buf = buffer_status[buf]
+        if not for_cur_buf then
+            return
+        end
+
+        local fwd = opts.forward
+        local cur_line = api.nvim_win_get_cursor(0)[1]
+        local limit = fwd and api.nvim_buf_line_count(buf) or 0
+
+        for i = cur_line + (fwd and 1 or -1), limit, fwd and 1 or -1 do
+            local ent = oil.get_entry_on_line(buf, i)
+            if ent then
+                local st = for_cur_buf[ent.name]
+                if st[1] ~= " " or st[2] ~= " " then
+                    api.nvim_win_set_cursor(0, { i, 0 })
+                    break
+                end
+            end
+        end
+    end)
+
+M.next_changed = function()
+    navigate_changed { forward = true }
+end
+M.prev_changed = function()
+    navigate_changed { forward = true }
 end
 
 return M
