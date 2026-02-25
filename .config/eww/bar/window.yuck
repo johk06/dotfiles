@@ -1,24 +1,11 @@
-(defvar current-window-expanded false)
-
-(defwidget window-context-menu []
-    (box :space-evenly false
-        (button :class "text-button alert-on-hover"
-            :tooltip "Right-Click for SIGKILL"
-            :onclick "kill ${sway.active.pid}"
-            :onrightclick "kill -9 ${sway.active.pid}"
-            "Kill ${sway.active.pid}, ${jq(sway, '.active.pid as $pid|reduce (.workspaces.[].wins.[]) as $win (0; . + if $win.pid == $pid then 1 else 0 end)')} windows")))
-
 (defvar private-window-ids '{
-"ssh-askpass": true,
-"gcr-prompter": true,
-"polkit-gnome-authentication-agent-1": true
+    "ssh-askpass": true,
+    "gcr-prompter": true,
+    "polkit-gnome-authentication-agent-1": true
 }')
 
 (defwidget active-window []
     (box :space-evenly false :visible {mode.change == "default"}
-        (revealer :reveal {current-window-expanded && sway.active != "null"}
-            :transition "slideleft" (window-context-menu))
-        (button :class "text-button ${private-window-ids[sway.active?.app_id?:""] == true ? "password" : ""}"
-            :onclick `${EWW_CMD} update current-window-expanded=${!current-window-expanded}`
-            (label :limit-width 40
-                :text {sway.active == "null" ? "(Empty)" : sway.active.name}))))
+        (label :limit-width 40
+            :class "window-title ${private-window-ids[sway.active?.app_id?:""] == true ? "password" : ""}"
+            :text {sway.active == "null" ? "(Empty)" : sway.active.name})))

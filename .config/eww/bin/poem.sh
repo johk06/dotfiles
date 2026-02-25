@@ -1,7 +1,7 @@
 #!/bin/sh
 
-author="$(eww get poem-author)"
-title="$(eww get poem-title)"
+author="shakespeare"
+title="sonnet"
 
 curl -s \
     --variable title="$title" \

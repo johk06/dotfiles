@@ -2,7 +2,7 @@
 
 (defwidget notifications []
     (box :space-evenly false
-        (button 
+        (button
             :onclick "swaync-client -t"
             :onrightclick "swaync-client -d"
             :onmiddleclick "swaync-client -C"

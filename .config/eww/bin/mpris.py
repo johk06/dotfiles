@@ -3,7 +3,7 @@ import json
 import sys
 from urllib.parse import urlparse, unquote
 import os
-
+import time
 import gi
 
 gi.require_version("Playerctl", "2.0")
@@ -11,22 +11,11 @@ gi.require_version("Gtk", "3.0")
 
 from gi.repository import GLib, Playerctl, Gtk
 
-PLAYER_POSITIONS = {}
-
 NAME_OVERRIDES = {"gapless": "com.github.neithern.g4music"}
 
 LOOP_STATI = ["none", "track", "list"]
 
-
-def get_icon(icon_name, size=48, fallback="multimedia-video-player"):
-    if not icon_name:
-        icon_name = fallback
-    icon_theme = Gtk.IconTheme.get_default()
-    icon = icon_theme.lookup_icon(icon_name, size, 0)
-    if icon:
-        return icon.get_filename()
-    else:
-        return get_icon(None)
+LAST_CHANGED = None
 
 
 def get_art(player):
@@ -38,7 +27,6 @@ def get_art(player):
     except KeyError:
         art_path = None
 
-
     st = os.stat(art_path) if art_path else None
     if not art_path or not st or st.st_size == 0:
         return None
@@ -46,16 +34,16 @@ def get_art(player):
     return art_path
 
 
-def do_meta(pl, *_):
+def get_meta(pl):
     out = {}
-
     props = pl.props
     meta = props.metadata
     name = props.player_name
     out["has_player"] = True
     out["player"] = name
+    out["id"] = props.player_instance
     out["playing"] = props.status == "Playing"
-    position = PLAYER_POSITIONS.get(pl, 0)
+    position = player.get_position()
 
     try:
         length = meta["mpris:length"]
@@ -67,8 +55,9 @@ def do_meta(pl, *_):
     if length and position:
         out["has_progress"] = True
         out["length"] = int(length / 1000000)
-        out["position"] = int(position / 1000000)
-        out["progress"] = position / length
+        out["last_progress"] = position / length
+        pos = int(position / 1000000)
+        out["start_time"] = time.time() - pos
     else:
         out["has_progress"] = False
 
@@ -95,12 +84,23 @@ def do_meta(pl, *_):
         out["album"] = ""
     out["title"] = meta["xesam:title"]
 
-    sys.stdout.write(json.dumps(out) + "\n")
+    return out
+
+
+def do_meta():
+    players = [
+        get_meta(pl)
+        for pl in sorted(manager.props.players, key=lambda p: p != LAST_CHANGED)
+    ]
+
+    sys.stdout.write(json.dumps(players) + "\n")
     sys.stdout.flush()
 
 
-def on_play_pause(player, *_):
-    do_meta(player)
+def on_change(player, *_):
+    global LAST_CHANGED
+    LAST_CHANGED = player
+    do_meta()
 
 
 def assert_not_none(man):
@@ -116,22 +116,25 @@ def on_new_or_disappear(man, name):
         init_player(name)
 
 
-def poll_position():
-    for pl in manager.props.players:
-        if pl.props.playback_status == Playerctl.PlaybackStatus.PLAYING:
-            PLAYER_POSITIONS[pl] = pl.get_position()
-            do_meta(pl)
+def sync_timer():
+    do_meta()
+
     return True
 
 
 def init_player(name):
     player = Playerctl.Player.new_from_name(name)
-    player.connect("metadata", do_meta, manager)
-    player.connect("playback-status::playing", on_play_pause, manager)
-    player.connect("playback-status::paused", on_play_pause, manager)
-    player.connect("loop-status", do_meta, manager)
-    player.connect("shuffle", do_meta, manager)
+    player.connect("metadata", on_change)
+    player.connect("playback-status::playing", on_change)
+    player.connect("playback-status::paused", on_change)
+    player.connect("loop-status", on_change)
+    player.connect("seeked", on_change)
+    player.connect("shuffle", on_change)
     manager.manage_player(player)
+
+    if player.props.status == "Playing":
+        global LAST_CHANGED
+        LAST_CHANGED = player
 
 
 if __name__ == "__main__":
@@ -143,9 +146,9 @@ if __name__ == "__main__":
 
     if assert_not_none(manager):
         player = Playerctl.Player()
-        do_meta(player)
+        sync_timer()
 
-    GLib.timeout_add_seconds(1.5, poll_position)
+    GLib.timeout_add_seconds(10, sync_timer)
     try:
         loop = GLib.MainLoop()
         loop.run()

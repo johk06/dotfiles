@@ -31,6 +31,7 @@ TERM_OVERRIDES = [
     ("^ncmpcpp", "multimedia-audio-player"),
     ("^aerc$", "email"),
     ("^newsboat$", "newsboat"),
+    ("^iamb", "internet-chat"),
 ]
 
 CLASS_OVERRIDES = {

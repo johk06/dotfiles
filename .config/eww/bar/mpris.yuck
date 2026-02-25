@@ -1,26 +1,32 @@
 (deflisten mpris "./bin/mpris.py 2>/dev/null")
 
-(defwidget mpris-status []
+(defwidget mpris-status [pl]
     (label :style "margin-right: .6rem; min-width: 1.5rem;"
-    :text "${mpris.playing ? "≈" : "="}${mpris.shuffle ? "?" : ""}"))
+        :text "${pl.playing ? "≈" : "="}${pl.shuffle ? "?" : ""}"))
 
-(defwidget mpris-title [text]
+(defwidget mpris-title [pl text]
     (box :space-evenly false
-        {mpris.loop == "track" ? "(" : (mpris.loop == "list" ? "[" : "")}
+        {pl.loop == "track" ? "(" : (pl.loop == "list" ? "[" : "")}
         (label :limit-width 30 :text text)
-        {mpris.loop == "track" ? ")" : (mpris.loop == "list" ? "]" : "")}))
+        {pl.loop == "track" ? ")" : (pl.loop == "list" ? "]" : "")}))
+
+(defwidget mpris-circle [pos]
+    (circular-progress :value pos  :class "bar-circle"
+        :start-at 75
+        :thickness 2
+        (label :text {round(pos, 0)})))
+
+(defwidget mpris-bar-player [pl]
+    (button :class "text-button ${pl.playing ? "mpris-playing" : "mpris-paused"}"
+        :onclick "playerctl play-pause"
+        :onrightclick "playerctld shift"
+        :tooltip "${pl.title} by ${pl.artist?:"Unknown"}
+            Playing in ${pl.player}"
+        (box :space-evenly false
+            (mpris-status :pl pl)
+            (mpris-title :text {pl.title?: "No Player"} :pl pl)
+            (mpris-circle :pos {(pl.playing ? ((EWW_TIME - pl.start_time) / pl.length) : pl.last_progress) * 100}))))
 
 (defwidget mpris-current []
-    (revealer :reveal {mpris.has_player} :transition "slideright"
-        (button :class "text-button ${mpris.playing ? "mpris-playing" : "mpris-paused"}"
-            :onclick "playerctl play-pause"
-            :onrightclick "playerctld shift"
-            :tooltip "${mpris.title} by ${mpris.artist?:"Unknown"}
-Playing in ${mpris.player}"
-            (box :space-evenly false
-                (mpris-status)
-                (mpris-title :text {mpris.title?: "No Player"})
-                (circular-progress :value {mpris.progress * 100} :class "bar-circle"
-                    :start-at 75
-                    :thickness 2
-                    (label :text {round((mpris.progress?:0) * 100, 0)}))))))
+    (revealer :reveal {mpris != []} :transition "slideright"
+    (mpris-bar-player :pl {mpris[0]})))
