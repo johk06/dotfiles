@@ -32,21 +32,25 @@ M.title = title
 ---@class config.AbbrevSpec
 ---@field [1] string
 ---@field [2] string
----@field prefixes table<string, string>?
----@field suffixes table<string, string>?
----@field case_variants boolean?
+---@field [3] table<string, string>? Suffixes
+---@field [4] table<string, string>? Prefixes
+---@field nocase boolean?
 
 ---@param spec config.AbbrevSpec
 ---@param dest [string, string][]
 M.compile = function(spec, dest)
-    for p, prfx in pairs(spec.prefixes or empty_map) do
+    for p, prfx in pairs(spec[4] or empty_map) do
+        p = p == "_" and "" or p
         prfx = prfx or p
-        for s, sufx in pairs(spec.suffixes or empty_map) do
+
+        for s, sufx in pairs(spec[3] or empty_map) do
+            s = s == "_" and "" or s
             sufx = sufx or s
+
             local abbr = p .. spec[1] .. s
             local expn = prfx .. spec[2] .. sufx
             table.insert(dest, { abbr, expn })
-            if spec.case_variants then
+            if not spec.nocase then
                 table.insert(dest, { title(abbr), title(expn) })
             end
         end
@@ -103,6 +107,17 @@ local on_spl_set = function(ev)
     if new_abbrevs then
         for _, map in ipairs(new_abbrevs) do
             vim.keymap.set("ia", map[1], map[2], { buffer = buf })
+        end
+    end
+end
+
+-- Global utility function, mainly meant for .exrc
+---@param abbrs config.AbbrevSpec[]
+Jhk.abbrev_words = function(abbrs)
+    local abbrevs = M.compile_specs(abbrs)
+    if abbrevs then
+        for _, map in ipairs(abbrevs) do
+            vim.keymap.set("ia", map[1], map[2])
         end
     end
 end
