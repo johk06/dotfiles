@@ -41,7 +41,7 @@
                 :text "${time != "null" ? formattime(time, "%a, %d %b") : if-none}"))))
 
 (defvar agenda-expanded-todo 0)
-(defvar agenda-selected-list 0)
+(defvar agenda-selected-list 1)
 (defwidget agenda-list-section []
     (box :orientation "v" :space-evenly false :class "agenda-list-section" :vexpand true
         (agenda-list-controls)

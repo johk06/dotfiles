@@ -8,7 +8,8 @@
     (box :space-evenly false
         {pl.loop == "track" ? "(" : (pl.loop == "list" ? "[" : "")}
         (label :limit-width 30 :text text)
-        {pl.loop == "track" ? ")" : (pl.loop == "list" ? "]" : "")}))
+        {pl.loop == "track" ? ")" : (pl.loop == "list" ? "]" : "")}
+        ))
 
 (defwidget mpris-circle [pos]
     (circular-progress :value pos  :class "bar-circle"
@@ -17,16 +18,18 @@
         (label :text {round(pos, 0)})))
 
 (defwidget mpris-bar-player [pl]
-    (button :class "text-button ${pl.playing ? "mpris-playing" : "mpris-paused"}"
-        :onclick "playerctl play-pause"
-        :onrightclick "playerctld shift"
+    (eventbox
+        :onscroll "if [ {} = up ]; then eww update mpris-menu-selected=${min(arraylength(mpris) - 1,mpris-menu-selected+1)}; else eww update mpris-menu-selected=${max(mpris-menu-selected - 1, 0)}; fi"
+        (button :class "text-button ${pl.playing ? "mpris-playing" : "mpris-paused"}"
+        :onclick "playerctl -p ${pl.id} play-pause"
+        :onrightclick "playerctld -p ${pl.id} shift"
         :tooltip "${pl.title} by ${pl.artist?:"Unknown"}
-            Playing in ${pl.player}"
+Playing in ${pl.player}"
         (box :space-evenly false
             (mpris-status :pl pl)
             (mpris-title :text {pl.title?: "No Player"} :pl pl)
-            (mpris-circle :pos {(pl.playing ? ((EWW_TIME - pl.start_time) / pl.length) : pl.last_progress) * 100}))))
+            (mpris-circle :pos {(pl.playing ? ((EWW_TIME - pl.start_time) / pl.length) : pl.last_progress) * 100})))))
 
 (defwidget mpris-current []
     (revealer :reveal {mpris != []} :transition "slideright"
-    (mpris-bar-player :pl {mpris[0]})))
+    (mpris-bar-player :pl {mpris[mpris-menu-selected]})))

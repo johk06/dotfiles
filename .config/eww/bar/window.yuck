@@ -7,5 +7,5 @@
 (defwidget active-window []
     (box :space-evenly false :visible {mode.change == "default"}
         (label :limit-width 40
-            :class "window-title ${private-window-ids[sway.active?.app_id?:""] == true ? "password" : ""}"
+            :class "text-button ${private-window-ids[sway.active?.app_id?:""] == true ? "password" : ""}"
             :text {sway.active == "null" ? "(Empty)" : sway.active.name})))

@@ -102,6 +102,10 @@ def on_change(player, *_):
     LAST_CHANGED = player
     do_meta()
 
+def on_seek(player, *_):
+    time.sleep(0.5)
+    on_change(player)
+
 
 def assert_not_none(man):
     if not len(man.props.player_names):
@@ -128,7 +132,7 @@ def init_player(name):
     player.connect("playback-status::playing", on_change)
     player.connect("playback-status::paused", on_change)
     player.connect("loop-status", on_change)
-    player.connect("seeked", on_change)
+    player.connect("seeked", on_seek)
     player.connect("shuffle", on_change)
     manager.manage_player(player)
 

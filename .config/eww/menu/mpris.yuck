@@ -9,30 +9,30 @@
 (defwidget mpris-panel-controls [pl pos] (box :orientation "vertical" :space-evenly false :hexpand true
     (box :orientation "vertical" :space-evenly false :style "margin: 0px 1rem;"
         :tooltip "${pl.artist}${pl.album != "" ? ", ${pl.album}" : ""} - ${pl.title}"
-        (label :class "title"
+        (label :class "title" :style "min-height: 2rem;"
             :text "${pl.title}"
             :limit-width 16)
-        (label :class "text"
+        (label :class "text" :style "min-height: 2rem;"
             :text "${pl.artist}${pl.album != "" ? " - ${pl.album}" : ""}"
             :limit-width 16))
     (centerbox
-        (button :class "button" :onclick "playerctl previous"
+        (button :class "button" :onclick "playerctl -p ${pl.pid} previous"
             :tooltip "Previous Track"
             "")
         (button :style "min-width: 4.4rem;" :class "button ${pl.playing ? "active" : ""}"
             :tooltip "Play/Pause"
-            :onclick "playerctl play-pause"
+            :onclick "playerctl -p ${pl.id} play-pause"
             "${pl.playing ? "    Pause" : "   Play"}")
-        (button :class "button" :onclick "playerctl next"
+        (button :class "button" :onclick "playerctl -p ${pl.id} next"
             :tooltip "Next Track${pl.shuffle ? " (shuffle)" : ""}"
-            :onrightclick "playerctl shuffle toggle"
+            :onrightclick "playerctl -p ${pl.id} shuffle toggle"
             {pl.shuffle ? "": ""}))
     (box :space-evenly false
         (button :class "button ${pl.loop == "none" ? "inactive" : ""}" :onclick "cycle-mpris-repeat"
             :tooltip "Repeat: ${pl.loop}"
             {mpris-repeat-icons[pl.loop]})
         (scale :hexpand true
-            :onchange `playerctl position $(echo 'scale=0;({}*${pl.length})/100'|bc)`
+            :onchange `flock -n $XDG_RUNTIME_DIR/player -c "playerctl position -p ${pl.id} $(echo 'scale=0;({}*${pl.length})/100'|bc);sleep 1"`
             :timeout "300s"
             :tooltip "${
                 formattime(floor(pos), (pl.length?: 0) > 3600 ? "%H:%M:%S" : "%M:%S", "UTC")} / ${
@@ -41,7 +41,7 @@
             :value pos :min 0 :max 100))))
 
 (defwidget mpris-image [pl]
-    (eventbox 
+    (eventbox
         :onscroll "if [ {} = up ]; then eww update mpris-menu-selected=${min(arraylength(mpris) - 1,mpris-menu-selected+1)}; else eww update mpris-menu-selected=${max(mpris-menu-selected - 1, 0)}; fi"
         (rounded-image
         :path {matches(pl.title, "^Netflix") ? "assets/netflix.svg" : pl.art?:"assets/juniper.png"}
@@ -50,7 +50,10 @@
 (defwidget mpris-card [pl]
     (box :space-evenly false
         (box :orientation "vertical" :space-evenly false :valign "center"
-            (mpris-image :pl pl))
+            (mpris-image :pl pl)
+            (label 
+                :text {arraylength(mpris) > 1 ? "${mpris-menu-selected+1} / ${arraylength(mpris)}" : ""})
+        )
         (mpris-panel-controls :pl pl
             :pos {(pl.playing ?
                 ((EWW_TIME - pl.start_time) / pl.length) : pl.last_progress) * 100})))
