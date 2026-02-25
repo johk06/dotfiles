@@ -45,7 +45,7 @@ local opts = {
     },
     org_default_notes_file = "~/org/notes.org",
     org_todo_keywords = {
-        "TODO(t)", "NEXT(n)", "WAITING(w)", "CURRENT(c)",
+        "TODO(t)", "NEXT(n)", "WAITING(w)", "CURRENT(c)", "WHENEVER(v)",
         "|",
         "DONE(d)", "NOPE(x)",
     },

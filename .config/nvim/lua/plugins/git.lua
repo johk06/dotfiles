@@ -58,7 +58,7 @@ local map_on_git_buffer = function(buf)
 
     map("n", "h", gitsigns.setloclist, { desc = "Git: Hunks to loclist" })
 
-    map("n", "l", "<cmd>0Gllog<cr>", { desc = "Git: Log to loclist" })
+    map({ "v", "n" }, "l", "<cmd>0Gllog<cr>", { desc = "Git: Log to loclist" })
 
     map("n", "w", gitsigns.toggle_word_diff, { desc = "Git: Word diff" })
 
@@ -139,8 +139,8 @@ M[1].opts = {
         local time = require("config.utils").format_time_smart(info.author_time)
         return {
             time,
-            { " by ",         "@comment" },
-            { info.committer, "@constant.comment" },
+            { " by ",               "@comment" },
+            { info.committer,       "@constant.comment" },
             { " - " .. info.summary }
         }
     end,

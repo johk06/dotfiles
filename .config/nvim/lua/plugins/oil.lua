@@ -1,8 +1,11 @@
 --[[ Rationale
-Oil allows edits to the file system to work the same as text files
-Additionally, it's really fast and rock solid
-Extensibility is pretty good too
-]]
+ Oil allows edits to the file system to work the same as text files
+ Additionally, it's really fast and rock solid
+ Extensibility is pretty good too
+ 
+ In Addition to core oil, I have the following:
+ - Columns for user and group info
+ - Git integration ]]
 
 ---@type LazySpec
 local M = {

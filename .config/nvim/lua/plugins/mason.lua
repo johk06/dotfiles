@@ -21,7 +21,7 @@ local install_package = function(pkg, is_update)
 end
 
 ---@param program string The executable that needs to be installed
----@param package_name string? Alternative package name
+---@param package_name string|boolean? Alternative package name
 local ensure_program_installed = function(program, package_name)
     if not package.loaded["mason"] then
         needed_programs[program] = package_name or false

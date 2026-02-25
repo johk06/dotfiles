@@ -1,3 +1,5 @@
+; TODO: remove once nvim-treesitter-textobjects adds typst queries
+
 (call
   (content
     "[" @parameter.outer

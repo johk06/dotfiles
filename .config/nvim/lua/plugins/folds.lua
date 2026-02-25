@@ -164,7 +164,7 @@ M.config = function()
     utils.map("n", "zR", ufo.openAllFolds)
     utils.map("n", "zm", function() ufo.closeFoldsWith(vim.v.count1) end)
 
-    --HACK: reset colorscheme
+    -- HACK: reset colorscheme
     vim.defer_fn(function()
         vim.cmd.colorscheme(vim.g.colors_name)
     end, 1000)
