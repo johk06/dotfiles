@@ -12,8 +12,6 @@ for_window [app_id="nwg-icon-picker"]      floating enable, resize set 300px 400
 
 # Make sure I do not type passwords into the wrong dialog
 set $popup-critical \
-    client.unfocused #bf616a #bf616a #bf616a #bf616a #bf616a,\
-    client.focused #ebcb8b #ebcb8b #ebcb8b #ebcb8b #ebcb8b,\
     focus,\
     sticky enable,\
     border pixel 2
