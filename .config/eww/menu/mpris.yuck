@@ -16,7 +16,7 @@
             :text "${pl.artist}${pl.album != "" ? " - ${pl.album}" : ""}"
             :limit-width 16))
     (centerbox
-        (button :class "button" :onclick "playerctl -p ${pl.pid} previous"
+        (button :class "button" :onclick "playerctl -p ${pl.id} previous"
             :tooltip "Previous Track"
             "")
         (button :style "min-width: 4.4rem;" :class "button ${pl.playing ? "active" : ""}"
