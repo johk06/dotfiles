@@ -310,9 +310,37 @@ end
 
 -- }}}
 
--- easier mapping {{{
+-- Easier mapping {{{
 ---@alias nvim_mode_char "n"|"i"|"c"|"v"|"x"|"s"|"o"|"t"
 ---@alias nvim_mode nvim_mode_char | nvim_mode_char[]
+
+-- run ex command with count
+M.cmd_with_count = function(cmd)
+    return function()
+        local ok, err = pcall(vim.api.nvim_cmd, {
+            cmd = cmd,
+            count = vim.v.count1,
+            mods = {
+            }
+        }, { output = false })
+        if not ok then
+            M.error("Map/" .. cmd, err, true)
+        end
+    end
+end
+
+M.run_excmd = function(cmd, args, namespace)
+    local ok, err = pcall(api.nvim_cmd, {
+        cmd = cmd,
+        args = args,
+        mods = {
+        }
+    }, { output = false })
+
+    if not ok then
+        M.error((namespace or "Map/") .. cmd, err, true)
+    end
+end
 
 M.map = vim.keymap.set
 
