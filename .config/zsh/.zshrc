@@ -45,6 +45,7 @@ function __complete_galias {
 
 #completion opts
 zstyle ':completion:*' completer __complete_galias _complete _expand _approximate
+zstyle ':completion:*' list-dirs-first true
 
 # By default, use LS_COLORS
 zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS};ma=100;94"
@@ -55,7 +56,7 @@ zstyle ':completion:*' select-prompt"%F{cyan}%l l%F{8} -m%F{yellow}%m m"
 zstyle ':completion:*' list-prompt "%F{cyan}%l l%F{8} - %F{yellow}%m m"
 zstyle ':completion:*' verbose false
 zstyle ':completion:*' group-name ''
-zstyle ':completion:*:descriptions' format '%F{yellow}= %d%f'
+zstyle ':completion:*:descriptions' format '%F{yellow}* %d%f'
 zstyle ':completion:*:manuals'    separate-sections true
 zstyle ':completion:*:manuals:*'  insert-sections   true
 
@@ -94,7 +95,7 @@ nameddirs=(
 )
 
 # my own config
-source "$ZDOTDIR/keybinds.zsh"
+source "$ZDOTDIR/zle.zsh"
 source "$ZDOTDIR/aliases.zsh"
 source "$ZDOTDIR/prompt.zsh"
 source "$ZDOTDIR/functions.zsh"

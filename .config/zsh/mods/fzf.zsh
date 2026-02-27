@@ -2,23 +2,14 @@
 
 FZF_DEFAULT_OPTS="--layout=reverse --info=inline-right --preview-border=line --height=~50% --no-bold"
 FZF_DEFAULT_OPTS+=" --no-scrollbar --no-separator --border=none --pointer='' --wrap-sign='~' --ellipsis=' ~ '"
-FZF_DEFAULT_OPTS+=" --color=prompt:cyan,fg:white,bg:black,bg+:gray,gutter:black,border:gray"
+FZF_DEFAULT_OPTS+=" --color=prompt:cyan,fg:white,fg+:white,bg:black,bg+:gray,gutter:black,border:gray"
 FZF_DEFAULT_OPTS+=",hl:yellow:underline,hl+:yellow:underline,info:magenta,query:white"
 FZF_DEFAULT_OPTS+=",preview-fg:white,preview-bg:black,spinner:cyan,marker:magenta,header:white"
 
 export FZF_DEFAULT_OPTS
 export _ZO_FZF_OPTS="$FZF_DEFAULT_OPTS --prompt='cd: ' --preview='lsd -l {2}' --no-sort"
 
-# Cd {{{
-function fcd {
-    local res="$(fd $@ --type=dir | fzf --prompt="cd: " --preview='lsd -l -- {}')"
-    if [[ -n "$res" ]]; then
-        cd "$res"
-    fi
-}
-compdef fcd=fd
-
-function _fzf_do_completion {
+function zle-jhk-fzf-complete {
     local tokens=(${(z)LBUFFER})
     local curword
     if [[ ${LBUFFER[-1]} == " " ]]; then
@@ -38,49 +29,55 @@ function _fzf_do_completion {
     fi
 }
 
-function _fzf_change_dir {
+# Cd {{{
+function fcd {
+    local res="$(fd $@ --type=dir | fzf --prompt="cd: " --preview='lsd -l -- {}')"
+    if [[ -n "$res" ]]; then
+        cd "$res"
+    fi
+}
+compdef fcd=fd
+
+function zle-jhk-fzf-change-dir {
     fcd
     zle reset-prompt
 }
 
-zle -N fzf-change-dir _fzf_change_dir
+zle -N fzf-change-dir zle-jhk-fzf-change-dir
 bindkey "\e " fzf-change-dir
 # }}}
-
 # Processes {{{
 function fps {
     LIBPROC_HIDE_KERNEL=1 ps -e -o pid= -o comm= -o cmd= |
         fzf -q "$1" --freeze-left=2 --freeze-right=1 --prompt="ps: " --accept-nth=1
 }
 
-function _fzf_find_ps {
+function zle-jhk-find-proc {
     REPLY="$(fps "$1")"
 }
 
-function _fzf_complete_ps {
-    _fzf_do_completion _fzf_find_ps
+function zle-jhk-complete-proc {
+    zle-jhk-fzf-complete zle-jhk-find-proc
 }
 
-zle -N fzf-insert-ps _fzf_complete_ps
+zle -N fzf-insert-ps zle-jhk-complete-proc
 bindkey "\ep" fzf-insert-ps
 # }}}
-
 # Paths {{{
-function _fzf_find_path {
+function zle-jhk-fzf-files {
     REPLY="$(fd | fzf -q "$1" --prompt="file: " --preview='bat -p --color=always -- {}')"
 }
 
-function _fzf_complete_path {
-    _fzf_do_completion _fzf_find_path
+function zle-jhk-complete-path {
+    zle-jhk-fzf-complete zle-jhk-fzf-files
 }
 
-zle -N fzf-insert-path _fzf_complete_path
+zle -N fzf-insert-path zle-jhk-complete-path
 bindkey "^[f" fzf-insert-path
 # }}}
-
 # More powerful C-r {{{
 # search shell history
-function _fzf_shell_hist {
+function zle-jhk-fzf-hist {
     local res="$(fc -n -l 1 | awk '!seen[$0]++' | fzf --no-sort --tac --prompt="hist: " -q "$BUFFER")"
     if [[ -n "$res" ]]; then
         BUFFER="${res}"
@@ -88,7 +85,7 @@ function _fzf_shell_hist {
     fi
     zle reset-prompt
 }
-zle -N fzf-shell-hist _fzf_shell_hist
+zle -N fzf-shell-hist zle-jhk-fzf-hist
 bindkey '\er' fzf-shell-hist
 bindkey '\e/' fzf-shell-hist
 # }}}
