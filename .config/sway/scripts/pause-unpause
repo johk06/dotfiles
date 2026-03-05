@@ -3,9 +3,6 @@
 if swaymsg -t get_outputs | jq 'map(.power|not)|any' -e; then
     setting=on
 else
-    if ! pgrep gtklock; then
-        gtklock -d
-    fi
     setting=off
 fi
 
