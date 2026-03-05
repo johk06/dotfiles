@@ -34,6 +34,7 @@
 # with þorn
 <Multi_key> <t> <e> : "þͤ"
 <Multi_key> <t> <t> : "þͭ"
+<Multi_key> <t> <T> : "ꝥ"
 # þū / thou
 <Multi_key> <t> <u> : "þͧ"
 
