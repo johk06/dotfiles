@@ -121,3 +121,12 @@ bindsym $mod+Ctrl+Bracketleft   exec $sc/in-order push prev
 # TODO: not sure if this is actually useful, I barely use it
 bindsym $mod+N workspace next
 bindsym $mod+Shift+N workspace prev
+
+bindsym $mod+KP_ADD workspace next
+bindsym $mod+KP_SUBTRACT workspace prev
+bindsym $mod+KP_MULTIPLY       exec $sc/in-order go   next
+bindsym $mod+KP_DIVIDE         exec $sc/in-order go   prev
+bindsym $mod+Shift+KP_MULTIPLY exec $sc/in-order move next
+bindsym $mod+Shift+KP_DIVIDE   exec $sc/in-order move prev
+bindsym $mod+Ctrl+KP_MULTIPLY  exec $sc/in-order push next
+bindsym $mod+Ctrl+KP_DIVIDE    exec $sc/in-order push prev
