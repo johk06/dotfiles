@@ -21,7 +21,7 @@
             "")
         (button :style "min-width: 4.4rem;" :class "button ${pl.playing ? "active" : ""}"
             :tooltip "Play/Pause"
-            :onclick "playerctl -p ${pl.id} play-pause"
+            :onclick "playerctl -p ${pl.id} play-pause; eww update mpris-menu-selected=0"
             "${pl.playing ? "    Pause" : "   Play"}")
         (button :class "button" :onclick "playerctl -p ${pl.id} next"
             :tooltip "Next Track${pl.shuffle ? " (shuffle)" : ""}"
@@ -35,10 +35,10 @@
             :onchange `flock -n $XDG_RUNTIME_DIR/player -c "playerctl position -p ${pl.id} $(echo 'scale=0;({}*${pl.length})/100'|bc);sleep 1"`
             :timeout "300s"
             :tooltip "${
-                formattime(floor(pos), (pl.length?: 0) > 3600 ? "%H:%M:%S" : "%M:%S", "UTC")} / ${
+                formattime(floor(pos * pl.length?:0), (pl.length?: 0) > 3600 ? "%H:%M:%S" : "%M:%S", "UTC")} / ${
                 formattime(pl.length?:0, (pl.length?: 0) > 3600 ? "%H:%M:%S" : "%M:%S", "UTC")}"
-            :class "slider ${(!pl.has_progress || pos > 100) ? "disabled" : "with-handle"}"
-            :value pos :min 0 :max 100))))
+            :class "slider ${(!pl.has_progress || pos > 1) ? "disabled" : "with-handle"}"
+            :value {pos * 100} :min 0 :max 100))))
 
 (defwidget mpris-image [pl]
     (eventbox
@@ -51,14 +51,15 @@
     (box :space-evenly false
         (box :orientation "vertical" :space-evenly false :valign "center"
             (mpris-image :pl pl)
-            (label 
+            (label :class "text"
                 :text {arraylength(mpris) > 1 ? "${mpris-menu-selected+1} / ${arraylength(mpris)}" : ""})
         )
         (mpris-panel-controls :pl pl
-            :pos {(pl.playing ?
-                ((EWW_TIME - pl.start_time) / pl.length) : pl.last_progress) * 100})))
+            :pos {pl.playing ? ((EWW_TIME - pl.start_time) / pl.length) : pl.last_progress})))
 
 (defwidget mpris-panel []
     (revealer :reveal {mpris != []} :transition "slidedown"
         (box :space-evenly false :class "section" :orientation "v"
-            (mpris-card :pl {mpris[mpris-menu-selected]}))))
+            (for pl in mpris
+                (revealer :reveal {mpris-menu-selected == pl.index} :transition "slideup"
+                    (mpris-card :pl {pl}))))))

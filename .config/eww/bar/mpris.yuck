@@ -21,7 +21,7 @@
     (eventbox
         :onscroll "if [ {} = up ]; then eww update mpris-menu-selected=${min(arraylength(mpris) - 1,mpris-menu-selected+1)}; else eww update mpris-menu-selected=${max(mpris-menu-selected - 1, 0)}; fi"
         (button :class "text-button ${pl.playing ? "mpris-playing" : "mpris-paused"}"
-        :onclick "playerctl -p ${pl.id} play-pause"
+        :onclick "playerctl -p ${pl.id} play-pause; eww update mpris-menu-selected=0"
         :onrightclick "playerctld -p ${pl.id} shift"
         :tooltip "${pl.title} by ${pl.artist?:"Unknown"}
 Playing in ${pl.player}"

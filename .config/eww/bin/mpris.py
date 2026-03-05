@@ -27,8 +27,11 @@ def get_art(player):
     except KeyError:
         art_path = None
 
-    st = os.stat(art_path) if art_path else None
-    if not art_path or not st or st.st_size == 0:
+    try:
+        st = os.stat(art_path) if art_path else None
+        if not art_path or not st or st.st_size == 0:
+            return None
+    except:
         return None
 
     return art_path
@@ -92,6 +95,8 @@ def do_meta():
         get_meta(pl)
         for pl in sorted(manager.props.players, key=lambda p: p != LAST_CHANGED)
     ]
+    for i, pl in enumerate(players):
+        pl["index"] = i
 
     sys.stdout.write(json.dumps(players) + "\n")
     sys.stdout.flush()
@@ -115,9 +120,12 @@ def assert_not_none(man):
     return True
 
 
-def on_new_or_disappear(man, name):
+def on_new(man, name):
     if assert_not_none(man):
         init_player(name)
+
+def on_del(man, name):
+    do_meta()
 
 
 def sync_timer():
@@ -143,8 +151,8 @@ def init_player(name):
 
 if __name__ == "__main__":
     manager = Playerctl.PlayerManager()
-    manager.connect("name-appeared", on_new_or_disappear)
-    manager.connect("name-vanished", on_new_or_disappear)
+    manager.connect("name-appeared", on_new)
+    manager.connect("player-vanished", on_del)
 
     [init_player(name) for name in manager.props.player_names]
 
