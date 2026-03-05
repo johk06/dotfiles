@@ -97,6 +97,14 @@ def_key "ctrl-g"
     move_home
     push_characters "jjjjjjjj"
     push_character "enter"
+
+def_key "A"
+    require_screen "search_engine"
+    start_searching
+    reverse_selection
+    add_selected_items
+    push_character "enter"
+    push_character "enter"
 # }}}
 
 # Views {{{
@@ -104,6 +112,8 @@ def_key "tab"
     show_browser
 def_key "q"
     show_playlist
+def_key "q"
+    quit
 def_key "H"
     previous_screen
 def_key "L"
@@ -112,6 +122,10 @@ def_key "P"
     show_visualizer
 def_key "%"
     jump_to_position_in_song
+def_key "w"
+    show_media_library
+def_key "w"
+    toggle_media_library_columns_mode
 
 def_key "J"
     move_sort_order_down
