@@ -2,6 +2,7 @@
 
 usage() {
     echo "Usage: wordrank [-l] FILE..."
+    exit 1
 }
 
 while getopts ":l:n:" o; do
@@ -12,11 +13,8 @@ while getopts ":l:n:" o; do
 done
 
 shift $((OPTIND - 1))
-if [ $# = 0 ]; then
-    set -- /dev/stdin
-fi
 
-tr -c '[:alnum:]' '[\n*]' <"$@" |
+cat "$@" | tr -c '[:alnum:]' '[\n*]' |
     awk -v min="${MIN_LEN:-4}" 'length($0) > min' |
     sort |
     uniq -ci |
