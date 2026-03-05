@@ -146,6 +146,7 @@ map gl follow-link
 # Make new {{{
 map md push :mkdir<space>
 map mf push :make-file<space>
+map mt push :touch-file<space>
 map ml push :link<space>
 map mL push :hard-link<space>
 # }}}
