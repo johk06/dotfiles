@@ -109,11 +109,11 @@ perform-action() {
         ;;
     "Copy OTP")
         coproc {
-            pass otp -c "$pass" || {
+            if pass otp -c "$pass"; then
+                notify-on-copy "OTP Code"
+            else
                 error-otp "$pass"
-                exit
-            }
-            notify-on-copy "OTP Code"
+            fi
         }
         ;;
     "OTP")
