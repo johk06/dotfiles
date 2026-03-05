@@ -145,11 +145,11 @@ map("o", "=", textobjs.variable_value)
 
 --[[ focus the current fold
  - zM: close all folds
- - zO: open the current one, recursively
+ - zv: open enough folds so the current line is visible
  - [z: move to the top of it
  - zt: place it at the top of the screen
  the j is required so that this applies when on the fold start ]]
-map("n", "<Tab>", "zMzOj[zzt", { remap = true --[[ is required so ufo applies ]] })
+map("n", "<Tab>", "zMzv[zjzt", { remap = true --[[ is required so ufo applies ]] })
 
 -- Move between snippet fields
 map({ "n", "s", "i" }, "<M-space>", function() vim.snippet.jump(1) end)

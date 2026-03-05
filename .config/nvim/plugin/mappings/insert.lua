@@ -1,6 +1,9 @@
 --[[ Synopsis: Improvements to Insert (and Command) Mode {{{
+ Alternatively: a short list of heresies
+
  Leftover keys looking for a mapping:
  - <C-m> maybe, may conflict with <cr>
+ - Leave M-* alone, a lot more useful for normal mode
 ]]
 
 local api = vim.api

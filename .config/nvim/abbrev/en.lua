@@ -8,6 +8,7 @@ local M = {
     { "epc", "especially" },
     { "ftr", "further",    { m = "more" } },
     { "slv", "sol",        { e = "ve", d = "ved", r = "ver", t = "ution" } },
+    { "tfr", "therefore" },
     { "wtr", "whether" },
 }
 

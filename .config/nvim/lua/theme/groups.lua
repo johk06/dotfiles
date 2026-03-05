@@ -36,7 +36,7 @@ local colorscheme = {
     StatusLine                  = { bg = pal.bg01 },
     Folded                      = {},
     FoldNumber                  = { fg = col.magenta, italic = true },
-    FoldColumn                  = { fg = pal.bg3 },
+    FoldColumn                  = { fg = pal.bg2 },
     SignColumn                  = { fg = pal.bg3 },
     EndOfBuffer                 = { fg = pal.bg1 },
     Visual                      = { bg = pal.bg1 },
@@ -643,7 +643,7 @@ add_with_prefix(colorscheme, "Mason", {
 
 -- git: gitsigns and fugitive {{{
 add_with_prefix(colorscheme, "GitSigns", {
-    Add                = { fg = pal.bg3 },
+    Add                = { fg = blend(col.green, pal.bg01, 0.6) },
     AddNr              = { fg = pal.bg3 },
     AddLn              = { fg = pal.bg3 },
     Change             = { fg = col.yellow },

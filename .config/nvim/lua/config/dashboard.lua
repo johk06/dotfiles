@@ -18,6 +18,7 @@ local MESSAGES = {
     "Gæð á wyrd swá heó sċeall",
     "Hiġe sċeall þé headra, heorte þé cénre, mód sċeall þé mære, þé úre mæġen lýtlað.",
     "It is our duty to keep computing gay, we owe that to Turing",
+    "Men? Men are weak.",
     "Never :q me for emacs",
     "Tired? Just <C-z>",
     "Vim is charityware. See :h uganda for more information.",
