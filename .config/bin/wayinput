@@ -62,6 +62,8 @@ class InputWindow(Gtk.Window):
         entry.connect("activate", self.on_activate)
         buffer = entry.get_buffer()
         buffer.connect("inserted-text", self.on_add)
+        if args.default:
+            buffer.set_text(args.default, len(args.default))
 
         prompt = Gtk.Label(label=f"{args.title or 'Input'}", name="prompt")
 
@@ -106,6 +108,7 @@ if __name__ == "__main__":
     parser.add_argument("-t", "--title", type=str)
     parser.add_argument("-c", "--choices", nargs="*", action="extend")
     parser.add_argument("-n", "--numeric", action="store_true")
+    parser.add_argument("-d", "--default", type=str, nargs="?")
     args = parser.parse_args()
 
     provider = Gtk.CssProvider()
