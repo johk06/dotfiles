@@ -5,6 +5,26 @@ Jhk.require_program("clangd")
  That isn't very nice, so create a *special* TMPDIR just for it ]]
 local CACHEPATH = vim.fn.stdpath("cache") .. "/clangd"
 vim.uv.fs_mkdir(CACHEPATH, 493) -- 0755
+local utils = require("config.utils")
+
+
+---@param client vim.lsp.Client
+local goto_header = function(client, cmd)
+    local params = vim.lsp.util.make_text_document_params(buf)
+    client:request("textDocument/switchSourceHeader", params, function(err, res)
+        if err then
+            utils.error("Lsp/Clangd", tostring(err))
+            return
+        end
+
+        if not res then
+            utils.error("Lsp/Clangd", "Could not determine header/source for file")
+            return
+        end
+
+        cmd(vim.uri_to_fname(res))
+    end)
+end
 
 ---@type vim.lsp.Config
 return {
@@ -15,30 +35,12 @@ return {
         TMPDIR = CACHEPATH
     },
     on_attach = function(client, buf)
-        local utils = require("config.utils")
         local map = utils.local_mapper(buf, { group = true })
 
-        local goto_header = function(cmd)
-            local params = vim.lsp.util.make_text_document_params(buf)
-            client:request("textDocument/switchSourceHeader", params, function(err, res)
-                if err then
-                    utils.error("Lsp/Clangd", tostring(err))
-                    return
-                end
-
-                if not res then
-                    utils.error("Lsp/Clangd", "Could not determine header/source for file")
-                    return
-                end
-
-                cmd(vim.uri_to_fname(res))
-            end)
-        end
-
         -- goto header
-        map("n", "<localleader>h", function() goto_header(vim.cmd.drop) end,
+        map("n", "<localleader>h", function() goto_header(client, vim.cmd.drop) end,
             { desc = "Lsp/Clangd: Switch between header and source" })
-        map("n", "<localleader>H", function() goto_header(vim.cmd.Split) end,
+        map("n", "<localleader>H", function() goto_header(client, vim.cmd.Split) end,
             { desc = "Lsp/Clangd: Split header and source" })
     end
 }

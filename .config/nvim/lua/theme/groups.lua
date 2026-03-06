@@ -112,9 +112,11 @@ local colorscheme = {
     qfFileName                  = { fg = col.light_blue },
     qfLineNr                    = { fg = col.magenta },
     qfSeparator                 = { link = "@punctuation.delimiter" },
-    QuickFixLine                = { bg = pal.bg1 },
+    QuickFixLine                = { bg = pal.bg01 },
     QuickFixLineNr              = { fg = col.purple },
-    QuickFixFilename            = { link = "Identifier" },
+    QuickFixText                = { link = "Normal" },
+    QuickFixTextInvalid         = { fg = col.bright_gray, italic = true },
+    QuickFixFilename            = { link = "Directory" },
 
     -- built in syntax
     Boolean                     = { link = "@boolean" },
@@ -203,7 +205,6 @@ local colorscheme = {
     manSubHeading               = { link = "@markup.heading.3" },
 }
 -- }}}
-
 -- Ufo - Folds {{{
 add_with_prefix(colorscheme, "Ufo", {
     FoldedFg     = {},
@@ -218,7 +219,6 @@ add_with_prefix(colorscheme, "Ufo", {
     FoldConfig   = { fg = col.green, bg = pal.bg01 },
 })
 -- }}}
-
 -- Treesitter {{{
 -- this is the majority of the actual syntax highlighting
 add_with_prefix(colorscheme, "@", {
@@ -340,7 +340,6 @@ add_with_prefix(colorscheme, "@", {
     ["string.printf"]                = { fg = col.green, sp = col.green, underline = true },
 })
 -- }}}
-
 -- LSP semantic highlights {{{
 add_with_prefix(colorscheme, "@lsp.", {
     ["type.macro"]                      = { link = "@macro" },
@@ -356,7 +355,6 @@ add_with_prefix(colorscheme, "@lsp.", {
     ["typemod.keyword.documentation"]   = { fg = col.light_blue },
 })
 -- }}}
-
 -- Bufferline and Statusline {{{
 -- groups beginning with A* are for active sections
 -- I* is inactive
@@ -422,7 +420,6 @@ add_with_prefix(colorscheme, "Sl", {
     ModeReplace = { fg = col.red },
 })
 -- }}}
-
 -- Startscreen {{{
 add_with_prefix(colorscheme, "Dashboard", {
     -- for the big neovim logo
@@ -449,7 +446,6 @@ add_with_prefix(colorscheme, "Dashboard", {
     Recents   = { fg = col.green, bg = pal.bg01 },
 })
 -- }}}
-
 -- Files {{{
 -- this means general metadata attached to files
 add_with_prefix(colorscheme, "File", {
@@ -491,7 +487,6 @@ add_with_prefix(colorscheme, "File", {
     TypeHidden        = { fg = pal.fg1 },
 })
 -- }}}
-
 -- Oil {{{
 add_with_prefix(colorscheme, "Oil", {
     Link             = { fg = col.blue },
@@ -534,7 +529,6 @@ add_with_prefix(colorscheme, "OilGit", {
 })
 
 -- }}}
-
 -- Blink {{{
 add_with_prefix(colorscheme, "BlinkCmp", {
     Menu                = { link = "Normal" },
@@ -576,7 +570,6 @@ add_with_prefix(colorscheme, "BlinkCmp", {
     KindVariable        = { fg = pal.fg0 },
 })
 -- }}}
-
 -- LSP & Diagnostics {{{
 add_with_prefix(colorscheme, "Lsp", {
     InlayHint       = { fg = col.bright_gray, italic = true },
@@ -623,7 +616,6 @@ add_with_prefix(colorscheme, "Diagnostic", {
     Unnecessary      = { undercurl = true, sp = col.bright_gray }
 })
 -- }}}
-
 -- Mason {{{
 add_with_prefix(colorscheme, "Mason", {
     Header                      = { fg = pal.bg0, bg = col.teal },
@@ -640,7 +632,6 @@ add_with_prefix(colorscheme, "Mason", {
     Backdrop                    = { link = "Normal" },
 })
 -- }}}
-
 -- git: gitsigns and fugitive {{{
 add_with_prefix(colorscheme, "GitSigns", {
     Add                = { fg = blend(col.green, pal.bg01, 0.6) },
@@ -684,7 +675,6 @@ add_with_prefix(colorscheme, "git", {
     File            = { link = "diffFile" },
 })
 -- }}}
-
 -- Telescope {{{
 add_with_prefix(colorscheme, "Telescope", {
     ResultsBorder         = { fg = pal.bg3 },
@@ -712,7 +702,6 @@ add_with_prefix(colorscheme, "Telescope", {
     ResultsLineNr         = { fg = col.magenta },
 })
 -- }}}
-
 -- Grug-Far {{{
 add_with_prefix(colorscheme, "GrugFar", {
     InputLabel         = { fg = col.teal, italic = true },
@@ -721,7 +710,6 @@ add_with_prefix(colorscheme, "GrugFar", {
     ResultsNumberLabel = { link = "Label" },
 })
 -- }}}
-
 -- Orgmode {{{
 add_with_prefix(colorscheme, "@org.", {
     ["headline.level1"]       = { fg = col.yellow, bold = true },
