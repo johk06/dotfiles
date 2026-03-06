@@ -2,11 +2,26 @@
     background-color: $bg2;
     padding: .3rem;
     border-radius: 12px;
+    color: $fg0;
+
+    &.cold {
+        background-color: mix($bg2, $dblue);
+    }
+    &.cool {
+        background-color: mix($bg2, $teal);
+    }
+    &.temperate {
+        background-color: mix($bg2, $green);
+    }
+    &.warm {
+        background-color: mix($bg2, $yellow);
+    }
+    &.hot {
+        background-color: mix($bg2, $orange);
+    }
 }
 
 .weather-hour-past {
     background-color: $bg1;
-}
-.weather-hour-now {
-    background-color: mix($bg3, $accent);
+    color: $bright-gray;
 }

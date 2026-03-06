@@ -1,53 +1,53 @@
 ;; Icons {{{
 (defvar weather-icons '{
-"113": "weather-clear",
-"116": "weather-clouds",
-"119": "weather-clouds",
-"122": "weather-clouds",
-"143": "weather-fog",
-"176": "weather-showers",
-"179": "weather-showers",
-"182": "weather-showers",
-"185": "weather-showers",
-"200": "weather-storm",
-"227": "weather-snow-scattered",
-"230": "weather-snow",
-"248": "weather-fog",
-"260": "weather-fog",
-"263": "weather-showers-scattered",
-"266": "weather-showers-scattered",
-"281": "weather-showers-scattered",
-"284": "weather-showers-scattered",
-"293": "weather-showers-scattered",
-"296": "weather-showers-scattered",
-"299": "weather-showers",
-"302": "weather-showers",
-"305": "weather-showers",
-"308": "weather-showers",
-"311": "weather-showers-scattered",
-"314": "weather-showers-scattered",
-"317": "weather-showers-scattered",
-"320": "weather-snow-scattered",
-"323": "weather-snow-scattered",
-"326": "weather-snow-rain",
-"329": "weather-snow",
-"332": "weather-snow",
-"335": "weather-snow-rain",
-"338": "weather-snow",
-"350": "weather-showers-scattered",
-"353": "weather-showers-scattered",
-"356": "weather-showers",
-"359": "weather-showers",
-"362": "weather-showers-scattered",
-"365": "weather-showers-scattered",
-"368": "weather-snow-scattered",
-"371": "weather-snow",
-"374": "weather-showers-scattered",
-"377": "weather-showers-scattered",
-"386": "weather-storm",
-"389": "weather-storm",
-"392": "weather-storm",
-"395": "weather-snow"
+    "113": "weather-clear",
+    "116": "weather-clouds",
+    "119": "weather-clouds",
+    "122": "weather-clouds",
+    "143": "weather-fog",
+    "176": "weather-showers",
+    "179": "weather-showers",
+    "182": "weather-showers",
+    "185": "weather-showers",
+    "200": "weather-storm",
+    "227": "weather-snow-scattered",
+    "230": "weather-snow",
+    "248": "weather-fog",
+    "260": "weather-fog",
+    "263": "weather-showers-scattered",
+    "266": "weather-showers-scattered",
+    "281": "weather-showers-scattered",
+    "284": "weather-showers-scattered",
+    "293": "weather-showers-scattered",
+    "296": "weather-showers-scattered",
+    "299": "weather-showers",
+    "302": "weather-showers",
+    "305": "weather-showers",
+    "308": "weather-showers",
+    "311": "weather-showers-scattered",
+    "314": "weather-showers-scattered",
+    "317": "weather-showers-scattered",
+    "320": "weather-snow-scattered",
+    "323": "weather-snow-scattered",
+    "326": "weather-snow-rain",
+    "329": "weather-snow",
+    "332": "weather-snow",
+    "335": "weather-snow-rain",
+    "338": "weather-snow",
+    "350": "weather-showers-scattered",
+    "353": "weather-showers-scattered",
+    "356": "weather-showers",
+    "359": "weather-showers",
+    "362": "weather-showers-scattered",
+    "365": "weather-showers-scattered",
+    "368": "weather-snow-scattered",
+    "371": "weather-snow",
+    "374": "weather-showers-scattered",
+    "377": "weather-showers-scattered",
+    "386": "weather-storm",
+    "389": "weather-storm",
+    "392": "weather-storm",
+    "395": "weather-snow"
 }')
 ;; }}}
 
@@ -68,21 +68,23 @@
         )
         (scroll :class "slider" :hscroll true :hexpand true :style "min-height: 8rem; margin-top: 1rem;"
             (box :spacing 12 (for hour in {jq(weather.hourly, ".[2:]")} (box :space-evenly false :orientation "v"
-                :class "weather-hour ${(now == hour.time || now - 100 == hour.time || now + 100 == hour.time)? "weather-hour-now" : ( now >= hour.time  ? "weather-hour-past" : "")}"
-                (label :text "${replace(hour.time, "00$", "")}:00" :class "text" :vexpand true)
+                :class "weather-hour ${( now > hour.time  ? "weather-hour-past" :
+                    hour.tempC < 0 ? "cold" : (hour.tempC < 10 ? "cool" : (hour.tempC < 20 ? "temperate" : (hour.tempC < 30 ? "warm" : "hot")))
+                )}"
+                (label :text "${replace(hour.time, "00$", "")}:00" :vexpand true)
                 (themed-icon :name {weather-icons[hour.weatherCode]} :width 32 :height 32)
-                (label :text "${hour.weatherDesc[0].value}" :class "text" :limit-width 12)
-                (label :text "${hour.tempC}°C" :class "text")))))))
+                (label :text "${hour.weatherDesc[0].value}" :limit-width 12)
+                (label :text "${hour.tempC}°C")))))))
 
 (defwidget weather-controls [] (box :space-evenly false :class "agenda-control"
     (input :class "input l1" :value {weather-city}
         :timeout "128s"
         :onaccept `bin/weather.sh '{}'& disown`)
-    (box :hexpand true :space-evenly false :halign "end" :style "padding-right: 1rem;"
-        (label :class "text" 
+    (box :hexpand true :space-evenly false :halign "end" :style "padding-right: 1rem;" :visible {weather != ""}
+        (label :class "text"
             :text "Showing weather for ${weather.nearest_area[0].areaName[0].value}\\n${weather.nearest_area[0].region[0].value}, ${weather.nearest_area[0].country[0].value}"))))
 
-(defwidget agenda-weather-list [] 
+(defwidget agenda-weather-list []
     (scroll :vscroll true :vexpand true (box :orientation "v" :space-evenly false
         (weather-controls)
         (stack :selected {weather != "" ? 0 : 1}
