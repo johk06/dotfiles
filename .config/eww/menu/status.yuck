@@ -13,6 +13,7 @@
     (box :class "section" :orientation "v" :space-evenly false
         (uptime-time :title "${power-current-question}?")
         (hsep :height 20)
+        (label :class "monospace" :text {power-current-cmd})
         (box :space-evenly false :vexpand true :hexpand true
             (box :style "margin-left: 1rem;" (themed-icon :name {power-current-img} :width 40 :height 40))
             (box :space-evenly false :valign "center" :hexpand true :halign "end"

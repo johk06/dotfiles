@@ -226,6 +226,11 @@
 .text {
     color: $fg0;
 }
+.monospace {
+    color: $fg0;
+    font-weight: 500;
+    font-family: monospace;
+}
 .text-tiny {
     color: $fg0;
     font-size: 12px;
