@@ -38,15 +38,6 @@ unmap({ "i", "s" }, "<S-Tab>") -- snippet
 -- }}}
 
 -- Shorthands for Commands {{{
-map("n", "<space>m", function()
-    vim.cmd [[
-    write
-    silent make
-    cwindow
-    ]]
-    require("quicker").refresh()
-end, { desc = "Make" })
-
 map("n", "<space>w", "<cmd>write<cr>", { desc = "Write Buffer" })
 map("n", "<space>W", "<cmd>wall<cr>", { desc = "Write All Buffers" })
 -- }}}
