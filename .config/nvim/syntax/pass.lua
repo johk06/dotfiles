@@ -17,6 +17,7 @@ local patterns = {
 
 require("config.lib.synkit").syntax {
     name = "pass",
+    regions = {},
     keywords = keywords,
     match = patterns
 }

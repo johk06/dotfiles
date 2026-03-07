@@ -58,6 +58,7 @@ local patterns = {
 
 require("config.lib.synkit").syntax {
     name = "qalc",
+    regions = {},
     iskeyword = "a-z,A-Z,_",
     keywords = keywords,
     match = patterns
