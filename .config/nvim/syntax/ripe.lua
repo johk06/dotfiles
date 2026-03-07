@@ -25,16 +25,13 @@ local keywords = {
 
 ---@type synkit.Matches
 local matches = {
-    comment = {
-        { "(\\_[^)]*)", spell = true }
-    },
     ["punctuation.bracket"] = {
         "\\[", "\\]", "{",
         [[}\<\ze\k\+\>]]
     },
     ["string.escape"] = {
         {
-            [=[\\["nt\\]]=],
+            [=[\\["ntre\\]]=],
             contained = true,
             containedin = {
                 "string"
@@ -60,6 +57,14 @@ local regions = {
         skip = [[\\"]],
         contains = {
             "string.escape"
+        }
+    },
+    comment = {
+        start = "(",
+        stop = ")",
+        extra = "extend",
+        contains = {
+            "comment"
         }
     }
 }

@@ -11,7 +11,7 @@ TODO: Grouping
 ---@alias synkit.DetailedMatch {[1]: string, conceal: string?, spell: boolean?, contained: boolean, containedin: string[]}
 ---@alias synkit.Match (string|synkit.DetailedMatch)
 ---@alias synkit.Keyword string|{[integer]: string, conceal: string?}
----@alias synkit.Region {start: string, stop: string, skip: string?, contains: string[]?}
+---@alias synkit.Region {start: string, stop: string, skip: string?, contains: string[]?, extra: string?}
 
 ---@alias synkit.MatchEntry {[integer]: synkit.Match, priority: integer?}
 
@@ -137,12 +137,13 @@ M.syntax = function(syn)
             local contains = mklist(syn.name, region.contains)
             table.insert(extra, "contains=" .. contains)
         end
-        vim.cmd.syntax(("region %s start=+%s+ end=+%s+ %s"):format(
+        vim.cmd.syntax(("region %s start=+%s+ end=+%s+ %s %s"):format(
             mkname(syn.name, reg),
             region.start,
             region.stop,
-            table.concat(extra, " "))
-        )
+            table.concat(extra, " "),
+            region.extra or ""
+        ))
     end
 
     local groups = vim.tbl_keys(syn.match)
