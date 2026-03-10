@@ -1,17 +1,29 @@
---[[ Why something so old?
- It does very little.
+--[[ Why something so old? {{{
+ It isn't written in lua, it's not that fast &c.
+ But it does very little.
  "Modern" alternatives like https://github.com/stevearc/overseer.nvim do
  everything up to and including parsing Microsoft's weird build specification.
  Additionally they have various new pieces of UI that do not necessarily make
  sense with my approach. (Task lists, "editors" and other things)
+ They also do not interact with Vim primitives by default.
+
+ In contrast, this like basically all tpope-plugins is deceptively simple and
+ tries to be very close to Vim builtins. There are some unnecessary
+ abstractions like :Start and :Spawn, that are due to history and are not
+ necessary anymore, but I do not have to use those.
+ Dispatch does nothing more but populate the quickfix list asynchronously for me.
 
  If I need a seriously complicated command, just using the shell is easier than
  learning a new interface.
 
+ Keymaps: *two* leader keys
+ - <space>m (<space>M reserved) to just compile
+ - <space>b to do more: e.g. <space>bo - build output
+
  Basic workflow:
- - <space>b to build basically anything, with `make` adding a v:count makes it clean first
- - If I am interested in the output: <space>mo
-]]
+ - <space>m to build basically anything, when using make adding a v:count makes it clean first
+ - If I am interested in the output: <space>bo
+}}}]]
 
 local M = {
     "tpope/vim-dispatch"
@@ -22,19 +34,36 @@ M.init = function()
 
     local utils = require("config.utils")
 
-    utils.map("n", "<space>mi", ":Make<space>", { desc = "Make (interactive)" })
-    utils.map("n", "<space>md", ":Dispatch<space>", { desc = "Make: dispatch" })
-    utils.map("n", "<space>ma", "<cmd>AbortDispatch<cr>", { desc = "Make: abort" })
-    utils.map("n", "<space>mc", "<cmd>Make! clean<cr>", { desc = "Make: clean" })
-    utils.map("n", "<space>mo", "<cmd>Copen<cr>", { desc = "Make: open" })
-    utils.map("n", "<space>mv", "<cmd>Make<cr>", { desc = "Make: verbose" })
+    local map = function(key, cmd, desc)
+        utils.map("n", "<space>b" .. key, cmd, { desc = ("Build: %s"):format(desc) })
+    end
 
-    utils.map("n", "<space>b", function()
+    -- Useful to make a different target, e.g. <space>bi debug<cr>
+    map("i", ":Make<space>", "(input)")
+    -- Run an arbitrary command as a job
+    map("d", ":Dispatch<space>", "Dispatch")
+    -- Cancel the current command
+    map("a", "<cmd>AbortDispatch<cr>", "Abort")
+    -- Cancel any command by name
+    map("A", ":AbortDispatch<space>", "Abort (input)")
+    -- This primarily makes sense for Makefiles ofc, other build systems won't always have that
+    map("c", "<cmd>Make! clean<cr>", "Clean")
+    -- Open the current output; NOTE: <space>m hides it by default
+    map("o", "<cmd>Copen<cr>", "Open")
+    -- Do not hide the output
+    map("v", "<cmd>Make<cr>", "Verbose")
+
+    --[[ Be as smart as possible. If we are using makefiles and have a count, rebuild it
+     Write the current file to disk (if I don't want this, I can just use :Make)
+     Does *not* show output live (too distracting usually), :Copen can be
+     used during compilation too ]]
+    utils.map("n", "<space>m", function()
         if vim.o.makeprg == "make" and vim.v.count ~= 0 then
             vim.cmd.Make { "clean", bang = true }
         end
+        vim.cmd.update()
         vim.cmd.Make { bang = true }
-    end, { desc = "Build: do what I mean" })
+    end, { desc = "Make: do what I mean" })
 end
 
 return M
