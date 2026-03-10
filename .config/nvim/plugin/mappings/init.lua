@@ -193,5 +193,5 @@ map({ "x", "n" }, "gK", function()
         searchtext = fn.expand("<cword>")
     end
 
-    utils.run_cmd(cmd, { searchtext })
+    utils.run_excmd(cmd, { searchtext })
 end)
