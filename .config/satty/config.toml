@@ -1,9 +1,12 @@
 [general]
-initial-tool = "blur"
+initial-tool = "rectangle" # useful to redact pieces of text
 no-window-decoration = true
+default-fill-shapes = true
 
 [color-palette]
 palette = [
+    "#ffffff",
+    "#000000",
     "#8FBCBB",
     "#A3BE8c",
     "#EBCB8B",

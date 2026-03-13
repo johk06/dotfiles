@@ -8,6 +8,7 @@ for_window [app_id=".*blueman.*"]          floating enable
 for_window [app_id="pavucontrol"]          floating enable
 for_window [app_id="org.pipewire.Helvum"]  floating enable
 for_window [app_id="nm-connection-editor"] floating enable
+for_window [app_id="satty"]                floating enable
 for_window [app_id="nwg-icon-picker"]      floating enable, resize set 300px 400px
 
 # Make sure I do not type passwords into the wrong dialog
