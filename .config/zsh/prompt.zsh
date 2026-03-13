@@ -75,15 +75,15 @@ PROMPT+="%F{cyan}%(6~|%-1~/…/%24<..<%3~%<<|%6~)%u%(9V. %F{11}[ro].)"
 PROMPT+="%(2V.%F{8} /%(7V.%F{green}+%7v .)%(8V.%F{red}-%8v .)%F{white}%2v"
 # git status: [+added] [~changed] [-removed] [->moved] [_stashed]
 PROMPT+="%(5V. %F{green}+%5v.)%(3V. %F{yellow}~%3v.)%(4V. %F{red}-%4v.)%(6V. %F{magenta}->%6v.).)%(12V.%F{12} _%12v.)"
-# processes, time taken, date
+# processes, time taken
 PROMPT+="%F{8} |%(1j. %F{12}&%j.) %f%1v%F{8}, %F{%10v}%11v"
 # prompt symbol
 PROMPT+="
 %F{cyan}ρ%f "
 PROMPT+=$'%{\e]133;B\a%}' # OSC133 end
 
-# #history-number Jan 1 00:00
-RPROMPT="%{$(echotc UP 1)%}%F{magenta}#%h %F{13}%D{%b %d} %F{12}%D{%H:%M}%{$(echotc DO 1)%}"
+# #history-number
+RPROMPT="%{$(echotc UP 1)%}%F{magenta}#%h%{$(echotc DO 1)%}"
 
 declare -A _exitcolors=(
     [0]=green
