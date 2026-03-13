@@ -11,7 +11,7 @@ local M = {
         -- window_overlap_clear_enabled = true,
         window_overlap_clear_ft_ignore = {},
         max_width = 80,
-        max_height = 10,
+        max_height = 4,
         hijack_file_patterns = {},
         integrations = {
             markdown = {
@@ -20,6 +20,9 @@ local M = {
             },
             org = {
                 enabled = true
+            },
+            typst = {
+                enabled = false
             }
         }
     }

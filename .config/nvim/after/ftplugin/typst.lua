@@ -3,8 +3,7 @@ vim.wo[0].conceallevel = 2
 
 -- Get spelling from option {{{
 -- e.g. `#set text(lang: "de")`
-local QUERY = [[
-;; query
+local QUERY = [[; query
 (set
   (call
     item: (_) @_name

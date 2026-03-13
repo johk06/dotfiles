@@ -1,4 +1,4 @@
-vim.bo.makeprg = "python %"
+vim.bo.makeprg = "python -u %"
 
 -- stolen from https://github.com/idbrii/vim-david/blob/main/compiler/python.vim
 -- and converted to a more readable lua form
