@@ -1,12 +1,11 @@
---[[
-My *third* attempt at a handcrafted dashboard
-This mostly allows me to quickly open a previous file or project
-with [count](o|p), and quickly perform other common tasks.
+--[[ What? & Why?
+ My *third* attempt at a handcrafted dashboard
+ This mostly allows me to quickly open a previous file or project
+ with [count](o|p), and quickly perform other common tasks.
 
-Additionally, and perhaps more importantly, it's also pretty eye candy.
-]]
+ Additionally, and perhaps more importantly, it's also pretty eye candy. ]]
 
--- Configuration Variables {{{
+-- Configuration Variables & Data {{{
 local MAX_OLDFILES = 32
 local MAX_PROJECTS = 8
 local MESSAGES = {
@@ -20,9 +19,11 @@ local MESSAGES = {
     "It is our duty to keep computing gay, we owe that to Turing",
     "Men? Men are weak.",
     "Never :q me for emacs",
+    "There simply is no place like ~",
     "Tired? Just <C-z>",
     "Vim is charityware. See :h uganda for more information.",
 }
+
 ---@type ({[1]: string, desc: string, key: string, on_click: function, hl: string})[]
 local ACTIONS = {
     {
@@ -76,6 +77,25 @@ local ACTIONS = {
         hl = "Quit"
     }
 }
+
+local LETTER_WIDTH = 70
+local Letters = vim.tbl_map(function(row)
+    local elements = { "" } -- leave one element to cheaply insert padding
+    for i = 1, #row do
+        table.insert(elements, { row[i], "DashboardTitle" .. i })
+    end
+    return elements
+end, {
+    ---@format disable
+    {"      ████ ██████","          ",""," █████      ","██ ","                 "},
+    {"     ███████████","         ","   "," █████    ","      ","                "},
+    {"     █████████"," ████████","███","████████ ","███ ","  ███████████"},
+    {"    █████████","  ███    ","█████","████████ ","█████"," ██████████████"},
+    {"   █████████"," ████████","██ ██","███████ ","█████"," █████ ████ █████"},
+    {" ███████████"," ███    ","███ ███","██████ ","█████"," █████ ████ █████"},
+    {"██████  ███","█████████","█████████"," ████ ","█████"," █████ ████ ██████"},
+    ---@format enable
+})
 -- }}}
 
 local fn = vim.fn
@@ -178,27 +198,6 @@ local insert_text = function(lines)
 
     advance_lines(#lines)
 end
--- }}}
-
--- Data {{{
-local Letters = vim.tbl_map(function(row)
-    local elements = { "" } -- leave one element to cheaply insert padding
-    for i = 1, #row do
-        table.insert(elements, { row[i], "DashboardTitle" .. i })
-    end
-    return elements
-end, {
-    ---@format disable
-    {"      ████ ██████","          ",""," █████      ","██ ","                 "},
-    {"     ███████████","         ","   "," █████    ","      ","                "},
-    {"     █████████"," ████████","███","████████ ","███ ","  ███████████"},
-    {"    █████████","  ███    ","█████","████████ ","█████"," ██████████████"},
-    {"   █████████"," ████████","██ ██","███████ ","█████"," █████ ████ █████"},
-    {" ███████████"," ███    ","███ ███","██████ ","█████"," █████ ████ █████"},
-    {"██████  ███","█████████","█████████"," ████ ","█████"," █████ ████ ██████"},
-    ---@format enable
-})
-local LETTER_WIDTH = 70
 -- }}}
 
 ---@type dashboard.section

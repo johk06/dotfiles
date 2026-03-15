@@ -2,7 +2,7 @@
  Oil allows edits to the file system to work the same as text files
  Additionally, it's really fast and rock solid
  Extensibility is pretty good too
- 
+
  In Addition to core oil, I have the following:
  - Columns for user and group info
  - Git integration ]]
@@ -156,17 +156,20 @@ local function set_sort(action)
 end
 
 local function toggle_column(col)
-    return function()
-        local pos = column_positions[col]
-        if enabled_columns[pos] then
-            enabled_columns[pos] = nil
-        else
-            enabled_columns[pos] = col
-        end
-        require("oil").set_columns(vim.tbl_map(function(c)
-            return oil_columns[c] or c
-        end, vim.tbl_values(enabled_columns)))
-    end
+    return {
+        function()
+            local pos = column_positions[col]
+            if enabled_columns[pos] then
+                enabled_columns[pos] = nil
+            else
+                enabled_columns[pos] = col
+            end
+            require("oil").set_columns(vim.tbl_map(function(c)
+                return oil_columns[c] or c
+            end, vim.tbl_values(enabled_columns)))
+        end,
+        desc = "Oil: Toggle column " .. col
+    }
 end
 
 local function default_is_hidden(name, bufnr)
@@ -244,7 +247,7 @@ local is_git_tracked = function(path)
     ):wait().code == 0
 end
 
----@type oil.setupOpts
+---@type oil.SetupOpts
 M.opts = {
     buf_options = {
         buflisted = true

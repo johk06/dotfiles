@@ -5,7 +5,7 @@
  See the other files in this directory for specialized subsets
 
  Unused <space> mappings:
- - b, e, i, k, v, x, y, z
+ - e, i, k, v, x, y, z
  }}} ]]
 -- Declarations {{{
 local api = vim.api

@@ -4,3 +4,8 @@ map("n", "<localleader>f", [[ysa")f)a:format()<Left>]], {
     remap = true,
     desc = "Lua: Format string"
 })
+
+map("n", "<localleader>p", function()
+    vim.cmd([[keeppatterns s/(\s*/, /]])
+    vim.cmd.normal { "ipcall(", bang = true }
+end, { desc = "Lua: Protect Call" })

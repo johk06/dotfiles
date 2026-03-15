@@ -1,11 +1,9 @@
 local M = {}
 
---[[
-Allow showing file user and group in oil
-TODO: Allow editing via Column.perform_action
-- This may not be necessary as this is usually limited to root anyways
-- NOTE: this may make more sense for the groups column
-]]
+--[[ Allow showing file user and group in oil
+ TODO: Allow editing via Column.perform_action
+ - This may not be necessary as this is usually limited to root anyways
+ - NOTE: this may make more sense for the groups column ]]
 
 local constants  = require("oil.constants")
 local utils      = require("config.utils")
