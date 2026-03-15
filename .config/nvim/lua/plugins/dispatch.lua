@@ -31,6 +31,9 @@ local M = {
 
 M.init = function()
     vim.g.dispatch_no_maps = true
+    vim.g.dispatch_compilers = {
+        bear = "gcc"
+    }
 
     local utils = require("config.utils")
 
@@ -52,6 +55,20 @@ M.init = function()
     map("o", "<cmd>Copen<cr>", "Open")
     -- Do not hide the output
     map("v", "<cmd>Make<cr>", "Verbose")
+
+    map("j", function()
+        local ft = vim.bo.ft
+        local makeprg = vim.o.makeprg
+
+        if (ft == "c" or ft == "cpp") then
+            if makeprg == "make" then
+                vim.cmd.Make { "clean", bang = true }
+            end
+            vim.cmd.Dispatch { "bear", "--", makeprg, bang = true }
+        else
+            utils.warn("Dispatch", "It seems you're not using C(++), bear would be pointless")
+        end
+    end, "Generate compile_commands.json")
 
     --[[ Be as smart as possible. If we are using makefiles and have a count, rebuild it
      Write the current file to disk (if I don't want this, I can just use :Make)
