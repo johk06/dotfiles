@@ -289,10 +289,7 @@ do
             local time = utils.format_time_smart(mtime)
 
             local tail = fn.fnamemodify(file, ":t")
-            local head = utils.expand_home(fn.fnamemodify(file, ":h"), 2)
-            if head ~= "/" then
-                head = head .. "/"
-            end
+            local head = utils.expand_home(fn.fnamemodify(file, ":h") .. "/", 2)
 
             table.insert(OldfileSection.items, {
                 data = {},
