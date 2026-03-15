@@ -31,6 +31,11 @@ local hl_for_status = {
     [" "] = "Unmodified",
 }
 
+local show_count = function(count)
+    return count and (
+        count > 19 and "*" or (count > 9 and "+" or tostring(count)))
+end
+
 ---@param buf integer
 ---@param status config.oil.git.status
 local function set_signs(buf, status)
@@ -57,7 +62,7 @@ local function set_signs(buf, status)
         local worktree = codes[1]
         local index = codes[2]
         -- Show the count of changed files for directories
-        local show_for_index = codes[4] and tostring(codes[4]) or index
+        local show_for_index = show_count(codes[4]) or index
 
         api.nvim_buf_set_extmark(buf, ns, i - 1, 0, {
             end_col = 0,
