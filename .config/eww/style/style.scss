@@ -201,6 +201,9 @@
 
 .text {
     color: $fg0;
+    &.big {
+        font-size: 1.2rem;
+    }
 }
 .monospace {
     color: $fg0;

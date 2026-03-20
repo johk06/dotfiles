@@ -38,26 +38,29 @@
             (button 
                 :class "sbutton${wifi-searching ? " active" : ""}" 
                 :onclick "${EWW_CMD} poll wifis"
-                {wifi-searching ? "   Searching..." : "󰐷   Search"}))
-        (scroll :style "min-height: 26rem;" :vscroll true :hexpand true (box :orientation "vertical" :hexpand true
+                {wifi-searching ? "   Searching..." : "󰐷   Search"})
+            (button 
+                :class "sbutton ${rfkill.wlan ? "alert" : ""}"
+                :onclick "rfkill toggle wlan"
+                "${rfkill.wlan ? "󰤩" : "󱛎"}   Kill"))
+        (scroll :style "min-height: 26rem;" :vscroll true :hexpand true (box :orientation "vertical" :hexpand true :space-evenly false
             (for net in wifis
-                (box :orientation "vertical" :space-evenly false :class "card" :style "padding: .4rem;"
+                (box :orientation "vertical" :space-evenly false :class "card"
                     (box :space-evenly false
                         (box :hexpand true :halign "start" :space-evenly false
-                            (wifi-icon :class "ticon large text" 
-                                :signal {net.signal} 
-                                :security {net.security} 
-                                :active true))
-                        (box :orientation "vertical" :style "margin-right: 1rem;" :halign "end"
-                            (label :class "title" :text {net.ssid} :limit-width 20)
-                            (label :class "text" :text {net.bssid} :limit-width 20)))
-                    (box :space-evenly false :hexpand true
-                        (box :space-evenly false :hexpand true
                             (button 
-                                :class "button ${net.ssid == wifi.ssid ? "alert" : ""}" 
+                                :class "button ${net.ssid == wifi.ssid ? "active" : ""}" 
                                 :onclick "${net.ssid == wifi.ssid ? "nmcli connection down '${net.ssid}'" : "bin/wifi.sh connect '${net.ssid}' ${net.security}"}; ${EWW_CMD} poll wifis"
                                 :timeout "128s"
-                                {net.ssid == wifi.ssid ? "󰤭    Disconnect" : "󰤨    Connect"}))
+                                (wifi-icon :class "ticon" 
+                                    :signal {net.signal} 
+                                    :security {net.security} 
+                                    :active true)
+                            )
+                            (label :class "text big" :text {net.ssid} :limit-width 20))
                         (label 
                             :class "button ${net.security == "" ? "good" : "warn"}" 
-                            :text {net.security == "" ? "No Password" : replace(net.security, " ", ", ")}))))))))
+                            :text {net.security == "" ? "No Password" : replace(net.security, " ", ", ")})
+                        (label :text "${net.signal}%" 
+                            :class "button ${net.signal > 50 ? "good" : (net.signal > 20 ? "" : "inactive")}"))))))))
+
