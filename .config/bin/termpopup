@@ -1,0 +1,6 @@
+#!/bin/sh
+
+kitten panel --layer overlay \
+    --edge center-sized --lines 25 --columns 80 \
+    --class kitty --focus-policy exclusive\
+    "$@"

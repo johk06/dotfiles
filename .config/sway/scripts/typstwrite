@@ -1,0 +1,24 @@
+#!/bin/sh
+
+# Write a math expression quickly, copying it as an SVG
+
+FILE="$(mktemp -t XXXXX.typ)"
+cat <<'TYPST' >"$FILE"
+#import "@preview/physica:0.9.8"
+#set page(width: auto, height: auto, margin: 1cm)
+#show math.equation: set align(left)
+$
+
+$
+TYPST
+
+termpopup nvim "$FILE" +'norm!Gk' +'startinsert'
+
+IMGTYPE="png"
+OUTFILE="$FILE.$IMGTYPE"
+typst compile -f $IMGTYPE "$FILE" "$OUTFILE"
+
+notify-send -i "$OUTFILE" "Copied Equation" "$OUTFILE"
+wl-copy <"$OUTFILE"
+
+rm "$FILE"

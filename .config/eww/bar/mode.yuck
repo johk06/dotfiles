@@ -62,6 +62,7 @@
     {"keys": "dD", "action": "Date"},
     {"keys": "tT", "action": "Time"},
     {"keys": "p", "action": "Password"},
+    {"keys": "m", "action": "Math"},
     {"keys": "sS", "action": "Speech"}
 ]}')
 
