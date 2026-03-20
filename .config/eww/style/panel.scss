@@ -3,11 +3,10 @@
 .battery-circle-medium { @extend .circle; color: $yellow; }
 .battery-circle-high { @extend .circle; color: $green; }
 .wifi-circle {
-    @extend .circle; 
-    color: $accent; 
+    @extend .circle;
+    color: $accent;
     label {
-        margin: 1.6rem 1.6rem 1.3rem 1.1rem;
-        font-size: 1.6rem;
+        margin: 1.6rem 1.6rem 1.3rem 1.1rem; font-size: 1.6rem;
     }
 }
 
@@ -23,3 +22,45 @@
         background-color: $bg2;
     }
 }
+
+.status-text {
+    padding: 0em .5em;
+    border-radius: 6px;
+    color: $fg0;
+
+    &.small {
+        padding: 0em .2em;
+    }
+
+    &:hover {
+        background-color: $bg2;
+    }
+    &.inactive {
+        color: $bright-gray;
+        &:hover {
+            color: mix($fg2, $bright-gray);
+        }
+    }
+
+    &.active {
+        background-color: mix($bg1, $accent, 60%);
+    }
+    &.nested-active {
+        color: $accent;
+    }
+
+    &.alert {
+        background-color: mix($bg1, $red, 60%);;
+        &:hover {
+            background-color: mix($bg1, $red, 70%)
+        }
+    }
+    &.recharging {
+        background-color: mix($bg1, $green, 60%);
+        &:hover {
+            background-color: mix($bg1, $green, 70%)
+        }
+    }
+}
+
+

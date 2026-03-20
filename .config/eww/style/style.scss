@@ -158,30 +158,6 @@
     color: $bright-gray;
 }
 
-
-.tiny-button {
-    color: $fg0;
-    transition: color 0.1s ease;
-    &:hover {
-        color: $fg2;
-    }
-
-    &.inactive {
-        color: $bright-gray;
-        &:hover {
-            color: mix($fg2, $bright-gray);
-        }
-    }
-
-    &.active {
-        background-color: unset;
-        color: $accent;
-        &:hover {
-            color: fade($accent);
-        }
-    }
-}
-
 .alert {
     background-color: $red;
     color: $inv;
