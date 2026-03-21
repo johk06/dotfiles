@@ -29,6 +29,11 @@ local M = {
     "tpope/vim-dispatch"
 }
 
+---@class config.BuildOutputSpec
+---@field kind "ext"|"path"
+---@field action "open"|"exec"
+---@field value string
+
 M.init = function()
     vim.g.dispatch_no_maps = true
     vim.g.dispatch_compilers = {
@@ -81,6 +86,49 @@ M.init = function()
         vim.cmd.update()
         vim.cmd.Make { bang = true }
     end, { desc = "Make: do what I mean" })
+
+    --[[ Part of the classic Compile-Run cycle is actually starting the result
+      This mapping allows that to be much smarter
+      Buffer overrides Tab overrides Global here
+      Ftplugins should set b: ]]
+    map("r", function()
+        ---@type config.BuildOutputSpec
+        local ospec = vim.b.build_output or vim.t.build_output or vim.g.build_output
+        if not ospec then
+            utils.error("Dispatch", "No b:build_output, cannot determine what file to open")
+            return
+        end
+
+        local path
+
+        if ospec.kind == "ext" then
+            path = ("%s.%s"):format(vim.fn.expand("%:r"), ospec.value)
+        elseif ospec.kind == "path" then
+            path = ospec.value
+        end
+
+        if ospec.action == "open" then
+            vim.ui.open(path)
+        else
+            vim.cmd.Start(path)
+        end
+    end, "Open Result")
+
+    -- Set b: or t:build_output
+    vim.api.nvim_create_user_command("Target", function(args)
+        ---@type config.BuildOutputSpec
+        local spec = {
+            value = vim.fs.abspath(args.args),
+            kind = "path",
+            action = args.line1 ~= 0 and "exec" or "open"
+        }
+
+        if args.bang then
+            vim.t.build_output = spec
+        else
+            vim.b.build_output = spec
+        end
+    end, { bang = true, nargs = 1, complete = "file", range = 0, desc = "Target file as default to run" })
 end
 
 return M

@@ -1,6 +1,12 @@
 local buf = vim.api.nvim_get_current_buf()
 vim.wo[0].conceallevel = 2
 
+vim.b.build_output = {
+    kind = "ext",
+    action = "open",
+    value = "pdf"
+}
+
 -- Get spelling from option {{{
 -- e.g. `#set text(lang: "de")`
 local QUERY = [[; query
