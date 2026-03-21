@@ -1,0 +1,10 @@
+#!/bin/sh
+
+title="$(
+    swaymsg -t get_tree |
+        jq -r \
+            '.. | ((.nodes? // empty), (.floating_nodes? // empty))[] |
+            select(.focused).name|match("^([a-zA-Z]*)")|.string|ascii_downcase'
+)"
+
+swaymsg mark "$title~"

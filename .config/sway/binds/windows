@@ -82,6 +82,9 @@ bindsym $mod+Shift+G exec $sc/on-mark search move workspace current
 # (T)ag, (M)ark is used for media
 bindsym $mod+T exec $sc/mark
 bindsym $mod+U exec $sc/unmark
+
+# Tag a window for the scratchpad, by the first word in the title
+bindsym $mod+Mod1+T exec $sc/scratch-by-title
 # }}}
 
 # Select-Based resize
