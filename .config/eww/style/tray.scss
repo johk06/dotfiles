@@ -3,6 +3,7 @@
     border-radius: 12px;
     margin: 0.4rem;
     :last-child {
+        color: $fg0;
         border-radius: 12px;
         padding: 0em 0.6rem 0em 0.5rem;
         transition: background-color 0.3s ease, color 0.3s ease;
@@ -13,10 +14,11 @@
 }
 
 .tray-box {
+    background-color: $tray-bg;
     > * {
         &:hover {
             > image {
-                background-color: $bg2;
+                background-color: $tray-hover;
             }
         }
         > image {

@@ -2,7 +2,7 @@
     padding-right: .2rem;
 }
 .mpris-playing {
-    background: linear-gradient(90deg, mix($bg1, $accent), $bg0);
+    background: linear-gradient(90deg, mix($bg1, $accent, 60%), $bg0);
     &:hover {
         background: linear-gradient(90deg, $accent, mix($bg2, $accent) 20%, $bg1);
     }

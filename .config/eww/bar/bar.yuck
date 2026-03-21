@@ -49,7 +49,7 @@
 (defwidget systray-expander []
     (box :space-evenly false  :class "tray-container"
         (revealer :reveal {systray-expanded} :transition "slideleft"
-            (systray :class "tray-box"))
+            (systray :class "tray-box" :spacing 2))
         (button
             :timeout "16s"
             :onclick "${EWW_CMD} update systray-expanded=${!systray-expanded}"
