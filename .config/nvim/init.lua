@@ -86,6 +86,9 @@ shm:append("q") -- hide macro
 
 -- TODO: maybe? This allows me to have project specific settings
 o.exrc = true
+
+-- For some reason this takes a while to get set
+o.termguicolors = true
 -- }}}
 -- Extra Filetypes {{{
 vim.filetype.add {

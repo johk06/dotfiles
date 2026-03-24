@@ -11,7 +11,7 @@ M.config = function()
             local lcount = range[3] - range[1]
 
             local win
-            if lcount < 4 then
+            if lcount == 0  then
                 local columns = vim.o.columns
                 local lines = vim.api.nvim_buf_get_lines(target, range[1], range[3] + 1, false)
                 local max_len = vim.iter(lines):map(function(s)

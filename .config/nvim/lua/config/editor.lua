@@ -1,5 +1,9 @@
 --[[ Information {{{
-Additional global functionality for Neovim
+ Additional global functionality for Neovim
+
+ - The key-history:
+   Simply keep a time-based log of the last pressed keys, mainly to put them
+   into a macro when there is a need for it.
 }}} ]]
 
 local ns = vim.api.nvim_create_namespace("config.editor")
@@ -7,7 +11,7 @@ local sb = require("string.buffer")
 
 local M = {}
 
--- how long to wait until clearing the key history
+-- how long to wait until the key history is cleared on the next keystroke
 local KEYHIST_TIMEOUT = 2e9 -- 2 seconds
 
 local key_hist = sb.new(4096)

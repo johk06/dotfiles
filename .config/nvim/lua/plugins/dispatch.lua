@@ -120,7 +120,7 @@ M.init = function()
         local spec = {
             value = vim.fs.abspath(args.args),
             kind = "path",
-            action = args.line1 ~= 0 and "exec" or "open"
+            action = args.count ~= 0 and "exec" or "open"
         }
 
         if args.bang then
@@ -128,7 +128,7 @@ M.init = function()
         else
             vim.b.build_output = spec
         end
-    end, { bang = true, nargs = 1, complete = "file", range = 0, desc = "Target file as default to run" })
+    end, { bang = true, nargs = 1, complete = "file", count = 0, desc = "Target file as default to run" })
 end
 
 return M

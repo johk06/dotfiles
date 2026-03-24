@@ -14,7 +14,6 @@ end
 
 local delim = " %#SlDelim#| %*"
 -- }}}
-
 -- Mode Element {{{
 -- Change color with mode
 local mode_to_hl_group = {
@@ -61,7 +60,6 @@ local function update_mode()
     )
 end
 -- }}}
-
 -- Current Macro {{{
 local function update_macro(ev)
     if ev == "RecordingLeave" then
@@ -77,7 +75,6 @@ local function update_macro(ev)
     end
 end
 -- }}}
-
 -- Current Buffer Title {{{
 local function update_title()
     local buf = api.nvim_get_current_buf()
@@ -87,7 +84,7 @@ local function update_title()
     local readonly = vim.bo[buf].readonly or not vim.bo[buf].modifiable
 
     return string.format("%%#SlIText#%s%s%s",
-        name and esc(name) or "[-]",
+        name and esc(fn.pathshorten(name, 3)) or "[-]",
         (readonly and show_modified) and "%#SlIReadonly# [ro]" or "",
         (show_modified
             and (changed and "%#SlIChanged#~" or (" "))
@@ -95,7 +92,6 @@ local function update_title()
     )
 end
 -- }}}
-
 -- Git {{{
 -- extra info for fugitive buffers
 local function get_fugitive_info()
@@ -160,7 +156,6 @@ local function update_git()
     return delim .. table.concat(res, " ")
 end
 -- }}}
-
 -- Diagnostics {{{
 local function update_diagnostics()
     local sev = vim.diagnostic.severity
@@ -191,7 +186,6 @@ local function update_diagnostics()
     return delim .. table.concat(res, " ")
 end
 -- }}}
-
 -- Searchcount {{{
 local update_searchcount = function()
     if vim.v.hlsearch == 0 then
@@ -215,7 +209,6 @@ local update_searchcount = function()
     )
 end
 -- }}}
-
 -- Word, Char, Byte and Line -count {{{
 local function update_words()
     local count = fn.wordcount()
@@ -235,7 +228,6 @@ local function update_words()
     )
 end
 -- }}}
-
 -- Buffer and window local options {{{
 local function update_filetype()
     local bo = vim.bo
@@ -246,15 +238,19 @@ local function update_filetype()
 
     local spell = wo.spell and ("spl:%s "):format(bo.spelllang) or ""
 
-    local _enc = bo.fileencoding
-    local enc = _enc and _enc ~= "" and _enc or "utf-8"
+    local _enc = bo.fileencoding or ""
+    local enc
+    if not _enc or _enc == "" then
+        _enc = "utf-8"
+    end
+    enc = _enc:gsub("^utf%-", "U")
 
     local _tw = bo.textwidth
-    local tw = _tw == 0 and "" or ("tw:%d "):format(_tw)
+    local tw = _tw == 0 and "" or ("w:%d"):format(_tw)
 
     local indent = bo.expandtab
-        and ("sw:%d"):format(bo.shiftwidth)
-        or "tab"
+        and (">%d "):format(bo.shiftwidth)
+        or "^I "
 
     local concealcursor = wo.concealcursor
     if #concealcursor == 4 then
@@ -266,18 +262,17 @@ local function update_filetype()
     local conceallevel = wo.conceallevel
     local conceal = conceallevel > 0 and ("cc:%s "):format(concealcursor) or ""
 
-    return delim .. string.format("%%*%s %s %s %s%s%s%s",
+    return delim .. string.format("%%*%s %s %s%s%s%s%s",
         enc,
         bo.fileformat,
-        indent,
         tw,
+        indent,
         conceal,
         spell,
         ft
     )
 end
 -- }}}
-
 -- Attached LSPs {{{
 local function update_lsp_servers()
     local clients = vim.lsp.get_clients { bufnr = 0 }
@@ -449,13 +444,13 @@ local bracket_right = "%#SlISR#"
 sections = {
     bracket_left,
     update_mode(),            -- mode
-    "%#SlTyped#%-5(%S%)",     -- current keys
+    "%#SlTyped#%-3(%S%)",     -- current keys
     "",                       -- macro register
     "",                       -- title of buffer with modified etc
     "",                       -- git
     "",                       -- diagnostics
     "",                       -- searchcount
-    delim .. "%*%P %3l,%-3c", -- cursor position
+    delim .. "%*%P %3l:%-2c", -- cursor position
 
     -- separate the two parts, a bracket on each side
     bracket_right

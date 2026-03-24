@@ -1,5 +1,8 @@
 local buf = vim.api.nvim_get_current_buf()
-vim.wo[0].conceallevel = 2
+local bo = vim.bo[buf]
+local wo = vim.wo[0][0]
+bo.textwidth = 90
+wo.conceallevel = 2
 
 vim.b.build_output = {
     kind = "ext",
@@ -29,7 +32,7 @@ if parser then
     for id, node, _ in parsed:iter_captures(tree:root(), buf) do
         if parsed.captures[id] == "value" then
             local text = vim.treesitter.get_node_text(node, buf)
-            vim.bo[buf].spelllang = text:sub(2, -2) -- remove quotes
+            bo.spelllang = text:sub(2, -2) -- remove quotes
             break
         end
     end
