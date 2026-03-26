@@ -7,11 +7,11 @@ LOCK="$HOME/.config/background/lock"
 THUMB_RESOLUTION=384x384 # Provides a clean 10x downscale from 3840x2160
 
 function set_walls() {
-    if ! swww query; then
-        swww-daemon &
+    if ! awww query; then
+        awww-daemon &
         sleep 1
     fi
-    swww img -t grow \
+    awww img -t grow \
         --transition-pos bottom \
         --transition-duration 1.2 \
         --transition-fps 60 \
