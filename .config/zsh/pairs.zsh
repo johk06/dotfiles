@@ -85,7 +85,6 @@ function _autopair_can_delete_left {
     return 0
 }
 
-
 function _autopair_can_pair {
     if ! _autopair_line_is_balanced "$1" "$2"; then
         return 1

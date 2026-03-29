@@ -222,100 +222,28 @@ bindkey -M vicmd  Q change-surround
 bindkey -M vicmd  s delete-surround # [s]trip
 # }}}
 # Keep majority of Emacs-Style bindings {{{
-bindkey -M viins '^A' beginning-of-line
-bindkey -M viins '^E' end-of-line
-bindkey -M viins '^B' backward-char
-bindkey -M viins '^F' forward-char
-bindkey -M viins '^F' forward-char
-# the insert mode compatibility doesn't apply
-bindkey -M viins '^W' backward-kill-word
-bindkey -M viins '^U' backward-kill-line
-bindkey -M viins '^K' kill-line
+bindkey -M viins \
+    '^A' beginning-of-line \
+    '\e[H' beginning-of-line \
+    '^E' end-of-line \
+    '\e[F' end-of-line
+bindkey -M viins \
+    '^B' backward-char \
+    '^F' forward-char
+
+# the insert mode compatibility doesn't apply, I *do* want to backspace over the start of insert mode
+bindkey -M viins \
+    '^W' backward-kill-word \
+    '^U' backward-kill-line \
+    '^K' kill-line
 
 # History
-bindkey -M viins '^R' history-incremental-search-backward
-bindkey -M viins '^S' history-incremental-search-forward
-bindkey -M viins '^P' up-line-or-beginning-search
-bindkey -M viins '^N' down-line-or-beginning-search
-# }}}
-# ^A and ^X from Vim {{{
-function zle-jhk-get-cur-word-boundary {
-    buffer=$1
-    local spos=$CURSOR epos=$CURSOR
-    local pattern='[0-9a-zA-Z_]'
+bindkey -M viins \
+    '^R' history-incremental-search-backward \
+    '^S' history-incremental-search-forward \
+    '^P' up-line-or-beginning-search \
+    '^N' down-line-or-beginning-search
 
-    if ! [[ "${buffer:${CURSOR}:1}" =~ $pattern ]]; then
-        pattern="[^${pattern:1:-1} ]"
-    fi
-
-    for ((; $spos >= 0; spos--)); do
-        [[ "${buffer:${spos}:1}" =~ $pattern ]] || break
-    done
-    for ((; $epos < $#buffer; epos++)); do
-        [[ "${buffer:${epos}:1}" =~ $pattern ]] || break
-    done
-
-    ((spos++))
-    reply=($spos $epos)
-}
-function zle-jhk-change-value {
-    zle-jhk-get-cur-word-boundary "$BUFFER"
-    local start=${reply[1]}
-    local end=${reply[2]}
-    if [[ $start != 0 && ${BUFFER:$((start-1)):1} == [+-] ]]; then
-        ((start --))
-    fi
-
-    if ((start >= end)); then
-        return
-    fi
-
-    local len=$((end - start))
-    local word=${BUFFER:${start}:${len}}
-    local replacement
-
-    local count=${NUMERIC:-1}
-    local inc=0
-    if [[ "$KEYS" == $'\x01' ]]; then
-        inc=1
-    fi
-
-    if [[ "$word" =~ '^[0-9]+$'
-        || "$word" =~ '^0x[0-9a-fA-F]+$'
-        || "$word" =~ '^0b[01]+$' ]]; then
-        local as_num=$(($word))
-        local base=10 prefix=""
-
-        if [[ "$word" == "0x"* ]]; then
-            base=16
-            prefix=0x
-        elif [[ "$word" == "0b"* ]]; then
-            base=2
-            prefix=0b
-        fi
-
-        local changed_num
-        if ((inc)); then
-            changed_num=$((as_num + count))
-        else
-            if [[ $base != 10 ]]; then
-                # Don't allow decrementing anything but base 10 down past 0
-                changed_num=$((as_num == 0 ? 0 : as_num - count))
-            else
-                changed_num=$((as_num - count))
-            fi
-        fi
-        eval replacement='${prefix}$(( [##${base}] changed_num))'
-    else
-        replacement=$word
-    fi
-
-    BUFFER="${BUFFER:0:$start}$replacement${BUFFER:$end}"
-}
-
-zle -N zle-jhk-change-value
-bindkey -M vicmd ^A zle-jhk-change-value
-bindkey -M vicmd ^X zle-jhk-change-value
 # }}}
 
 # Get the arguments of the previous command
