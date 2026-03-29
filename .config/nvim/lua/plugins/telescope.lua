@@ -4,7 +4,7 @@ local picker_maps = {
     ["<space>:"] = { "command_history", "Telescope: Command History" },
     ["<space>d"] = { "diagnostics", "Telescope: Diagnostics" },
     ["<space>f"] = { "find_files", "Telescope: Files" },
-    ["<space>*"] = { "grep_string", "Telescope: Grep <cword>", mode = {"n", "x"} },
+    ["<space>*"] = { "grep_string", "Telescope: Grep <cword>", mode = { "n", "x" } },
     ["<space>h"] = { "help_tags", "Telescope: Help" },
     ["<space>/"] = { "live_grep", "Telescope: Grep" },
     ["<space>s"] = { "lsp_document_symbols", "Telescope: Local Symbols" },
@@ -28,8 +28,6 @@ local picker_maps = {
 ---@type LazySpec
 local M = {
     "nvim-telescope/telescope.nvim",
-    keys = vim.tbl_keys(picker_maps),
-    cmd = { "Telescope" },
     dependencies = {
         {
             "natecraddock/telescope-zf-native.nvim"
@@ -39,16 +37,6 @@ local M = {
         },
     },
 }
-
--- HACK: lazy load the ui select provider
-M.init = function()
-    --- vim.ui.select is meant to be overridden
-    ---@diagnostic disable-next-line: duplicate-set-field
-    vim.ui.select = function(...)
-        require("telescope")
-        return vim.ui.select(...)
-    end
-end
 
 -- defer loading my custom extensions until they're really needed
 -- this is necessary so that my mappings etc apply
@@ -276,7 +264,6 @@ opts.extensions = {
     },
 }
 -- }}}
-
 -- Setup {{{
 M.config = function()
     local utils = require("config.utils")
@@ -291,6 +278,12 @@ M.config = function()
     for lhs, rhs in pairs(picker_maps) do
         map(rhs.mode or "n", lhs, rhs.custom and custom(rhs[1]) or builtin[rhs[1]], { desc = rhs[2] })
     end
+
+    local lsp_map = require("config.lsp").lsp_map
+    lsp_map("n", "gd", builtin.lsp_definitions, { desc = "LSP: Select Definitions" })
+    lsp_map("n", "gr", builtin.lsp_references, { desc = "LSP: Select References" })
+    lsp_map("n", "gi", builtin.lsp_implementations, { desc = "LSP: Select Implementations" })
+    lsp_map("n", "gT", builtin.lsp_type_definitions, { desc = "LSP: Select Type Definitions" })
 end
 -- }}}
 

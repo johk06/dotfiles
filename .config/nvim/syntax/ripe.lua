@@ -59,6 +59,11 @@ local regions = {
             "string.escape"
         }
     },
+    ["string.raw"] = {
+        start = "`",
+        stop = "`",
+        skip = [[\\`]]
+    },
     comment = {
         start = "(",
         stop = ")",

@@ -85,7 +85,7 @@ local function update_title()
 
     return string.format("%%#SlIText#%s%s%s",
         name and esc(fn.pathshorten(name, 3)) or "[-]",
-        (readonly and show_modified) and "%#SlIReadonly# [ro]" or "",
+        (readonly and show_modified) and "%#SlIReadonly# (ro)" or "",
         (show_modified
             and (changed and "%#SlIChanged#~" or (" "))
             or "")

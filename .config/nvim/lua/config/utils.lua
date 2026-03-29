@@ -5,8 +5,8 @@ local bit = require("bit")
 local string_buffer = require("string.buffer")
 -- Reusable code for my entire config
 
--- format buffer title {{{
--- names for special filetypes {{{1
+-- Format buffer title {{{
+-- Names for special filetypes {{{1
 local nomodified_names = {
     undotree = { "[undo]" },
     fugitive = { "[git]", "git" },
@@ -149,9 +149,8 @@ M.btypenames = {
 }
 
 -- }}}
-
--- highlight file path {{{
--- patterns {{{1
+-- Highlight file path {{{
+-- Patterns {{{1
 local extension_highlights = {
     ["S"]       = "Code",
     ["a"]       = "Archive",
@@ -309,8 +308,7 @@ function M.highlight_fname(path, entry, is_hidden)
 end
 
 -- }}}
-
--- Easier mapping {{{
+-- Easier Mapping {{{
 ---@alias nvim_mode_char "n"|"i"|"c"|"v"|"x"|"s"|"o"|"t"
 ---@alias nvim_mode nvim_mode_char | nvim_mode_char[]
 
@@ -464,7 +462,6 @@ function M.make_mov_pair(fwd, bwd)
 end
 
 -- }}}
-
 -- Display Windows {{{
 ---@param args {enter: boolean}
 function M.open_window_smart(buffer, args)
@@ -554,7 +551,6 @@ function M.win_show_buf(b, opts)
 end
 
 -- }}}
-
 -- LSP Symbols {{{
 M.lsp_symbols = {
     Array         = "[ arr",
@@ -628,7 +624,6 @@ M.lsp_highlights = {
     Variable      = "@variable",
 }
 -- }}}
-
 -- Autocommands {{{
 ---@param name string
 ---@param commands table<string|string[], function|vim.api.keyset.create_autocmd>
@@ -672,7 +667,6 @@ M.del_autocommand = function(group, event)
     api.nvim_del_autocmd(commands[1].id)
 end
 -- }}}
-
 -- Format Dates & Times {{{
 M.highlight_time = function(secs)
     local cur_time = os.time()
@@ -738,7 +732,6 @@ end
 
 M.smart_date_len = #day_fmt
 -- }}}
-
 -- Format numbers {{{
 
 --- Give bigger files scarier colors based on how bad of an idea it would be to open them in Neovim
@@ -830,7 +823,6 @@ M.format_raised = function(num)
     return tostring(num):gsub(".", chars)
 end
 -- }}}
-
 -- Ranges {{{
 M.get_cur_line_range = function()
     local mode = fn.mode(1)
@@ -849,16 +841,6 @@ M.get_cur_line_range = function()
     return lnum, lnum
 end
 -- }}}
-
----@param buf integer
-M.buf_drop_undo = function(buf)
-    local bo = vim.bo[buf]
-    local oldlevels = bo.undolevels
-    bo.undolevels = -1
-    vim.cmd("normal! a" .. vim.keycode " <bs>")
-    bo.undolevels = oldlevels
-end
-
 -- Messages {{{
 ---@param subsystem string
 ---@param message string

@@ -11,24 +11,6 @@ local ui = require("config.lib.ui")
 local lsp = vim.lsp
 
 -- Mappings {{{
-local rename_visually = function()
-    local old_name = fn.expand("<cword>")
-    vim.cmd("normal! viw")
-    api.nvim_create_autocmd({ "TextChanged", "InsertLeave" }, {
-        buffer = api.nvim_get_current_buf(),
-        once = true,
-        callback = function()
-            local new_name = fn.expand("<cword>")
-            if new_name == old_name then
-                return
-            end
-
-            vim.cmd.undo()
-            lsp.buf.rename(new_name)
-        end
-    })
-end
-
 ---@type [nvim_mode, string, function|string, vim.keymap.set.Opts?][]
 local lsp_mappings = {
     {
@@ -45,97 +27,15 @@ local lsp_mappings = {
         { desc = "LSP: Rename symbol" }
     },
 
-    -- using a vim operator in visual mode
-    -- this allows things the default rename behavior just makes harder
-    -- e.g. we can just <space>RU to capitalize a symbol
-    -- or <space>R"xgs to replace the name of a symbol with a register's content
-    {
-        "n", "<space>R",
-        rename_visually,
-        { desc = "LSP: Rename symbol visually" }
-    },
-
-    -- Select using telescope
-    {
-        "n", "gd",
-        function() require("telescope.builtin").lsp_definitions() end,
-        { desc = "LSP: Select Definitions" }
-    },
-    {
-        "n", "gr",
-        function() require("telescope.builtin").lsp_references() end,
-        { desc = "LSP: Select References" }
-    },
-    {
-        "n", "gi",
-        function() require("telescope.builtin").lsp_implementations() end,
-        { desc = "LSP: Select Implementations" }
-    },
-    {
-        "n", "gT",
-        function() require("telescope.builtin").lsp_type_definitions() end,
-        { desc = "LSP: Select Type Definitions" }
-    },
-
-    -- Open in a split
-    {
-        "n", "<C-w>gd",
-        function()
-            utils.open_window_smart(0, { enter = true })
-            lsp.buf.definition { reuse_win = false, loclist = true }
-            vim.cmd.normal("zz")
-        end,
-        { desc = "LSP: (other Window) Definitions" }
-    },
-    {
-        "n", "<C-w>gr",
-        function()
-            utils.open_window_smart(0, { enter = true })
-            lsp.buf.references(nil, { loclist = true })
-            vim.cmd.normal("zz")
-        end,
-        { desc = "LSP: (other Window) References" }
-    },
-    {
-        "n", "<C-w>gi",
-        function()
-            utils.open_window_smart(0, { enter = true })
-            lsp.buf.implementation { reuse_win = false, loclist = true }
-            vim.cmd.normal("zz")
-        end,
-        { desc = "LSP: (other Window) Implementations" }
-    },
-
-    -- List in the location list
-    {
-        "n", "gld",
-        function() lsp.buf.definition { loclist = true } end,
-        { desc = "LSP: List Definitions" }
-    },
-    {
-        "n", "glr",
-        function() lsp.buf.references(nil, { loclist = true }) end,
-        { desc = "LSP: List References" }
-    },
-    {
-        "n", "glR",
-        function() lsp.buf.references(nil, {}) end,
-        { desc = "LSP: List References" }
-    },
-    {
-        "n", "gli",
-        function() lsp.buf.implementation { loclist = true } end,
-        { desc = "LSP: List Implementations" }
-    },
     {
         "n", "glc",
         function() lsp.buf.incoming_calls() end,
-        { desc = "LSP: List Callsites (qflist)" }
+        { desc = "LSP: List Callers" }
     },
     {
         "n", "glC",
         function() lsp.buf.outgoing_calls() end,
-        { desc = "LSP: List Called functions (qflist)" }
+        { desc = "LSP: List Called Functions" }
     },
 
     {
@@ -144,6 +44,80 @@ local lsp_mappings = {
         { desc = "LSP: Usage Info" }
     }
 }
+
+---@param abbrev string
+---@param cb function
+---@param desc string
+local do_map_list = function(abbrev, cb, desc)
+    table.insert(lsp_mappings, {
+        "n", "<C-w>g" .. abbrev,
+        function()
+            utils.open_window_smart(0, { enter = true })
+            cb { reuse_win = false, loclist = true }
+            vim.cmd.normal("zz")
+        end,
+        { desc = ("LSP: (other Window) %s"):format(desc) }
+    })
+
+    table.insert(lsp_mappings, {
+        "n", "gl" .. abbrev,
+        function() cb { loclist = true } end,
+        { desc = ("LSP: List %s (local)"):format(desc) }
+    })
+
+    table.insert(lsp_mappings, {
+        "n", "gl" .. abbrev:upper(),
+        function() cb() end,
+        { desc = ("LSP: List %s (qflist)"):format(desc) }
+    })
+end
+
+do_map_list("d", lsp.buf.definition, "Definitions")
+do_map_list("r", function(params)
+    lsp.buf.references(nil, params)
+end, "References")
+do_map_list("i", lsp.buf.implementation, "Implementations")
+
+---@param abbrev string
+---@param kinds string[]
+---@param desc string
+local map_list_symbol_kind = function(abbrev, kinds, desc)
+    local filter = function(t)
+        return vim.tbl_contains(kinds, t.kind)
+    end
+    table.insert(lsp_mappings, {
+        "n", "gl" .. abbrev,
+        function()
+            lsp.buf.document_symbol { on_list = function(ts)
+                local items = vim.tbl_filter(filter, ts.items)
+                vim.fn.setloclist(0, items)
+                if #items > 0 then
+                    vim.cmd.lopen()
+                end
+            end }
+        end,
+        { desc = ("LSP: List %s (local)"):format(desc) }
+    })
+    table.insert(lsp_mappings, {
+        "n", "gl" .. abbrev:upper(),
+        function()
+            lsp.buf.workspace_symbol("", {
+                on_list = function(ts)
+                    local items = vim.tbl_filter(filter, ts.items)
+                    vim.fn.setqflist(items)
+                    if #items > 0 then
+                        vim.cmd.copen()
+                    end
+                end
+            })
+        end,
+        { desc = ("LSP: List %s (global)"):format(desc) }
+    })
+end
+
+map_list_symbol_kind("f", { "Function" }, "Functions")
+map_list_symbol_kind("k", { "Class", "Struct", "Enum", "Interface" }, "Type (kinds)")
+
 
 ---Add a mapping for when LSP is active
 ---@param mode nvim_mode
@@ -154,7 +128,6 @@ M.lsp_map = function(mode, keys, action, opts)
     table.insert(lsp_mappings, { mode, keys, action, opts })
 end
 -- }}}
-
 -- Commands {{{
 ---@param args vim.api.keyset.create_user_command.command_args
 local inlay_hint_command = function(args)
@@ -212,7 +185,6 @@ local lsp_commands = {
 }
 
 -- }}}
-
 -- Callbacks {{{
 local on_lsp_attached = function(ev)
     local buf = ev.buf

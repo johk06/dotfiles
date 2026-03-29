@@ -1,9 +1,5 @@
 {
     "macros": {
-        "lua-un-pcall": {
-            "desc": "Remove pcall() from function call",
-            "keys": "viuo<Esc>?pcall<CR>df(f,r(lx"
-        },
         "extract-func": {
             "desc": "Extract statements from function",
             "keys": "yifgsaf"
@@ -15,6 +11,15 @@
         "lua-make-pcall": {
             "desc": "Wrap function call in pcall()",
             "keys": "vauo<Esc>ipcall(<Esc>f(cl,<Space><Esc>"
+        },
+        "lua-un-pcall": {
+            "desc": "Remove pcall() from function call",
+            "keys": "viuo<Esc>?pcall<CR>df(f,r(lx"
+        },
+        "space-line": {
+            "keys": "]<Space>2j",
+            "desc": "Add space below line and move to next line"
         }
     }
 }
+
