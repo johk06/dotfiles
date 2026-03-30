@@ -1,5 +1,4 @@
 ; TODO: remove once nvim-treesitter-textobjects adds typst queries
-
 (call
   (content
     "[" @parameter.outer
@@ -7,8 +6,20 @@
     "]" @parameter.outer))
 
 (call
+  (content
+    "["
+    _+ @call.inner
+    "]")) @call.outer
+
+(call
   (formula) @parameter.inner @parameter.outer
   ","? @parameter.outer)
+
+(call
+  (group
+    "("
+    _+ @call.inner
+    ")")) @call.outer
 
 (group
   (_) @parameter.inner @parameter.outer
