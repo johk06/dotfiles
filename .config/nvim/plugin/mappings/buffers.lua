@@ -98,6 +98,13 @@ map("n", leader .. "t", open_buf_in("tab"), { desc = "Buffer: Show tab" })
 map("n", leader .. "f", open_buf_in("float"), { desc = "Buffer: Show float" })
 map("n", leader .. "a", open_buf_in("autosplit"), { desc = "Buffer: Show auto" })
 map("n", leader .. "r", open_buf_in("replace"), { desc = "Buffer: Replace current" })
+map("n", leader .. "p", function()
+    local buf = get_buf_idx()
+    if not buf then return end
+    vim.cmd(("%dpb"):format(buf))
+end, { desc = "Buffer: Show Preview" })
+
+map("n", leader .. "P", "<cmd>pclose<cr>", { desc = "Buffer: Close Preview"})
 
 local delete_buffer = function(buf)
     local ok = pcall(api.nvim_buf_delete, buf, {})
@@ -157,7 +164,7 @@ local function indexed_tab_command(cmd)
         target = Tabs_for_idx[count]
     end
 
-    utils.run_excmd(cmd, {target})
+    utils.run_excmd(cmd, { target })
 end
 
 local function get_tab_idx()

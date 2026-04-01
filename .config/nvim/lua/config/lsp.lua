@@ -58,6 +58,24 @@ local do_map_list = function(abbrev, cb, desc)
         end,
         { desc = ("LSP: (other Window) %s"):format(desc) }
     })
+    table.insert(lsp_mappings, {
+        "n", "<C-w><C-g>" .. abbrev,
+        function()
+            vim.cmd("botright pedit %")
+
+            local old_win = api.nvim_get_current_win()
+            local cur = api.nvim_win_get_cursor(old_win)
+            local pv_win = vim.iter(api.nvim_list_wins()):find(function(w)
+                return vim.wo[w].previewwindow
+            end)
+            api.nvim_set_current_win(pv_win)
+            api.nvim_win_set_cursor(pv_win, cur)
+            cb { reuse_win = false, loclist = true }
+            vim.cmd.normal("zz")
+            api.nvim_set_current_win(old_win)
+        end,
+        { desc = ("LSP: (other Window) %s"):format(desc) }
+    })
 
     table.insert(lsp_mappings, {
         "n", "gl" .. abbrev,
