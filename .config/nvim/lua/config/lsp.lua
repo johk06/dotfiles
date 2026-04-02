@@ -70,8 +70,10 @@ local do_map_list = function(abbrev, cb, desc)
             end)
 
             vim.wo[pv_win].scrolloff = 0
+            vim.wo[pv_win].cursorlineopt = "line"
             api.nvim_win_call(pv_win, function()
                 api.nvim_win_set_cursor(pv_win, cur)
+                vim.cmd.normal("zt")
                 cb { reuse_win = false, loclist = true }
                 vim.cmd.normal("zt")
             end)
