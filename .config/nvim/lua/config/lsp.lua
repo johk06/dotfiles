@@ -68,11 +68,13 @@ local do_map_list = function(abbrev, cb, desc)
             local pv_win = vim.iter(api.nvim_list_wins()):find(function(w)
                 return vim.wo[w].previewwindow
             end)
-            api.nvim_set_current_win(pv_win)
-            api.nvim_win_set_cursor(pv_win, cur)
-            cb { reuse_win = false, loclist = true }
-            vim.cmd.normal("zz")
-            api.nvim_set_current_win(old_win)
+
+            vim.wo[pv_win].scrolloff = 0
+            api.nvim_win_call(pv_win, function()
+                api.nvim_win_set_cursor(pv_win, cur)
+                cb { reuse_win = false, loclist = true }
+                vim.cmd.normal("zt")
+            end)
         end,
         { desc = ("LSP: (other Window) %s"):format(desc) }
     })
