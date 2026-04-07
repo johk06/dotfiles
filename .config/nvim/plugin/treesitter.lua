@@ -114,7 +114,7 @@ M.typst_symbol_names = typst_symbol_names
 
 directive("jhk-typst-set-symbol-conceal!", function(match, pattern, source, predicate, metadata)
     local id = predicate[2]
-    local node = match[id]
+    local node = match[id][1]
     if not node then
         return
     end
@@ -131,7 +131,7 @@ end, {})
 -- Only select n initial characters of a node
 directive("jhk-set-length!", function(match, pattern, source, predicate, metadata)
     local id = predicate[2]
-    local node = match[id]
+    local node = match[id][1]
     if not node then
         return
     end
