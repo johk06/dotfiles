@@ -326,7 +326,10 @@ for _, file in ipairs(api.nvim_get_runtime_file("lsp/*.lua", true)) do
     table.insert(servers, server)
 end
 
-vim.lsp.enable(servers)
+-- Schedule to avoid recursive requires
+vim.schedule(function()
+    vim.lsp.enable(servers)
+end)
 
 
 return M

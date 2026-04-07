@@ -10,7 +10,7 @@ local utils = require("config.utils")
 
 ---@param client vim.lsp.Client
 local goto_header = function(client, cmd)
-    local params = vim.lsp.util.make_text_document_params(buf)
+    local params = vim.lsp.util.make_text_document_params()
     client:request("textDocument/switchSourceHeader", params, function(err, res)
         if err then
             utils.error("Lsp/Clangd", tostring(err))

@@ -272,6 +272,12 @@ require("config.langabbrev") -- smart insert mode abbreviations
 -- load UI components
 local ui = require("config.lib.ui")
 vim.ui.input = ui.nvim_input
+
+require("vim._core.ui2").enable {
+    pager = {
+        height = 4,
+    }
+}
 -- }}}
 
 -- for some reason lazy deactivates it

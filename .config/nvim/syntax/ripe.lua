@@ -9,7 +9,8 @@ local keywords = {
         "+", "-", "*", "/", "^", "%",
         "c+", "c-", "c*", "c/", "c^",
         "<-",
-        "=", "~", "<", "<=", ">", ">="
+        "=", "~", "<", "<=", ">", ">=",
+        "!=", ",=", ",!=", "=~"
     },
     ["keyword.conditional"] = {
         "if", "when", "unless"
@@ -36,6 +37,11 @@ local matches = {
             containedin = {
                 "string"
             }
+        },
+        {
+            [=[\\[`\\]]=],
+            contained = true,
+            containedin = { "string.raw" }
         }
     },
     ["punctuation.special"] = {

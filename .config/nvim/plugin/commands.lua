@@ -185,7 +185,7 @@ end, {
     desc = "Manually start LSP server",
     nargs = 1,
     complete = function()
-        return vim.tbl_keys(lsp._enabled_configs)
+        return vim.tbl_keys(lsp.get_configs())
     end
 })
 

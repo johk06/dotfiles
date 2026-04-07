@@ -33,6 +33,7 @@ unmap("n", "gra")              -- actions
 unmap("n", "grr")              -- references
 unmap("n", "gri")              -- implementation
 unmap("n", "grt")              -- type definition
+unmap("n", "grx")              -- codelenses
 unmap({ "i", "s" }, "<Tab>")   -- snippet
 unmap({ "i", "s" }, "<S-Tab>") -- snippet
 -- }}}

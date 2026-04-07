@@ -40,7 +40,7 @@ map("n", "<space>ci", function() -- 'shiftwidth'
         vim.bo.expandtab = not vim.bo.expandtab
     end
 
-    vim.cmd("retab!")
+    vim.cmd("retab! -indentonly")
     if needs_reindent then
         vim.cmd("normal! mzgg=G'z")
     end
