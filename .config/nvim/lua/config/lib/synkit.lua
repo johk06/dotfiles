@@ -6,7 +6,6 @@ by simply specifying the syntax as a set of strings and tables.
 
 TODO: Grouping
 }}} ]]
-
 -- Types {{{
 ---@alias synkit.DetailedMatch {[1]: string, conceal: string?, spell: boolean?, contained: boolean, containedin: string[]}
 ---@alias synkit.Match (string|synkit.DetailedMatch)
@@ -37,27 +36,27 @@ local tosyngroup = function(g)
     return table.concat(vim.tbl_map(title, vim.split(g, "%.")))
 end
 
-local created_groups = {}
 
 ---@param syn string
 ---@param group string
-local mkname = function(syn, group)
+---@param do_link fun(from: string, to: string)
+local mkname = function(syn, group, do_link)
     local g = syn .. tosyngroup(group)
-    if not created_groups[g] then
-        vim.api.nvim_set_hl(0, g, { link = ("@%s.%s"):format(group, syn) })
-        created_groups[g] = true
-    end
+    do_link(g, ("@%s.%s"):format(group, syn))
     return g
 end
-local mklist = function(name, list)
+
+---@param env synkit.SynCallbacks
+local mklist = function(name, list, env)
     return table.concat(vim.tbl_map(function(c)
-        return mkname(name, c)
+        return mkname(name, c, env.link_hl)
     end, list), ",")
 end
 
 ---@param syn synkit.Syntax
 ---@param pattern synkit.DetailedMatch
-local mksuffix = function(syn, pattern)
+---@param env synkit.SynCallbacks
+local mksuffix = function(syn, pattern, env)
     local suffix = {}
     if pattern.spell then
         table.insert(suffix, "contains=@Spell")
@@ -69,7 +68,7 @@ local mksuffix = function(syn, pattern)
         table.insert(suffix, "contained")
     end
     if pattern.containedin then
-        table.insert(suffix, "containedin=" .. mklist(syn.name, pattern.containedin))
+        table.insert(suffix, "containedin=" .. mklist(syn.name, pattern.containedin, env))
     end
 
     return table.concat(suffix, " ")
@@ -77,12 +76,14 @@ end
 
 ---@param group string
 ---@param spec string
-local match = function(group, spec, suffix)
-    vim.cmd.syntax(("match %s '%s' %s"):format(group, spec:gsub("'", "\\'"), suffix))
+---@param do_syn fun(string)
+local match = function(group, spec, suffix, do_syn)
+    do_syn(("match %s '%s' %s"):format(group, spec:gsub("'", "\\'"), suffix))
 end
 
-local keyword = function(group, word, suffix)
-    vim.cmd.syntax(("keyword %s %s %s"):format(group, word, suffix))
+---@param do_syn fun(string)
+local keyword = function(group, word, suffix, do_syn)
+    do_syn(("keyword %s %s %s"):format(group, word, suffix))
 end
 
 ---@return string[]
@@ -94,7 +95,8 @@ end
 
 ---@param list synkit.Keyword[]
 ---@param group string
-local do_keywd_list = function(list, group)
+---@param env synkit.SynCallbacks
+local do_keywd_list = function(list, group, env)
     local items, suffix
     for _, word in ipairs(list) do
         if type(word) == "table" then
@@ -106,25 +108,26 @@ local do_keywd_list = function(list, group)
         end
 
         for _, w in ipairs(items) do
-            keyword(group, w, suffix)
+            keyword(group, w, suffix, env.syntax)
         end
     end
 end
 
----@param syn synkit.Syntax
-M.syntax = function(syn)
-    if vim.b.current_syntax then
-        return
-    end
-    vim.b.current_syntax = syn.name
+---@class synkit.SynCallbacks
+---@field syntax fun(cmd: string) Call a syntax command
+---@field set fun(opt: string, val: string) Set a buffer-local option
+---@field link_hl fun(from: string, to: string)
 
+---@param syn synkit.Syntax
+---@param env synkit.SynCallbacks
+local do_set_syntax = function(syn, env)
     if syn.iskeyword then
-        vim.bo.iskeyword = syn.iskeyword
+        env.set("iskeyword", syn.iskeyword)
     end
 
     for group, words in pairs(syn.keywords) do
         if type(group) == "string" then
-            do_keywd_list(words, mkname(syn.name, group))
+            do_keywd_list(words, mkname(syn.name, group, env.link_hl), env)
         end
     end
 
@@ -134,11 +137,11 @@ M.syntax = function(syn)
         }
 
         if region.contains then
-            local contains = mklist(syn.name, region.contains)
+            local contains = mklist(syn.name, region.contains, env)
             table.insert(extra, "contains=" .. contains)
         end
-        vim.cmd.syntax(("region %s start=+%s+ end=+%s+ %s %s"):format(
-            mkname(syn.name, reg),
+        env.syntax(("region %s start=+%s+ end=+%s+ %s %s"):format(
+            mkname(syn.name, reg, env.link_hl),
             region.start,
             region.stop,
             table.concat(extra, " "),
@@ -156,7 +159,7 @@ M.syntax = function(syn)
         return prioa < priob
     end)
     for _, group in ipairs(groups) do
-        local gname = mkname(syn.name, group)
+        local gname = mkname(syn.name, group, env.link_hl)
         local patterns = syn.match[group]
 
         for _, pattern in ipairs(patterns) do
@@ -164,17 +167,88 @@ M.syntax = function(syn)
             if type(pattern) == "table" then
                 ---@cast pattern string[]
                 list = pattern
-                suffix = mksuffix(syn, pattern)
+                suffix = mksuffix(syn, pattern, env)
             else
                 list = expand_string_pattern(pattern)
                 suffix = ""
             end
 
             for _, rx in ipairs(list) do
-                match(gname, rx, suffix)
+                match(gname, rx, suffix, env.syntax)
             end
         end
     end
+end
+
+
+---@param syn synkit.Syntax
+M.syntax = function(syn)
+    if vim.b.current_syntax then
+        return
+    end
+    vim.b.current_syntax = syn.name
+
+    local groups_done = {}
+    do_set_syntax(syn, {
+        syntax = vim.cmd.syntax,
+        set = function(opt, val)
+            vim.bo[opt] = val
+        end,
+        link_hl = function(from, to)
+            if not groups_done[from] then
+                vim.api.nvim_set_hl(0, from, { link = to })
+                groups_done[from] = true
+            end
+        end
+    })
+
+    vim.api.nvim_buf_create_user_command(0, "SynkitExport", function(args)
+        M.export(syn, args.args)
+    end, {
+        complete = "file",
+        nargs = 1
+    })
+end
+
+---@param syn synkit.Syntax
+---@param file string
+M.export = function(syn, file)
+    local lines = {
+        [[" This syntax file was generated using synkit]],
+        [[" It is NOT meant for manual editing]],
+        [[" Creation date: ]] .. os.date("%Y-%m-%d")
+    }
+
+    local syns = { "", [[" Syntax definitions:]] }
+    local lets = { "", [[" Local Variables:]] }
+    local links = { "", [[" Highlight Group Links:]] }
+    do_set_syntax(syn, {
+        syntax = function(args)
+            table.insert(syns, ("syntax %s"):format(args))
+        end,
+        set = function(key, val)
+            table.insert(lets, ("let &l:%s = \"%s\""):format(key, val:gsub([=[[\"]]=], "\\%1")))
+        end,
+        link_hl = function(from, to)
+            table.insert(links, ("highlight link %s %s"):format(from, to))
+        end
+    })
+
+    vim.list_extend(lines, lets)
+    vim.list_extend(lines, syns)
+    vim.list_extend(lines, links)
+    local text = table.concat(lines, "\n")
+
+    vim.uv.fs_open(file, "w", 420, function(err, fd)
+        if err then
+            require("config.utils").error("Synkit", err)
+            return
+        end
+
+        vim.uv.fs_write(fd, text)
+
+        vim.uv.fs_close(fd)
+    end)
 end
 
 return M
