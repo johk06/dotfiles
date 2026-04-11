@@ -150,7 +150,6 @@ M.nvim_input = function(opts, callback)
     last_was_insert = api.nvim_get_mode().mode:find("[it]") and true or false
 
     local buf = api.nvim_create_buf(false, true)
-    local titlebuf = api.nvim_create_buf(false, true)
 
     if opts.default and opts.default:match("%S") then
         api.nvim_buf_set_lines(buf, 0, 0, false, { opts.default })
@@ -159,7 +158,9 @@ M.nvim_input = function(opts, callback)
     end
 
     local title = (opts.prompt and opts.prompt:gsub("%s*:%s*", "") or "Input")
-    local titlewidth = math.min(fn.strdisplaywidth(title), 20) + 2
+    local title_len = fn.strdisplaywidth(title)
+    local titlewidth = math.min(title_len, math.floor(vim.o.columns / 2)) + 2
+    local titlebuf = api.nvim_create_buf(false, true)
     api.nvim_buf_set_extmark(titlebuf, ns, 0, 0, {
         virt_text = { { title, "Identifier" }, { ": ", "NonText" } },
         virt_text_win_col = 0

@@ -112,6 +112,7 @@ opt.fillchars = {
     -- it's visible from the gaps anyways
     diff = " ",
     lastline = "",
+    msgsep = "─",
 }
 
 opt.listchars = {
@@ -134,7 +135,12 @@ opt.diffopt = {
     "filler",
     "internal",
     "closeoff",
-    "context:4", -- 6 is a bit too much for me
+    -- 6 is too much for me
+    "context:2",
+    --  This is nice, it reduces the amount of changes shown for most things
+    "inline:word",
+    -- 60 is the suggested default value, this helps detect additions to paragraphs
+    "linematch:60",
 }
 -- }}}
 -- File Search {{{
@@ -165,8 +171,6 @@ g.c_syntax_for_h = true -- i use C more than C++
 -- make manpage formatting decent
 g.man_hardwrap = 0
 g.ft_man_folding_enable = 1
-
-g.loaded_spellfile_plugin = 1 -- use my own code instead
 -- }}}
 -- Diagnostics {{{
 local hlgroups = {
@@ -254,8 +258,6 @@ require("lazy").setup("plugins", {
                 "matchit", -- use matchup instead
                 "matchparen",
 
-                "spellfile", -- use my own
-
                 -- I use neither of those
                 "netrwPlugin",
                 "rplugin",
@@ -275,8 +277,8 @@ vim.ui.input = ui.nvim_input
 
 require("vim._core.ui2").enable {
     pager = {
-        height = 4,
-    }
+        height = 0.3,
+    },
 }
 -- }}}
 

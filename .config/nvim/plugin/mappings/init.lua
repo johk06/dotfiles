@@ -41,6 +41,7 @@ unmap({ "i", "s" }, "<S-Tab>") -- snippet
 -- Shorthands for Commands {{{
 map("n", "<space>w", "<cmd>write<cr>", { desc = "Write Buffer" })
 map("n", "<space>W", "<cmd>wall<cr>", { desc = "Write All Buffers" })
+map("n", "<space><cr>", "g<", { desc = "View Messages" })
 -- }}}
 --[[ Change Directory {{{
  Sometimes I need a quicker way to change directory than :cd, :lcd etc

@@ -19,11 +19,7 @@ map("n", "<space>c|", function() -- 'colorcolumn'
         if vim.o.textwidth ~= 0 then
             vim.o.colorcolumn = "+1"
         else
-            if vim.o.columns >= 120 then
-                vim.o.colorcolumn = "120"
-            else
-                vim.o.colorcolumn = "80"
-            end
+            vim.o.colorcolumn = "80"
         end
     else
         vim.o.colorcolumn = ""
