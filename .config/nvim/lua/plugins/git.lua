@@ -1,10 +1,10 @@
----@type LazySpec
 local M = {
     { "lewis6991/gitsigns.nvim" },
     { "tpope/vim-fugitive" },
     {
         "linrongbin16/gitlinker.nvim",
         cmd = { "GitLink" },
+        ---@type gitlinker.Options
         opts = {
             message = false,
             -- Same value as on yank, see plugin/autocommands.lua
@@ -82,7 +82,6 @@ local map_on_git_buffer = function(buf)
     map(utils.mode_action, "X", "<cmd>GitLink! blame<cr>", { desc = "Git: Open Blame URL" })
 end
 -- }}}
-
 -- Always active global maps {{{
 local map_global_maps = function()
     local map = function(mode, lhs, rhs, opts)
@@ -112,7 +111,6 @@ local map_global_maps = function()
     end, { desc = "Git: Status" })
 end
 -- }}}
-
 -- gitsigns {{{
 M[1].opts = {
     signs = {
@@ -122,6 +120,14 @@ M[1].opts = {
         topdelete    = { text = "^" },
         changedelete = { text = "~" },
         untracked    = { text = "." },
+    },
+    signs_staged = {
+        add          = { text = '┃' },
+        change       = { text = '┃' },
+        delete       = { text = '_' },
+        topdelete    = { text = '^' },
+        changedelete = { text = '~' },
+        untracked    = { text = '.' },
     },
 
     preview_config = {
@@ -152,7 +158,6 @@ M[1].opts = {
     on_attach = map_on_git_buffer
 }
 -- }}}
-
 -- Fugitive {{{
 M[2].config = function()
     vim.g.fugitive_dynamic_colors = false

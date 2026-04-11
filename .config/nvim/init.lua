@@ -139,8 +139,6 @@ opt.diffopt = {
     "context:2",
     --  This is nice, it reduces the amount of changes shown for most things
     "inline:word",
-    -- 60 is the suggested default value, this helps detect additions to paragraphs
-    "linematch:60",
 }
 -- }}}
 -- File Search {{{
