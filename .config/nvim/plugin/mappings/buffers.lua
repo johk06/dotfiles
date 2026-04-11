@@ -12,6 +12,7 @@ local map = utils.map
 local leader = "'"
 -- Make sure that it waits for input
 map("n", leader, "<nop>")
+map("n", "<M-'>", "`") -- But at the same time, keep it if ever needed
 -- }}}
 
 -- Easier to type alternate file, mnemonic: [s]econd, also allows remapping <C-6>

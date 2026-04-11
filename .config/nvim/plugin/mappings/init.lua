@@ -37,7 +37,12 @@ unmap("n", "grx")              -- codelenses
 unmap({ "i", "s" }, "<Tab>")   -- snippet
 unmap({ "i", "s" }, "<S-Tab>") -- snippet
 -- }}}
-
+-- Different Register Sets {{{
+-- M- is rarely if ever used, I can furthermore live without this if the terminal does not support it
+map("n", "<M-d>", '"_d')
+map("n", "<M-c>", '"_c')
+map("n", "<M-y>", '"+y')
+-- }}}
 -- Shorthands for Commands {{{
 map("n", "<space>w", "<cmd>write<cr>", { desc = "Write Buffer" })
 map("n", "<space>W", "<cmd>wall<cr>", { desc = "Write All Buffers" })

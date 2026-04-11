@@ -85,6 +85,7 @@ local colorscheme = {
     DiffChange                  = { bg = pal.bg01 },
     DiffAdd                     = { bg = pal.bg01, fg = col.green, italic = true },
     DiffText                    = { bg = pal.bg01, fg = col.yellow, italic = true },
+    DiffTextAdd                 = { bg = pal.bg01, fg = col.green, italic = true },
     DiffSubname                 = { fg = pal.fg, bold = true },
     DiffDelete                  = { bg = blend(col.red, pal.bg01, 0.1), fg = col.bright_gray },
     DiffLine                    = { fg = col.purple },
@@ -97,6 +98,7 @@ local colorscheme = {
     MoreMsg                     = { fg = col.bright_gray },
     ModeMsg                     = { italic = true, fg = pal.fg0 },
     OkMsg                       = { fg = col.green },
+    MsgArea                     = { link = "Normal" },
     Hidden                      = { fg = pal.bg0, bg = pal.bg0 },
 
     -- popup menu
