@@ -139,7 +139,7 @@ end, { desc = "Loclist: List Search" })
 
 map("n", "gl?", function()
     local search = fn.getreg("/")
-    run_cmd("vimgrep", { "/" .. search .. "/gj", "**" })
+    utils.run_excmd("vimgrep", { "/" .. search .. "/gj", "**" })
 end, { desc = "Qflist: List Search" })
 -- }}}
 

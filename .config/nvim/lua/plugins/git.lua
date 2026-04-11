@@ -134,7 +134,7 @@ M[1].opts = {
         delay = 200,
     },
 
-    ---@type Gitsigns.CurrentLineBlameFmtFun
+    ---@type Gitsigns.BlameFormatterFun
     current_line_blame_formatter = function(name, info)
         local time = require("config.utils").format_time_smart(info.author_time)
         return {

@@ -74,12 +74,13 @@ function M.format_buf_name(buf, short)
     elseif ft == "man" then
         return "man " .. fn.fnamemodify(name, ":t"), "help", false
     elseif ft == "qf" then
+        local lc = api.nvim_buf_line_count(buf)
         if not buf_list_type[buf] then
             local win = fn.bufwinid(buf)
             local isloclist = fn.getwininfo(win)[1].loclist == 1
-            buf_list_type[buf] = isloclist and "[loc]" or "[qf]"
+            buf_list_type[buf] = isloclist and "[loc:%d]" or "[qf:%d]"
         end
-        return buf_list_type[buf], "list", false
+        return buf_list_type[buf]:format(lc), "list", false
     elseif ft == "TelescopePrompt" then
         local picker = require("telescope.actions.state").get_current_picker(buf)
         return ("[tel: %s]"):format(picker.prompt_title), "special", false
@@ -96,11 +97,11 @@ function M.format_buf_name(buf, short)
         if bvar.special_bufname then
             return bvar.special_bufname, "special", true
         elseif normal_buf then
-                local ret = expand_home(name)
-                if short then
-                    ret = fn.fnamemodify(ret, ":t")
-                end
-                return ret, "reg", true
+            local ret = expand_home(name)
+            if short then
+                ret = fn.fnamemodify(ret, ":t")
+            end
+            return ret, "reg", true
         else
             if vim.startswith(name, "oil-ssh://") then
                 local _, _, host, path = name:find("//([^/]+)/(.*)")

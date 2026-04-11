@@ -1,8 +1,7 @@
 ---@type LazySpec
 local M = {
-    "numToStr/Comment.nvim",
-    lazy = false,
-    opts = {},
+    "faergeek/Comment.nvim",
+    branch = "nvim-0.12-compatibility",
 }
 
 M.config = function()
