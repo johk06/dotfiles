@@ -29,6 +29,7 @@ configuration {
     }
     sway {
         display-name: "󱂬";
+        fallback-icon: "wayland";
     }
     marks {
         display-name: "󰃃";

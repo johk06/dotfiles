@@ -9,7 +9,7 @@ list-passwords() {
 print-menu() {
     local pass="$1"
     printf '\0data\x1f%s\t' "$pass"
-    printf '%s\t' "Pass" "OTP" "Form" "Form, no OTP" "Copy" "Copy OTP" "Show"
+    printf '%s\t' "Pass" "OTP" "Form" "Form, no OTP" "Copy" "Copy OTP" "Show" "Custom"
 }
 
 error() {
@@ -135,6 +135,20 @@ perform-action() {
                 printf '%s\n%s\0info\x1f%s\t' "$field" "$value" "$value"
             fi
         done
+        ;;
+    Custom)
+        coproc {
+            pass-get "$pass" form | {
+                read -ra fields
+                for field in "${fields[@]}"; do
+                    case "$field" in
+                    OTP) val="$(pass otp "$pass")" ;;
+                    *) val="$(pass-get "$pass" "$field")" ;;
+                    esac
+                    printf 'type %s\t\n' "$val"
+                done | dotool
+            }
+        }
         ;;
     *)
         coproc {
