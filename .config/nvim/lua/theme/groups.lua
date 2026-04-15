@@ -24,6 +24,7 @@ local colorscheme = {
     Normal                      = { fg = pal.fg0, bg = pal.bg0 },
     NormalFloat                 = { fg = pal.fg0, bg = pal.bg0 },
     FloatBorder                 = { fg = pal.border },
+    MsgSeparator                = { fg = pal.border },
     WinSeparator                = { fg = pal.border },
     LineNr                      = { fg = col.light_gray },
     CursorLineNr                = { fg = pal.fg0 },
@@ -253,6 +254,8 @@ add_with_prefix(colorscheme, "@", {
     ["string.csv"]                   = { link = "Normal" },
     ["string.psv"]                   = { link = "Normal" },
     ["string.tsv"]                   = { link = "Normal" },
+
+    ["string.special.vim"]           = { link = "Normal"},
 
     ["variable"]                     = { fg = pal.fg0 },
     ["variable.member"]              = { link = "*property" },

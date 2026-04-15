@@ -33,17 +33,10 @@ return {
             version = "LuaJIT"
             -- load nvim-specific libraries only for config
             local nvim_libs = {
-                vim.env.VIMRUNTIME, -- runtime files
-                vim.fn.stdpath("config") .. "/lua"
+                vim.env.VIMRUNTIME,                             -- runtime files
+                vim.fn.stdpath("config") .. "/lua",             -- config
+                vim.fn.stdpath("data") .. "/site/pack/core/opt" -- packages
             }
-
-            -- load lazy plugins for those that do use lua
-            for _, plug in pairs(require("lazy").plugins()) do
-                local dir = plug.dir .. "/lua"
-                if vim.uv.fs_stat(dir) then
-                    table.insert(nvim_libs, dir)
-                end
-            end
 
             vim.list_extend(libs, nvim_libs)
         end

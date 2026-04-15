@@ -1,4 +1,4 @@
----@type LazySpec
+---@type zpack.Spec
 local M = {
     "cbochs/grapple.nvim"
 }

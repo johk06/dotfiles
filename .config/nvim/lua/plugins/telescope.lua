@@ -25,7 +25,7 @@ local picker_maps = {
     ["z="] = { "spell_suggest" },
 }
 
----@type LazySpec
+---@type zpack.Spec
 local M = {
     "nvim-telescope/telescope.nvim",
     dependencies = {

@@ -1,4 +1,4 @@
----@type LazySpec
+---@type zpack.Spec
 local M = {
     "windwp/nvim-autopairs",
     event = "InsertEnter",

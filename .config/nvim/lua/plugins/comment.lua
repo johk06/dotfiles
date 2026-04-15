@@ -1,4 +1,4 @@
----@type LazySpec
+---@type zpack.Spec
 local M = {
     "faergeek/Comment.nvim",
     branch = "nvim-0.12-compatibility",

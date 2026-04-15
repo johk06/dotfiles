@@ -7,7 +7,7 @@
  - Columns for user and group info
  - Git integration ]]
 
----@type LazySpec
+---@type zpack.Spec
 local M = {
     "stevearc/oil.nvim",
 }

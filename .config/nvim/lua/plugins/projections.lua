@@ -1,5 +1,5 @@
 -- TODO: evaluate https://github.com/stevearc/resession.nvim
----@type LazySpec
+---@type zpack.Spec
 local M = {
     "GnikDroy/projections.nvim",
     branch = "dev",
@@ -34,8 +34,16 @@ M.config = function()
         ProjectionsPostRestoreSession = function(ev)
             local name = vim.api.nvim_buf_get_name(ev.buf)
             if name == "" then
-                require("oil").open()
-                utils.warn("Project", "Could not find a named buffer, dropping you to Oil")
+                local cwd = vim.fn.getcwd()
+                vim.schedule(function()
+                    for _, file in ipairs(vim.v.oldfiles) do
+                        if vim.startswith(file, cwd) then
+                            vim.cmd.edit(file)
+                            break
+                        end
+                    end
+                    vim.api.nvim_buf_delete(ev.buf, { force = true })
+                end)
             end
         end
     })

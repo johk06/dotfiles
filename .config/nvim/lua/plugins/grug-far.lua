@@ -1,5 +1,5 @@
 -- TODO: this seems quite cool, evaluate whether to use it
----@type LazySpec
+---@type zpack.Spec
 local M = {
     "MagicDuck/grug-far.nvim",
     cmd = { "GrugFar", "GrugFarWithin" },

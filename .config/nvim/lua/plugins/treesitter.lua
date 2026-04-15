@@ -75,7 +75,7 @@ local swaps = {
     }
 }
 
----@type LazyPluginSpec
+---@type zpack.Spec
 local ts_texobjects = {
     "nvim-treesitter/nvim-treesitter-textobjects",
     branch = "main",
@@ -167,7 +167,7 @@ local ts_texobjects = {
     end
 }
 
----@type LazyPluginSpec
+---@type zpack.Spec
 local ts_context = {
     "nvim-treesitter/nvim-treesitter-context",
     opts = {
@@ -177,11 +177,13 @@ local ts_context = {
 }
 --- }}}
 
----@type LazySpec
+---@type zpack.Spec
 local M = {
     "nvim-treesitter/nvim-treesitter",
     branch = "main",
-    build = ":TSUpdate",
+    build =function()
+        require("nvim-treesitter").update()
+    end,
     dependencies = {
         ts_texobjects,
         ts_context,
@@ -241,7 +243,7 @@ local attach = function(buf, language)
     return true
 end
 
-M.init = function()
+M.config = function()
     require("config.utils").user_autogroup("config.treesitter.update", {
         TSUpdate = function()
             package.loaded["nvim-treesitter.parsers"].mail = {

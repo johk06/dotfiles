@@ -1,8 +1,8 @@
----@type LazySpec
+---@type zpack.Spec
 local M = {
     "saghen/blink.cmp",
     event = { "InsertEnter", "CmdlineEnter" },
-    build = "cargo build --release",
+    build = function() vim.system({ "cargo", "build", "--release" }) end,
     dependencies = {},
 }
 

@@ -1,4 +1,4 @@
----@type LazySpec
+---@type zpack.Spec
 local M = {
     "NMAC427/guess-indent.nvim",
     opts = {

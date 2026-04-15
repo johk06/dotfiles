@@ -1,7 +1,7 @@
 -- only load it for these filetypes
 local filetypes = { "css", "scss", "sass", "html" }
 
----@type LazySpec
+---@type zpack.Spec
 local M = {
     "catgoose/nvim-colorizer.lua",
     ft = filetypes,

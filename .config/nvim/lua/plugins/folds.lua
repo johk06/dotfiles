@@ -1,4 +1,4 @@
----@type LazySpec
+---@type zpack.Spec
 local M = {
     "kevinhwang91/nvim-ufo",
     dependencies = {

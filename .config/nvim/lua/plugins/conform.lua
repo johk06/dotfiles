@@ -1,5 +1,5 @@
 local utils = require("config.utils")
----@type LazySpec
+---@type zpack.Spec
 local M = {
     "stevearc/conform.nvim",
     event = { "BufWritePre" },

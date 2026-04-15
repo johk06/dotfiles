@@ -191,78 +191,8 @@ vim.diagnostic.config {
 }
 -- }}}
 -- Load Lazy {{{
--- use lazy for the remaining config
--- all the package definitions in ./lua/plugins/ will be loaded
-local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
-
--- bootstrap
-if not vim.uv.fs_stat(lazypath) then
-    vim.system({
-        "git",
-        "clone",
-        "--filter=blob:none",
-        "https://github.com/folke/lazy.nvim.git",
-        "--branch=stable",
-        lazypath,
-    })
-end
-opt.rtp:prepend(lazypath)
-
-require("lazy").setup("plugins", {
-    -- so i can work on my own local plugins
-    dev = {
-        path = "~/ws/",
-        patterns = { "johk06" },
-        fallback = true,
-    },
-
-    install = {
-        colorscheme = { "mynord" },
-    },
-
-    -- just plain annoying
-    change_detection = {
-        enabled = false,
-        notify  = false,
-    },
-
-    ui = {
-        title = "Plugins - Lazy",
-        backdrop = 100,
-        pills = false,
-        border = "rounded",
-        icons = {
-            loaded     = "@",
-            import     = "ι",
-            require    = "ι",
-            plugin     = "μ",
-            not_loaded = "_",
-            ft         = "%",
-            cmd        = ":",
-            event      = "!",
-            lazy       = "…",
-            start      = "^",
-            runtime    = "/",
-            keys       = "κ",
-            list       = { "-", ">", },
-        }
-    },
-    performance = {
-        rtp = {
-            reset = true,
-            disabled_plugins = {
-                "tutor",   -- I *think* I know vim well enough
-
-                "matchit", -- use matchup instead
-                "matchparen",
-
-                -- I use neither of those
-                "netrwPlugin",
-                "rplugin",
-            }
-        }
-    }
-})
+vim.pack.add({ 'https://github.com/zuqini/zpack.nvim' })
+require("zpack").setup()
 -- }}}
 -- Load Config {{{
 require("config.lsp")        -- language servers
@@ -285,13 +215,9 @@ o.modeline = true
 
 -- Create this autocommand after neovim had a chance to read from stdin
 if should_open_start_screen then
-    vim.api.nvim_create_autocmd("User", {
-        pattern = "LazyVimStarted",
-        once = true,
-        callback = function()
-            if should_open_start_screen then
-                require("config.dashboard").show()
-            end
+    vim.schedule(function()
+        if should_open_start_screen then
+            require("config.dashboard").show()
         end
-    })
+    end)
 end

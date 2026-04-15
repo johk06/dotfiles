@@ -345,26 +345,25 @@ local draw_title = function()
     set_virt_lines(State.current, Letters)
 end
 
-local draw_lazy = function()
-    local stats = require("lazy").stats()
-    if not stats then
+local draw_pack = function()
+    local pkgs = require("zpack.api").get_plugins()
+    if not pkgs then
         return
     end
 
-    local took_time = stats.times.LazyDone - stats.times.LazyStart
+    local stat = vim.iter(pkgs):fold({ loaded = 0, pending = 0, disabled = 0, installing = 0 }, function(acc, e)
+        acc[e.status] = acc[e.status] + 1
+        return acc
+    end)
+
     local plugin_info = {
-        { "" },
-        { ("Loaded %d of %d plugins in "):format(stats.loaded, stats.count), "@comment" },
-        { ("%.2fms"):format(took_time),                                      "@comment.note" },
-        { " took ",                                                          "@comment" },
-        { ("%.2fms"):format(stats.times.UIEnter or 0),                       "@comment.todo" },
-        { " in total",                                                       "@comment" },
+        nil, { ("Loaded %d of %d packages"):format(stat.loaded, #pkgs), "@comment" }
     }
+
     local padding = get_center_spaces(linewidth(plugin_info))
     plugin_info[1] = { padding }
 
     set_virt_lines(State.current, {
-        { { "" } },
         plugin_info
     })
 end
@@ -469,7 +468,7 @@ local do_draw = function()
     State.sections = {}
 
     draw_title()
-    draw_lazy()
+    draw_pack()
     draw_message()
     advance_lines(1)
     insert_empty(1)
@@ -524,8 +523,7 @@ M.show = function()
     }, { buf = buf })
 
 
-    api.nvim_create_autocmd("User", {
-        pattern = "LazyLoad",
+    api.nvim_create_autocmd("PackChanged", {
         group = augroup,
         callback = function()
             do_draw()
@@ -555,3 +553,4 @@ M.show = function()
 end
 
 return M
+

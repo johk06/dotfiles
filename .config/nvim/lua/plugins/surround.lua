@@ -1,7 +1,6 @@
----@type LazySpec
+---@type zpack.Spec
 local M = {
     "kylechui/nvim-surround",
-    event = "VeryLazy"
 }
 
 local function generic_pair(left, right)

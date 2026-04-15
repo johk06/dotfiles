@@ -68,7 +68,7 @@ local opts = {
     }
 }
 
----@type LazySpec
+---@type zpack.Spec
 local M = {
     "mason-org/mason.nvim",
     cmd = { "Mason", "MasonInstall", "MasonUninstall", "MasonUninstallAll", "MasonLog", "MasonUpdate" },
