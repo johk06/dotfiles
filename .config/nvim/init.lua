@@ -13,7 +13,7 @@ Contents of lua/:
     - lib/      - Modules that are useful and factor out repetitive tasks
     - plugins/  - Additional configuration or helpers for plugin configuration
     - *.lua     - Additional configuration or *very* common helpers
-- plugins/      - The lazy plugin specifications
+- plugins/      - The pack plugin specifications
 - theme/        - My colorscheme
 
 TODO: figure out note-taking solution
@@ -190,7 +190,7 @@ vim.diagnostic.config {
     }
 }
 -- }}}
--- Load Lazy {{{
+-- Load Packages {{{
 vim.pack.add({ 'https://github.com/zuqini/zpack.nvim' })
 require("zpack").setup()
 -- }}}
@@ -209,9 +209,6 @@ require("vim._core.ui2").enable {
     },
 }
 -- }}}
-
--- for some reason lazy deactivates it
-o.modeline = true
 
 -- Create this autocommand after neovim had a chance to read from stdin
 if should_open_start_screen then

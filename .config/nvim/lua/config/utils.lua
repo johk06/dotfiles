@@ -11,7 +11,6 @@ local nomodified_names = {
     undotree = { "[undo]" },
     fugitive = { "[git]", "git" },
     checkhealth = { "[health]" },
-    lazy = { "[lazy]" },
     mason = { "[mason]" },
     orgagenda = { "[org: Agenda]" },
     ["grug-far"] = { "[grug-far]" }
