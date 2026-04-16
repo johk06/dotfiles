@@ -47,6 +47,11 @@ local opt = vim.opt
 local o = vim.o
 local g = vim.g
 
+-- Do not bloat the runtimepath with too much Vim stuff
+opt.runtimepath = vim.tbl_filter(function(p)
+    return not vim.startswith(p, "/usr/share/vim")
+end, opt.runtimepath:get())
+
 g.mapleader = "\\"
 g.maplocalleader = "\\"
 
@@ -83,6 +88,7 @@ local shm = opt.shortmess
 shm:append("S") -- hide search count
 shm:append("s") -- hide search hit x
 shm:append("q") -- hide macro
+shm:append("I") -- no :intro
 
 -- TODO: maybe? This allows me to have project specific settings
 o.exrc = true
