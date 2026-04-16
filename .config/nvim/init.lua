@@ -197,6 +197,26 @@ vim.diagnostic.config {
 }
 -- }}}
 -- Load Packages {{{
+Jhk.pack_build_cmd = function(cmd)
+    ---@param pkg zpack.Plugin
+    return function(pkg)
+        vim.system(cmd, {
+            cwd = pkg.path,
+            stderr = vim.schedule_wrap(function(e, data)
+                if not e and data then
+                    vim.api.nvim_echo(
+                        {
+                            { ("[Pack/%s]"):format(pkg.spec.name or pkg.spec.src), "Identifier" },
+                            { ": ",                                                "NonText" },
+                            { vim.trim(data) }
+                        }, false, {}
+                    )
+                end
+            end)
+        })
+    end
+end
+
 vim.pack.add({ 'https://github.com/zuqini/zpack.nvim' })
 require("zpack").setup()
 -- }}}

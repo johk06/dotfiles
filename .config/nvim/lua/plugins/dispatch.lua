@@ -48,6 +48,7 @@ M.init = function()
 
     -- Useful to make a different target, e.g. <space>bi debug<cr>
     map("i", ":Make<space>", "(input)")
+    utils.map("n", "<space>M", ":Make<space>",{desc = "Build: (input)"})
     -- Run an arbitrary command as a job
     map("d", ":Dispatch<space>", "Dispatch")
     -- Cancel the current command

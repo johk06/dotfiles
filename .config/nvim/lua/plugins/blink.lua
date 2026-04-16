@@ -2,7 +2,7 @@
 local M = {
     "saghen/blink.cmp",
     event = { "InsertEnter", "CmdlineEnter" },
-    build = function() vim.system({ "cargo", "build", "--release" }) end,
+    build = Jhk.pack_build_cmd {"cargo", "build", "--release"},
     dependencies = {},
 }
 
