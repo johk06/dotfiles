@@ -1,0 +1,7 @@
+#!/bin/sh
+
+ALLOWED="${2:-'[:punct:][:alnum:]'}"
+LEN="${1:-32}"
+
+tr -dc "$ALLOWED" < /dev/random | head -c "$LEN"
+echo
