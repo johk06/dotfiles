@@ -43,6 +43,7 @@ if should_open_start_screen then
     })
 end
 
+---@type table<string, vim.Option>
 local opt = vim.opt
 local o = vim.o
 local g = vim.g
@@ -50,7 +51,7 @@ local g = vim.g
 -- Do not bloat the runtimepath with too much Vim stuff
 opt.runtimepath = vim.tbl_filter(function(p)
     return not vim.startswith(p, "/usr/share/vim")
-end, opt.runtimepath:get())
+end, opt.runtimepath:get() --[=[@as string[]]=])
 
 g.mapleader = "\\"
 g.maplocalleader = "\\"
@@ -197,6 +198,13 @@ vim.diagnostic.config {
 }
 -- }}}
 -- Load Packages {{{
+
+-- Vim Plugins I never want
+g.loaded_tutor_mode_plugin = true
+g.loaded_netrw_plugin = true
+g.loaded_remote_plugins = true
+g.loaded_matchit = true
+
 Jhk.pack_build_cmd = function(cmd)
     ---@param pkg zpack.Plugin
     return function(pkg)
