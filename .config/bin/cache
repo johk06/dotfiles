@@ -22,9 +22,12 @@ shift
 
 # The usual convention of stdout doesn't make sense anyways
 # use `-` to generate a file based on the command
+# A .file will also be created to store the command
 if [ "$FILE" = "-" ]; then
     [ ! -d "$CACHEDIR" ] && mkdir -p "$CACHEDIR"
-    FILE="$CACHEDIR/$(echo "$@" | sha256sum | cut -d" " -f1)"
+    FILENAME="$(echo "$@" | sha256sum | cut -d" " -f1)"
+    FILE="$CACHEDIR/$FILENAME"
+    echo "$@" >"$CACHEDIR/.$FILENAME"
 fi
 
 if [ -f "$FILE" ]; then
