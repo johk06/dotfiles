@@ -255,7 +255,7 @@ add_with_prefix(colorscheme, "@", {
     ["string.psv"]                   = { link = "Normal" },
     ["string.tsv"]                   = { link = "Normal" },
 
-    ["string.special.vim"]           = { link = "Normal"},
+    ["string.special.vim"]           = { link = "Normal" },
 
     ["variable"]                     = { fg = pal.fg0 },
     ["variable.member"]              = { link = "*property" },
@@ -427,24 +427,31 @@ add_with_prefix(colorscheme, "Sl", {
 })
 -- }}}
 -- Startscreen {{{
-add_with_prefix(colorscheme, "Dashboard", {
-    -- for the big neovim logo
-    Title1    = { fg = col.red },
-    Title2    = { fg = col.orange },
-    Title3    = { fg = col.yellow },
-    Title4    = { fg = col.green },
-    Title5    = { fg = col.teal },
-    Title6    = { fg = col.light_blue },
 
+-- Generate a random subgradient for the title screen
+local dashboard_gradient = {
+    col.purple, col.magenta, col.red,
+    col.orange, col.yellow, col.green,
+    col.teal, col.light_blue, col.blue,
+    col.purple, col.pink, col.dark_white
+}
+
+local dash_title_count = 5
+local rand_dash_start = vim.fn.rand() % (#dashboard_gradient - dash_title_count) + 1
+for i = rand_dash_start, rand_dash_start + dash_title_count do
+    colorscheme["DashboardTitle" .. (i - rand_dash_start + 1)] = { fg = dashboard_gradient[i] }
+end
+
+add_with_prefix(colorscheme, "Dashboard", {
     Property  = { fg = col.blue, italic = true },
     Message   = { italic = true },
 
     -- entries
-    EditFile  = { fg = col.purple },
-    FindFiles = { fg = col.light_blue },
-    Oil       = { fg = col.teal },
-    Agenda    = { fg = col.green },
-    Capture   = { fg = col.yellow },
+    EditNew   = { fg = pal.fg2 },
+    FindFiles = { fg = pal.fg2 },
+    Oil       = { fg = pal.fg2 },
+    Agenda    = { fg = pal.fg2 },
+    Capture   = { fg = pal.fg2 },
     Quit      = { fg = col.orange },
 
     Actions   = { fg = pal.fg0, bg = pal.bg01 },

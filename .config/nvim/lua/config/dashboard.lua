@@ -31,7 +31,7 @@ local ACTIONS = {
         desc = "Edit a new, empty Buffer",
         key = "e",
         on_click = vim.cmd.enew,
-        hl = "EditFile"
+        hl = "EditNew"
     },
     {
         "Find Files",
@@ -231,7 +231,7 @@ do
             end
 
             table.insert(ProjectSection.items, {
-                left = { nil, { head, "NonText" }, { name, "Identifier" } },
+                left = { nil, { head, "NonText" }, { name, "SpecialChar" } },
                 right = { last_access },
                 data = { mtime = mtime or 0 },
                 callback = function()
@@ -245,11 +245,11 @@ do
         return p1.data.mtime > p2.data.mtime
     end)
     if #ProjectSection.items > MAX_PROJECTS then
-        ProjectSection.items[MAX_PROJECTS + 1] = nil -- HACKY: protect from ipairs
+        ProjectSection.items[MAX_PROJECTS + 1] = nil -- HACK: protect from ipairs
     end
 
     for i, proj in ipairs(ProjectSection.items) do
-        proj.left[1] = { (" %d) "):format(i - 1), "NonText" }
+        proj.left[1] = { (" %d "):format(i - 1), "NonText" }
     end
 end
 
@@ -293,7 +293,7 @@ do
 
             table.insert(OldfileSection.items, {
                 data = {},
-                left = { { ("%2d) "):format(index), "NonText" }, { head, "NonText" }, { tail, highlight } },
+                left = { { ("%2d "):format(index), "NonText" }, { head, "NonText" }, { tail, highlight } },
                 right = { time },
                 callback = function()
                     vim.cmd.edit(file)
@@ -317,7 +317,7 @@ do
     for _, action in ipairs(ACTIONS) do
         table.insert(ActionSection.items, {
             map = action.key,
-            left = { { " " .. action.key .. ") ", "NonText" }, { action[1], "Dashboard" .. action.hl } },
+            left = { { " " .. action.key .. " ", "NonText" }, { action[1], "Dashboard" .. action.hl } },
             right = { { action.desc, "Comment" } },
             data = {},
             callback = action.on_click,
