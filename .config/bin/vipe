@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# my own clown of the popular utility from moreutils
+# My own clone of the popular utility from moreutils
 # in addition to the core functionality, this one allows passing additional arguments and the language that the data is
 # written in
 

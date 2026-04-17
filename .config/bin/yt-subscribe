@@ -1,5 +1,7 @@
 #!/bin/sh
 
+# Get an RSS URL for youtube accounts, for usage with newsboat(1)
+
 printf '%s\n' "$@" |
     parallel curl -s https://www.youtube.com/@{}/videos |
     rg '"rssUrl":"([^"]+)"' -or '$1 ! yt' --color=never

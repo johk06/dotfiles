@@ -1,5 +1,8 @@
 #!/bin/sh
 
+# Rank lists by # of occurrences. Only consider words longer than -l characters
+# The main use case is generating candidates for abbreviations
+
 usage() {
     echo "Usage: wordrank [-l] FILE..."
     exit 1

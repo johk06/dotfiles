@@ -1,5 +1,9 @@
 #!/bin/sh
 
+# Create a simple password
+# $1: Length
+# $2: Allowed characters, like for tr(1)
+
 ALLOWED="${2:-'[:punct:][:alnum:]'}"
 LEN="${1:-32}"
 

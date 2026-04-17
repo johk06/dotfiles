@@ -1,9 +1,12 @@
 #!/bin/sh
 
+# List marks from within firefox' database
+
 TMPDB="$XDG_CACHE_HOME/firefox-marks"
 [ ! -d "$TMPDB" ] && mkdir "$TMPDB"
 DBFILE="$TMPDB/db"
 
+# Copy to avoid locking
 cp ~/.mozilla/firefox/*.default-release/places.sqlite "$DBFILE"
 
 sqlite3 "$DBFILE" <<'SQL'

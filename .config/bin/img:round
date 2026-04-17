@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+
+# Round an image's corners
 # Credit to: https://stackoverflow.com/a/18992215 for the magick code
 
 die() {

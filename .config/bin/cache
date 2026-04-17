@@ -1,14 +1,15 @@
 #!/bin/sh
 
-CACHEDIR="$XDG_CACHE_HOME/command"
-
 # Run a process and cache result in a file
 # If already cached, return the file's content
 # Useful to experiment with e.g. web requests
 # If the file is given as `-`, then a new temporary file is created
-# and used, based on the command name
+# and used, based on a hash of the command name
+# Examples:
+# - cache - curl wttr.in
+# - cache ~/Tmp/ipinfo.json curl ipinfo.io
 
-# Example: cache - curl wttr.in
+CACHEDIR="$XDG_CACHE_HOME/command"
 
 if [ $# -lt 2 ]; then
     echo "Usage: cache FILE COMMAND" >&2
@@ -19,11 +20,11 @@ fi
 FILE="$1"
 shift
 
-# the usual convention of stdout doesn't make sense anyways
+# The usual convention of stdout doesn't make sense anyways
 # use `-` to generate a file based on the command
 if [ "$FILE" = "-" ]; then
     [ ! -d "$CACHEDIR" ] && mkdir -p "$CACHEDIR"
-    FILE="$CACHEDIR/$(echo "$@" | sed 's/\//%/g')"
+    FILE="$CACHEDIR/$(echo "$@" | sha256sum | cut -d" " -f1)"
 fi
 
 if [ -f "$FILE" ]; then
