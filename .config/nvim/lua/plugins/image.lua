@@ -1,9 +1,10 @@
 ---@type zpack.Spec
 local M = {
     "3rd/image.nvim",
-    rocks = { "magick" },
     -- Do not actually load it unless it is needed
     lazy = true,
+
+    build = Jhk.pack_luarock("magick"),
 
     -- Despite being disabled by default for a few of those, it makes sense to have the commands be available
     opts = {

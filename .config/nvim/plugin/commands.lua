@@ -442,3 +442,9 @@ end, {
 command("Dash", function(args)
     require("config.dashboard").show()
 end, { desc = "Open dashboard" })
+
+command("Restart", function(args)
+    local session = vim.fn.stdpath("state") .. "/restart.vim"
+    vim.cmd.mksession { session, bang = true }
+    vim.cmd.restart(("source %s"):format(session))
+end, { desc = "Reload NeoVIM" })

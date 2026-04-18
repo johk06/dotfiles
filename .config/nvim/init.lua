@@ -53,6 +53,12 @@ opt.runtimepath = vim.tbl_filter(function(p)
     return not vim.startswith(p, "/usr/share/vim")
 end, opt.runtimepath:get() --[=[@as string[]]=])
 
+local rock_path = vim.fn.stdpath("data") .. "/rocks"
+local rock_lua = rock_path .. "/share/lua/5.1"
+
+-- Remove current directory, add luarocks
+package.path = package.path:gsub("%./%?%.lua;", "") .. (";%s/?/init.lua;%s/?.lua"):format(rock_lua, rock_lua)
+
 g.mapleader = "\\"
 g.maplocalleader = "\\"
 
@@ -223,6 +229,14 @@ Jhk.pack_build_cmd = function(cmd)
             end)
         })
     end
+end
+
+Jhk.pack_luarock = function(rock)
+    return Jhk.pack_build_cmd {
+        "luarocks", "--lua-version", "5.1",
+        "--tree", rock_path,
+        "install", rock
+    }
 end
 
 vim.pack.add({ 'https://github.com/zuqini/zpack.nvim' })

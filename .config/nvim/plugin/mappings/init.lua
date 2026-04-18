@@ -5,7 +5,7 @@
  See the other files in this directory for specialized subsets
 
  Unused <space> mappings:
- - e, i, k, v, x, y, z
+ - i, k, v, x, y, z
  }}} ]]
 -- Declarations {{{
 local api = vim.api
@@ -47,6 +47,24 @@ map("n", "<M-y>", '"+y')
 map("n", "<space>w", "<cmd>write<cr>", { desc = "Write Buffer" })
 map("n", "<space>W", "<cmd>wall<cr>", { desc = "Write All Buffers" })
 map("n", "<space><cr>", "g<", { desc = "View Messages" })
+
+map("n", "<space>e", function()
+    local ft_map = {
+        o = "org",
+        m = "markdown",
+        t = "typst",
+        l = "lua",
+        s = "sh",
+        n = "",
+    }
+    local ft = ft_map[vim.v.register] or vim.bo.ft
+    local b = api.nvim_create_buf(true, false)
+    vim.bo[b].ft = ft
+    require("config.utils").win_show_buf(b, {
+        position = "float",
+        title = "Scratch"
+    })
+end, { desc = "New Scratch"})
 -- }}}
 --[[ Change Directory {{{
  Sometimes I need a quicker way to change directory than :cd, :lcd etc
