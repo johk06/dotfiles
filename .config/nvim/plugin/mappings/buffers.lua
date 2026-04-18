@@ -15,9 +15,6 @@ map("n", leader, "<nop>")
 map("n", "<M-'>", "`") -- But at the same time, keep it if ever needed
 -- }}}
 
--- Easier to type alternate file, mnemonic: [s]econd, also allows remapping <C-6>
-map("n", "<C-s>", "<cmd>b #<cr>")
-
 -- This is the norm for lots of plugin's floating windows already, avoid surprises
 -- See mappings/register.lua for my replacement for the old q
 map("n", "q", function()
@@ -26,7 +23,6 @@ map("n", "q", function()
         vim.cmd.bnext()
     end
 end)
-
 
 -- Linear Movements {{{
 map("n", leader .. "j", "<cmd>bnext<cr>", { desc = "Buffer: Next" })
@@ -79,6 +75,22 @@ end
 
 map("n", leader .. leader, goto_buf, { desc = "Buffer: Show" })
 
+-- Easier to type alternate file, mnemonic: [s]econd or [s]witch, also allows remapping <C-6>
+map("n", "<C-s>", function()
+    if vim.v.count == 0 then
+        local alt = fn.bufnr("#")
+        local w = fn.bufwinid(alt)
+
+        if w ~= -1 then
+            api.nvim_set_current_win(w)
+        else
+            api.nvim_set_current_buf(alt)
+        end
+    else
+        goto_buf()
+    end
+end)
+
 ---@param dir config.win.position
 ---@param opts config.win.opts?
 local function open_buf_in(dir, opts)
@@ -104,8 +116,9 @@ map("n", leader .. "p", function()
     if not buf then return end
     vim.cmd(("%dpb"):format(buf))
 end, { desc = "Buffer: Show Preview" })
-
-map("n", leader .. "P", "<cmd>pclose<cr>", { desc = "Buffer: Close Preview"})
+-- }}}
+-- Closing {{{
+map("n", leader .. "P", "<cmd>pclose<cr>", { desc = "Buffer: Close Preview" })
 
 local delete_buffer = function(buf)
     local ok = pcall(api.nvim_buf_delete, buf, {})
@@ -128,7 +141,7 @@ map("n", leader .. "d", function()
     delete_buffer(target)
 end, { desc = "Buffer: Delete" })
 
--- [h]ide - Close the first window that the buffer is shown in
+-- Hide - Close the first window that the buffer is shown in
 map("n", leader .. "h", function()
     local target = get_buf_idx()
     if not target then return end
@@ -141,14 +154,20 @@ map("n", leader .. "h", function()
     api.nvim_win_close(win, false)
 end, { desc = "Buffer: Hide win" })
 
--- Clear hidden buffers
-map("n", leader .. "C", function()
+---@param cb fun(bufnr: integer)
+local on_hidden = function(cb)
+    local alt = vim.fn.bufnr("#")
     for _, buf in ipairs(api.nvim_list_bufs()) do
-        if vim.bo[buf].buflisted and fn.bufwinid(buf) == -1 then
-            delete_buffer(buf)
+        if buf ~= alt and vim.bo[buf].buflisted and fn.bufwinid(buf) == -1 then
+            cb(buf)
         end
     end
-end, { desc = "Buffer: Clear hidden" })
+end
+
+-- Clear hidden buffers
+map("n", leader .. "c", function()
+    on_hidden(delete_buffer)
+end, { desc = "Buffer: Clear Hidden" })
 -- }}}
 --[[ Tabs {{{
  Roughly the same situation

@@ -31,11 +31,12 @@ vim.env.EDITOR = "nvr"
 vim.env.GIT_EDITOR = "nvr -cc Sp -c 'se bufhidden=delete' --remote-wait"
 -- }}}
 
--- Only open the welcome screen if stdin is empty
--- and if there are no command line arguments
+--[[ Only open the welcome screen if stdin is empty
+     and if there are no command line arguments
+     Also if a session is already loading ]]
 local should_open_start_screen = vim.fn.argc() == 0
 if should_open_start_screen then
-    vim.api.nvim_create_autocmd("StdinReadPre", {
+    vim.api.nvim_create_autocmd({ "SessionLoadPre", "StdinReadPre" }, {
         once = true,
         callback = function()
             should_open_start_screen = false

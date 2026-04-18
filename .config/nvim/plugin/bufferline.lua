@@ -7,8 +7,7 @@ Most bufferline plugins don't do everything I want out of the box.
 This bufferline behaves like this:
  - Buffers are shown with a virtual buffer number
  - This is made accessible via _G.Bufs_for_idx in use by my ./mappings.lua
- - The buffers number has a color corresponding to the buffers' type
- - Each buffer that has a plugins/grapple.lua mark set shows that too
+ - The buffer's number has a color corresponding to the buffers' type
  - Hidden buffers are dimmed
  - The alternate buffer, if hidden, is underlined
 

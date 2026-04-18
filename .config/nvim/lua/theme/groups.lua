@@ -393,7 +393,7 @@ add_with_prefix(colorscheme, "Sl", {
     IText       = { fg = pal.fg0 },
     AHidden     = { bg = pal.bg1, fg = col.bright_gray },
     IHidden     = { fg = col.bright_gray },
-    AAltText    = { bg = pal.bg1, fg = pal.fg0 },
+    AAltText    = { bg = pal.bg1, fg = pal.fg0, underline = true, sp = col.bright_gray  },
     IAltText    = { fg = pal.fg0, underline = true, sp = col.bright_gray },
     AAltHidden  = { bg = pal.bg1, fg = col.bright_gray, underline = true },
     IAltHidden  = { fg = col.bright_gray, underline = true },
