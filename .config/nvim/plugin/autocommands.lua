@@ -5,6 +5,7 @@ local utils = require("config.utils")
 -- Window Title {{{
 -- change the title in a more intelligent way
 autocmd({ "BufEnter", "BufReadPost", "BufNewFile", "VimEnter" }, {
+    desc = "Change Window Title",
     callback = function()
         local name, _, _ = utils.format_buf_name(api.nvim_get_current_buf(), false)
 
@@ -17,7 +18,6 @@ vim.o.titlestring = "nv: Neovim" -- set initial
 -- Smarter :h 'autochdir' {{{
 -- when opening a file, automatically lcd to its git repo ancestor
 -- if already in a repo, behave somewhat like autocd
-
 utils.autogroup("config.chdir", {
     BufWinEnter = function(ev)
         if vim.bo[ev.buf].filetype == "help" then
@@ -63,9 +63,30 @@ autocmd("FocusLost", {
     end
 })
 
+-- Redact password files
 autocmd("VimEnter", {
     pattern = "/dev/shm/pass.?*/?*.txt",
     callback = function(ev)
         vim.bo[ev.buf].filetype = "pass"
+    end
+})
+
+-- Try to set a compiler based on the file's shebang
+autocmd("BufEnter", {
+    desc = "Set compiler based on shebang",
+    callback = function(ev)
+        local fst = api.nvim_buf_get_lines(ev.buf, 0, 1, false)[1]
+        if not vim.startswith(fst, "#!") or vim.bo[ev.buf].makeprg ~= "" then
+            return
+        end
+
+        local interpreter = fst:sub(3):gsub("^/usr/bin/env%s*", "")
+        local ok, _ = pcall(api.nvim_cmd, {
+            cmd = "compiler",
+            args = { interpreter },
+        }, {})
+        if not ok then -- Compiler is not known to vim, do our best
+            vim.bo[ev.buf].makeprg = ("%s %%:S"):format(vim.fn.shellescape(interpreter))
+        end
     end
 })
