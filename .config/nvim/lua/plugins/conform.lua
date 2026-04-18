@@ -2,15 +2,12 @@ local utils = require("config.utils")
 ---@type zpack.Spec
 local M = {
     "stevearc/conform.nvim",
-    event = { "BufWritePre" },
-    cmd = { "ConformInfo" },
     keys = {
         {
             "<space>p",
-            function()
-                require("conform").format { async = true }
-            end,
+            function() require("conform").format { async = true } end,
             mode = { "n", "x" },
+            desc = "Conform: Prettify Buffer",
         },
     },
 }
