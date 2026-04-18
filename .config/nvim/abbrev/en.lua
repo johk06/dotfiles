@@ -1,5 +1,4 @@
 ---@type config.AbbrevSpec[]
-
 local M = {
     { "acl", "actual",     { _ = "", l = "", y = "ly", t = "ity" } },
     { "adt", "additi",     { _ = "on", l = "onal", y = "onally", v = "ve", vs = "ves" } },

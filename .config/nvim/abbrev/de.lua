@@ -8,29 +8,36 @@ local verb_suffixes = {
     dr = "ender",
     b = "bar",
     be = "bare",
+    bn = "baren",
     bs = "bares",
     br = "barer"
 }
 
 local noun_suffixes = {
     _ = "",
+    e = "e",
     n = "en",
     s = "s",
 }
 
 ---@type config.AbbrevSpec[]
 local M = {
-    { "zw",  "zwischen" },
-    { "zb",  "zum Beispiel" },
-    { "bzw", "beziehungsweise" },
-    { "fnk", "funktionier",    verb_suffixes },
-    { "fnk", "Funktion",       noun_suffixes },
-    { "dfz", "differenz",      verb_suffixes },
-    { "dfz", "differenzier",   verb_suffixes },
-    { "dfn", "definier",       verb_suffixes },
-    { "dfn", "Definition",     noun_suffixes },
-    { "itg", "integrier",      verb_suffixes },
-    { "itg", "Integral",       { _ = "", e = "e", n = "en" }, nocase = true },
+    { "zw",   "zwischen" },
+    { "zb",   "zum Beispiel" },
+    { "bsp",  "Beispiel",       noun_suffixes },
+    { "bspw", "beispielsweise" },
+    { "bzw",  "beziehungsweise" },
+    { "fA",   "für alle" },
+    { "vA",   "vor allem" },
+    {"unsh", "Unsicherheit", noun_suffixes},
+    { "fnk",  "funktionier",    verb_suffixes },
+    { "fnk",  "Funktion",       noun_suffixes },
+    { "dfz",  "differenz",      verb_suffixes },
+    { "dfz",  "differenzier",   verb_suffixes },
+    { "dfn",  "definier",       verb_suffixes },
+    { "dfn",  "Definition",     noun_suffixes },
+    { "itg",  "integrier",      verb_suffixes },
+    { "itg",  "Integral",       { _ = "", e = "e", n = "en" },                                 nocase = true },
 }
 
 -- Ordinals {{{
