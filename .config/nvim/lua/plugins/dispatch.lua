@@ -25,6 +25,8 @@
  - If I am interested in the output: <space>bo
 }}}]]
 
+local api = vim.api
+local utils = require("config.utils")
 local M = {
     "tpope/vim-dispatch"
 }
@@ -34,13 +36,25 @@ local M = {
 ---@field action "open"|"exec"
 ---@field value string
 
+local compiler_is_make = function()
+    return vim.bo.makeprg == "make"
+end
+
+local if_make = function(cmd)
+    return function()
+        if compiler_is_make() then
+            vim.cmd.Make { bang = true, cmd }
+        else
+            utils.warn("Dispatch", ("Not using make(1), `make %s` is not useful"):format(cmd))
+        end
+    end
+end
+
 M.init = function()
     vim.g.dispatch_no_maps = true
     vim.g.dispatch_compilers = {
         bear = "gcc"
     }
-
-    local utils = require("config.utils")
 
     local map = function(key, cmd, desc)
         utils.map("n", "<space>b" .. key, cmd, { desc = ("Build: %s"):format(desc) })
@@ -48,17 +62,24 @@ M.init = function()
 
     -- Useful to make a different target, e.g. <space>bi debug<cr>
     map("i", ":Make<space>", "(input)")
-    utils.map("n", "<space>M", ":Make<space>",{desc = "Build: (input)"})
+
+    utils.map("n", "<space>M", ":Make<space>", { desc = "Build: (input)" })
+
     -- Run an arbitrary command as a job
     map("d", ":Dispatch<space>", "Dispatch")
+
     -- Cancel the current command
     map("a", "<cmd>AbortDispatch<cr>", "Abort")
     -- Cancel any command by name
     map("A", ":AbortDispatch<space>", "Abort (input)")
+
     -- This primarily makes sense for Makefiles ofc, other build systems won't always have that
-    map("c", "<cmd>Make! clean<cr>", "Clean")
+    map("c", if_make("clean"), "Clean")
+    map("I", if_make("install"), "Install")
+
     -- Open the current output; NOTE: <space>m hides it by default
     map("o", "<cmd>Copen<cr>", "Open")
+
     -- Do not hide the output
     map("v", "<cmd>Make<cr>", "Verbose")
 
@@ -67,7 +88,7 @@ M.init = function()
         local makeprg = vim.o.makeprg
 
         if (ft == "c" or ft == "cpp") then
-            if makeprg == "make" then
+            if compiler_is_make() then
                 vim.cmd.Make { "clean", bang = true }
             end
             vim.cmd.Dispatch { "bear", "--", makeprg, bang = true }
@@ -81,7 +102,7 @@ M.init = function()
      Does *not* show output live (too distracting usually), :Copen can be
      used during compilation too ]]
     utils.map("n", "<space>m", function()
-        if vim.o.makeprg == "make" and vim.v.count ~= 0 then
+        if compiler_is_make() and vim.v.count ~= 0 then
             vim.cmd.Make { "clean", bang = true }
         end
         vim.cmd.update()
@@ -110,18 +131,32 @@ M.init = function()
 
         if ospec.action == "open" then
             vim.ui.open(path)
-        else
+        elseif ospec.action == "exec" then
             vim.cmd.Start(path)
         end
     end, "Open Result")
 
     -- Set b: or t:build_output
-    vim.api.nvim_create_user_command("Target", function(args)
+    api.nvim_create_user_command("Target", function(args)
+        local target = args.args
+
+        local is_exec
+        if args.count ~= 0 then
+            is_exec = true
+        end
+
+        local st, _ = vim.uv.fs_stat(target)
+        if st then
+            if bit.band(st.mode, 73 --[[0111]]) ~= 0 then
+                is_exec = true
+            end
+        end
+
         ---@type config.BuildOutputSpec
         local spec = {
             value = vim.fs.abspath(args.args),
             kind = "path",
-            action = args.count ~= 0 and "exec" or "open"
+            action = is_exec and "exec" or "open"
         }
 
         if args.bang then
@@ -130,6 +165,8 @@ M.init = function()
             vim.b.build_output = spec
         end
     end, { bang = true, nargs = 1, complete = "file", count = 0, desc = "Target file as default to run" })
+
+    map("t", ":Target<space>", "Set Target")
 end
 
 return M
