@@ -37,7 +37,7 @@ local M = {
 ---@field value string
 
 local compiler_is_make = function()
-    return vim.bo.makeprg == "make"
+    return vim.o.makeprg == "make"
 end
 
 local if_make = function(cmd)
