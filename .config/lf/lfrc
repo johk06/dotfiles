@@ -137,9 +137,18 @@ map A invert
 map x push :glob-select<space>
 map X push :glob-unselect<space>
 
+# Full Glob
+map * push :glob-select<space>**<left>
+# Starts-With
+map ^ push :glob-select<space>*<left>
+# Ends-With, cannot use $ because it's already used for shell
+map = push :glob-select<space>*.
+
 map F push :select<space>
 map <space>f fzf-select
 map <space>/ rg-select
+
+# Zoxide
 map Z zi
 map z push :z<space>
 # }}}

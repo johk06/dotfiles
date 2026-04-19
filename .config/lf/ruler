@@ -1,6 +1,7 @@
 {{with.Message -}}
     {{printf "%s\033[0m " . -}}
 {{end -}}
+{{printf "\033[0m %s" df -}}
 {{with .Stat -}}
     {{if gt .Size 1073741824 -}}
         {{printf "\033[31;1m%6s" (.Size | humanize) -}}
@@ -40,7 +41,7 @@
 {{with .Copy -}}{{len . | printf "\033[7;33m %dy \033[0m"}}{{end -}}
 {{with .Cut -}}{{len . | printf "\033[7;31m %dd \033[0m"}}{{end -}}
 {{with .Filter -}}{{join . " "}}{{end -}}
-{{printf "\033[0m %s" df -}}
+{{with .Options.hiddenfiles -}}{{printf "\033[31m%s\033[0m" .}}{{end -}}
 {{printf " | %2d/%-2d (.%2d)" .Index .Total .Hidden -}}
 
 {{/*
