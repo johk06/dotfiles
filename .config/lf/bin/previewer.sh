@@ -432,7 +432,7 @@ case "$MIMETYPE" in
         preview_pdf "$FILE" "$MIMETYPE";;
     *opendocument*|application/vnd.openxmlformats-officedocument.*)
         preview_office "$FILE" "$MIMETYPE" ;;
-    font/sfnt|application/vnd.ms-opentype)
+    font/sfnt|application/vnd.ms-opentype|font/ttf)
         preview_font "$FILE" "$MIMETYPE"
         ;;
 

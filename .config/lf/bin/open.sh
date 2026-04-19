@@ -74,6 +74,9 @@ application/x-archive | application/x-cpio | application/x-tar | application/x-b
     fi
 
     ;;
+video/*)
+    mpv $fx & disown
+    ;;
 *)
     for file in $fx; do
         xdg-open "$file" &
