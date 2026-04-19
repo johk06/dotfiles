@@ -98,6 +98,9 @@ shm:append("s") -- hide search hit x
 shm:append("q") -- hide macro
 shm:append("I") -- no :intro
 
+-- What would I do without it
+o.modeline = true
+
 -- TODO: maybe? This allows me to have project specific settings
 o.exrc = true
 
@@ -241,7 +244,9 @@ Jhk.pack_luarock = function(rock)
 end
 
 vim.pack.add({ 'https://github.com/zuqini/zpack.nvim' })
-require("zpack").setup()
+require("zpack").setup {
+    cmd_prefix = "Pack", -- the Z- Prefix conflicts with Zoxide
+}
 -- }}}
 -- Load Config {{{
 require("config.lsp")        -- language servers

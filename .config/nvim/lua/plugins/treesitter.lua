@@ -267,8 +267,7 @@ M.config = function()
 
 
             local language = vim.treesitter.language.get_lang(ft) or ft
-            if not attach(buf, language)
-                and parsers[language] then
+            if not attach(buf, language) and parsers[language] then
                 ts.install(language):await(function()
                     attach(buf, language)
                 end)
