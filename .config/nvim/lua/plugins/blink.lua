@@ -2,8 +2,12 @@
 local M = {
     "saghen/blink.cmp",
     event = { "InsertEnter", "CmdlineEnter" },
-    build = Jhk.pack_build_cmd {"cargo", "build", "--release"},
-    dependencies = {},
+    build = function()
+        require("blink.cmp").build():wait(60000) -- 1 minute
+    end,
+    dependencies = {
+        "saghen/blink.lib" -- required dependency
+    },
 }
 
 ---@type blink.cmp.Config
@@ -30,7 +34,6 @@ opts.cmdline = {
     keymap = {
         -- mapping <left> and <right> is not what I ever want
         preset     = "none",
-
         ["<Tab>"]  = { "show_and_insert", "select_next" },
         ["<C-j>"]  = { "select_next", "fallback" },
         ["<C-n>"]  = { "select_next", "fallback" },
