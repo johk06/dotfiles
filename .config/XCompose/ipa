@@ -20,10 +20,10 @@
 <Multi_key> <backslash> <z> : "ʑ" U0291 # voiced alveolo-palatal fricative
 <Multi_key> <backslash> <u> : "ʉ" U0289 # close central rounded vowel, NOTE: CXS
 <Multi_key> <backslash> <A> : "ɑ" U0251 # open back unrounded vowel
-<Multi_key> <backslash> <B> : "β" U03b2 # voiced bilabial fricative, NOTE: == @a
+<Multi_key> <backslash> <B> : "β" U03b2 # voiced bilabial fricative, NOTE: == *a
 <Multi_key> <backslash> <C> : "ç" U00e7 # voiceless palatal fricative
 <Multi_key> <backslash> <D> : "ð" U00f0 # voiced dental fricative, NOTE: == dh
-<Multi_key> <backslash> <E> : "ε" U03b5 # open-mid front unrounded vowel, NOTE: == @e
+<Multi_key> <backslash> <E> : "ε" U03b5 # open-mid front unrounded vowel, NOTE: == *e
 <Multi_key> <backslash> <F> : "ɱ" U0271 # labiodental nasal
 <Multi_key> <backslash> <G> : "ɣ" U0263 # voiced velar fricative
 <Multi_key> <backslash> <H> : "ɥ" U0265 # labial-palatal approximant
@@ -37,7 +37,7 @@
 <Multi_key> <backslash> <Q> : "ɒ" U0252 # open back rounded vowel
 <Multi_key> <backslash> <R> : "ʁ" U0281 # voiced uvular fricative
 <Multi_key> <backslash> <S> : "ʃ" U0283 # voiceless postalveolar fricative
-<Multi_key> <backslash> <T> : "θ" U03b8 # voiceless dental fricative, NOTE: == <comp>@y
+<Multi_key> <backslash> <T> : "θ" U03b8 # voiceless dental fricative, NOTE: == *y
 <Multi_key> <backslash> <U> : "ʊ" U028a # near-close back rounded vowel
 <Multi_key> <backslash> <V> : "ʌ" U028c # open-mid back unrounded vowel
 <Multi_key> <backslash> <W> : "ʍ" U028d # voiceless labial-velar fricative
