@@ -181,7 +181,7 @@ local ts_context = {
 local M = {
     "nvim-treesitter/nvim-treesitter",
     branch = "main",
-    build =function()
+    build = function()
         require("nvim-treesitter").update()
     end,
     dependencies = {
@@ -246,13 +246,23 @@ end
 M.config = function()
     require("config.utils").user_autogroup("config.treesitter.update", {
         TSUpdate = function()
-            package.loaded["nvim-treesitter.parsers"].mail = {
+            local ts = package.loaded["nvim-treesitter.parsers"]
+            ts.mail = {
                 install_info = {
                     url = "https://github.com/stevenxxiu/tree-sitter-mail",
                     queries = "queries",
                     branch = "master",
                 },
                 filetype = "mail",
+            }
+            ts.ripe = {
+                install_info = {
+                    path = "/home/jhk/ws/tree-sitter-ripe/",
+                    url = "https://github.com/johk06/tree-sitter-ripe",
+                    queries = "queries"
+                },
+                tier = 2,
+                filetype = "ripe"
             }
         end
     })
