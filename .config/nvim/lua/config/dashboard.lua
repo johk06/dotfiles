@@ -418,7 +418,7 @@ local draw_sections = function()
                 if item then
                     item.callback()
                 end
-            end, { buffer = State.buf })
+            end, { buf = State.buf })
         end
 
         table.insert(State.sections, { State.current, section })
@@ -440,7 +440,7 @@ local draw_sections = function()
             local line = { { initial_padding } }
 
             if item.map then
-                vim.keymap.set("n", item.map, item.callback, { buffer = State.buf })
+                vim.keymap.set("n", item.map, item.callback, { buf = State.buf })
             end
 
             vim.list_extend(line, item.left)
@@ -542,11 +542,11 @@ M.show = function()
     end
     vim.keymap.set("n", "<cr>", function()
         select_item(api.nvim_win_get_cursor(0)[1])
-    end, { buffer = buf })
+    end, { buf = buf })
     vim.keymap.set("n", "<2-LeftMouse>", function()
         local pos = vim.fn.getmousepos()
         select_item(pos.line)
-    end, { buffer = buf })
+    end, { buf = buf })
 
     do_resize()
     do_draw()

@@ -182,7 +182,6 @@ M.path_display = function(opts, path)
     return string.format("%s %s%s ", tail, (" "):rep(padding), parendir), hls
 end
 -- }}}
-
 -- Helpers {{{
 local t_entry_display = require("telescope.pickers.entry_display")
 
@@ -206,7 +205,6 @@ local get_names_and_hl = function(path)
     return tail, parentdir, filename_highlight
 end
 -- }}}
-
 -- Grep-Style {{{
 local line_and_column_display = t_entry_display.create {
     separator = " ",
@@ -240,7 +238,6 @@ M.line_and_column_entries = function(line)
     }
 end
 -- }}}
-
 -- Plain File Names {{{
 local file_display = t_entry_display.create {
     separator = " ",
@@ -280,7 +277,6 @@ M.file_entries = function(entry)
     }
 end
 -- }}}
-
 -- LSP Symbols {{{
 local lsp_entry_display = t_entry_display.create {
     separator = " ",
@@ -336,7 +332,6 @@ M.lsp_symbol_entries = function(entry)
     }
 end
 -- }}}
-
 -- Quickfix List {{{
 local quickfix_entry_display = t_entry_display.create {
     separator = " ",
@@ -370,7 +365,6 @@ M.quickfix_entries = function(entry)
     }
 end
 -- }}}
-
 -- Buffer List {{{
 local buffer_entry_display = t_entry_display.create {
     separator = " ",
@@ -433,7 +427,6 @@ M.buffer_entries = function(entry)
     }
 end
 -- }}}
-
 -- Diagnostics {{{
 local diagnostics_display = t_entry_display.create {
     separator = " ",
@@ -563,7 +556,6 @@ M.treesitter_entries = function(entry)
 end
 -- }}}
 -- }}}
-
 -- Actions {{{
 local t_actions = require("telescope.actions")
 local t_action_state = require("telescope.actions.state")
@@ -588,7 +580,7 @@ M.edit_register = function(buf)
         vim.api.nvim_win_close(win, true)
         vim.fn.setreg(reg, new_text)
         t_builtins.registers()
-    end, { buffer = edit_buf })
+    end, { buf = edit_buf })
 end
 
 M.select_register = function(buf)
@@ -638,7 +630,6 @@ M.fugitive_commit = function(buf)
     vim.cmd.Gedit(selection.value)
 end
 -- }}}
-
 -- Pickers {{{
 local t_pickers = require("telescope.pickers")
 local t_finders = require("telescope.finders")

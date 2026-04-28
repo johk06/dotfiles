@@ -28,7 +28,6 @@ map("n", "<M-k>", cmd_with_count("lprev"))
  Reuse prefix from config/lsp.lua, uppercase for Quickfix
 ]]
 
-
 -- Diagnostics, specify kind via register if needed
 ---@param setter string
 local open_with_optional_severity = function(setter)

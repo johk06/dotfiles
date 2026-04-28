@@ -99,14 +99,14 @@ local on_spl_set = function(ev)
     local old_abbrevs = get_abbrevs_for_lang(old_lang)
     if old_abbrevs then
         for _, map in ipairs(old_abbrevs) do
-            pcall(vim.keymap.del, "ia", map[1], { buffer = buf })
+            pcall(vim.keymap.del, "ia", map[1], { buf = buf })
         end
     end
 
     local new_abbrevs = get_abbrevs_for_lang(new_lang)
     if new_abbrevs then
         for _, map in ipairs(new_abbrevs) do
-            vim.keymap.set("ia", map[1], map[2], { buffer = buf })
+            vim.keymap.set("ia", map[1], map[2], { buf = buf })
         end
     end
 end

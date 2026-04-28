@@ -299,7 +299,7 @@ command("Shebang", function(args)
     -- make the file executable when it's first written
     api.nvim_create_autocmd("BufWritePost", {
         command = "silent !chmod u+x %",
-        buffer = 0,
+        buf = 0,
         once = true,
     })
 end, {
@@ -361,7 +361,7 @@ command("OnWrite", function(args)
     end
 
     local id = api.nvim_create_autocmd("BufWritePost", {
-        buffer = buf,
+        buf = buf,
         callback = callback
     })
     on_write_autocommands[buf] = id

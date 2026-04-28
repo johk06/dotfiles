@@ -123,14 +123,14 @@ local expand_ui_input = function(cb, content, prompt, opts)
     local wrote_at_least_once = false
     augroup = utils.autogroup("config.ui.input-expanded.#" .. buf, {
         BufWriteCmd = {
-            buffer = buf,
+            buf = buf,
             callback = function()
                 bo.modified = false
                 wrote_at_least_once = true
             end
         },
         BufLeave = {
-            buffer = buf,
+            buf = buf,
             callback = function()
                 if not bo.modified and wrote_at_least_once then
                     local text = table.concat(api.nvim_buf_get_lines(buf, 0, -1, false), " ")

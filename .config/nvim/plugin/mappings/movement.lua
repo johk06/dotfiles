@@ -20,7 +20,7 @@ map(mov, "<C-i>", "<C-i>zz")
 --[[ Start and End of Line {{{
  These are hard to reach by default,
  I do not use Low and High for navigation and even rarer in o-pending mode
- also kinda logical, a stronger version of lh
+ also kinda logical, like a stronger version of lh
 ]]
 map(mov, "L", "$")
 -- 0 is significantly less useful than ^ and easier to reach as well
@@ -29,6 +29,10 @@ map(mov, "H", "^")
 -- Keep the old ones around though, mostly out of habit
 map(mov, "gL", "L")
 map(mov, "gH", "H")
+
+-- Find in the line from the back, remap=true for lua/plugins/blinkenfind.lua to kick in
+map(mov, "<M-f>", "$F", { remap = true})
+map(mov, "<M-t>", "$T", { remap = true})
 -- }}}
 
 -- Keep the jumplist intact for {}, it's a relatively small motion
@@ -94,8 +98,9 @@ map(obj, "iDh", textobjs.diagnostic_hint)
  this is particularly useful for languages like python where
  c1ii comes to mean "change in the topmost scope"
  d2ai for example then means "delete this method"
- NOTE: this uses shiftwidth, so it's not 100% reliable for files
- that do not have the same shiftwidth or variations in its indent width ]]
+ NOTE: this uses shiftwidth, so it's not 100% reliable for files that do not
+ have the same shiftwidth or variations in its indent width, furthermore there
+ are issues with e.g. labels in C which come in the first column by convention ]]
 map(obj, "ii", textobjs.indent_inner)
 map(obj, "ai", textobjs.indent_outer)
 map(obj, "aI", textobjs.indent_outer_with_last)

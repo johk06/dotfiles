@@ -71,10 +71,10 @@ local map_on_git_buffer = function(buf)
         function() gitsigns.nav_hunk("next") end,
         function() gitsigns.nav_hunk("prev") end
     )
-    utils.map({ "n", "x", "o" }, "]g", nh, { buffer = buf })
-    utils.map({ "n", "x", "o" }, "[g", ph, { buffer = buf })
+    utils.map({ "n", "x", "o" }, "]g", nh, { buf = buf })
+    utils.map({ "n", "x", "o" }, "[g", ph, { buf = buf })
 
-    utils.map({ "x", "o" }, "ig", gitsigns.select_hunk, { buffer = buf })
+    utils.map({ "x", "o" }, "ig", gitsigns.select_hunk, { buf = buf })
 
     map(utils.mode_action, "y", "<cmd>GitLink browse<cr>", { desc = "Git: Copy URL" })
     map(utils.mode_action, "Y", "<cmd>GitLink blame<cr>", { desc = "Git: Copy Blame URL" })

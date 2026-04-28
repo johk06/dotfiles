@@ -219,7 +219,7 @@ M.attach = function(buf)
 
     local group = api.nvim_create_augroup("config.oil.git#" .. buf, { clear = true })
     api.nvim_create_autocmd("BufDelete", {
-        buffer = buf,
+        buf = buf,
         group = group,
         callback = function()
             buffer_status[buf] = nil
@@ -228,7 +228,7 @@ M.attach = function(buf)
     })
 
     api.nvim_create_autocmd({ "BufReadPost", "BufWritePost" }, {
-        buffer = buf,
+        buf = buf,
         group = group,
         callback = function()
             update_buf(buf)
@@ -236,7 +236,7 @@ M.attach = function(buf)
     })
 
     api.nvim_create_autocmd({ "InsertLeave", "TextChanged" }, {
-        buffer = buf,
+        buf = buf,
         group = group,
         callback = function()
             if buffer_status[buf] and buffer_status[buf] ~= true then

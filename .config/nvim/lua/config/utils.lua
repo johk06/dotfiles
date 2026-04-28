@@ -355,7 +355,7 @@ end
 ---@param opts vim.keymap.del.Opts?
 function M.lunmap(bufnr, mode, keys, opts)
     opts = opts or {}
-    opts.buffer = bufnr
+    opts.buf = bufnr
     vim.keymap.del(mode, keys, opts)
 end
 
@@ -366,7 +366,7 @@ end
 ---@param opts vim.keymap.set.Opts|nil
 function M.lmap(bufnr, mode, keys, action, opts)
     opts = opts or {}
-    opts.buffer = bufnr
+    opts.buf = bufnr
     vim.keymap.set(mode, keys, action, opts)
 end
 
@@ -387,7 +387,7 @@ function M.local_mapper(bufnr, opts)
 
     return function(mode, keys, action, mopts)
         mopts = mopts or {}
-        mopts.buffer = bufnr
+        mopts.buf = bufnr
         keys = prefix and (prefix .. keys) or keys
         if opts.group then
             table.insert(M.local_maps[bufnr], { mode, keys })
@@ -405,7 +405,7 @@ function M.unmap_group(buf)
     end
 
     for _, map in ipairs(M.local_maps[buf]) do
-        vim.keymap.del(map[1], map[2], { buffer = buf })
+        vim.keymap.del(map[1], map[2], { buf = buf })
     end
 
     M.local_maps[buf] = nil
@@ -640,7 +640,7 @@ M.autogroup = function(name, commands, opts)
             tbl = cfg
         end
         tbl.group = group
-        tbl.buffer = opts.buf
+        tbl.buf = opts.buf
 
         api.nvim_create_autocmd(ev, tbl)
     end
