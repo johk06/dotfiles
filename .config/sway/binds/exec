@@ -3,42 +3,58 @@
 # Basic run program actions
 
 # Terminal
-bindsym $mod+Return          exec $term
-bindsym $mod+Shift+Return    exec $sc/exec-with --pid $term $floating
+bindsym $mod+Return       exec $term
+bindsym $mod+Shift+Return exec $sc/exec-with --pid $term $floating
 
 # [W]eb
-bindsym $mod+W               exec firefox
+bindsym $mod+W exec firefox
 
 # [E]xplore, yes this is a shitty windows-like map
-bindsym $mod+E               exec kitty zsh -ic lf
+bindsym $mod+E exec kitty zsh -ic lf
 # Opening a temp folder is common
-bindsym $mod+Shift+E         exec kitty zsh -ic 'lf ~/Tmp/'
+bindsym $mod+Shift+E exec kitty zsh -ic 'lf ~/Tmp/'
 
 # Always quick to lock
 bindsym $mod+Semicolon exec gtklock -d
-# A somewhat stronger version that also toggles the displays on and off
+# Toggle the display power
 bindsym --locked $mod+XF86AudioPlay exec $sc/pause-unpause
 
-# Notifications
-bindsym $mod+Period          exec swaync-client --close-latest
-bindsym $mod+Shift+Period    exec swaync-client --close-all
-bindsym $mod+Mod1+Period     exec $sc/invoke-notification
+# Notifications {{{
+bindsym $mod+Period       exec swaync-client --close-latest
+bindsym $mod+Ctrl+Period  exec swaync-client --toggle-panel
+bindsym $mod+Shift+Period exec swaync-client --close-all
+bindsym $mod+Mod1+Period  exec $sc/invoke-notification
+# }}}
+# Rofi {{{
+# Run programs, plain and simple
+bindsym $mod+Space exec killall rofi || rofi -show drun
 
-# The default applet
-# run programs, plain and simple
-bindsym $mod+Space           exec killall rofi || rofi -show drun
 # logout, power and other session controls
 bindsym $mod+Shift+Semicolon exec killall rofi || rofi -show sys
-# search windows
-bindsym $mod+Slash           exec killall rofi || rofi -show sway
-# qalculate wrapper
-bindsym $mod+Shift+Slash     exec killall rofi || rofi -show calc
-# custom and firefox bookmarks
-bindsym $mod+Shift+Grave     exec killall rofi || rofi -show marks
+
+# Search windows
+bindsym $mod+Slash exec killall rofi || rofi -show sway
+
+# Qalculate wrapper
+bindsym $mod+Shift+Slash exec killall rofi || rofi -show calc
+
+# Custom and Firefox bookmarks
+bindsym $mod+Shift+Grave exec killall rofi || rofi -show marks
 
 # Specialized applets
-bindsym $mod+O               exec killall rofi || ~/.config/rofi/applets/files/run.sh
-bindsym $mod+Minus           exec killall rofi || ~/.config/rofi/applets/pass/run.sh
+bindsym $mod+O     exec killall rofi || ~/.config/rofi/applets/files/run.sh
+bindsym $mod+Minus exec killall rofi || ~/.config/rofi/applets/pass/run.sh
+# }}}
 
 # Show overview popup
-bindsym $mod+Comma           exec $eww/bin/popup.sh ws-overview-win ws-overview-reveal
+bindsym $mod+Comma exec $eww/bin/popup.sh ws-overview-win ws-overview-reveal
+
+mode "exec" {
+    bindsym Escape mode "default" 
+
+    bindsym n exec $sc/exec-with --pid "kitty newsboat" $floating; mode "default"
+    bindsym m exec $sc/exec-with --pid "kitty aerc" $floating; mode "default"
+    bindsym l exec $sc/exec-with --pid "kitty ncmpcpp" $floating; mode "default"
+}
+
+bindsym $mod+Backslash mode "exec"

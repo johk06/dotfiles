@@ -14,8 +14,9 @@
 @include mode(media,      $purple);
 @include mode(screenshot, $lblue);
 @include mode(config,     $yellow);
-@include mode(insert,     $green);
+@include mode(insert,     $red);
 @include mode(clipboard,  $orange);
+@include mode(exec,       $green);
 
 .mode-keys {
     color: $lblue;

@@ -85,7 +85,10 @@ def get_meta(pl):
         out["album"] = meta["xesam:album"]
     except KeyError:
         out["album"] = ""
-    out["title"] = meta["xesam:title"]
+    try:
+        out["title"] = meta["xesam:title"]
+    except KeyError:
+        out["title"] = ""
 
     return out
 

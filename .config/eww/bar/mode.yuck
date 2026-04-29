@@ -4,6 +4,7 @@
 "screenshot": "Print",
 "clipboard":"Yank",
 "config":"Config",
+"exec":"Exec",
 "insert": "Insert"
 }')
 
@@ -56,6 +57,11 @@
     {"keys": "mo", "action": "Open"},
     {"keys": "c", "action": "Clear"},
     {"keys": "t", "action": "Translate"}
+],
+"exec": [
+    {"keys": "n", "action": "News"},
+    {"keys": "m", "action": "Mail"},
+    {"keys": "l", "action": "Listen"}
 ],
 "insert": [
     {"keys": "(M-)y", "action": "Clipboard"},

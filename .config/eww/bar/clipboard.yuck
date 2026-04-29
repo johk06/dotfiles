@@ -6,7 +6,7 @@
             :onclick "wl-copy -c"
             :onrightclick "xdg-open ${clipboard.data}"
             (box :space-evenly false
-                (label :class "text yellow" :text '"+')
+                (label :class "text pink" :text '"+')
                 (stack :selected {clipboard.mime =~ "text/.*" ? 1 : 0 }
                     :transition "none"
                     :style "margin-left: .5rem"
