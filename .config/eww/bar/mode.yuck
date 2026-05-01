@@ -37,14 +37,13 @@
 "config": [
     {"keys": "jk", "action": "Brightness"},
     {"keys": "nN", "action": "Nighlight"},
-    {"keys": "g", "action": "Gaps"},
-    {"keys": "bB", "action": "Border"},
+    {"keys": "gbB", "action": "Border"},
     {"keys": "-+", "action": "Opacity"},
     {"keys": "m", "action": "Mirror Screen"},
     {"keys": "t", "action": "Theme"},
-    {"keys": "w", "action": "Wallpaper"},
-    {"keys": "r", "action": "Random"},
-    {"keys": "p", "action": "Clear Passwords"}
+    {"keys": "a", "action": "Animation"},
+    {"keys": "wr", "action": "Wallpaper"},
+    {"keys": "p", "action": "Clear Pass"}
 ],
 "clipboard": [
     {"keys": "M-*", "action": "Sel-", "mod": true},
