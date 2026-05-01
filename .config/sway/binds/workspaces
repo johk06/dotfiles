@@ -88,7 +88,6 @@ bindsym $mod+Ctrl+8 move window to workspace number 8; workspace number 8
 bindsym $mod+Ctrl+9 move window to workspace number 9; workspace number 9
 bindsym $mod+Ctrl+0 move window to workspace number 10; workspace number 10
 # }}}
-
 # Secondary {{{
 # The arrow keys are nice for this since they're out of the way,
 # but still present an ordered list
@@ -107,7 +106,6 @@ bindsym $mod+Ctrl+Down move window to workspace s2; workspace s2
 bindsym $mod+Ctrl+Right move window to workspace s3; workspace s3
 bindsym $mod+Ctrl+Up move window to workspace s4; workspace s4
 # }}}
-
 # Next / Previous {{{
 # This very nicely mirrors Vim
 bindsym $mod+Bracketright       exec $sc/in-order go   next

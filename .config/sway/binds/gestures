@@ -1,5 +1,7 @@
 # vim: ft=swayconfig
 
+# This is kinda experimental, mainly for my laptop
+
 bindgesture swipe:3:down exec $eww/bin/popup.sh ws-overview-win ws-overview-reveal
 
 bindgesture swipe:3:up scratchpad show
@@ -10,4 +12,5 @@ bindgesture swipe:3:left  exec $sc/in-order go   prev
 bindgesture swipe:4:right exec $sc/in-order push next
 bindgesture swipe:4:left  exec $sc/in-order push prev
 
+# Attention: danger
 bindgesture swipe:4:down kill

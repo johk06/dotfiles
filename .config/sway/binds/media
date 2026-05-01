@@ -2,21 +2,21 @@
 
 set $audio $sc/audio-popup
 
-# output
+# Output
 bindsym --locked XF86AudioRaiseVolume        exec $audio DEFAULT_SINK raise 3
 bindsym --locked XF86AudioLowerVolume        exec $audio DEFAULT_SINK lower 3
 bindsym --locked Ctrl+XF86AudioRaiseVolume   exec $audio DEFAULT_SINK raise 10
 bindsym --locked Ctrl+XF86AudioLowerVolume   exec $audio DEFAULT_SINK lower 10
 bindsym --locked XF86AudioMute               exec $audio DEFAULT_SINK mute
 
-# input
+# Input
 bindsym --locked Mod1+XF86AudioRaiseVolume      exec $audio DEFAULT_SOURCE raise 3
 bindsym --locked Mod1+XF86AudioLowerVolume      exec $audio DEFAULT_SOURCE lower 3
 bindsym --locked Mod1+Ctrl+XF86AudioRaiseVolume exec $audio DEFAULT_SOURCE raise 10
 bindsym --locked Mod1+Ctrl+XF86AudioLowerVolume exec $audio DEFAULT_SOURCE lower 10
 bindsym --locked Mod1+XF86AudioMute             exec $audio DEFAULT_SOURCE mute
 
-# screen brightness
+# Screen Brightness
 bindsym --locked XF86MonBrightnessUp         exec $sc/brightness set +5
 bindsym --locked XF86MonBrightnessDown       exec $sc/brightness set -5
 bindsym --locked Shift+XF86MonBrightnessUp   exec $sc/brightness set +20
@@ -24,14 +24,16 @@ bindsym --locked Shift+XF86MonBrightnessDown exec $sc/brightness set -20
 bindsym --locked Mod4+XF86MonBrightnessUp    exec $sc/brightness set +50
 bindsym --locked Mod4+XF86MonBrightnessDown  exec $sc/brightness set -50
 
-# media players
+# Media Players
 bindsym --locked XF86AudioPlay exec playerctl play-pause
+bindsym --locked XF86AudioPause exec playerctl pause
 bindsym --locked Shift+XF86AudioNext exec playerctl next
 bindsym --locked Shift+XF86AudioPrev exec playerctl prev
 bindsym --locked Shift+XF86AudioPlay exec playerctld shift
 bindsym --locked XF86AudioNext exec playerctl position 5+
 bindsym --locked XF86AudioPrev exec playerctl position 5-
 
+# Mute chosen Player
 bindsym $mod+XF86AudioMute exec ~/.config/rofi/applets/mute/run.sh
 bindsym $mod+Shift+M exec ~/.config/rofi/applets/mute/run.sh
 
@@ -43,22 +45,24 @@ mode "media" {
     Mod1+Space exec playerctld shift && playerctl play-pause && playerctld unshift
 
     # Output
-    K       exec $audio             DEFAULT_SINK raise 3
-    J       exec $audio             DEFAULT_SINK lower 3
-    Shift+K exec $audio             DEFAULT_SINK raise 10
-    Shift+J exec $audio             DEFAULT_SINK lower 10
-    M       exec $audio             DEFAULT_SINK mute
-    N       exec $sc/pulse-cycle sink         next
-    Shift+N exec $sc/pulse-cycle sink         prev
+    K       exec $audio DEFAULT_SINK raise 3
+    J       exec $audio DEFAULT_SINK lower 3
+    Shift+K exec $audio DEFAULT_SINK raise 10
+    Shift+J exec $audio DEFAULT_SINK lower 10
+    M       exec $audio DEFAULT_SINK mute
 
     # Input
-    Mod1+K       exec $audio             DEFAULT_SOURCE raise 3
-    Mod1+J       exec $audio             DEFAULT_SOURCE lower 3
-    Mod1+Shift+K exec $audio             DEFAULT_SOURCE raise 10
-    Mod1+Shift+J exec $audio             DEFAULT_SOURCE lower 10
-    Mod1+M       exec $audio             DEFAULT_SOURCE mute
-    Mod1+N       exec $sc/pulse-cycle source         next
-    Mod1+Shift+N exec $sc/pulse-cycle source         prev
+    Mod1+K       exec $audio DEFAULT_SOURCE raise 3
+    Mod1+J       exec $audio DEFAULT_SOURCE lower 3
+    Mod1+Shift+K exec $audio DEFAULT_SOURCE raise 10
+    Mod1+Shift+J exec $audio DEFAULT_SOURCE lower 10
+    Mod1+M       exec $audio DEFAULT_SOURCE mute
+
+    # Cycle through the sinks/sources
+    N       exec $sc/pulse-cycle sink next
+    Shift+N exec $sc/pulse-cycle sink prev
+    Mod1+N       exec $sc/pulse-cycle source next
+    Mod1+Shift+N exec $sc/pulse-cycle source prev
 
     # Seek
     S      exec playerctl  position 0

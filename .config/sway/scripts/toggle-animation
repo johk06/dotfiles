@@ -1,0 +1,3 @@
+#!/bin/sh
+
+swaymsg animation_duration_ms 100

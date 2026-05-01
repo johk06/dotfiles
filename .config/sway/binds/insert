@@ -9,14 +9,23 @@ mode "insert" {
     bindsym S exec $sc/toggle-numen; mode "default"
     bindsym Shift+S exec $sc/toggle-numen kill; mode "default"
 
+    # Date
     bindsym D exec date +"type %Y-%m-%d" | dotool; mode "default"
-    bindsym Shift+D exec date +"type %b %d %Y, %H:%M %Z" | dotool; mode "default"
 
+    # Full
+    bindsym Mod1+D exec TZ=GMT date +"type %c" | dotool; mode "default"
+    bindsym Shift+D exec date +"type %c" | dotool; mode "default"
+
+    # Time
     bindsym T exec date +"type %H:%M" | dotool; mode "default"
+    bindsym Mod1+T exec TZ=GMT date +"type %H:%M" | dotool; mode "default"
+
+    # Unix timestamp
     bindsym Shift+T exec date +"type %s" | dotool; mode "default"
 
     bindsym P exec ~/.config/rofi/applets/pass/run.sh; mode "default"
 
+    # HACK: for the *very* rare case of some program not supporting copy-paste
     bindsym Y exec wl-paste | $sc/type-lines; mode "default"
     bindsym Mod1+Y exec wl-paste -p | $sc/type-lines; mode "default"
 

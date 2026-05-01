@@ -1,6 +1,6 @@
 # vim: ft=swayconfig
 
-# Configure various aspects of sway at runtime
+# Configure various aspects of Sway at runtime
 # Basically a catch-all map for various adjustements
 
 mode "config" {
@@ -36,10 +36,12 @@ mode "config" {
     bindsym Plus opacity plus 0.05
     bindsym Minus opacity minus 0.05
 
+    bindsym A exec swaymsg animation_duration_ms "$(wayinput -n -l -1 -t "Animation Duration")"; mode "default"
+
     bindsym P exec $sc/reload-passwords; mode "default"
 }
 
 bindsym $mod+C mode "config"
 
-# hack for gtklock sometimes freezing after suspend
+# Hack for gtklock sometimes freezing after suspend, this should NEVER be necessary
 bindsym --locked $mod+Ctrl+Mod4+R exec pkill -9 gtklock&&gtklock

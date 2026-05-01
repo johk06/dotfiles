@@ -1,0 +1,13 @@
+#!/bin/sh
+
+SUFFIX="$1"
+REGEX="$2"
+
+title="$(
+    swaymsg -t get_tree |
+        jq --arg re "$REGEX" -r \
+            '.. | ((.nodes? // empty), (.floating_nodes? // empty))[] |
+            select(.focused).name|match($re)|.string|ascii_downcase'
+)"
+
+swaymsg mark "$title$SUFFIX"

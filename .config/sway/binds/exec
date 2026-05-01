@@ -1,6 +1,6 @@
 # vim: ft=swayconfig
 
-# Basic run program actions
+# Execute various programs, this is somewhat of a catch-all file
 
 # Terminal
 bindsym $mod+Return       exec $term
@@ -29,7 +29,7 @@ bindsym $mod+Mod1+Period  exec $sc/invoke-notification
 # Run programs, plain and simple
 bindsym $mod+Space exec killall rofi || rofi -show drun
 
-# logout, power and other session controls
+# Logout, power and other session controls
 bindsym $mod+Shift+Semicolon exec killall rofi || rofi -show sys
 
 # Search windows
@@ -49,6 +49,7 @@ bindsym $mod+Minus exec killall rofi || ~/.config/rofi/applets/pass/run.sh
 # Show overview popup
 bindsym $mod+Comma exec $eww/bin/popup.sh ws-overview-win ws-overview-reveal
 
+# Like a Vim leader key
 mode "exec" {
     bindsym Escape mode "default" 
 

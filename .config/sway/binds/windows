@@ -8,6 +8,7 @@ bindsym $mod+Q kill
 
 # [D]etach
 bindsym $mod+D floating toggle; resize shrink width 800 height 600
+
 # Like the vim z* family of commands, alternatively, change the Z-Coordinate
 bindsym $mod+Z focus mode_toggle
 
@@ -46,7 +47,6 @@ bindsym $mod+X resize shrink width 64px; resize shrink height 64px
 # or the container containing both on the left
 bindsym $mod+Equal resize set width 50ppt; resize set height 50ppt
 # }}}
-
 # Container Operations {{{
 # Rarely needed, mainly for tabs and floating windows
 bindsym $mod+S splitv
@@ -71,11 +71,11 @@ bindsym $mod+Mod1+Z exec $sc/stop-or-continue
 bindsym $mod+Ctrl+Z exec $sc/signal-window
 
 # Tags {{{
-# Like VIM
+# Like Vim
 bindsym $mod+Apostrophe exec $sc/on-mark initial focus
 bindsym $mod+Shift+Apostrophe exec $sc/on-mark search focus
 
-# (G)et
+# (G)et or (G)rab
 bindsym $mod+G exec $sc/on-mark initial move workspace current
 bindsym $mod+Shift+G exec $sc/on-mark search move workspace current
 
@@ -84,8 +84,12 @@ bindsym $mod+T exec $sc/mark
 bindsym $mod+U exec $sc/unmark
 
 # Tag a window for the scratchpad, by the first word in the title
-bindsym $mod+Mod1+T exec $sc/scratch-by-title
+bindsym $mod+Mod1+T exec $sc/mark-by-title "~" '^([a-zA-Z]*)'
+# By the final file name component
+bindsym $mod+Ctrl+T exec $sc/mark-by-title "" '([^\s/]*)$'
+# By the initial file-like component
+bindsym $mod+Shift+T exec $sc/mark-by-title "" '^([^\s/]*)'
 # }}}
 
-# Select-Based resize
+# Select-Based resize, not sure whether I want this
 # bindsym --whole-window $mod+Shift+BTN_RIGHT exec $sc/select-float-region
