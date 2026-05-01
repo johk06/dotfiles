@@ -48,11 +48,12 @@ bindsym $mod+X resize shrink width 64px; resize shrink height 64px
 bindsym $mod+Equal resize set width 50ppt; resize set height 50ppt
 # }}}
 # Container Operations {{{
-# Rarely needed, mainly for tabs and floating windows
+# Force split, rarely needed, mainly for tabs and floating windows
 bindsym $mod+S splitv
 bindsym $mod+V splith
 # [B]oxed
 bindsym $mod+B layout toggle split tabbed
+bindsym $mod+Shift+B layout toggle stacking split
 
 # "real" fullscreen
 bindsym $mod+F fullscreen

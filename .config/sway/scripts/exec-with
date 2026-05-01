@@ -32,9 +32,9 @@ for word in "$@"; do
     command+=("${word//%p/$pid}")
 done
 
-swaymsg -t subscribe '["window"]' -- monitor | jq --unbuffered "select(.change == \"new\" and $PREDICATE)|.container.id, halt" | {
+swaymsg -t subscribe '["window"]' --monitor | jq --argjson pid "$pid" --unbuffered "select(.change == \"new\" and $PREDICATE)|.container.id, halt" | {
     read -r id
-    sleep 0.2
+    sleep 0.1
     swaymsg "[con_id=$id] $sway_cmd"
     if ((${#command} > 0)); then
         "${command[@]}"
