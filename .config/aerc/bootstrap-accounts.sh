@@ -5,9 +5,8 @@ if [ -f "$ACCOUNT_CONF" ] && [ "$1" != "reload" ]; then
     exit
 fi
 
-pass mail/accounts | while IFS="|" read -r name realname address \
-    imapserver smtpserver \
-    pass default_folder copy_to; do
+pass mail/accounts | sed -n '3,$p' | while IFS=":" read -r name params; do
+    IFS="|" read realname address imapserver smtpserver pass default_folder copy_to <<<"$params"
     read -r user < <(pass-get "$pass" user | jq -Rr @uri)
     echo "[$name]"
     echo "from = $realname <$address>"
