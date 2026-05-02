@@ -2,6 +2,10 @@
 email = jhk06@mailbox.org
 name = jhk
 
+[core]
+# Don't hard-wrap long lines
+pager = "less -+S"
+
 [include]
 path = ./aliases
 
@@ -17,9 +21,6 @@ tool = nvimdiff
 [difftool]
 prompt = false
 trustExitCode = true
-
-[pretty]
-brief = tformat:%C(brightblue)%h%C(white) %s %C(brightmagenta)%cr %C(auto)%d%C(reset)
 
 [init]
 defaultbranch = main
@@ -49,6 +50,11 @@ changed = yellow
 added = bold yellow
 untracked = brightblack
 
+[color "decorate"]
+HEAD = cyan
+branch = green
+remoteBranch = italic blue
+tag = red
 
 ; Allow it to override anything else
 [includeIf "gitdir:~/ws/uni/**"]

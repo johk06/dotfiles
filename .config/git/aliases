@@ -1,8 +1,17 @@
+[pretty]
+# Basically a better g log --pretty=oneline for interactive usage
+
+# commit: this is a message    123456ab 10 hours ago
+# | HEAD -> main; origin/main; origin/HEAD
+brief = %<(50,trunc)%s%C(brightblue)%h %C(brightmagenta)%ch%C(auto)%(decorate:prefix=%n| ,suffix=,separator=%x3b ,pointer= -> )
+
 [alias]
 a = add
 ai = add -p
 lg = log --pretty=brief
 st = status -s -uno
+stu = status -s
 sta = status -s --ignored
+sts = stash show
 
 ; vim: set ft=gitconfig :
