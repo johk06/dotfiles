@@ -1,0 +1,44 @@
+@import "../eww/style/color.scss";
+
+* {
+    all: unset;
+    font-family: "Fira Code";
+    font-weight: 500;
+    font-size: 14px;
+}
+
+window {
+    border-radius: 12px;
+    background-color: $bg1;
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 0px 6px;
+    margin: 2rem;
+}
+
+button {
+    color: $fg0;
+    background-color: $bg0;
+    &:checked {
+        >label {
+            color: $inv;
+        }
+    }
+    >label {
+        font-style: italic;
+        font-weight: 600;
+        color: $special;
+    }
+    margin: 2px;
+    border-radius: 10px;
+}
+
+button:hover {
+    background-color: $bg-faint;
+}
+
+button:active {
+    background-color: $bg1;
+}
+
+button:checked {
+    background-color: mix($special, $bg1);
+}

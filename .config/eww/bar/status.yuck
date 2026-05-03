@@ -86,8 +86,8 @@
             (label
                 :class "status-text ${dev.charging ? "recharging" : (dev.value < 20 ? "alert" : "")}"
                 :tooltip "${dev.name}: ${dev.value}%${dev.to_empty != "null" ? "
-${formattime(dev.to_empty, "%H:%M left")}" : ""}${dev.to_full != "null" ? "
-${formattime(dev.to_full, "%H:%M until full")}" : ""}${dev.rate != "null" ? "
+${formattime(dev.to_empty, "%H:%M left", "UTC")}" : ""}${dev.to_full != "null" ? "
+${formattime(dev.to_full, "%H:%M until full", "UTC")}" : ""}${dev.rate != "null" ? "
 ${dev.rate}W" : ""}"
                 :text
                     "${bat-types[dev.type]}${dev.charging

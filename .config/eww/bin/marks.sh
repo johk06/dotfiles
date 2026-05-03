@@ -2,7 +2,6 @@
 
 list() {
     swaymsg -t get_marks | jq -c '.|sort'
-    echo
 }
 
 list

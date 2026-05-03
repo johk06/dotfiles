@@ -43,6 +43,7 @@ relink_file "$XDG_CONFIG_HOME/mpv" $target.conf color.conf &
 recompile_scss "$XDG_CONFIG_HOME/swaync"
 recompile_scss "$XDG_CONFIG_HOME/wofi"
 recompile_scss "$XDG_CONFIG_HOME/gtklock/"
+recompile_scss "$XDG_CONFIG_HOME/wkeys/"
 
 wait
 sleep 0.1
