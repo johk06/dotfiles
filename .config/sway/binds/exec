@@ -59,3 +59,5 @@ mode "exec" {
 }
 
 bindsym $mod+Backslash mode "exec"
+
+bindsym XF86Keyboard exec wkeys -m close

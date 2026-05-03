@@ -1,5 +1,25 @@
 layout = [
     [
+        { top_legend = "Comp", scan_code = 100, width = 1.4 },
+        { top_legend = "Kbd", scan_code = 374 },
+
+        { top_legend = "↑↑", scan_code = 104, width = 1.2 },
+        { top_legend = "↓↓", scan_code = 109, width = 1.2 },
+        { top_legend = "Home", scan_code = 102 },
+        { top_legend = "End", scan_code = 107 },
+
+        { top_legend = "󱩏 -", scan_code = 224 },
+        { top_legend = "󱩏 +", scan_code = 225 },
+        { top_legend = "󰝟", scan_code = 113 },
+        { top_legend = "󰝞", scan_code = 114 },
+        { top_legend = "󰝝", scan_code = 115 },
+
+        { top_legend = "←", scan_code = 105, width = 1 },
+        { top_legend = "↓", scan_code = 108, width = 1 },
+        { top_legend = "↑", scan_code = 103, width = 1 },
+        { top_legend = "→", scan_code = 106, width = 1 },
+    ],
+    [
         { top_legend = 'M-', scan_code = 56, width = 1.4 },
         { top_legend = 'Esc', scan_code = 1, width = 1.4 },
         { top_legend = '~', bottom_legend = '`', scan_code = 41 },
@@ -15,8 +35,6 @@ layout = [
         { top_legend = ')', bottom_legend = '0', scan_code = 11 },
         { top_legend = '_', bottom_legend = '-', scan_code = 12 },
         { top_legend = '+', bottom_legend = '=', scan_code = 13 },
-        { top_legend = "↑↑", scan_code = 104 },
-        { top_legend = "Home", scan_code = 102 },
     ],
     [
         { top_legend = 'D-', scan_code = 125, width = 1.4 },
@@ -34,8 +52,6 @@ layout = [
         { top_legend = '{', bottom_legend = '[', scan_code = 26 },
         { top_legend = '}', bottom_legend = ']', scan_code = 27 },
         { top_legend = '|', bottom_legend = '\', scan_code = 43 },
-        { top_legend = "↑", scan_code = 103 },
-        { top_legend = "←", scan_code = 105 },
     ],
     [
         { top_legend = 'S-', scan_code = 42, width = 1.4 },
@@ -52,8 +68,6 @@ layout = [
         { top_legend = ':', bottom_legend = ';', scan_code = 39 },
         { top_legend = '"', bottom_legend = "'", scan_code = 40 },
         { top_legend = 'Del', scan_code = 111, width = 1.4 },
-        { top_legend = "↓", scan_code = 108 },
-        { top_legend = "→", scan_code = 106 },
     ],
     [
         { top_legend = 'C-', scan_code = 29, width = 1.4 },
@@ -69,8 +83,6 @@ layout = [
         { top_legend = '>', bottom_legend = '.', scan_code = 52 },
         { top_legend = '?', bottom_legend = '/', scan_code = 53 },
         { top_legend = 'Back', scan_code = 14, width = 2.0 },
-        { top_legend = "↓↓", scan_code = 109 },
-        { top_legend = "End", scan_code = 107 },
     ],
 ]
 # { top_legend = 'M-', scan_code = 56, width = 1.25 },
