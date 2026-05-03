@@ -1,6 +1,27 @@
 #!/bin/sh
 
 SCREEN="$1"
+CACHEDIR="$XDG_CACHE_HOME/wall"
+mkdir -p "$CACHEDIR"
+
+wall() {
+    rot="$1"
+    curpath="$XDG_CONFIG_HOME/background/wall"
+    curreal="$(readlink "$curpath")"
+    curreal="${curreal##*/}"
+    if [ "$rot" = 0 ]; then
+        SCALED="$curpath"
+    else
+        SCALED="$CACHEDIR/$curreal.$rot"
+        case "$rot" in
+        90) rot=270 ;;
+        270) rot=90 ;;
+        esac
+        if [ ! -f "$SCALED" ]; then
+            magick "$curpath" -rotate "$rot" "$SCALED"
+        fi
+    fi
+}
 
 monitor-sensor |
     awk '$2 == "orientation" { print $4; fflush() }' |
@@ -11,7 +32,10 @@ monitor-sensor |
         bottom-up) transform=180 ;;
         left-up) transform=270 ;;
         esac
+        wall "$transform"
+        awww clear
         swaymsg output "$SCREEN" transform "$transform"
+        awww img -t none "$SCALED"
         eww close bar
         eww open bar
     done
