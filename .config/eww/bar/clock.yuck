@@ -8,5 +8,4 @@
             :class "button"
             {formattime(EWW_TIME, "%b %d, %H:%M")})
         (button :visible sway-tablet :onclick "wkeys -m close & disown"
-            :class "button"
-            "Kbd")))
+            :class "button pink" "Kbd")))

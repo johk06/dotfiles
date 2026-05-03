@@ -15,5 +15,5 @@ bindgesture swipe:4:left  exec $sc/in-order push prev
 # Attention: danger
 bindgesture swipe:4:down kill
 
-bindswitch tablet:on eww update sway-table=true
-bindswitch tablet:off eww update sway-table=true
+bindswitch tablet:on exec eww update sway-tablet=true
+bindswitch tablet:off exec eww update sway-tablet=false
