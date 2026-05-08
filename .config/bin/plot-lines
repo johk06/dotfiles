@@ -1,0 +1,32 @@
+#!/bin/sh
+
+# Plot lines from stdin with a bunch of sane presets
+
+usage() {
+    echo "Usage: plot-liines [-t TITLE] [-c COLOR] [-e EXPR] [-k KIND]"
+    exit 1
+}
+
+KIND="linespoints"
+COLOR="red"
+while getopts ":t:c:e:k:d:" o; do
+    case "$o" in
+    t) TITLE="$OPTARG" ;;
+    c) COLOR="$OPTARG" ;;
+    e) EXPR="$OPTARG" ;;
+    k) KIND="$OPTARG" ;;
+    *) usage ;;
+    esac
+done
+
+shift $((OPTIND - 1))
+
+EXP="
+$EXPR
+set xtic rotate by -90;
+plot '-' using 0:1:xticlabels(2) with $KIND
+title '$TITLE'
+lc rgb '$COLOR'
+"
+
+gnuplot -p -e "$EXP"
