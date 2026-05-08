@@ -8,7 +8,7 @@ local patterns = {
         priority = 100,
     },
     property = {
-        "^\\w\\+: "
+        "^[^:]\\+: "
     },
     constant = {
         "\\%1l.*"

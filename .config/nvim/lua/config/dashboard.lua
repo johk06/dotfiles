@@ -16,6 +16,7 @@ local MESSAGES = {
     "Enjoy your day!",
     "Gæð á wyrd swá heó sċeall",
     "Hiġe sċeall þé headra, heorte þé cénre, mód sċeall þé mære, þé úre mæġen lýtlað.",
+    "Häcks, Häcks - 0xc3 0xa4",
     "It is our duty to keep computing gay, we owe that to Turing",
     "Men? Men are weak.",
     "Never :q me for emacs",

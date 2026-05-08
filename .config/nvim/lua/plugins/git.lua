@@ -137,7 +137,7 @@ M[1].opts = {
     current_line_blame_opts = {
         virt_text = true,
         virt_text_pos = "right_align",
-        delay = 200,
+        delay = 50,
     },
 
     ---@type Gitsigns.BlameFormatterFun

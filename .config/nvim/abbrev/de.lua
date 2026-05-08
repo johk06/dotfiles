@@ -29,7 +29,7 @@ local M = {
     { "bzw",  "beziehungsweise" },
     { "fA",   "für alle" },
     { "vA",   "vor allem" },
-    {"unsh", "Unsicherheit", noun_suffixes},
+    { "unsh", "Unsicherheit",   noun_suffixes },
     { "fnk",  "funktionier",    verb_suffixes },
     { "fnk",  "Funktion",       noun_suffixes },
     { "dfz",  "differenz",      verb_suffixes },
@@ -37,7 +37,7 @@ local M = {
     { "dfn",  "definier",       verb_suffixes },
     { "dfn",  "Definition",     noun_suffixes },
     { "itg",  "integrier",      verb_suffixes },
-    { "itg",  "Integral",       { _ = "", e = "e", n = "en" },                                 nocase = true },
+    { "itg",  "Integral",       { _ = "", e = "e", n = "en" }, nocase = true },
 }
 
 -- Ordinals {{{

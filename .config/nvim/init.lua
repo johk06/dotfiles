@@ -4,9 +4,9 @@ This file (init.lua) sets options and does everything needed at startup.
 It does *not* create mappings, commands &c.
 
 Mappings & Commands are created in:
-- plugin/mappings.lua - Global, with little or no plugin dependencies
-- lua/plugins/*.lua   - Plugin-specific
-- lua/config/lsp.lua  - Those that require an LSP to be there
+- plugin/mappings/*.lua - Global, with little or no plugin dependencies
+- lua/plugins/*.lua     - Plugin-specific
+- lua/config/lsp.lua    - Those that require an LSP to be there
 
 Contents of lua/:
 - config/
@@ -272,3 +272,4 @@ if should_open_start_screen then
         end
     end)
 end
+

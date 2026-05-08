@@ -1,7 +1,15 @@
+--[[ Synopsis: Various utility commands {{{
+  These are commands for a variety of things, including:
+  - Zoxide integration
+  - More intelligent window splitting
+  - Tools for working with shell commands
+  - Simple editing helpers
+]]
 local api = vim.api
 local terminal = require("config.terminal")
 local utils = require("config.utils")
 local command = api.nvim_create_user_command
+-- }}}
 
 -- Zoxide {{{
 local function get_zoxide_result(path)
@@ -60,7 +68,6 @@ local zcd_args = {
 command("Z", zcd_func, zcd_args)
 command("Zcd", zcd_func, zcd_args)
 -- }}}
-
 -- Automatic Split {{{
 ---@param args vim.api.keyset.create_user_command.command_args
 local function smart_split(args)
@@ -94,7 +101,6 @@ local split_cmd_opts = {
 command("Sp", smart_split, split_cmd_opts)
 command("Split", smart_split, split_cmd_opts)
 -- }}}
-
 -- Shell Utils {{{
 
 -- Set qflist/loclist (with !bang) to result of command
@@ -154,7 +160,6 @@ end, {
     bang = true
 })
 -- }}}
-
 -- LSP {{{
 local lsp = vim.lsp
 local lsp_complete_clients = function()
@@ -258,8 +263,7 @@ end, {
     complete = lsp_complete_clients
 })
 -- }}}
-
--- Utilities {{{
+-- Editing {{{
 local SHEBANG_NAMES = {
     awk = "/usr/bin/env -S awk -f",
     bash = "/usr/bin/env bash",
@@ -372,11 +376,9 @@ end, {
     complete = "shellcmd",
 })
 
---[[
-Save all of the specified options in a modeline at the end of the file (or the
-end if ! is given). Replaces an existing modeline if it can detect one (either
-at the start or end of the file)
-]]
+--[[ Save all of the specified options in a modeline at the start of the file (or the
+  start if <bang> is given). Replaces an existing modeline if it can detect one 
+  (either at the start or end of the file) ]]
 command("Modeline", function(args)
     local commentstring = vim.bo.commentstring
     if not commentstring or not commentstring:find("%%s") then
@@ -436,6 +438,20 @@ end, {
     nargs = "+",
     bang = true,
     complete = "option"
+})
+
+-- Collapse a sequence of non-initial whitespace into a single space
+command("Squash", function(args)
+    pcall(api.nvim_cmd, {
+        cmd = "substitute",
+        mods = { keeppatterns = true, },
+        -- any whitespace preceded by non-whitespace, basically not at the ^BOL
+        args = { [[/\S\zs\s\+/ /g]] },
+        range = { args.line1, args.line2 }
+    }, {})
+end, {
+    desc = "Squash multiple spaces into one",
+    range = true,
 })
 -- }}}
 

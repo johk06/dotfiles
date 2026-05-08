@@ -347,6 +347,7 @@ add_with_prefix(colorscheme, "@", {
 
     ["function.ripe"]                = { link = "Normal" },
     ["symbol.ripe"]                  = { italic = true, fg = col.yellow },
+    ["macro.ripe"]                   = { italic = true, fg = col.red },
 })
 -- }}}
 -- LSP semantic highlights {{{

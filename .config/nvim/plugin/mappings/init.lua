@@ -39,9 +39,10 @@ unmap({ "i", "s" }, "<S-Tab>") -- snippet
 -- }}}
 -- Different Register Sets {{{
 -- M- is rarely if ever used, I can furthermore live without this if the terminal does not support it
-map("n", "<M-d>", '"_d')
-map("n", "<M-c>", '"_c')
-map("n", "<M-y>", '"+y')
+map({ "n", "v" }, "<M-d>", '"_d')
+map({ "n", "v" }, "<M-c>", '"_c')
+map({ "n", "v" }, "<M-y>", '"+y')
+map({ "n", "v" }, "<M-p>", '"+p')
 -- }}}
 -- Shorthands for Commands {{{
 map("n", "<space>w", "<cmd>write<cr>", { desc = "Write Buffer" })
@@ -64,7 +65,7 @@ map("n", "<space>e", function()
         position = "float",
         title = "Scratch"
     })
-end, { desc = "New Scratch"})
+end, { desc = "New Scratch" })
 -- }}}
 --[[ Change Directory {{{
  Sometimes I need a quicker way to change directory than :cd, :lcd etc
@@ -77,13 +78,13 @@ local function get_cur_buf_parent()
     return path
 end
 
--- goto parent
+-- Parent
 map("n", cdleader .. "h", function()
     local dir = fn.getcwd(0)
     vim.cmd.lcd(fn.fnamemodify(dir, ":h"))
 end, { desc = "Directory: Go Down towards Buffer" })
 
--- go one element right in current files path
+-- One element right in the path
 map("n", cdleader .. "l", function()
     local dir = fn.getcwd(0)
     local fpath = get_cur_buf_parent()
@@ -100,26 +101,26 @@ map("n", cdleader .. "l", function()
     end
 end, { desc = "Directory: Go Up" })
 
--- go to current files dir
+-- Current file parent
 map("n", cdleader .. "c", function()
     vim.cmd.lcd(get_cur_buf_parent())
 end, { desc = "Directory: Goto Buffer Parent" })
 
--- go to current files dir
+-- Parent of current file parent
 map("n", cdleader .. "p", function()
     vim.cmd.lcd(fn.fnamemodify(get_cur_buf_parent(), ":h"))
 end, { desc = "Directory: Goto Directory Parent" })
 
 map("n", "<space>.<space>", ":cd<space>")
 
--- go to project root
+-- Project root
 map("n", cdleader .. "r", function()
     local root = fs.get_project_root()
 
     vim.cmd.lcd(root)
 end, { desc = "Directory: Goto Project Root" })
 
--- go to git root
+-- Git root
 map("n", cdleader .. "g", function()
     local root = vim.fs.root(fn.getcwd(0), { ".git" })
     if root then
