@@ -1,30 +1,42 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 # Plot lines from stdin with a bunch of sane presets
 
 usage() {
-    echo "Usage: plot-liines [-t TITLE] [-c COLOR] [-e EXPR] [-k KIND]"
+    echo "Usage: plot-lines [-tcekslr]"
     exit 1
 }
 
 KIND="linespoints"
 COLOR="red"
-while getopts ":t:c:e:k:d:" o; do
+ROTATE=0
+STEP=1
+LABEL="2|%s"
+while getopts ":t:c:e:k:r:s:l:" o; do
     case "$o" in
     t) TITLE="$OPTARG" ;;
     c) COLOR="$OPTARG" ;;
     e) EXPR="$OPTARG" ;;
     k) KIND="$OPTARG" ;;
+    r) ROTATE="$OPTARG";;
+    s) STEP="$OPTARG";;
+    l) LABEL="$OPTARG";;
     *) usage ;;
     esac
 done
+
+IFS="|" read -r FIELDS REST <<< "$LABEL"
+for field in $FIELDS; do
+    FIELDLIST+=",strcol($field)"
+done
+TICKEXPR="sprintf('$REST'$FIELDLIST)"
 
 shift $((OPTIND - 1))
 
 EXP="
 $EXPR
-set xtic rotate by -90;
-plot '-' using 0:1:xticlabels(2) with $KIND
+set xtic rotate by $ROTATE;
+plot '-' using 0:1:xticlabels(int(\$0)%$STEP == 0 ? $TICKEXPR : '') with $KIND
 title '$TITLE'
 lc rgb '$COLOR'
 "
