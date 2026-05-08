@@ -48,7 +48,10 @@ end
 local opt = vim.opt
 local o = vim.o
 local g = vim.g
+g.mapleader = "\\"
+g.maplocalleader = "\\"
 
+-- Initialize Package Path {{{
 -- Do not bloat the runtimepath with too much Vim stuff
 opt.runtimepath = vim.tbl_filter(function(p)
     return not vim.startswith(p, "/usr/share/vim")
@@ -57,12 +60,11 @@ end, opt.runtimepath:get() --[=[@as string[]]=])
 local rock_path = vim.fn.stdpath("data") .. "/rocks"
 local rock_lua = rock_path .. "/share/lua/5.1"
 
--- Remove current directory, add luarocks
-package.path = package.path:gsub("%./%?%.lua;", "") .. (";%s/?/init.lua;%s/?.lua"):format(rock_lua, rock_lua)
-
-g.mapleader = "\\"
-g.maplocalleader = "\\"
-
+package.path =
+    package.path:gsub("%./%?%.lua;", "") -- No current directory
+    -- Luarocks packages
+    .. (";%s/?/init.lua;%s/?.lua"):format(rock_lua, rock_lua)
+-- }}}
 -- Basic options {{{
 o.cursorline = true
 o.cursorlineopt = "number"
@@ -75,12 +77,13 @@ o.ignorecase = true
 o.smartcase = true
 o.incsearch = true
 
+-- Allow the mouse for everything, no menu on right click
 o.mouse = "ar"
 o.mousemodel = "extend"
 
 o.number = true
-o.numberwidth = 2
 o.relativenumber = true
+o.numberwidth = 2
 
 o.scrolloff = 8
 o.showmode = false
@@ -93,12 +96,11 @@ o.splitright = true
 o.splitbelow = true
 
 local shm = opt.shortmess
-shm:append("S") -- hide search count
-shm:append("s") -- hide search hit x
-shm:append("q") -- hide macro
-shm:append("I") -- no :intro
+shm:append("Ss") -- hide search count, search hit x
+shm:append("q")  -- no macro-recording
+shm:append("I")  -- no :intro
 
--- What would I do without it
+-- I mainly use this for spelling, see the ./plugin/commands.lua for :Modeline
 o.modeline = true
 
 -- TODO: maybe? This allows me to have project specific settings
@@ -106,39 +108,28 @@ o.exrc = true
 
 -- For some reason this takes a while to get set
 o.termguicolors = true
--- }}}
--- Extra Filetypes {{{
-vim.filetype.add {
-    extension = {
-        psv = "psv",
-        ripe = "ripe",
-        qalc = "qalc"
-    },
-}
--- }}}
--- Wrapping {{{
--- wrap at whitespace, indent wrapped lines and show an indicator
+
+-- Wrap at whitespace, indent wrapped lines and show an indicator
 o.wrap = true
 o.linebreak = true
 o.breakindent = true
 o.breakindentopt = "sbr"
-o.showbreak = ""
+o.showbreak = "» "
 -- }}}
--- Display {{{
+-- Display Options {{{
 opt.fillchars = {
-    -- it's visible from the gaps anyways
-    diff = " ",
+    diff = " ", -- visible from the gaps & highlighting already
     lastline = "",
-    msgsep = "─",
+    msgsep = "─", -- match the window border
 }
 
 opt.listchars = {
-    eol = "",
+    eol = "$",
     multispace = " · ",
     nbsp = "󱁐",
     space = "·",
-    tab = "󰌒 ",
-    trail = "·",
+    tab = "» ",
+    trail = "_",
 }
 
 opt.guicursor = {
@@ -156,6 +147,15 @@ opt.diffopt = {
     "context:2",
     --  This is nice, it reduces the amount of changes shown for most things
     "inline:word",
+}
+-- }}}
+-- Extra Filetypes {{{
+vim.filetype.add {
+    extension = {
+        psv = "psv",
+        ripe = "ripe",
+        qalc = "qalc"
+    },
 }
 -- }}}
 -- File Search {{{
