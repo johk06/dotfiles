@@ -11,9 +11,9 @@ function set_walls() {
         awww-daemon &
         sleep 1
     fi
-    awww img -t grow \
+    awww img -t outer \
         --transition-pos bottom \
-        --transition-duration 1.2 \
+        --transition-duration 1 \
         --transition-fps 60 \
         "${WALL}"
 }

@@ -1,0 +1,10 @@
+#!/bin/sh
+
+# When did changes happen?
+# Show amount of commits per month, sorted by month, most recent first
+
+git log --format='%ad' --date=format:'%b %Y' "$@" |
+    sort |
+    uniq -c |
+    # 3:year 2:month, both reverse
+    sort -k 3nr -k 2Mr

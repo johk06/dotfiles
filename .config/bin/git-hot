@@ -1,0 +1,8 @@
+#!/bin/sh
+
+# List most-modified files
+
+git log --format="" --name-only --relative "$@" |
+    sort |
+    uniq -c |
+    sort -nr
