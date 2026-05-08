@@ -31,8 +31,8 @@ map(mov, "gL", "L")
 map(mov, "gH", "H")
 
 -- Find in the line from the back, remap=true for lua/plugins/blinkenfind.lua to kick in
-map(mov, "<M-f>", "$F", { remap = true})
-map(mov, "<M-t>", "$T", { remap = true})
+map(mov, "<M-f>", "$F", { remap = true })
+map(mov, "<M-t>", "$T", { remap = true })
 -- }}}
 
 -- Keep the jumplist intact for {}, it's a relatively small motion
@@ -44,12 +44,19 @@ map(mov, "}", function() return "<cmd>keepj normal!" .. vim.v.count1 .. "}<cr>" 
 ]]
 -- Allow the selection of * and # to be via a textobject, this obsoletes v<motion>* for me
 -- TODO: evaluate
+
+local after_star_op
 local star_operator = function(forward)
     return function(mode, region, _)
         local text = table.concat(operators.get_region(mode, region), "\n")
         fn.setreg("/", "\\V" .. text:gsub("\\", "\\\\"):gsub("/", "\\/"))
         vim.v.searchforward = forward
         vim.cmd.normal { "n", bang = true }
+
+        if after_star_op then
+            after_star_op()
+        end
+        after_star_op = nil
     end
 end
 operators.map_function("z*", star_operator(1))
@@ -64,6 +71,23 @@ operators.map_function("z#", star_operator(0))
  - gs* to replace each occurrence with register. ]]
 map("o", "*", function() return "\x1b*N" .. vim.v.operator .. "gn" end, { expr = true })
 map("o", "#", function() return "\x1b#N" .. vim.v.operator .. "gN" end, { expr = true })
+
+-- And the same thing with another textobject for range
+local star_parameter = function(forward, op)
+    return function()
+        local operator = vim.v.operator
+        local opfunc = vim.o.operatorfunc
+        after_star_op = function()
+            vim.o.operatorfunc = opfunc
+            vim.api.nvim_feedkeys(("N%sg%s"):format(operator, forward and "n" or "N"), "")
+        end
+        return ("<Esc>%s"):format(op)
+    end
+end
+
+map("o", "z*", star_parameter(true, "z*"), { expr = true, remap = true })
+map("o", "z#", star_parameter(false, "z#"), { expr = true, remap = true })
+
 -- }}}
 -- Delimiters {{{
 -- % is annoying to press
@@ -88,11 +112,11 @@ map(obj, "iDi", textobjs.diagnostic_info)
 map(obj, "iDh", textobjs.diagnostic_hint)
 -- }}}
 --[[ Indents {{{
- very useful for python or other indent based languages
+ Very useful for python or other indent based languages:
  `a` includes one line above and below, except for filetypes like python or
- lisps where only the above line is included by default.
+     lisps where only the above line is included by default.
  `aI` always includes the line below too, even for python et cetera, useful for
- object literals like dicts or lists or nested languages
+     object literals like dicts or lists or nested languages
 
  If present, v:count specifies the amount of indent levels instead of the current cursor position
  this is particularly useful for languages like python where
