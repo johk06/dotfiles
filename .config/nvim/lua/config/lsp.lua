@@ -151,17 +151,20 @@ M.lsp_map = function(mode, keys, action, opts)
 end
 -- }}}
 -- Commands {{{
----@param args vim.api.keyset.create_user_command.command_args
-local inlay_hint_command = function(args)
-    local cmd = args.fargs[1]
-    if cmd then
-        if cmd == "on" then
-            lsp.inlay_hint.enable(true)
-        elseif cmd == "off" then
-            lsp.inlay_hint.enable(false)
+---@param field "codelens"|"inlay_hint"
+local toggle_cmd = function(field)
+    ---@param args vim.api.keyset.create_user_command.command_args
+    return function(args)
+        local cmd = args.fargs[1]
+        if cmd then
+            if cmd == "on" then
+                lsp[field].enable(true)
+            elseif cmd == "off" then
+                lsp[field].enable(false)
+            end
+        else
+            lsp[field].enable(not lsp[field].is_enabled())
         end
-    else
-        lsp.inlay_hint.enable(not lsp.inlay_hint.is_enabled())
     end
 end
 
@@ -187,10 +190,20 @@ end
 ---@type table<string, [fun(args: vim.api.keyset.create_user_command.command_args), vim.api.keyset.user_command]>
 local lsp_commands = {
     InlayHint = {
-        inlay_hint_command,
+        toggle_cmd "inlay_hint",
         {
             nargs = "?",
             desc = "LSP: Set Inlay-Hints",
+            complete = function()
+                return { "on", "off" }
+            end
+        }
+    },
+    CodeLens = {
+        toggle_cmd "codelens",
+        {
+            nargs = "?",
+            desc = "LSP: Set Codelenses",
             complete = function()
                 return { "on", "off" }
             end

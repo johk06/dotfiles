@@ -7,7 +7,18 @@ return {
     root_markers = { ".luarc.json", ".luarc.jsonc", ".stylua.toml", ".git" },
     settings = {
         Lua = {
-            semantic = {}
+            hint = {
+                -- I disable that by default on the Neovim-side, but sometimes it could be useful
+                enable = true
+            },
+            codeLens = {
+                -- The same as the inlay hints applies here pretty much
+                enable = true
+            },
+            semantic = {
+                -- The treesitter grammar handles this much better
+                annotation = false
+            }
         }
     },
     on_init = function(client)
