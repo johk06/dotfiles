@@ -4,15 +4,15 @@ local M = {
 }
 
 --[[ Rationale {{{
-Why leap? Aren't motions enough?
+  Why leap? Aren't traditional motions enough?
 
-Yes, that's why i mostly use leap for it's remote functionality
-This allows me to use it to augment built in textobjects
+  Yes, that's why I mostly use leap for its remote functionality
+  This allows me to use it to augment built in textobjects
 
-The standalone leap in normal mode can still be useful,
-*if* I am just navigating inside a single screen of text
-Otherwise, search or various more powerful (and easier) motions
-are much much less taxing on both my eyes and my hands
+  The standalone leap in normal mode can still be useful,
+  *if* I am just navigating inside a single screen of text
+  Otherwise, search or various more powerful (and easier) motions
+  are much much less taxing on both my eyes and my hands
 }}} ]]
 
 M.config = function()
@@ -21,6 +21,9 @@ M.config = function()
 
     map("n", "S", "<Plug>(leap-from-window)")
     map("n", "s", "<Plug>(leap)")
+
+    -- o_s is taken by surround, this is a surprisingly amazing map
+    map("o", "<Space>", "<Plug>(leap-next-to)")
 
     --[[ Leap Remote
         Much more flexible than the classic remap for every textobject,
