@@ -5,6 +5,8 @@
 
 local api = vim.api
 local fn = vim.fn
+local utils = require("config.utils")
+local map = utils.map
 local operators = require("config.lib.operators")
 -- }}}
 
@@ -71,7 +73,7 @@ end
  - gmm followed by an edit to create a slightly different copy of the current line
 
  As many commentators correctly pointed out, yyp not leaving the cursor in
- place makes this more difficult with builtins 
+ place makes this more difficult with builtins
  This new operator has the added benefit of leaving all the registers alone ]]
 ---@type config.op.operator_func
 local multiply_operator = function(mode, region, extra)
@@ -158,3 +160,69 @@ end)
 operators.map_repeatable("><space>", function()
     insert_spaces(1)
 end)
+
+--[[ Transposing {{{
+ Swap two regions based on three motions
+]]
+local range = vim.treesitter._range
+local region_to_range = function(region)
+    return { region[1][1], region[1][2], region[2][1], region[2][2] }
+end
+
+local last_transpose
+local transpose_range_1
+local next_transpose_phase
+local transpose_phase_2 = operators.make_operator("jhk-transpose-2", function(mode)
+    local r1 = region_to_range(transpose_range_1)
+    local r2 = region_to_range(operators.get_op_region(mode))
+    if range.intercepts(r1, r2) then
+        utils.error("Transpose", "Ranges cannot intersect")
+        return
+    end
+
+    if range.cmp_pos.gt(r1[1], r1[2], r2[1], r2[2]) then
+        r1, r2 = r2, r1
+    end
+
+    local sl2, sc2, el2, ec2 = r2[1] - 1, r2[2], r2[3] - 1, r2[4] + 1
+    local sl1, sc1, el1, ec1 = r1[1] - 1, r1[2], r1[3] - 1, r1[4] + 1
+
+    local t2 = api.nvim_buf_get_text(0, sl2, sc2, el2, ec2, {})
+    local t1 = api.nvim_buf_get_text(0, sl1, sc1, el1, ec1, {})
+
+    api.nvim_buf_set_text(0, sl2, sc2, el2, ec2, t1)
+    api.nvim_buf_set_text(0, sl1, sc1, el1, ec1, t2)
+
+    operators.Ctx.last = last_transpose
+
+    last_transpose = nil
+    transpose_range_1 = nil
+    next_transpose_phase = nil
+end, {}, false)
+
+local transpose_phase_1 = operators.make_operator("jhk-transpose-1", function(mode)
+    transpose_range_1 = operators.get_op_region(mode)
+    api.nvim_feedkeys(next_transpose_phase[1], "")
+    api.nvim_feedkeys(transpose_phase_2() .. next_transpose_phase[2], "")
+end, {}, false)
+
+local transpose_by_motion = function(keys, left, tfer, right)
+    next_transpose_phase = { tfer, right }
+    last_transpose = keys
+    return transpose_phase_1() .. left
+end
+
+local map_transpose = function(keys, left, mid, right)
+    operators.map_repeatable(keys, function()
+        api.nvim_feedkeys(transpose_by_motion(keys, left, mid, right), "")
+    end)
+end
+
+map_transpose(">w", "iw", "W", "iw")
+map_transpose(">W", "iW", "W", "iW")
+map_transpose(">)", "a)", "f(", "a)")
+map_transpose("<(", "a)", "F)", "a)")
+map_transpose(">}", "a}", "f(", "a}")
+map_transpose("<{", "a}", "F}", "a}")
+map_transpose("cX", "", "", "")
+-- }}}

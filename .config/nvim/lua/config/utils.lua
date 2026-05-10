@@ -626,7 +626,7 @@ M.lsp_highlights = {
 -- }}}
 -- Autocommands {{{
 ---@param name string
----@param commands table<string|string[], function|vim.api.keyset.create_autocmd>
+---@param commands table<vim.api.keyset.events|vim.api.keyset.events[], fun(ev: vim.api.keyset.create_autocmd.callback_args)|vim.api.keyset.create_autocmd>
 ---@param opts {buf: integer}?
 M.autogroup = function(name, commands, opts)
     opts = opts or {}
