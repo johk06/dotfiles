@@ -16,6 +16,8 @@ local M = {
 }}} ]]
 
 M.config = function()
+    local leap = require("leap")
+    local leap_user = require("leap.user")
     local utils = require("config.utils")
     local map = utils.map
 
@@ -59,6 +61,32 @@ M.config = function()
             })
         end
     })
+
+    -- Show search matches and leap
+    local leap_next = function()
+        local is_cmd = vim.fn.mode(true):match("^c")
+        if vim.v.hlsearch then
+            vim.cmd.nohlsearch()
+        end
+        if is_cmd then
+            vim.api.nvim_feedkeys(vim.keycode "<cr>", "t", false)
+        end
+
+        if vim.fn.searchcount().total < 1 then
+            return
+        end
+        vim.schedule(function()
+            leap.leap {
+                pattern = vim.fn.getreg("/"),
+                windows = vim.api.nvim_list_wins(),
+                opts = leap_user.with_traversal_keys("<M-n>", "", {
+                    safe_labels = ""
+                })
+            }
+        end)
+    end
+
+    map({ "n", "c", "x", "o" }, "<M-n>", leap_next)
 end
 
 return M
