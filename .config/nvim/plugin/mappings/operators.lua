@@ -202,8 +202,13 @@ end, {}, false)
 
 local transpose_phase_1 = operators.make_operator("jhk-transpose-1", function(mode)
     transpose_range_1 = operators.get_op_region(mode)
-    api.nvim_feedkeys(next_transpose_phase[1], "")
-    api.nvim_feedkeys(transpose_phase_2() .. next_transpose_phase[2], "")
+    local next_step = next_transpose_phase[1]
+    if type(next_step) == "function" then
+        next_step()
+    else
+        api.nvim_feedkeys(next_step, "")
+        api.nvim_feedkeys(transpose_phase_2() .. next_transpose_phase[2], "")
+    end
 end, {}, false)
 
 local transpose_by_motion = function(keys, left, tfer, right)
@@ -218,11 +223,18 @@ local map_transpose = function(keys, left, mid, right)
     end)
 end
 
-map_transpose(">w", "iw", "W", "iw")
-map_transpose(">W", "iW", "W", "iW")
-map_transpose(">)", "a)", "f(", "a)")
-map_transpose("<(", "a)", "F)", "a)")
-map_transpose(">}", "a}", "f(", "a}")
-map_transpose("<{", "a}", "F}", "a}")
-map_transpose("cX", "", "", "")
+map_transpose("yxw", "iw", "W", "iw")
+map_transpose("yxW", "iW", "W", "iW")
+map_transpose("yx)", "a)", "f(", "a)")
+map_transpose("yx(", "a)", "F)", "a)")
+map_transpose("yx}", "a}", "f(", "a}")
+map_transpose("yx{", "a}", "F}", "a}")
+map_transpose(">x", "", function()
+    api.nvim_create_autocmd("CursorMoved", {
+        once = true,
+        callback = function()
+            api.nvim_feedkeys(transpose_phase_2(), "")
+        end
+    })
+end)
 -- }}}
