@@ -90,9 +90,11 @@ map D delete
 map <c-p> paste-async
 
 # Clipboard {{{
-map Yy cp-content
+map Yc cp-content
+map Yp cp-path
 map Yn cp-name
-map Pm push :clip-paste<space>
+map Yu cp-url
+map Pp push :clip-paste<space>
 map Pl paste-link
 map Pi clip-info
 # }}}
@@ -205,6 +207,13 @@ map <c-f> :{{
     setfilter 
     filter
 }}
+map <c-l> :{{
+    setfilter 
+    redraw
+}}
+# Filter by file extension
+map . push :filter<enter>.*\.
+
 # File systems ([b]lock devices) {{{
 map bm push :block-mount<space>
 map bu push :block-unmount<space>
