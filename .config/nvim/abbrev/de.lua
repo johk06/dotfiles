@@ -24,20 +24,21 @@ local noun_suffixes = {
 local M = {
     { "zw",   "zwischen" },
     { "zb",   "zum Beispiel" },
-    { "bsp",  "Beispiel",       noun_suffixes },
+    { "bsp",  "beispiel",       noun_suffixes },
     { "bspw", "beispielsweise" },
     { "bzw",  "beziehungsweise" },
     { "fA",   "für alle" },
     { "vA",   "vor allem" },
-    { "unsh", "Unsicherheit",   noun_suffixes },
+    { "unsh", "unsicherheit",   noun_suffixes },
     { "fnk",  "funktionier",    verb_suffixes },
-    { "fnk",  "Funktion",       noun_suffixes },
+    { "fnk",  "funktion",       noun_suffixes },
+    { "frq",  "frequenz",       noun_suffixes },
     { "dfz",  "differenz",      verb_suffixes },
     { "dfz",  "differenzier",   verb_suffixes },
     { "dfn",  "definier",       verb_suffixes },
-    { "dfn",  "Definition",     noun_suffixes },
+    { "dfn",  "definition",     noun_suffixes },
     { "itg",  "integrier",      verb_suffixes },
-    { "itg",  "Integral",       { _ = "", e = "e", n = "en" }, nocase = true },
+    { "itg",  "integral",       { _ = "", e = "e", n = "en" }, nocase = true },
 }
 
 -- Ordinals {{{

@@ -272,4 +272,3 @@ if should_open_start_screen then
         end
     end)
 end
-
