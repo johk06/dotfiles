@@ -106,6 +106,7 @@ map cn :rename; cmd-delete-home               # change name
 map ce :rename; cmd-end; cmd-delete-word-back # change extension
 map cc :rename; cmd-end; cmd-delete-home      # change complete
 map cf push :filter-name<space>
+map | push :filter-name<space>
 map cb backup
 map ~ backup
 
