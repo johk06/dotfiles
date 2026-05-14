@@ -63,15 +63,11 @@
     ),
     browser_song_format: [
         (
-            kind: Group([
-                (kind: Property(Track), style: (fg: "cyan", modifiers: "Bold")),
-                (kind: Text(" ")),
-            ])
+            kind: Property(Track)
         ),
         (
             kind: Group([
-                (kind: Property(Artist)),
-                (kind: Text(" :: ")),
+                (kind: Text(" ")),
                 (kind: Property(Title)),
             ]),
             default: (kind: Property(Filename))
@@ -152,7 +148,7 @@
                     panes: [
                         (size: "8", pane: Component("state")),
                         (size: "100%", pane: Component("current")),
-                        (size: "8", pane: Component("bitrate"))
+                        (size: "9", pane: Component("bitrate"))
                     ]
                 )
             )
@@ -169,10 +165,10 @@
             direction: Horizontal,
             panes: [
             (size: "3", pane: Pane(Property(content: [
-                (kind: Property(Status(Volume)), style: (bg: "dark_gray"))
+                (kind: Property(Status(Volume)), style: (fg: "magenta"))
                 ],
                     align: Right))),
-            (size: "1", pane: Pane(Property(content: [(kind: Text("%"), style: (bg: "dark_gray"))]))),
+            (size: "1", pane: Pane(Property(content: [(kind: Text("%"), style: (fg: "magenta"))]))),
             ]
         ),
         "bitrate": Pane(Property(
@@ -196,7 +192,7 @@
         )),
         "states": Pane(Property(
             content: [
-            (kind: Text("["), style: (fg: "white")),
+            (kind: Text("+"), style: (fg: "gray")),
             (kind: Property(Status(RepeatV2(
                     on_label: "r",
                     off_label: "r",
@@ -219,13 +215,12 @@
                 )))),
             (kind: Property(Status(SingleV2(
                     on_label: "y",
-                    off_label: "u",
+                    off_label: "y",
                     oneshot_label: "Y",
                     off_style: (fg: "white"),
-                    on_style: (fg: "yellow", modifiers: "Underlined"),
-                    oneshot_style: (fg: "light_red", modifiers: "Underlined"),
+                    on_style: (fg: "green", modifiers: "Underlined"),
+                    oneshot_style: (fg: "yellow", modifiers: "Underlined"),
                 )))),
-            (kind: Text("]"), style: (fg: "white")),
             ]
         )),
         "input": Pane(Property(
@@ -240,14 +235,13 @@
         )),
         "progress": Pane(Property(
             content: [
-                (kind: Text("C: ")),
                 (kind: Property(Status(Elapsed)), style: (fg: "cyan")),
                 (kind: Text("/"), style: (fg: "white")),
                 (kind: Property(Status(Duration)), style: (fg: "yellow")),
-                (kind: Text(", Q: ")),
+                (kind: Text(" :")),
                 (kind: Property(Status(QueueLength()))),
-                (kind: Text(", ")),
-                (kind: Property(Status(QueueTimeRemaining())), style: (fg: "blue")),
+                (kind: Text(" ")),
+                (kind: Property(Status(QueueTimeRemaining())), style: (fg: "white")),
                 (kind: Text(" "))
             ],
             align: Right

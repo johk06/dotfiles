@@ -67,7 +67,7 @@
             "b": SeekBack,
             ">": NextTrack,
             "<": PreviousTrack,
-            "i": ShowCurrentSongInfo,
+            "o": ShowCurrentSongInfo,
             "+": VolumeUp,
             "-": VolumeDown,
 
