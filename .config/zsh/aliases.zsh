@@ -24,7 +24,8 @@ alias '#'="noglob qalc" # do math directly on the cmdline
 # nice to have redirections
 alias \
     -g "@quiet"=">/dev/null 2>&1" \
-    -g "@help"='--help 2>&1 | bat -l help -p'
+    -g "@help"='--help 2>&1 | bat -l help -p' \
+    -g "@."="| _jhk-less"
 
 TAB=$'\t'
 GH="https://github.com"

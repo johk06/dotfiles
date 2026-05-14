@@ -110,7 +110,7 @@ function zle-jhk-lschg {
 autoload -U read-from-minibuffer
 function zle-jhk-run-below {
     local oldbuf="$BUFFER"
-    read-from-minibuffer "↓ "
+    read-from-minibuffer "_ "
     jhk-zle-below-prompt "$REPLY"
     BUFFER="$oldbuf"
 }; zle -N zle-jhk-run-below
@@ -245,6 +245,14 @@ bindkey -M viins \
     '^N' down-line-or-beginning-search
 
 # }}}
+
+# Quite useful to insert an additional argument
+function zle-jhk-almost-beginning-of-line {
+    zle beginning-of-line
+    zle forward-word
+}
+zle -N zle-jhk-almost-beginning-of-line
+bindall '\ea' zle-jhk-almost-beginning-of-line
 
 # Get the arguments of the previous command
 function zle-jhk-insert-last-cmdline {

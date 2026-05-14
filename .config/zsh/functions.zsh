@@ -20,7 +20,6 @@ function keys {
     print -l -- ${(@k)${(P)arrayname}}
 }
 # }}}
-
 # Display {{{
 # faster, way faster than proper `clear`
 # commonly used for c;command
@@ -32,7 +31,6 @@ function hex2chars {
     printf '0: %s' "$@" | xxd -r
 }
 # }}}
-
 # Process Utils {{{
 # very, very verbose wrapper around `time`
 alias jobinfo='TIMEFMT="User:     %U
@@ -70,7 +68,16 @@ function manopt {
     LESS="+/$pattern" man "$page"
 }
 
-source $ZDOTDIR/handlers.zsh
+# Intelligently slice input, aliased by @.
+function _jhk-less {
+    if (($# < 2)); then
+        sed "${1:-10}q"
+    else
+        sed -n "${1},${2}p"
+    fi
+}
+
+source "$ZDOTDIR/handlers.zsh"
 
 source "$ZDOTDIR/mods/fs.zsh"
 source "$ZDOTDIR/mods/fzf.zsh"
