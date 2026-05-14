@@ -40,6 +40,7 @@ for_window [app_id="kitty" title="^aerc"]     mark email~
 for_window [app_id="kitty" title="^newsboat"] mark news~
 for_window [app_id="kitty" title="^iamb"]     mark social~
 for_window [app_id="kitty" title="^ncmpcpp"]  mark music~
+for_window [app_id="kitty" title="^rmpc"]  mark music~
 
 # "Pinned" windows, they should automatically be registered for the scratchpad
 for_window [con_mark="~$"] move window to scratchpad, scratchpad show

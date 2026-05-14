@@ -29,6 +29,7 @@ TERM_OVERRIDES = [
     ("^btm$", "preferences-system-performance"),
     ("^pms$", "multimedia-audio-player"),
     ("^ncmpcpp", "multimedia-audio-player"),
+    ("^rmpc", "multimedia-audio-player"),
     ("^aerc$", "email"),
     ("^newsboat$", "newsboat"),
     ("^iamb", "internet-chat"),

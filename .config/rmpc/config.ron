@@ -1,0 +1,187 @@
+#![enable(implicit_some)]
+#![enable(unwrap_newtypes)]
+#![enable(unwrap_variant_newtypes)]
+(
+    password: None,
+    theme: "jhk",
+    cache_dir: "$XDG_CACHE_HOME/rmpc/cache",
+    cava: (
+        framerate: 45,
+        input: (
+            method: Fifo,
+            source: "/home/jhk/.cache/.mpd.fifo",
+            sample_rate: 44100,
+            channels: 2,
+            sample_bits: 16,
+        ),
+        smoothing: (
+            waves: true,
+        )
+    ),
+    on_song_change: None,
+    volume_step: 5,
+    max_fps: 30,
+    scrolloff: 0,
+    wrap_navigation: false,
+    enable_mouse: true,
+    scroll_amount: 1,
+    enable_config_hot_reload: true,
+    enable_lyrics_hot_reload: false,
+    status_update_interval_ms: 1000,
+    rewind_to_start_sec: None,
+    keep_state_on_song_change: true,
+    reflect_changes_to_playlist: false,
+    select_current_song_on_change: false,
+    ignore_leading_the: false,
+    browser_song_sort: [Disc, Track, Artist, Title],
+    directories_sort: SortFormat(group_by_type: true, reverse: false),
+    auto_open_downloads: true,
+    album_art: (
+        method: Auto,
+        max_size_px: (width: 1200, height: 1200),
+        disabled_protocols: ["http://", "https://"],
+        vertical_align: Center,
+        horizontal_align: Center,
+    ),
+    keybinds: (
+        clear: true,
+        global: {
+            "~": SwitchToTab("Queue"),
+            "?": SwitchToTab("Search"),
+            "gq": SwitchToTab("Queue"),
+            "gs": SwitchToTab("Search"),
+            "gl": SwitchToTab("Lists"),
+            "ga": SwitchToTab("Artist"),
+            "gb": SwitchToTab("Album"),
+            "gf": SwitchToTab("Fs"),
+            "Q": Quit,
+            "L": NextTab,
+            "H": PreviousTab,
+            "z": ToggleRandom,
+            "c": ToggleConsume,
+            "y": ToggleSingle,
+            "r": ToggleRepeat,
+            "<Space>": TogglePause,
+            "s": Stop,
+            "f": SeekForward,
+            "b": SeekBack,
+            ">": NextTrack,
+            "<": PreviousTrack,
+            "i": ShowCurrentSongInfo,
+            "+": VolumeUp,
+            "-": VolumeDown,
+
+        },
+        navigation: {
+            "q": Close,
+            "gg": Top,
+            "G": Bottom,
+            "n": NextResult,
+            "N": PreviousResult,
+            "<CR>": Confirm,
+            "j": Down,
+            "k": Up,
+            "h": Left,
+            "l": Right,
+            "<Down>": Down,
+            "<Up>": Up,
+            "<Left>": Left,
+            "<Right>": Right,
+            "<C-w>j": PaneDown,
+            "<C-w>k": PaneUp,
+            "<C-w>h": PaneLeft,
+            "<C-w>l": PaneRight,
+            "<C-w><Down>": PaneDown,
+            "<C-w><Up>": PaneUp,
+            "<C-w><Left>": PaneLeft,
+            "<C-w><Right>": PaneRight,
+            "/": EnterSearch,
+            "J": MoveDown,
+            "K": MoveUp,
+
+            // Append
+            "A": AddAll,
+            "a": AddOptions(kind: Action(all: false, position: EndOfQueue)),
+            "<C-a>": AddOptions(kind: Action(all: false, autoplay: First, position: EndOfQueue)),
+            
+            // Insert
+            "I": AddOptions(kind: Action(all: true, position: StartOfQueue)),
+            "i": AddOptions(kind: Action(all: false, position: StartOfQueue)),
+            "<C-i>": AddOptions(kind: Action(all: false, autoplay: First, position: StartOfQueue)),
+
+            // Enqueue
+            "E": AddOptions(kind: Action(all: true, position: AfterCurrentSong)),
+            "e": AddOptions(kind: Action(all: false, position: AfterCurrentSong)),
+            "<C-e>": AddOptions(kind: Action(all: false, autoplay: First, position: AfterCurrentSong)),
+
+            "R": Rename,
+            "pr": Rate(),
+            "v": InvertSelection,
+            ".": Select,
+            "w": Save(kind: Modal(all: false, duplicates_strategy: Ask)),
+            "W": Save(kind: Modal(all: true, duplicates_strategy: Ask)),
+        },
+        queue: {
+            "<CR>": Play,
+            "d": Delete,
+            "=l": SortByColumn(1),
+            "=b": SortByColumn(3),
+            "=a": SortByColumn(3),
+            "=t": SortByColumn(2),
+            "D": DeleteAll,
+            "Z": Shuffle
+        },
+    ),
+    search: (
+        case_sensitive: false,
+        ignore_diacritics: false,
+        search_button: false,
+        mode: Contains,
+        tags: [
+            (value: "any",         label: "Any Tag"),
+            (value: "artist",      label: "Artist"),
+            (value: "album",       label: "Album"),
+            (value: "albumartist", label: "Album Artist"),
+            (value: "title",       label: "Title"),
+            (value: "filename",    label: "Filename"),
+            (value: "genre",       label: "Genre"),
+        ],
+    ),
+    artists: (
+        album_display_mode: SplitByDate,
+        album_sort_by: Date,
+        album_date_tags: [Date],
+    ),
+    tabs: [
+        (
+            name: "Queue",
+            pane: Split(
+                direction: Horizontal,
+                panes: [
+                    (size: "30%", pane: Component("art")),
+                    (size: "70%", pane: Pane(Queue)),
+                ]
+            )
+        ),
+        (
+            name: "Fs",
+            pane: Pane(Directories)
+        ),
+        (
+            name: "Artist",
+            pane: Pane(Artists)
+        ),
+        (
+            name: "Album",
+            pane: Pane(Albums)
+        ),
+        (
+            name: "Search",
+            pane: Pane(Search)
+        ),
+        (
+            name: "Lists",
+            pane: Pane(Playlists)
+        ),
+    ],
+)

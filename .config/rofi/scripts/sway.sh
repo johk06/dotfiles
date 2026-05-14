@@ -22,7 +22,7 @@ if ((ROFI_RETV == 0)); then
             case "$name" in
             nv:*) icon="nvim" ;;
             lf:*) icon="file-manager" ;;
-            ncmpcpp:*) icon="multimedia-audio-player" ;;
+            ncmpcpp:*|rmpc) icon="multimedia-audio-player" ;;
             qalc) icon="qalculator" ;;
             aerc) icon=email ;;
             newsboat) icon=$name ;;
