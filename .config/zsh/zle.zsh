@@ -251,7 +251,6 @@ function zle-jhk-almost-beginning-of-line {
     zle beginning-of-line
     zle vi-forward-blank-word-end
     zle vi-forward-char
-    LBUFFER="$LBUFFER "
 }
 zle -N zle-jhk-almost-beginning-of-line
 bindall '\ea' zle-jhk-almost-beginning-of-line
@@ -260,6 +259,7 @@ bindall '\ea' zle-jhk-almost-beginning-of-line
 function zle-jhk-insert-last-cmdline {
     zle insert-last-word -- -1 ${NUMERIC:-2} 1
     zle zle-jhk-almost-beginning-of-line
+    LBUFFER="$LBUFFER "
 }
 zle -N zle-jhk-insert-last-cmdline
 bindall '^T' zle-jhk-insert-last-cmdline
