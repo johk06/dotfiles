@@ -249,7 +249,9 @@ bindkey -M viins \
 # Quite useful to insert an additional argument
 function zle-jhk-almost-beginning-of-line {
     zle beginning-of-line
-    zle forward-word
+    zle vi-forward-blank-word-end
+    zle vi-forward-char
+    LBUFFER="$LBUFFER "
 }
 zle -N zle-jhk-almost-beginning-of-line
 bindall '\ea' zle-jhk-almost-beginning-of-line
@@ -257,8 +259,7 @@ bindall '\ea' zle-jhk-almost-beginning-of-line
 # Get the arguments of the previous command
 function zle-jhk-insert-last-cmdline {
     zle insert-last-word -- -1 ${NUMERIC:-2} 1
-    zle beginning-of-line
-    RBUFFER=" $RBUFFER"
+    zle zle-jhk-almost-beginning-of-line
 }
 zle -N zle-jhk-insert-last-cmdline
 bindall '^T' zle-jhk-insert-last-cmdline
