@@ -1,0 +1,39 @@
+#!/bin/sh
+
+# Synopsis:
+#   Get releases (git tags like ^v.*)
+
+# Arguments:
+#   $1: Level (1:major, 2:minor, 3:patch, etc)
+#       If $1 starts with "o", the oldest instead of the newest release in the family is used,
+#       a "n" is ignored.
+#   @:2 extra arguments to `git tag`
+
+REV=0
+LEVEL="${1:-1}"
+case "$LEVEL" in
+o*)
+    LEVEL="${LEVEL#*?}"
+    REV=1
+    ;;
+n*)
+    LEVEL="${LEVEL#*?}"
+    ;;
+esac
+[ $# -gt 0 ] && shift
+
+git tag --list "$@" |
+    grep '^v' |
+    awk -v n="$LEVEL" -v rev="$REV" -F. '{
+        prefix = ""
+        for (i=1; i <= n; i++) {
+            prefix = (prefix == "" ? $i : prefix "." $i)
+        }
+        if (!rev || !vers[prefix]) {
+            vers[prefix] = $0 
+        }
+    } END {
+        for (sh in vers) {
+            print vers[sh]
+        }
+    }' | sort -V
