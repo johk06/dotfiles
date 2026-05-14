@@ -35,11 +35,11 @@
         marker_style: (bg: "yellow", modifiers: "Bold"),
     ),
     level_styles: (
-        info: (fg: "blue", bg: "black"),
-        warn: (fg: "yellow", bg: "black"),
-        error: (fg: "red", bg: "black"),
-        debug: (fg: "light_green", bg: "black"),
-        trace: (fg: "magenta", bg: "black"),
+        info: (modifiers: "Italic"),
+        warn: (fg: "yellow", modifiers: "Italic"),
+        error: (fg: "red", modifiers: "Italic"),
+        debug: (fg: "light_green", modifiers: "Italic"),
+        trace: (fg: "magenta", modifiers: "Italic"),
     ),
     progress_bar: (
         symbols: ["─", "─", "|", "─", "─"],
@@ -85,7 +85,7 @@
         ),
         (
             prop: (kind: Property(Title),
-                default: (kind: Text("Unknown"))
+                default: (kind: Property(Filename))
             ),
             label_prop: (kind: Text("Track")),
             width: "50%",

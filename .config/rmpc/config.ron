@@ -125,9 +125,10 @@
             "<CR>": Play,
             "d": Delete,
             "=l": SortByColumn(1),
-            "=b": SortByColumn(3),
+            "=n": SortByColumn(2),
             "=a": SortByColumn(3),
-            "=t": SortByColumn(2),
+            "=b": SortByColumn(4),
+            "=t": SortByColumn(5),
             "D": DeleteAll,
             "Z": Shuffle
         },
