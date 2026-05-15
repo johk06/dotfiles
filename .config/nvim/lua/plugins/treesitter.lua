@@ -172,7 +172,7 @@ local ts_context = {
     "nvim-treesitter/nvim-treesitter-context",
     opts = {
         enable = true,
-        max_lines = 0,
+        max_lines = 5,
     }
 }
 --- }}}
