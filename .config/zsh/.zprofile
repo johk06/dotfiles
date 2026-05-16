@@ -3,6 +3,7 @@ export EDITOR="nvim"
 export npm_config_prefix="$HOME/.local"
 export SSH_ASKPASS=/usr/lib/seahorse/ssh-askpass
 export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
+export MPD_HOST="$XDG_RUNTIME_DIR/mpd/socket"
 
 path+=("$HOME/.local/bin" "$HOME/.config/bin")
 
