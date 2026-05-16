@@ -92,6 +92,28 @@ bindsym $mod+Ctrl+T exec $sc/mark-by-title "" '([^\s/]*)$'
 bindsym $mod+Shift+T exec $sc/mark-by-title "" '^([^\s/]*)'
 # }}}
 
+# Move to a specific position {{{
+bindsym $mod+Mod1+KP_7 exec $sc/move-quadrant start start
+bindsym $mod+Mod1+KP_8 exec $sc/move-quadrant center start
+bindsym $mod+Mod1+KP_9 exec $sc/move-quadrant end start
+bindsym $mod+Mod1+KP_4 exec $sc/move-quadrant start center
+bindsym $mod+Mod1+KP_5 exec $sc/move-quadrant center center
+bindsym $mod+Mod1+KP_6 exec $sc/move-quadrant end center
+bindsym $mod+Mod1+KP_1 exec $sc/move-quadrant start end
+bindsym $mod+Mod1+KP_2 exec $sc/move-quadrant center end
+bindsym $mod+Mod1+KP_3 exec $sc/move-quadrant end end
+
+bindsym $mod+Mod1+7 exec $sc/move-quadrant start start
+bindsym $mod+Mod1+8 exec $sc/move-quadrant center start
+bindsym $mod+Mod1+9 exec $sc/move-quadrant end start
+bindsym $mod+Mod1+4 exec $sc/move-quadrant start center
+bindsym $mod+Mod1+5 exec $sc/move-quadrant center center
+bindsym $mod+Mod1+6 exec $sc/move-quadrant end center
+bindsym $mod+Mod1+1 exec $sc/move-quadrant start end
+bindsym $mod+Mod1+2 exec $sc/move-quadrant center end
+bindsym $mod+Mod1+3 exec $sc/move-quadrant end end
+# }}}
+
 # Select-Based resize, not sure whether I want this
 bindsym --whole-window $mod+Shift+BTN_RIGHT exec $sc/select-float-region
 
