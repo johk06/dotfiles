@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+
+# $1: left, right, center
+# $2: left, right, center
+
+win_get_size() {
+    swaymsg -t get_tree |
+        jq -r '.. | ((.nodes? // empty), (.floating_nodes? // empty))[] |
+        select(.focused).rect|"\(.width) \(.height)"'
+}
+
+ws_get_size() {
+    swaymsg -t get_workspaces |
+        jq -r '.[]|select(.focused).rect|"\(.width) \(.height)"'
+}
+
+calc_geometry() {
+    case "$1" in
+    start) REPLY=0 ;;
+    center) REPLY=$((($2 - $3) / 2)) ;;
+    end) REPLY=$(($2 - $3)) ;;
+    esac
+}
+
+read -r width height < <(ws_get_size)
+read -r wwidth wheight < <(win_get_size)
+
+calc_geometry "$1" $width $wwidth; hpos=$REPLY
+calc_geometry "$2" $height $wheight; vpos=$REPLY
+
+swaymsg move position "$hpos" "$vpos"

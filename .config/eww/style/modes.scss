@@ -11,6 +11,7 @@
 }
 
 @include mode(default,    $bg1);
+@include mode(layout,     $teal);
 @include mode(media,      $purple);
 @include mode(screenshot, $lblue);
 @include mode(config,     $yellow);

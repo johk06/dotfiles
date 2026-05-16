@@ -5,6 +5,7 @@
 "clipboard":"Yank",
 "config":"Config",
 "exec":"Exec",
+"layout": "Layout",
 "insert": "Insert"
 }')
 
@@ -69,6 +70,11 @@
     {"keys": "p", "action": "Password"},
     {"keys": "m", "action": "Math"},
     {"keys": "sS", "action": "Speech"}
+],
+"layout": [
+    {"keys": "hjkl", "action": "Move"},
+    {"keys": "0-9", "action": "Pos"},
+    {"keys": "z", "action": "Center"}
 ]}')
 
 (deflisten mode

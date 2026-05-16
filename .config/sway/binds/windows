@@ -93,4 +93,69 @@ bindsym $mod+Shift+T exec $sc/mark-by-title "" '^([^\s/]*)'
 # }}}
 
 # Select-Based resize, not sure whether I want this
-# bindsym --whole-window $mod+Shift+BTN_RIGHT exec $sc/select-float-region
+bindsym --whole-window $mod+Shift+BTN_RIGHT exec $sc/select-float-region
+
+# A dedicated mode for better adjustements
+mode "layout" {
+    bindsym Escape mode "default"
+    bindsym H focus left
+    bindsym J focus down
+    bindsym K focus up
+    bindsym L focus right
+
+    bindsym Shift+H move left
+    bindsym Shift+J move down
+    bindsym Shift+K move up
+    bindsym Shift+L move right
+
+    # Much smarter resize
+    bindsym Ctrl+H nop resize left 32
+    bindsym Ctrl+J nop resize down 32
+    bindsym Ctrl+K nop resize up 32
+    bindsym Ctrl+L nop resize right 32
+
+    # Exchange windows
+    bindsym Mod1+H exec $sc/swap left
+    bindsym Mod1+J exec $sc/swap down
+    bindsym Mod1+K exec $sc/swap up
+    bindsym Mod1+L exec $sc/swap right
+
+    bindsym Z move position center
+
+    bindsym KP_7 exec $sc/move-quadrant start start
+    bindsym KP_8 exec $sc/move-quadrant center start
+    bindsym KP_9 exec $sc/move-quadrant end start
+    bindsym KP_4 exec $sc/move-quadrant start center
+    bindsym KP_5 exec $sc/move-quadrant center center
+    bindsym KP_6 exec $sc/move-quadrant end center
+    bindsym KP_1 exec $sc/move-quadrant start end
+    bindsym KP_2 exec $sc/move-quadrant center end
+    bindsym KP_3 exec $sc/move-quadrant end end
+
+    bindsym 7 exec $sc/move-quadrant start start
+    bindsym 8 exec $sc/move-quadrant center start
+    bindsym 9 exec $sc/move-quadrant end start
+    bindsym 4 exec $sc/move-quadrant start center
+    bindsym 5 exec $sc/move-quadrant center center
+    bindsym 6 exec $sc/move-quadrant end center
+    bindsym 1 exec $sc/move-quadrant start end
+    bindsym 2 exec $sc/move-quadrant center end
+    bindsym 3 exec $sc/move-quadrant end end
+
+    bindsym D floating toggle
+    bindsym A resize grow width 64px; resize grow height 64px
+    bindsym X resize shrink width 64px; resize shrink height 64px 
+
+    bindsym S splitv
+    bindsym V splith
+    bindsym B layout toggle split tabbed
+    bindsym Shift+B layout toggle stacking split
+
+    bindsym F fullscreen
+    bindsym Shift+F exec $sc/set-gaps 0
+
+    bindsym O focus parent
+    bindsym I focus child
+}
+
+bindsym $mod+Escape mode "layout"
