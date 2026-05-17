@@ -434,19 +434,19 @@ function M.abbrev(mode, keys, string, opts)
     end
 end
 
--- Abbreviate Snippet, directly meant as the third (and fourth) argument to vim.keymap.set
-M.A = function(snippet, opts)
+-- Abbreviate Snippet, directly meant as the third argument to vim.keymap.set
+M.A = function(snippet)
     if type(snippet) == "table" then
         snippet = table.concat(snippet, "\n")
     end
     local is_snippet = snippet:match("%$") ~= nil
     return
         is_snippet and function()
-            vim.cmd.stopinsert()
-            api.nvim_feedkeys("h", "n")
-            vim.snippet.expand(snippet)
-        end or snippet,
-        opts
+            api.nvim_feedkeys(vim.keycode "<Left>", "n")
+            vim.schedule(function()
+                vim.snippet.expand(snippet)
+            end)
+        end or snippet
 end
 
 -- Mappings that perform an action on a region
