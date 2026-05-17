@@ -225,6 +225,8 @@ end
 
 map_transpose("yxw", "iw", "W", "iw")
 map_transpose("yxW", "iW", "W", "iW")
+map_transpose("yxb", "iw", "B", "iw")
+map_transpose("yxB", "iW", "B", "iW")
 map_transpose("yx)", "a)", "f(", "a)")
 map_transpose("yx(", "a)", "F)", "a)")
 map_transpose("yx}", "a}", "f(", "a}")

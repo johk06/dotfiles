@@ -309,7 +309,7 @@ end
 
 -- }}}
 -- Easier Mapping {{{
----@alias nvim_mode_char "n"|"i"|"c"|"v"|"x"|"s"|"o"|"t"
+---@alias nvim_mode_char "n"|"i"|"c"|"v"|"x"|"s"|"o"|"t"|"ia"|"ca"
 ---@alias nvim_mode nvim_mode_char | nvim_mode_char[]
 
 -- run ex command with count
@@ -423,14 +423,31 @@ end
 ---@param mode nvim_mode
 ---@param keys string
 ---@param string string
-function M.abbrev(mode, keys, string)
+---@param opts vim.keymap.set.Opts
+function M.abbrev(mode, keys, string, opts)
     if type(mode) == "table" then
         vim.keymap.set(vim.tbl_map(function(s)
             return s .. "a"
-        end, mode --[[@as table]]), keys, string)
+        end, mode --[[@as table]]), keys, string, opts)
     else
-        vim.keymap.set(mode .. "a", keys, string)
+        vim.keymap.set(mode .. "a", keys, string, opts)
     end
+end
+
+-- Abbreviate Snippet, directly meant as the third (and fourth) argument to vim.keymap.set
+M.A = function(snippet, opts)
+    if type(snippet) == "table" then
+        snippet = table.concat(snippet, "\n")
+    end
+    local is_snippet = snippet:match("%$") ~= nil
+    return
+        is_snippet and function()
+            vim.schedule(function()
+                vim.snippet.expand(snippet)
+            end)
+            return "<Esc>"
+        end or snippet,
+        vim.tbl_extend("keep", { expr = is_snippet }, opts or {})
 end
 
 -- Mappings that perform an action on a region

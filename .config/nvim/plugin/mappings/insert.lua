@@ -67,11 +67,21 @@ map("n", "<M-i>", "bi")
 -- Command Mode {{{
 -- I probably never will actually use :file
 -- If I need it, i can survive typing the full name
-abbrev("c", "f", "find")
-abbrev("c", "vf", "vertical sf") -- much shorter, much more useful
+local abbr_not_search = function(from, to)
+    return from, function()
+        local md = vim.fn.getcmdtype() == ":"
+        if md then
+            return to
+        else
+            return from
+        end
+    end, { expr = true }
+end
+map("ca", abbr_not_search("f", "find"))
+map("ca", abbr_not_search("vf", "vertical sf")) -- much shorter, much more useful
 -- Likewise, often useful for one-off commands
-abbrev("c", "vt", "vertical terminal")
-abbrev("c", "st", "horizontal terminal")
+map("ca", abbr_not_search("vt", "vertical terminal"))
+map("ca", abbr_not_search("st", "horizontal terminal"))
 
 --[[ All of these are just shortcuts for simple text insertions for now
 Some highlights:
