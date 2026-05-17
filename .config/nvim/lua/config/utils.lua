@@ -442,12 +442,11 @@ M.A = function(snippet, opts)
     local is_snippet = snippet:match("%$") ~= nil
     return
         is_snippet and function()
-            vim.schedule(function()
-                vim.snippet.expand(snippet)
-            end)
-            return "<Esc>"
+            vim.cmd.stopinsert()
+            api.nvim_feedkeys("h", "n")
+            vim.snippet.expand(snippet)
         end or snippet,
-        vim.tbl_extend("keep", { expr = is_snippet }, opts or {})
+        opts
 end
 
 -- Mappings that perform an action on a region

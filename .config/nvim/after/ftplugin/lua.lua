@@ -13,13 +13,13 @@ map("n", "<localleader>p", function()
 end, { desc = "Lua: Protect Call" })
 
 local abbrevs = {
-    ll = "local $1 = $0",                               -- local
-    lt = "$1 = $0",                                     -- let
-    rt = "return",                                      -- ret
-    wn = { "if $1 then", "\t$0", "end" },               -- when
-    ff = { "function$1($2)", "\t$0", "end" },           -- full function (optional name)
-    fl = { "function($1)", "\t$0", "end" },             -- function locale (no name)
-    tc = { 'if type($1) == "$2" then', "\t$0", "end" }, -- type check
+    ll = "local $1 = $0",
+    lt = "$1 = $0",
+    rt = "return",
+    wn = { "if $1 then", "\t$0", "end" },
+    ff = { "function$1($2)", "\t$0", "end" },
+    fl = { "function($1)", "\t$0", "end" },
+    tc = { 'if type($1) == "$2" then', "\t$0", "end" },
 }
 
 for abbr, fn in pairs(abbrevs) do
