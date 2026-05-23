@@ -17,8 +17,8 @@ bindsym $mod+Tab scratchpad show
 bindsym $mod+Shift+Tab move window to scratchpad
 # }}}
 
-# Rename (bulk move of all windows)
-bindsym $mod+R exec swaymsg rename workspace to "$(wayinput -t "Rename to" -l -1)"
+# Rename (bulk move of all windows and swap if necessary)
+bindsym $mod+R exec $sc/swap-workspaces
 
 # Numeric {{{
 # On the primary monitor

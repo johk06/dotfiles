@@ -1,0 +1,13 @@
+#!/bin/sh
+
+current="$(swaymsg -t get_workspaces | jq '.[]|select(.focused).name' -r)"
+target="$(wayinput -l -1 -t "Exchange with")"
+SWAP="EX"
+if [ -z "$target" ]; then
+    exit
+fi
+
+swaymsg [workspace="^$current$"] move workspace "$SWAP"\; \
+    [workspace="^$target$"] move workspace "$current"\; \
+    [workspace="^$SWAP$"] move workspace "$target"\; \
+    workspace "$target"
