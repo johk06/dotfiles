@@ -6,7 +6,9 @@
     (button :visible {!ws.is_virtual}
         :class "button ${ws.focused ? "active" : ""}"
         :onclick "swaymsg -q workspace ${ws.ws}"
-        "${ws.icon}"))
+        (box :space-evenly false 
+            (label :text "${ws.icon}")
+            (label :text "${arraylength(ws.wins)}" :class "ws-superscript"))))
 
 (defwidget workspace-scratch []
     (button :style "min-width: 1.3rem;"
