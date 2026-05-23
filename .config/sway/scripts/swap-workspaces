@@ -8,6 +8,7 @@ if [ -z "$target" ]; then
 fi
 
 swaymsg [workspace="^$current$"] move workspace "$SWAP"\; \
+    workspace "$target"\; \
     [workspace="^$target$"] move workspace "$current"\; \
     [workspace="^$SWAP$"] move workspace "$target"\; \
     workspace "$target"
