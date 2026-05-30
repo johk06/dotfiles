@@ -1,6 +1,7 @@
 local M = {}
 
 local fn = vim.fn
+local api = vim.api
 local utils = require("config.utils")
 
 ---@param s string
@@ -117,5 +118,138 @@ M.macro_from_history = function(reg, invoking_length)
         end
     end)
 end
+
+local ns = api.nvim_create_namespace("config.register")
+local register_buf, register_win
+
+local contains_control_char = function(s)
+    for i = 1, math.min(#s, 16) do
+        local chr = string.byte(s, i)
+        if (chr < 32 or chr == 127) and (chr ~= 9 and chr ~= 10 and chr ~= 13) then
+            return true
+        end
+    end
+    return false
+end
+
+---@param reg string
+---@param content string
+local classify_reg = function(reg, content)
+    if #content == 0 then
+        return "empty", { ("%s"):format(reg), "Identifier" }
+    elseif contains_control_char(content) then
+        return "macro", { reg, "KeyboardMacro" }
+    elseif reg:match("%d") then
+        return "number", { reg, "Number" }
+    elseif reg == "+" or reg == "*" then
+        return "special", { reg, "SpecialChar" }
+    end
+    return "reg", { reg, "String" }
+end
+
+local assemble_line = function(width, ch, lookup)
+    local out = {}
+    local tgt = math.floor((width - 2 * #ch) / #ch)
+    for _, chunk in ipairs(ch) do
+        local text = lookup[chunk[1]]
+        table.insert(out, chunk)
+        table.insert(out, {
+            (text:sub(1, math.min(#text, tgt))) .. (" "):rep(math.max(tgt - #text, 1)),
+            "NonText"
+        })
+    end
+
+    return out
+end
+
+local get_register_icons = function(target_width)
+    local regs = "+*abcdefghiklmnopqrstuvwxyz123456789"
+
+    local output = {
+        empty = {},
+        macro = {},
+        reg = {},
+        number = {},
+        special = {}
+    }
+    local texts = {}
+    for i = 1, #regs do
+        local r = regs:sub(i, i)
+        local content = fn.getreg(r)
+        local field, chunk = classify_reg(r, content)
+        table.insert(output[field], chunk)
+        if field == "special" or field == "reg" or field == "number" then
+            texts[r] = vim.trim(content):gsub("%s*", "")
+        end
+    end
+
+    output.reg = assemble_line(target_width, output.reg, texts)
+    output.number = assemble_line(target_width, output.number, texts)
+    output.special = assemble_line(target_width, output.special, texts)
+
+    return output
+end
+
+local show_registers = function()
+    if register_buf then
+        return
+    end
+    register_buf = api.nvim_create_buf(false, true)
+    local width = math.floor(vim.o.columns / 2)
+    local regs = get_register_icons(width)
+    local first_line = vim.list_extend({
+        { "->",                         "NonText" },
+        { fn.getreginfo('"').points_to, "SpecialChar" },
+        { " " }
+    }, regs.empty)
+    vim.list_extend(first_line, regs.macro)
+    local lines = {
+        first_line,
+        regs.special,
+        regs.number,
+        regs.reg
+    }
+    api.nvim_buf_set_lines(register_buf, 0, 0, false, {"", "", "", ""})
+    for i, line in ipairs(lines) do
+        api.nvim_buf_set_extmark(register_buf, ns, i - 1, 0, {
+            virt_text = line
+        })
+    end
+    register_win = api.nvim_open_win(register_buf, false, {
+        style = "minimal",
+        relative = "cursor",
+        anchor = "NW",
+        width = width,
+        zindex = 200,
+        height = 4,
+        col = -6,
+        row = 1
+    })
+end
+local hide_registers = function()
+    if register_win then
+        api.nvim_win_close(register_win, true)
+    end
+    if register_buf then
+        api.nvim_buf_delete(register_buf, { force = true })
+    end
+    register_buf = nil
+    register_win = nil
+end
+
+
+M.preview_on_key = function(key)
+    api.nvim_feedkeys(key, "n")
+    show_registers()
+    vim.on_key(vim.schedule_wrap(function()
+        hide_registers()
+        vim.on_key(nil, ns)
+    end), ns)
+end
+
+M.clear_register = function()
+    fn.setreg(vim.v.register, "")
+end
+
 
 return M

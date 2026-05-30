@@ -49,3 +49,12 @@ map("n", ">q", function()
     -- Trim the 3 characters ">q" takes up
     register_utils.macro_from_history(getmacroreg(), 3)
 end, { desc = "Macro: From History" })
+
+map("n", "zq", register_utils.clear_register, { desc = "Register: Zero" })
+
+map("n", '"', function()
+    register_utils.preview_on_key('"')
+end, { nowait = true })
+map("i", "<C-r>", function()
+    register_utils.preview_on_key(vim.keycode "<C-r>")
+end, { nowait = true })
