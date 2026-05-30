@@ -10,6 +10,7 @@ for_window [app_id="org.pipewire.Helvum"]  floating enable
 for_window [app_id="nm-connection-editor"] floating enable
 for_window [app_id="satty"]                floating enable
 for_window [app_id="nwg-icon-picker"]      floating enable, resize set 300px 400px
+for_window [app_id="qalculate-gtk"]        floating enable, resize set 300px 400px
 
 # Make sure I do not type passwords into the wrong dialog
 set $popup-critical \
@@ -40,7 +41,8 @@ for_window [app_id="kitty" title="^aerc"]     mark email~
 for_window [app_id="kitty" title="^newsboat"] mark news~
 for_window [app_id="kitty" title="^iamb"]     mark social~
 for_window [app_id="kitty" title="^ncmpcpp"]  mark music~
-for_window [app_id="kitty" title="^rmpc"]  mark music~
+for_window [app_id="kitty" title="^rmpc"]     mark music~
+for_window [app_id="qalculate-gtk"]           mark calc~
 
 # "Pinned" windows, they should automatically be registered for the scratchpad
 for_window [con_mark="~$"] move window to scratchpad, scratchpad show

@@ -1,3 +1,4 @@
+; Pretty names for internal names
 (defvar mode-names '{
 "default": "Normal",
 "media": "Media",
@@ -9,6 +10,7 @@
 "insert": "Insert"
 }')
 
+; Key Descriptions for the associated Sway mode
 (defvar mode-descs '{
 "default": [ ],
 "media": [
@@ -54,13 +56,14 @@
     {"keys": "i", "action": "Prepend"},
     {"keys": "x", "action": "Exchange"},
     {"keys": "e", "action": "Edit"},
-    {"keys": "mo", "action": "Open"},
+    {"keys": "mov", "action": "Open"},
     {"keys": "c", "action": "Clear"},
     {"keys": "t", "action": "Translate"}
 ],
 "exec": [
     {"keys": "n", "action": "News"},
     {"keys": "m", "action": "Mail"},
+    {"keys": "c", "action": "Calculator"},
     {"keys": "l", "action": "Listen"}
 ],
 "insert": [

@@ -55,7 +55,8 @@ mode "exec" {
 
     bindsym n exec $sc/exec-with --pid "kitty newsboat" $floating; mode "default"
     bindsym m exec $sc/exec-with --pid "kitty aerc" $floating; mode "default"
-    bindsym l exec $sc/exec-with --pid "kitty ncmpcpp" $floating; mode "default"
+    bindsym l exec $sc/exec-with --pid "kitty rmpc" $floating; mode "default"
+    bindsym c exec qalculate-gtk; mode "default"
 }
 
 bindsym $mod+Backslash mode "exec"

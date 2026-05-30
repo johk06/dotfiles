@@ -1,0 +1,14 @@
+#!/bin/sh
+
+if [ "$1" = "-p" ]; then
+    PREFIX="sel"
+else
+    PREFIX="clip"
+fi
+
+NAME="$PREFIX@$(date +"%H:%M:%S")"
+TMP="$XDG_CACHE_HOME/clip"
+mkdir -p "$TMP"
+wl-paste $1 > "${TMP}/$NAME"
+
+echo "${TMP}/$NAME"

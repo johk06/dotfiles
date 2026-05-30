@@ -46,8 +46,18 @@ mode "clipboard" {
     bindsym M exec mpv --force-window=immediate "$(wl-paste)"; mode "default"
     bindsym Mod1+M exec mpv --force-window=immediate "$(wl-paste -p)"; mode "default"
 
-    bindsym O exec xdg-open "$(wl-paste)"
-    bindsym Mod1+O exec xdg-open "$(wl-paste -p)"
+    bindsym O exec xdg-open "$(wl-paste)"; mode "default"
+    bindsym Mod1+O exec xdg-open "$(wl-paste -p)"; mode "default"
+
+    bindsym W exec $sc/write-clipboard; mode "default"
+    bindsym Mod1+W exec $sc/write-clipboard -p; mode "default"
+
+    bindsym V exec xdg-open "$($sc/write-clipboard)"; mode "default"
+    bindsym Mod1+V exec xdg-open "$($sc/write-clipboard -p)"; mode "default"
 }
 
 bindsym $mod+Y mode "clipboard"
+
+# My mouse thumb buttons are bound to C-c and C-v
+bindsym $mod+Ctrl+C exec $sc/exchange-clipboard
+bindsym $mod+Ctrl+V exec $sc/exchange-clipboard& $sc/print-clipboard
