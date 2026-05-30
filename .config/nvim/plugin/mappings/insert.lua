@@ -88,7 +88,8 @@ Some highlights:
 - Fast inserting of common pattern characters in search mode ]]
 ---@param keys string
 ---@param rhs string|function
-local map_search = function(keys, rhs)
+---@param desc string?
+local map_search = function(keys, rhs, desc)
     map("c", keys, function()
         local cmdtype = fn.getcmdtype()
         local cmdline = fn.getcmdline()
@@ -102,15 +103,22 @@ local map_search = function(keys, rhs)
         else
             return keys
         end
-    end, { expr = true })
+    end, { expr = true, desc = desc })
 end
 
-map_search("<M-space>", "\\s*")
-map_search("<C-space>", "\\s\\+")
+map_search("<M-space>", "\\s*", "Search: Any Whitespace")
+map_search("<C-space>", "\\s\\+", "Search: Some Whitespace")
+map_search("<M-s>", ".\\{-\\}", "Search: Anything")
 
--- [w]ord and [g]roup
-map_search("<M-w>", "\\<\\><Left><Left>")
-map_search("<M-g>", "\\(\\)<Left><Left>")
+map_search("<M-d>", function()
+    return ("\\%%(%s\\)"):format(vim.o.define)
+end, "Search: Definition")
+map_search("<M-i>", function()
+    return vim.o.include
+end, "Search: Include")
+
+map_search("<M-k>", "\\<\\><Left><Left>", "Search: Keyword")
+map_search("<M-g>", "\\(\\)<Left><Left>", "Search: Group")
 
 -- Move to next part of :s
 map_search("<M-/>", function()

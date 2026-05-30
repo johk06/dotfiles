@@ -119,6 +119,10 @@ M.macro_from_history = function(reg, invoking_length)
     end)
 end
 
+--[[ Preview {{{
+   Show a popup containing registers, their short contents and some other stuff
+   when I press " or i_<C-r>.
+]]
 local ns = api.nvim_create_namespace("config.register")
 local register_buf, register_win
 
@@ -138,23 +142,27 @@ local classify_reg = function(reg, content)
     if #content == 0 then
         return "empty", { ("%s"):format(reg), "Identifier" }
     elseif contains_control_char(content) then
-        return "macro", { reg, "KeyboardMacro" }
+        return "macro", { reg, "RegisterMacro" }
     elseif reg:match("%d") then
         return "number", { reg, "Number" }
-    elseif reg == "+" or reg == "*" then
+    elseif reg == "+" or reg == "*" or reg == "-" then
         return "special", { reg, "SpecialChar" }
     end
     return "reg", { reg, "String" }
 end
 
+local shorten = function(s)
+    return vim.trim(s):gsub("%s+", " ")
+end
+
 local assemble_line = function(width, ch, lookup)
     local out = {}
-    local tgt = math.floor((width - 2 * #ch) / #ch)
+    local tgt = math.floor((width - #ch) / #ch)
     for _, chunk in ipairs(ch) do
-        local text = lookup[chunk[1]]
+        local text = shorten(lookup[chunk[1]])
         table.insert(out, chunk)
         table.insert(out, {
-            (text:sub(1, math.min(#text, tgt))) .. (" "):rep(math.max(tgt - #text, 1)),
+            (text:sub(1, math.min(#text, tgt))) .. (" "):rep(tgt - #text),
             "NonText"
         })
     end
@@ -163,7 +171,7 @@ local assemble_line = function(width, ch, lookup)
 end
 
 local get_register_icons = function(target_width)
-    local regs = "+*abcdefghiklmnopqrstuvwxyz123456789"
+    local regs = "abcdefghiklmnopqrstuvwxyz0123456789"
 
     local output = {
         empty = {},
@@ -178,16 +186,33 @@ local get_register_icons = function(target_width)
         local content = fn.getreg(r)
         local field, chunk = classify_reg(r, content)
         table.insert(output[field], chunk)
-        if field == "special" or field == "reg" or field == "number" then
-            texts[r] = vim.trim(content):gsub("%s*", "")
+        if field == "reg" or field == "number" then
+            texts[r] = content
         end
     end
 
     output.reg = assemble_line(target_width, output.reg, texts)
     output.number = assemble_line(target_width, output.number, texts)
-    output.special = assemble_line(target_width, output.special, texts)
+    output.special = assemble_line(target_width, { { "+", "SpecialChar" }, { "*", "SpecialChar" } }, {
+        ["*"] = fn.getreg("*"),
+        ["+"] = fn.getreg("+")
+    })
+    output.unnamed = assemble_line(target_width, { { '"', "SpecialChar" }, { "-", "SpecialChar" } }, {
+        ['"'] = fn.getreg('"'),
+        ["-"] = fn.getreg("-")
+    })
 
     return output
+end
+
+local empty_lines = function(n)
+    local ret = {}
+
+    for i = 1, n do
+        ret[i] = ""
+    end
+
+    return ret
 end
 
 local show_registers = function()
@@ -195,7 +220,7 @@ local show_registers = function()
         return
     end
     register_buf = api.nvim_create_buf(false, true)
-    local width = math.floor(vim.o.columns / 2)
+    local width = math.min(math.floor(vim.o.columns / 2), 60)
     local regs = get_register_icons(width)
     local first_line = vim.list_extend({
         { "->",                         "NonText" },
@@ -205,11 +230,12 @@ local show_registers = function()
     vim.list_extend(first_line, regs.macro)
     local lines = {
         first_line,
+        regs.unnamed,
         regs.special,
         regs.number,
         regs.reg
     }
-    api.nvim_buf_set_lines(register_buf, 0, 0, false, {"", "", "", ""})
+    api.nvim_buf_set_lines(register_buf, 0, 0, false, empty_lines(#lines))
     for i, line in ipairs(lines) do
         api.nvim_buf_set_extmark(register_buf, ns, i - 1, 0, {
             virt_text = line
@@ -221,9 +247,9 @@ local show_registers = function()
         anchor = "NW",
         width = width,
         zindex = 200,
-        height = 4,
-        col = -6,
-        row = 1
+        height = #lines,
+        col = 0,
+        row = 1,
     })
 end
 local hide_registers = function()
@@ -251,5 +277,12 @@ M.clear_register = function()
     fn.setreg(vim.v.register, "")
 end
 
+M.clear_all_registers = function()
+    for c = 0x61, 0x7a do
+        fn.setreg(string.char(c), "")
+    end
+end
+-- }}}
 
 return M
+

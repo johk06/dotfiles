@@ -245,7 +245,7 @@ end
 
 vim.pack.add({ 'https://github.com/zuqini/zpack.nvim' })
 require("zpack").setup {
-    cmd_prefix = "Pack", -- the Z- Prefix conflicts with Zoxide
+    cmd_name = "Pack", -- the Z- Prefix conflicts with Zoxide
 }
 -- }}}
 -- Load Config {{{

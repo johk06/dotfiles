@@ -60,6 +60,8 @@ map("n", "<space>e", function()
     }
     local ft = ft_map[vim.v.register] or vim.bo.ft
     local b = api.nvim_create_buf(true, false)
+    local name = utils.scratch_file("temp", ft)
+    api.nvim_buf_set_name(b, name)
     vim.bo[b].ft = ft
     require("config.utils").win_show_buf(b, {
         position = "float",

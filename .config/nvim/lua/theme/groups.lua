@@ -151,6 +151,7 @@ local colorscheme = {
     Keyword                     = { link = "@keyword" },
     Label                       = { link = "@symbol" },
     Macro                       = { link = "@macro" },
+    RegisterMacro               = { fg = col.red },
     markdownH1Delimiter         = { link = "@markup.heading.1" },
     markdownH1                  = { link = "@markup.heading.1" },
     markdownH2Delimiter         = { link = "@markup.heading.2" },

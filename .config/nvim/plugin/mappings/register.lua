@@ -51,10 +51,11 @@ map("n", ">q", function()
 end, { desc = "Macro: From History" })
 
 map("n", "zq", register_utils.clear_register, { desc = "Register: Zero" })
+map("n", "zQ", register_utils.clear_all_registers, { desc = "Register: Zero All" })
 
 map("n", '"', function()
     register_utils.preview_on_key('"')
 end, { nowait = true })
-map("i", "<C-r>", function()
+map({ "i", "c" }, "<C-r>", function()
     register_utils.preview_on_key(vim.keycode "<C-r>")
 end, { nowait = true })
