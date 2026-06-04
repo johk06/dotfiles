@@ -115,6 +115,10 @@ o.linebreak = true
 o.breakindent = true
 o.breakindentopt = "sbr"
 o.showbreak = "» "
+
+-- recognize 0b* and 0x* and don't treat numbers as negative where it doesn't
+-- make sense
+o.nrformats = "bin,hex,blank"
 -- }}}
 -- Display Options {{{
 opt.fillchars = {

@@ -98,6 +98,7 @@ local map_global_maps = function()
     map("n", "o", "<cmd>Git log --oneline<cr>", { desc = "Git: Log to buffer, oneline" })
     map("n", "c", "<cmd>silent Git commit<cr>", { desc = "Git: Commit" })
     map("n", "p", "<cmd>Git push<cr>", { desc = "Git: Push" })
+    map("n", "P", "<cmd>Git pull<cr>", { desc = "Git: Pull" })
 
     -- `!` means don't jump automatically
     map("n", "H", "<cmd>G! difftool .<cr>", { desc = "Git: Hunks to qflist" })

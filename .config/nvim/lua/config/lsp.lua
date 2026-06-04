@@ -78,7 +78,7 @@ local do_map_list = function(abbrev, cb, desc)
                 vim.cmd.normal("zt")
             end)
         end,
-        { desc = ("LSP: (other Window) %s"):format(desc) }
+        { desc = ("LSP: (Preview Window) %s"):format(desc) }
     })
 
     table.insert(lsp_mappings, {

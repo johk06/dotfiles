@@ -1,4 +1,6 @@
 --[[ Synopsis: Make register operations more consistent {{{
+    - Use "a for macros as well, but defaulting to the "q register
+    - Add various useful operations on registers
  ]]
 
 local api = vim.api
@@ -39,12 +41,15 @@ local register_utils = require("config.registers")
 map("n", "cq", function()
     register_utils.edit_macro(getmacroreg())
 end, { desc = "Macro: Change" })
+
 map("n", "yq", function()
     register_utils.load_macro(getmacroreg())
 end, { desc = "Macro: Load" })
+
 map("n", "dq", function()
     register_utils.save_macro(getmacroreg())
 end, { desc = "Macro: Define" })
+
 map("n", ">q", function()
     -- Trim the 3 characters ">q" takes up
     register_utils.macro_from_history(getmacroreg(), 3)
@@ -53,9 +58,10 @@ end, { desc = "Macro: From History" })
 map("n", "zq", register_utils.clear_register, { desc = "Register: Zero" })
 map("n", "zQ", register_utils.clear_all_registers, { desc = "Register: Zero All" })
 
-map("n", '"', function()
+map({ "n", "v" }, '"', function()
     register_utils.preview_on_key('"')
 end, { nowait = true })
+
 map({ "i", "c" }, "<C-r>", function()
     register_utils.preview_on_key(vim.keycode "<C-r>")
 end, { nowait = true })

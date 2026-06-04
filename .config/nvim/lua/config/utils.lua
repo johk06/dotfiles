@@ -25,13 +25,23 @@ local modified_names = {
 local function expand_home(path, length)
     local user = vim.env.USER
     local home = "/home/" .. user
-    return fn.pathshorten(path:gsub("/tmp/workspaces_" .. user, "~tmp")
+    return fn.pathshorten(path:gsub("/tmp/workspaces/" .. user, "~tmp")
         :gsub(home .. "/ws", "~ws")
         :gsub(home .. "/.config", "~cfg")
         :gsub(home, "~"), length or 6)
 end
 
 M.expand_home = expand_home
+
+local TMP = ("%s/Tmp"):format(vim.env.HOME)
+M.scratch_file = function(prefix, suffix, count)
+    count = count or 0
+    local name = ("%s/%s.%d.%s"):format(TMP, prefix, count, suffix)
+    if vim.uv.fs_stat(name) then
+        return M.scratch_file(prefix, suffix, count + 1)
+    end
+    return name
+end
 
 local buf_list_type = {}
 ---@param buf integer
