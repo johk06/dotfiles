@@ -4,7 +4,7 @@ set $term kitty
 # scripts
 set $sc ~/.config/sway/scripts
 set $mainS DP-1
-set $leftS DP-3
+set $otherS DP-3
 set $eww ~/.config/eww
 
 set $floating "floating enable; resize set width 800px height 600px"
@@ -57,7 +57,6 @@ exec swayidle -w
 exec playerctld
 exec nm-applet
 exec blueman-applet
-exec ydotoold
 exec mpd-mpris
 exec wallpaper set
 exec $eww/run.sh
@@ -80,11 +79,13 @@ exec sleep 10 && goimapnotify
 
 # handle effects for rofi in the compositor, much nicer and more consistent
 layer_effects "rofi" shadows enable; corner_radius 18; blur disable
+layer_effects "kitty" shadows enable; corner_radius 18; blur disable
 # layer_effects "eww-background" blur enable; blur_ignore_transparent enable
 # layer_effects "notifications" shadows enable; corner_radius 18; blur disable
-# layer_effects "eww-bar" shadow disable
+layer_effects "eww-bar" shadow disable; blur enable
+layer_effects "eww-background"  blur enable, blur_ignore_transparent enable
 
 include /etc/sway/config.d/*
 # not set by the above files yet
-exec dbus-update-activation-environment XDG_SESSION_TYPE
+exec dbus-update-activation-environment XDG_SESSION_TYPE GTK_IM_MODULE=fcitx
 workspace number 1

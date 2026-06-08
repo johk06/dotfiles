@@ -15,10 +15,10 @@ output $mainS {
     position 2560 0
 }
 
-output $leftS {
+output $otherS {
     mode 2560x1440@120Hz
     position 0 0
 }
 
 # terrible hack, prevent it from loading until later to make the main one the default
-exec swaymsg output $leftS disable&& sleep 0.1&& swaymsg output $leftS enable
+exec swaymsg output $otherS disable&& sleep 0.1&& swaymsg output $otherS enable

@@ -11,15 +11,15 @@ workspace 8 output $mainS
 workspace 9 output $mainS
 workspace 10 output $mainS
 
-workspace s1 output $leftS
-workspace s2 output $leftS
-workspace s3 output $leftS
-workspace s4 output $leftS
-workspace s5 output $leftS
-workspace s6 output $leftS
-workspace s7 output $leftS
-workspace s8 output $leftS
-workspace s9 output $leftS
-workspace s10 output $leftS
+workspace s1 output $otherS
+workspace s2 output $otherS
+workspace s3 output $otherS
+workspace s4 output $otherS
+workspace s5 output $otherS
+workspace s6 output $otherS
+workspace s7 output $otherS
+workspace s8 output $otherS
+workspace s9 output $otherS
+workspace s10 output $otherS
 
 workspace games output $mainS

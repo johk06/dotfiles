@@ -1,0 +1,48 @@
+#!/bin/sh
+
+# Create a new workspace on whatever screen we're currently on
+
+# shellcheck source=./getvar
+. "$XDG_CONFIG_HOME/sway/scripts/getvar"
+
+# This might vary even more than between laptop and desktop, safer to not make any assumptions
+getvar "mainS"
+MAIN="$REPLY"
+
+if [ "$1" = "-s" ]; then
+    screen="$2"
+    shift 2
+else
+    screen="$(swaymsg -t get_outputs | jq -r '.[]|select(.focused).name')"
+fi
+
+new_index="$(swaymsg -t get_workspaces |
+    jq --arg screen "$screen" '
+    [.[]|select(.output == $screen).name|match("\\d+").string|tonumber ]
+    | sort
+    | if length == 0 then 1
+    # Find first in the range that is not already given
+    else first(
+        . as $nums
+        | range(1; .[-1] + 2)
+        | select(. as $i | $nums | index($i) | not )
+    )end
+')"
+
+if [ "$screen" != "$MAIN" ]; then
+    name="s$new_index"
+else
+    name="$new_index"
+fi
+
+case "$1" in
+go)
+    swaymsg workspace "$name"
+    ;;
+move)
+    swaymsg move window to workspace "$name"
+    ;;
+push)
+    swaymsg move window to workspace "$name" \; workspace "$name"
+    ;;
+esac

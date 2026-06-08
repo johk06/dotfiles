@@ -116,9 +116,13 @@ bindsym $mod+Ctrl+Bracketright  exec $sc/in-order push next
 bindsym $mod+Ctrl+Bracketleft   exec $sc/in-order push prev
 # }}}
 
-# TODO: not sure if this is actually useful, I barely use it
-bindsym $mod+N workspace next
-bindsym $mod+Shift+N workspace prev
+bindsym $mod+N exec $sc/empty-workspace go
+bindsym $mod+Shift+N exec $sc/empty-workspace move
+bindsym $mod+Ctrl+N exec $sc/empty-workspace push
+
+bindsym $mod+Mod1+N exec $sc/empty-workspace -s $otherS go
+bindsym $mod+Mod1+Shift+N exec $sc/empty-workspace -s $otherS move
+bindsym $mod+Mod1+Ctrl+N exec $sc/empty-workspace -s $otherS push
 
 bindsym $mod+KP_ADD workspace next
 bindsym $mod+KP_SUBTRACT workspace prev

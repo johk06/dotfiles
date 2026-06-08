@@ -90,6 +90,8 @@ bindsym $mod+Mod1+T exec $sc/mark-by-title "~" '^([a-zA-Z]*)'
 bindsym $mod+Ctrl+T exec $sc/mark-by-title "" '([^\s/]*)$'
 # By the initial file-like component
 bindsym $mod+Shift+T exec $sc/mark-by-title "" '^([^\s/]*)'
+# By the initial non-description component
+bindsym $mod+Ctrl+Shift+T exec $sc/mark-by-title "" '^([^-]*)'
 # }}}
 
 # Move to a specific position {{{

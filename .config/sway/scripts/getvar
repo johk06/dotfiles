@@ -1,0 +1,11 @@
+#!/bin/sh
+
+getvar() {
+    FIFO="$XDG_CACHE_HOME/sway.out"
+    if [ ! -e "$FIFO" ]; then
+        mkfifo "$FIFO"
+    fi
+
+    swaymsg exec echo "\$$1" \> "$FIFO"
+    read -r REPLY < "$FIFO"
+}
