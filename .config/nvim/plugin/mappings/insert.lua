@@ -109,6 +109,7 @@ end
 map_search("<M-space>", "\\s*", "Search: Any Whitespace")
 map_search("<C-space>", "\\s\\+", "Search: Some Whitespace")
 map_search("<M-s>", ".\\{-\\}", "Search: Anything")
+map_search("<M-.>", "\\.", "Search: Escaped Dot")
 
 map_search("<M-d>", function()
     return ("\\%%(%s\\)"):format(vim.o.define)

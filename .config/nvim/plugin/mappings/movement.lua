@@ -147,6 +147,8 @@ map(obj, "a.", textobjs.create_pattern_obj("()%s*[%w._]+%s*()"))
 -- Path component, last / is optional
 map(obj, "i/", textobjs.create_pattern_obj("(/)[^/]+(/?)"))
 map(obj, "a/", textobjs.create_pattern_obj("/()[^/]+()/?"))
+map(obj, "i$", textobjs.create_pattern_obj("(%$)[^%$]+(%$?)"))
+map(obj, "a$", textobjs.create_pattern_obj("%$()[^%$]+()%$?"))
 
 --[[ Numbers
  Inner variant preserves the sign of the number as well as any potential type prefix (0x) etc ]]
