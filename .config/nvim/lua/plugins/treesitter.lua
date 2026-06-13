@@ -28,6 +28,10 @@ local textobjects = {
     -- blocks
     ["i<space>"] = "@block.inner",
     ["a<space>"] = "@block.outer",
+
+    -- environments
+    ["ie"] = "@environment.inner",
+    ["ae"] = "@environment.outer",
 }
 
 local brackets = {
