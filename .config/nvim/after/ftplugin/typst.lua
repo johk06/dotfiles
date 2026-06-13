@@ -1,3 +1,5 @@
+local utils = require("config.utils")
+local A = utils.A
 local buf = vim.api.nvim_get_current_buf()
 local bo = vim.bo[buf]
 local wo = vim.wo[0][0]
@@ -40,6 +42,26 @@ end
 -- }}}
 
 local map = require("config.utils").ft_mapper()
-map("n", "<localleader>p", "<cmd>TypstPreviewToggle<cr>")
-map("n", "<localleader>P", "<cmd>TypstPreview<cr>")
-map("n", "<localleader>c", "<cmd>TypstPreviewSyncCursor<cr>")
+map("n", "<localleader>p", "<cmd>TypstPreviewToggle<cr>", { desc = "Typst: toggle Preview" })
+map("n", "<localleader>P", "<cmd>TypstPreview<cr>", { desc = "Typst: Preview" })
+map("n", "<localleader>c", "<cmd>TypstPreviewSyncCursor<cr>", { desc = "Typst: Sync Preview Cursor" })
+map("n", "<localleader>C", "<cmd>TypstPreviewFollowCursorToggle<cr>", { desc = "Typst: toggle Cursor SyncSync Preview Cursor" })
+
+-- Quick equations
+map("n", "<localleader>e", A { "\\$", "\t$0", "\\$", "" }, { desc = "Typst: Equation" })
+map("n", "<localleader>E", A { "\\$", "\t$0", "\\$ <$1>", "" }, { desc = "Typst: Labelled Equation" })
+
+-- Quick inline formatting
+map("i", "<M-e>", A [[\$$1\$ $0]])
+
+map("n", "<localleader>h", function()
+    require("telescope.builtin").lsp_document_symbols {
+        symbols = { "namespace" }
+    }
+end, { desc = "Typst: List Headings" })
+
+map("n", "<localleader>r", function()
+    require("telescope.builtin").lsp_document_symbols {
+        symbols = { "constant" }
+    }
+end, { desc = "Typst: List References" })
