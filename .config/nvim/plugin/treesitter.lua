@@ -8,7 +8,6 @@
 local M = {}
 local directive = vim.treesitter.query.add_directive
 
-
 --[[ Conceal Symbol Names in Typst {{{
  The goal here is not to make Vim a typst previewer, but rather to make
  equations easily parseable with the eye alone.
@@ -101,32 +100,39 @@ local typst_symbol_names = {
 
     -- sets
     ["in"]           = "∈",
+    subset           = "⊂",
     ["subset.eq"]    = "⊆",
     inter            = "∩",
     union            = "∪",
 
     -- other symbols
     ["circle.small"] = "⚬",
-    approx           = "≈",
+    circle           = "○",
+    degree           = "°",
+
     arrow            = "→",
     ["arrow.t"]      = "↑",
     ["arrow.l"]      = "←",
     ["arrow.r"]      = "→",
     ["arrow.b"]      = "↓",
-    circle           = "○",
+
+    times            = "×",
+    sqrt             = "√",
+    slash            = "/",
+    dagger           = "†",
+
     ["plus.minus"]   = "±",
-    degree           = "°",
+    approx           = "≈",
+
     dot              = "⋅",
     dots             = "…",
     ["dots.down"]    = "⋱",
     ["dots.v"]       = "⋮",
+
     exists           = "∃",
     forall           = "∀",
     infinity         = "∞",
-    slash            = "/",
-    sqrt             = "√",
-    subset           = "⊂",
-    times            = "×",
+    hbar             = "ℏ"
 }
 
 -- Equivalent to the above, but for functions that "wrap" their argument
