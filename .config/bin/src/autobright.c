@@ -225,7 +225,7 @@ int main(int argc, char** argv) {
     if (stream < 0) {
         return 1;
     }
-    char* backlight = argv[1];
+    char* backlight = optind < argc ? argv[optind] : NULL;
     if (!backlight) {
         backlight = "/sys/class/backlight/amdgpu_bl1";
     }
