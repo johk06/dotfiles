@@ -158,6 +158,9 @@ void write_brightness(int ctrl, double val) {
     write(ctrl, textbuf, count);
 }
 void set_brightness(int ctrl, double old, double target) {
+    if (old < 0 || target < 0) {
+        return;
+    }
     double cur = old;
     if (cur < target) {
         while (fabs(cur - target) > 1e-6) {
