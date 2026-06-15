@@ -275,16 +275,15 @@ int main(int argc, char** argv) {
 
         struct timespec after;
         clock_gettime(CLOCK_MONOTONIC, &after);
-        long elapsed_sec = after.tv_sec - before.tv_sec;
-        long elapsed_nsec = after.tv_nsec - before.tv_nsec;
-        double elapsed = elapsed_sec + (10.0e-9 * elapsed_nsec);
-        double to_sleep = timeout - elapsed;
+        long bf = before.tv_sec + (1e-9 * before.tv_nsec);
+        long af = after.tv_sec + (1e-9 * after.tv_nsec);
+        double to_sleep = timeout - (bf - af);
         if (to_sleep > 0) {
             double intpart;
             double frac = modf(to_sleep, &intpart);
             struct timespec ts = {
                 .tv_sec = (long)(intpart),
-                .tv_nsec = (long)(frac * 10e9)
+                .tv_nsec = (long)(frac * 1e9)
             };
             nanosleep(&ts, NULL);
         }
