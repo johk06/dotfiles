@@ -152,10 +152,11 @@ local opts = {
 }
 
 M.config = function()
-    vim.o.foldcolumn = "1"
-    vim.o.foldlevel = 99
-    vim.o.foldlevelstart = 99
-    vim.o.foldenable = true
+    local o = vim.o
+    o.foldcolumn = "1"
+    o.foldlevel = 99
+    o.foldlevelstart = 99
+    o.foldenable = true
 
     ufo = require("ufo")
     ufo.setup(opts)
@@ -163,11 +164,6 @@ M.config = function()
     utils.map("n", "zM", ufo.closeAllFolds)
     utils.map("n", "zR", ufo.openAllFolds)
     utils.map("n", "zm", function() ufo.closeFoldsWith(vim.v.count1) end)
-
-    -- HACK: reset colorscheme
-    vim.defer_fn(function()
-        vim.cmd.colorscheme(vim.g.colors_name)
-    end, 1000)
 end
 
 return M

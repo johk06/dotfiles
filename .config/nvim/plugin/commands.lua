@@ -377,7 +377,7 @@ end, {
 })
 
 --[[ Save all of the specified options in a modeline at the start of the file (or the
-  start if <bang> is given). Replaces an existing modeline if it can detect one 
+  start if <bang> is given). Replaces an existing modeline if it can detect one
   (either at the start or end of the file) ]]
 command("Modeline", function(args)
     local commentstring = vim.bo.commentstring
@@ -464,3 +464,11 @@ command("Restart", function(args)
     vim.cmd.mksession { session, bang = true }
     vim.cmd.restart(("source %s"):format(session))
 end, { desc = "Reload NeoVIM" })
+
+command("Shuffle", function()
+    local count = vim.fn.searchcount().total
+    local tgt = vim.fn.rand() % count
+    vim.cmd.normal { bang = true, ("gg%dn"):format(tgt) }
+end, {
+    desc = "Jump to a random search match"
+})
