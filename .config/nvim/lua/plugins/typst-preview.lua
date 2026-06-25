@@ -7,6 +7,10 @@ local M = {
         open_cmd = "launch-or-inside firefox firefox --new-window %s >/dev/null 2>&1",
         dependencies_bin = {
             tinymist = "tinymist", -- use system or mason version
+        },
+        -- FIXME: work around an issue in typst-preview itself
+        extra_args = {
+            "--verbose"
         }
     }
 }
