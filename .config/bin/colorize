@@ -10,26 +10,42 @@ local slice_to_num = function(s, i)
 end
 
 local chunk
+
+local foregound = function(r, g, b)
+    local fg = "39"
+    if (r + g + b) / 3 > 128 then
+        fg = "30"
+    end
+    return fg
+end
+
+local hex = function(match)
+    local r = slice_to_num(match, 2)
+    local g = slice_to_num(match, 4)
+    local b = slice_to_num(match, 6)
+
+    -- Display already bright colors with a dark foreground
+    local fg = foregound(r, g, b)
+
+    return ("\x1b[48;2;%d;%d;%d;%sm%s\x1b[0m"):
+    format(r, g, b, fg, match)
+end
+
+local decimal_rgb = function(all, r, g, b)
+    r, g, b = tonumber(r), tonumber(g), tonumber(b)
+    local fg = foregound(r, g, b)
+    return ("\x1b[48;2;%d;%d;%d;%sm%s\x1b[0m"):format(r, g, b, fg, all)
+end
+
 repeat
     chunk = io.stdin:read("*L")
     if not chunk then
         break
     end
 
-    local replaced = chunk:gsub("#%x%x%x%x%x%x", function(match)
-        local r = slice_to_num(match, 2)
-        local g = slice_to_num(match, 4)
-        local b = slice_to_num(match, 6)
-
-        -- Display already bright colors with a dark foreground
-        local fg = "39"
-        if (r + g + b) / 3 > 128 then
-            fg = "30"
-        end
-
-        return ("\x1b[48;2;%d;%d;%d;%sm%s\x1b[0m"):
-        format(r, g, b, fg, match)
-    end)
+    local replaced = chunk
+        :gsub("#%x%x%x%x%x%x", hex)
+        :gsub("(rgb%(%s*(%d+)%s*,%s*(%d+)%s*,%s*(%d+)%s*%))", decimal_rgb)
 
     io.stdout:write(replaced)
 until not chunk
