@@ -1,0 +1,47 @@
+#!/usr/bin/env luajit
+
+local function die(msg)
+    io.stderr:write(msg .. "\n")
+    os.exit(1)
+end
+
+---@param txt string
+local function parse_color(txt)
+    local r = tonumber(txt:sub(2, 3), 16)
+    local g = tonumber(txt:sub(4, 5), 16)
+    local b = tonumber(txt:sub(6, 7), 16)
+
+    return { r, g, b }
+end
+
+---@param lvl number
+---@param c1 [integer, integer, integer]
+---@param c2 [integer, integer, integer]
+local function mix(lvl, c1, c2)
+    local res = {}
+    for i = 1, 3 do
+        table.insert(res,
+            math.floor((c1[i] * (1 - lvl) + (c2[i] * lvl))))
+    end
+
+    return res
+end
+
+local lvl = tonumber(arg[1])
+if not lvl then
+    return die "Invalid mixing grade"
+end
+if lvl > 1 then
+    -- percent
+    if lvl <= 100 then
+        lvl = lvl / 100
+    else
+        return die "Invalid mixing grade"
+    end
+end
+local c1 = parse_color(arg[2])
+local c2 = parse_color(arg[3])
+
+local mixed = mix(lvl, c1, c2)
+
+print(("#%02x%02x%02x"):format(mixed[1], mixed[2], mixed[3]))

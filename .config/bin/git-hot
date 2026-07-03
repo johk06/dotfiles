@@ -4,5 +4,5 @@
 
 git log --format="" --name-only --relative "$@" |
     sort |
-    uniq -c |
+    uniq -c | sed 's/^\s*//g' |
     sort -nr

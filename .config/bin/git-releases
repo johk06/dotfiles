@@ -22,9 +22,8 @@ n*)
 esac
 [ $# -gt 0 ] && shift
 
-git tag --list "$@" |
-    grep '^v' |
-    awk -v n="$LEVEL" -v rev="$REV" -F. '{
+git tag --list "$@" | awk -v n="$LEVEL" -v rev="$REV" -F. \
+    '/^v/ {
         prefix = ""
         for (i=1; i <= n; i++) {
             prefix = (prefix == "" ? $i : prefix "." $i)
@@ -32,8 +31,10 @@ git tag --list "$@" |
         if (!rev || !vers[prefix]) {
             vers[prefix] = $0 
         }
-    } END {
+    }
+    END {
         for (sh in vers) {
             print vers[sh]
         }
-    }' | sort -V
+    }' |
+    sort -V

@@ -1,5 +1,10 @@
 #!/bin/sh
 
+if [ "$1" = "-i" ]; then
+    exec searchyt "$2" | xargs -I__ mpd-yt __ "${3:--}"
+    exit
+fi
+
 if [ -z "$2" ] || [ "$2" = "-" ]; then
     TMP="$XDG_CACHE_HOME/yt-mpd"
     [ ! -d "$TMP" ] && mkdir -p "$TMP"
