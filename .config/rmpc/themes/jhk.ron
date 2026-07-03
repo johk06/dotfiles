@@ -2,8 +2,8 @@
 #![enable(unwrap_newtypes)]
 #![enable(unwrap_variant_newtypes)]
 (
-    default_album_art_path: None,
-    format_tag_separator: " | ",
+    default_album_art_path: "/home/jhk/.config/background/thumb",
+    format_tag_separator: " & ",
     browser_column_widths: [10, 50, 40],
     background_color: None,
     text_color: None,
@@ -43,7 +43,7 @@
     ),
     progress_bar: (
         symbols: ["─", "─", "|", "─", "─"],
-        track_style: (fg: "white"),
+        track_style: (fg: "dark_gray"),
         elapsed_style: (fg: "yellow"),
         thumb_style: (fg: "yellow"),
         use_track_when_empty: true,
@@ -126,12 +126,15 @@
                     direction: Horizontal,
                     panes: [
                         (size: "6", pane: Component("input")),
-                        (size: "100%", pane: Pane(Tabs)),
-                        (size: "30", pane: Component("progress")),
-                        (size: "5", pane: Component("volume")),
-                        (size: "6", pane: Component("states")),
+                        (size: "100%", pane: Component("progress")),
+                        (size: "10", pane: Component("volume")),
+                        (size: "9", pane: Component("states")),
                     ]
                 ),
+        ),
+        (
+            size: "1",
+            pane: Pane(Tabs)
         ),
         (
                 pane: Pane(TabContent),
@@ -164,11 +167,12 @@
         "volume": Split(
             direction: Horizontal,
             panes: [
-            (size: "3", pane: Pane(Property(content: [
-                (kind: Property(Status(Volume)), style: (fg: "magenta"))
-                ],
-                    align: Right))),
-            (size: "1", pane: Pane(Property(content: [(kind: Text("%"), style: (fg: "magenta"))]))),
+                (size: "100%", pane: Pane(Volume(kind: Slider(symbols: (
+                    filled: "-", thumb: "|", track: "_"))))),
+                (size: "3", pane: Pane(Property(content: [
+                    (kind: Property(Status(Volume)), style: (fg: "light_blue"))
+                    ], align: Right))),
+                (size: "1", pane: Pane(Property(content: [(kind: Text("%"), style: (fg: "light_blue"))]))),
             ]
         ),
         "bitrate": Pane(Property(
@@ -182,11 +186,11 @@
             content: [
                 (kind: Property(Song(Artist)), style: (modifiers: "Bold"),
                     default: (kind: Text("Unknown"), style: (fg: "white"))),
-                (kind: Text(" :: "), style: (fg: "white")),
+                (kind: Text(" | "), style: (fg: "white")),
                 (kind: Property(Song(Album)), default: (kind: Text("-"))),
-                (kind: Text(" :: "), style: (fg: "white")),
+                (kind: Text(" | "), style: (fg: "white")),
                 (kind: Property(Song(Title))),
-                (kind: Text(" ")),
+                (kind: Text(" < "), style: (fg: "white")),
                 (kind: Property(Song(Other("date"))), style: (fg: "light_blue"), default: (kind: Text("-"))),
             ], scroll_speed: 1
         )),
@@ -221,6 +225,8 @@
                     on_style: (fg: "green", modifiers: "Underlined"),
                     oneshot_style: (fg: "yellow", modifiers: "Underlined"),
                 )))),
+            (kind: Text("x:"), style: (fg: "gray")),
+            (kind: Property(Status(Crossfade)), style: (fg: "gray"))
             ]
         )),
         "input": Pane(Property(
@@ -236,15 +242,15 @@
         "progress": Pane(Property(
             content: [
                 (kind: Property(Status(Elapsed)), style: (fg: "cyan")),
-                (kind: Text("/"), style: (fg: "white")),
-                (kind: Property(Status(Duration)), style: (fg: "yellow")),
-                (kind: Text(" :")),
-                (kind: Property(Status(QueueLength()))),
+                (kind: Text(" of ")),
+                (kind: Property(Status(Duration)), style: (fg: "cyan", modifiers: "Underlined")),
                 (kind: Text(" ")),
-                (kind: Property(Status(QueueTimeRemaining())), style: (fg: "white")),
-                (kind: Text(" "))
+                (kind: Property(Status(QueueLength())), style: (fg: "magenta")),
+                (kind: Text(" queued, ")),
+                (kind: Property(Status(QueueTimeRemaining())), style: (fg: "yellow")),
+                (kind: Text(" total"))
             ],
-            align: Right
+            align: Left
         )),
         "art": Split(
             direction: Vertical,

@@ -53,7 +53,7 @@
             "gl": SwitchToTab("Lists"),
             "ga": SwitchToTab("Artist"),
             "gb": SwitchToTab("Album"),
-            "gf": SwitchToTab("Fs"),
+            "gf": SwitchToTab("Files"),
             "Q": Quit,
             "L": NextTab,
             "H": PreviousTab,
@@ -70,6 +70,8 @@
             "o": ShowCurrentSongInfo,
             "+": VolumeUp,
             "-": VolumeDown,
+            "x": CrossfadeUp,
+            "X": CrossfadeDown,
 
         },
         navigation: {
@@ -101,17 +103,17 @@
 
             // Append
             "A": AddAll,
-            "a": AddOptions(kind: Action(all: false, position: EndOfQueue)),
+            "a": AddOptions(kind: Action(all: false, autoplay: None, position: EndOfQueue)),
             "<C-a>": AddOptions(kind: Action(all: false, autoplay: First, position: EndOfQueue)),
             
             // Insert
-            "I": AddOptions(kind: Action(all: true, position: StartOfQueue)),
-            "i": AddOptions(kind: Action(all: false, position: StartOfQueue)),
+            "I": AddOptions(kind: Action(all: true, autoplay: None, position: StartOfQueue)),
+            "i": AddOptions(kind: Action(all: false, autoplay: None, position: StartOfQueue)),
             "<C-i>": AddOptions(kind: Action(all: false, autoplay: First, position: StartOfQueue)),
 
             // Enqueue
-            "E": AddOptions(kind: Action(all: true, position: AfterCurrentSong)),
-            "e": AddOptions(kind: Action(all: false, position: AfterCurrentSong)),
+            "E": AddOptions(kind: Action(all: true, autoplay: None, position: AfterCurrentSong)),
+            "e": AddOptions(kind: Action(all: false, autoplay: None, position: AfterCurrentSong)),
             "<C-e>": AddOptions(kind: Action(all: false, autoplay: First, position: AfterCurrentSong)),
 
             "R": Rename,
@@ -165,7 +167,7 @@
             )
         ),
         (
-            name: "Fs",
+            name: "Files",
             pane: Pane(Directories)
         ),
         (
