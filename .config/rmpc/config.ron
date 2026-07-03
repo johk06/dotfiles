@@ -5,6 +5,7 @@
     password: None,
     theme: "jhk",
     cache_dir: "$XDG_CACHE_HOME/rmpc/cache",
+    address: "$XDG_RUNTIME_DIR/mpd/socket",
     cava: (
         framerate: 45,
         input: (
@@ -72,6 +73,18 @@
             "-": VolumeDown,
             "x": CrossfadeUp,
             "X": CrossfadeDown,
+            // find
+            "<A-f>": ExternalCommand(command: ["~/.config/rmpc/search-for", "0"]),
+            // artist
+            "<A-a>": ExternalCommand(command: ["~/.config/rmpc/search-for", "1"]),
+            // album
+            "<A-b>": ExternalCommand(command: ["~/.config/rmpc/search-for", "2"]),
+            // title
+            "<A-t>": ExternalCommand(command: ["~/.config/rmpc/search-for", "4"]),
+            // file
+            "<A-p>": ExternalCommand(command: ["~/.config/rmpc/search-for", "5"]),
+            // genre
+            "<A-g>": ExternalCommand(command: ["~/.config/rmpc/search-for", "6"]),
 
         },
         navigation: {

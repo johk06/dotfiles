@@ -1,0 +1,6 @@
+#!/bin/sh
+
+keys="$(printf "%$1s" | tr ' ' "j")"
+
+rmpc remote switchtab "Search"
+rmpc remote keybind "gg$keys<CR>"
