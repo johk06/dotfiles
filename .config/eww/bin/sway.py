@@ -105,6 +105,7 @@ def dump_con(w: i3ipc.Con, output: i3ipc.Con):
     rect["height"] = w.rect.height / height_scale
 
     win["rect"] = rect
+    win["z"] = (2 if win["float"] else 0) + (1 if w.focused else 0)
     return win, w.focused
 
 
@@ -119,7 +120,7 @@ def get_for_ws(workspace: i3ipc.Con, output):
         if win_active:
             is_active = True
         on_ws.append(win)
-    return sorted(on_ws, key=lambda w: w["float"]), is_active
+    return sorted(on_ws, key=lambda w: w["z"]), is_active
 
 
 def sort_by_name(ws):
