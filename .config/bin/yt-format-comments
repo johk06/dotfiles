@@ -15,10 +15,6 @@ def build_replies($parent_id):
             replies: ($all | build_replies($child.id))
         });
 
-def build_tree:
-    # Recursive function to build nested replies
-    build_replies("root");
-
 
 def render_markdown($level):
     . as $comment
@@ -37,4 +33,4 @@ def sort_tree:
     sort_by(.likes) | reverse | sort_by(.pinned);
 
 
-.comments | build_tree | sort_tree | tree_to_markdown
+.comments | build_replies("root") | sort_tree | tree_to_markdown
