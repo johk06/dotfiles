@@ -33,4 +33,5 @@ def sort_tree:
     sort_by(.likes) | reverse | sort_by(.pinned);
 
 
-.comments | build_replies("root") | sort_tree | tree_to_markdown
+.description, "\n",
+(.comments | build_replies("root") | sort_tree | tree_to_markdown)
