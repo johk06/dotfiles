@@ -129,7 +129,7 @@ map(obj, "ii", textobjs.indent_inner)
 map(obj, "ai", textobjs.indent_outer)
 map(obj, "aI", textobjs.indent_outer_with_last)
 -- }}}
-
+-- Additional Texobjects {{{
 -- Foldmarker section - *not* a fold
 map(obj, "iz", textobjs.foldmarker_inner)
 map(obj, "az", textobjs.foldmarker_outer)
@@ -173,6 +173,7 @@ map(obj, "gG", textobjs.entire_buffer)
 -- C-style variable value; ignore visual mode since = is useful there
 -- this is a heuristic, for "proper variable" declarations use `iv` from treesitter
 map("o", "=", textobjs.variable_value)
+-- }}}
 
 --[[ focus the current fold
  - zM: close all folds
@@ -185,3 +186,45 @@ map("n", "<Tab>", "zMzv[zjzt", { remap = true --[[ is required so ufo applies ]]
 -- Move between snippet fields
 map({ "n", "s", "i" }, "<M-space>", function() vim.snippet.jump(1) end)
 map({ "n", "s", "i" }, "<C-space>", function() vim.snippet.jump(-1) end)
+
+-- Repeatable bracket motions {{{
+local nd, pd = utils.movement_pair(function(fwd)
+    vim.diagnostic.jump { count = fwd and 1 or -1, float = false }
+end)
+map(utils.mode_motion, "]d", nd)
+map(utils.mode_motion, "[d", pd)
+
+for _, severity in ipairs(vim.diagnostic.severity) do
+    local nb, pb = utils.movement_pair(function(fwd)
+        vim.diagnostic.jump { count = fwd and 1 or -1, float = false, severity = severity }
+    end)
+
+    local key = severity --[[@as string]]:sub(1, 1):lower()
+    map(utils.mode_motion, "]" .. key, nb)
+    map(utils.mode_motion, "[" .. key, pb)
+end
+
+local builtin_brackets = {
+    { "]s", "[s" },          -- spelling errors
+    { "]z", "[z" },          -- folds
+    { "]c", "[c]" },         -- diffs
+    { "g,", "g;" },          -- changes
+}
+local bracket_with_count = function(command)
+    local ok, err = pcall(vim.api.nvim_cmd, {
+        cmd = "normal",
+        bang = true,
+        args = { vim.v.count1 .. command }
+    }, { output = false })
+    if not ok then
+        utils.error("Map/" .. command, err:gsub("^Vim:E%d+:%s*", ""))
+    end
+end
+for _, key in pairs(builtin_brackets) do
+    local nb, pb = utils.movement_pair(function(fwd)
+        bracket_with_count(fwd and key[1] or key[2])
+    end)
+    map(utils.mode_motion, key[1], nb)
+    map(utils.mode_motion, key[2], pb)
+end
+-- }}}

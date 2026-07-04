@@ -45,7 +45,8 @@ local map = require("config.utils").ft_mapper()
 map("n", "<localleader>p", "<cmd>TypstPreviewToggle<cr>", { desc = "Typst: toggle Preview" })
 map("n", "<localleader>P", "<cmd>TypstPreview<cr>", { desc = "Typst: Preview" })
 map("n", "<localleader>c", "<cmd>TypstPreviewSyncCursor<cr>", { desc = "Typst: Sync Preview Cursor" })
-map("n", "<localleader>C", "<cmd>TypstPreviewFollowCursorToggle<cr>", { desc = "Typst: toggle Cursor SyncSync Preview Cursor" })
+map("n", "<localleader>C", "<cmd>TypstPreviewFollowCursorToggle<cr>",
+    { desc = "Typst: toggle Cursor SyncSync Preview Cursor" })
 
 -- Quick equations
 map("n", "<localleader>e", A { "\\$", "\t$0", "\\$", "" }, { desc = "Typst: Equation" })
@@ -65,3 +66,10 @@ map("n", "<localleader>r", function()
         symbols = { "constant" }
     }
 end, { desc = "Typst: List References" })
+
+local fwd_heading, bwd_heading = utils.movement_pair(function(fwd)
+    
+    vim.fn.search([[^\s*=]], "s" .. (fwd and "" or "b"))
+end)
+map("n", "]]", fwd_heading)
+map("n", "[[", bwd_heading)

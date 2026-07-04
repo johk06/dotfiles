@@ -91,7 +91,7 @@ local ts_texobjects = {
         }
         local utils = require("config.utils")
         local map = utils.map
-        local modes = { "n", "x", "o" }
+        local modes = utils.mode_motion
 
         local ts_obj = require("nvim-treesitter-textobjects.select")
         for keys, capture in pairs(textobjects) do
@@ -122,52 +122,6 @@ local ts_texobjects = {
         local ts_repeat = require("nvim-treesitter-textobjects.repeatable_move")
         map(modes, ";", ts_repeat.repeat_last_move_next)
         map(modes, ",", ts_repeat.repeat_last_move_previous)
-
-        -- additional repeat movements for plugins
-        local nd, pd = utils.make_mov_pair(
-            function() vim.diagnostic.jump { count = 1, float = false } end,
-            function() vim.diagnostic.jump { count = -1, float = false } end
-        )
-        map(modes, "]d", nd)
-        map(modes, "[d", pd)
-
-        for _, severity in ipairs(vim.diagnostic.severity) do
-            local nb, pb = utils.make_mov_pair(
-                function() vim.diagnostic.jump { count = 1, float = false, severity = severity } end,
-                function() vim.diagnostic.jump { count = -1, float = false, severity = severity } end
-            )
-
-            local key = severity --[[@as string]]:sub(1, 1):lower()
-            map(modes, "]" .. key, nb)
-            map(modes, "[" .. key, pb)
-        end
-
-        local builtin_brackets = {
-            { "]s", "[s" },  -- spelling errors
-            { "]z", "[z" },  -- folds
-            { "]c", "[c]" }, -- diffs
-            { "g,", "g;" },  -- changes
-        }
-        local bracket_with_count = function(command)
-            return function()
-                local ok, err = pcall(vim.api.nvim_cmd, {
-                    cmd = "normal",
-                    bang = true,
-                    args = { vim.v.count1 .. command }
-                }, { output = false })
-                if not ok then
-                    utils.error("Map/" .. command, err:gsub("^Vim:E%d+:%s*", ""))
-                end
-            end
-        end
-        for _, key in pairs(builtin_brackets) do
-            local nb, pb = utils.make_mov_pair(
-                bracket_with_count(key[1]),
-                bracket_with_count(key[2])
-            )
-            map(modes, key[1], nb)
-            map(modes, key[2], pb)
-        end
     end
 }
 

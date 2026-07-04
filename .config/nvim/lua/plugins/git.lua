@@ -67,10 +67,9 @@ local map_on_git_buffer = function(buf)
     mapboth("U", gitsigns.reset_hunk, "Git: Reset Hunk")     -- mirror builtin U
     mapboth("R", gitsigns.reset_buffer, "Git: Reset Buffer") -- maybe <C-u> instead?
 
-    local nh, ph = utils.make_mov_pair(
-        function() gitsigns.nav_hunk("next") end,
-        function() gitsigns.nav_hunk("prev") end
-    )
+    local nh, ph = utils.movement_pair(function(fwd)
+        gitsigns.nav_hunk(fwd and "next" or "prev")
+    end)
     utils.map({ "n", "x", "o" }, "]g", nh, { buf = buf })
     utils.map({ "n", "x", "o" }, "[g", ph, { buf = buf })
 

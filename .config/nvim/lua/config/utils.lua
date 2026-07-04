@@ -466,25 +466,20 @@ M.mode_motion = { "n", "x", "o" }
 -- Mappings that define a textobject region
 M.mode_object = { "x", "o" }
 
----@param fwd function
----@param bwd function
----@return function
----@return function
-function M.make_mov_pair(fwd, bwd)
-    local fun = require("nvim-treesitter-textobjects.repeatable_move").make_repeatable_move(function(opts)
-        if opts.forward then
-            fwd()
-        else
-            bwd()
-        end
+---Wrapper around treesitter-textobjects repeatable bracket facility
+---@param fn fun(fwd: boolean)
+---@return function fwd
+---@return function bwd
+function M.movement_pair(fn)
+    local wrapped = require("nvim-treesitter-textobjects.repeatable_move").make_repeatable_move(function(opts)
+        fn(opts.forward)
     end)
-    return
-        function()
-            fun { forward = true }
-        end,
-        function()
-            fun { forward = false }
-        end
+
+    return function()
+        wrapped { forward = true }
+    end, function()
+        wrapped { forward = false }
+    end
 end
 
 -- }}}
