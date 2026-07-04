@@ -1,0 +1,40 @@
+#!/usr/bin/env -S jq -r -f
+
+def build_replies($parent_id):
+    . as $all
+    | [ $all[] | select(.parent == $parent_id) ] as $children
+        | $children | map( . as $child
+        | {
+            id: .id,
+            author: .author,
+            text: .text,
+            time: .timestamp,
+            htime: ._time_text,
+            likes: .like_count,
+            favorite: .is_favorited,
+            replies: ($all | build_replies($child.id))
+        });
+
+def build_tree:
+    # Recursive function to build nested replies
+    build_replies("root");
+
+
+def render_markdown($level):
+    . as $comment
+    | "#" * $level as $heading
+    | "\($heading) \(if .favorite then " " else "" end)\(.author[1:-1]) - \(.htime) - \(.likes) " + "\n"
+    + ($comment.time | strftime("On %Y-%m-%d %Hh:\n")) # the json doesn't include more exact times, presumably for privacy reasons
+    + ($comment.text | split("\n") | map("> " + .) | join("\n")) 
+    + (if ($comment.replies | length) > 0 then "\n" else "" end)
+    + ($comment.replies | map(render_markdown($level + 1)) | join("\n") )
+    ;
+def tree_to_markdown:
+    .[] | render_markdown(2)
+    ;
+
+def sort_tree:
+    sort_by(.likes) | reverse | sort_by(.pinned);
+
+
+.comments | build_tree | sort_tree | tree_to_markdown
