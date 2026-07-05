@@ -1,0 +1,45 @@
+[start]
+
+[buffer]
+images = true
+
+[external]
+download-dir = "~/Tmp/download/"
+history-size = 1024
+
+[cmd.jhk]
+openExternal = '''
+() => {
+    pager.extern("xdg-open '" + pager.hoverLink + "'", { suspend: false })
+}
+'''
+
+[status]
+format-mode = "overline"     # NOTE: no effect in kitty, which is why I use it
+show-cursor-position = false
+
+[display]
+highlight-color = "-cha-ansi(yellow)"
+
+[page]
+o = "load"
+O = "loadEmpty"
+go = "loadCursor"
+
+# Clipboard {{{
+'y y' = "copyURL"
+'y c' = "copyCursorLINK"
+'y i' = "copyCursorImage"
+'p' = "gotoClipboardURL"
+# }}}
+
+x = 'jhk.openExternal'
+gs = 'jhk.toggleStyle'
+
+# Bookmarks {{{
+"'" = "gotoMark"
+# }}}
+
+[line]
+'C-a' = 'line.begin'
+'C-o' = 'line.openEditor'
