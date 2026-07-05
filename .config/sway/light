@@ -2,7 +2,7 @@
 blur_brightness 1.2
 
 #                       Border    Background Text    Indicator Child-Border
-client.focused          #8fbcbb   #eceff4    #2e3440 #8fbcbb   #8fbcbb
-client.unfocused        #eceff488 #eceff4    #616E88 #C0C7D5   #eceff488
-client.focused_inactive #eceff488 #eceff4    #616E88 #C0C7D5   #eceff488
-client.urgent           #D08770   #eceff4    #2e3440 #D08770   #D08770
+client.focused          #8fbcbb   #eceff4    #2e3440 #aacbccaa   #aacbccaa
+client.unfocused        #eceff488 #eceff4    #616E88 #C0C7D5     #C0C7D5
+client.focused_inactive #eceff488 #eceff4    #616E88 #C0C7D5     #C0C7D5
+client.urgent           #D08770   #eceff4    #2e3440 #D08770     #D08770

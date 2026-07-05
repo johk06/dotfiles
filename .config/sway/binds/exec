@@ -2,6 +2,8 @@
 
 # Execute various programs, this is somewhat of a catch-all file
 
+set $interact kitty zsh -ic
+
 # Terminal
 bindsym $mod+Return       exec $term
 bindsym $mod+Shift+Return exec $sc/exec-with --pid $term $floating
@@ -10,9 +12,9 @@ bindsym $mod+Shift+Return exec $sc/exec-with --pid $term $floating
 bindsym $mod+W exec firefox
 
 # [E]xplore, yes this is a shitty windows-like map
-bindsym $mod+E exec kitty zsh -ic lf
+bindsym $mod+E exec $interact lf
 # Opening a temp folder is common
-bindsym $mod+Shift+E exec kitty zsh -ic 'lf ~/Tmp/'
+bindsym $mod+Shift+E exec $interact 'lf ~/Tmp/'
 
 # Always quick to lock
 bindsym $mod+Semicolon exec gtklock -d
@@ -57,6 +59,7 @@ mode "exec" {
     bindsym m exec $sc/exec-with --pid "kitty aerc" $floating; mode "default"
     bindsym l exec $sc/exec-with --pid "kitty rmpc" $floating; mode "default"
     bindsym c exec qalculate-gtk; mode "default"
+    bindsym e exec $interact $EDITOR; mode "default"
 }
 
 bindsym $mod+Backslash mode "exec"

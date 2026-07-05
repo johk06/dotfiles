@@ -45,4 +45,6 @@ for_window [app_id="kitty" title="^rmpc"]     mark music~
 for_window [app_id="qalculate-gtk"]           mark calc~
 
 # "Pinned" windows, they should automatically be registered for the scratchpad
-for_window [con_mark="~$"] move window to scratchpad, scratchpad show
+# That means I can just hit <D-Tab> to put them away quickly
+# But only if they're floating, if they're tiled, leave them be
+for_window [con_mark="~$"] exec $sc/register-scratch

@@ -1,0 +1,16 @@
+#!/bin/sh
+
+# Automatically register floating windows for the scratchpad
+
+# Necessary to let hooks that make it floating trigger first
+sleep 0.1
+
+swaymsg -t get_tree | jq -rc \
+    '.. | ((.nodes? // empty), (.floating_nodes? // empty))[] | select(.focused)|.type,.id' |
+    {
+        read -r type
+        read -r id
+        if [ "$type" = "floating_con" ]; then
+            swaymsg "[con_id=$id]" move window to scratchpad, scratchpad show
+        fi
+    }
