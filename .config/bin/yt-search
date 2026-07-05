@@ -1,0 +1,19 @@
+#!/bin/sh
+
+# Search for {a,some} youtube videos
+# C-r re-searches with the current query string
+# Meant to be used with the other yt-* scripts
+
+QUERY="$*"
+MAX=32
+FMT='%(title)s	%(duration>%M:%S)s	%(uploader)s	%(webpage_url)s'
+RELOAD="reload:[ -n {q} ] && yt-dlp ytsearch$MAX:{q} --flat-playlist --print '$FMT'"
+
+yt-dlp "ytsearch${MAX}:$QUERY" \
+    --flat-playlist \
+    --print "$FMT" |
+    fzf --multi --delimiter="\t" --with-nth '{1} by {3}' \
+        --bind="ctrl-r:$RELOAD" \
+        --accept-nth=4 \
+        --preview='echo {1}\\nDuration: {2}\\nChannel: {3}\\n' \
+        --preview-window=bottom:4

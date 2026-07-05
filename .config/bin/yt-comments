@@ -2,7 +2,7 @@
 
 URL="$1"
 FILE="${2:-comments.md}"
-if [[ "$FILE" == "-" ]]; then
+if [ "$FILE" = "-" ]; then
     FILE=/dev/stdout
 fi
 
