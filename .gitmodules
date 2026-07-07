@@ -1,0 +1,6 @@
+[submodule ".config/mpv/modernz"]
+	path = .config/mpv/modernz
+	url = https://github.com/Samillion/ModernZ
+[submodule ".config/mpv/thumbfast"]
+	path = .config/mpv/thumbfast
+	url = https://github.com/po5/thumbfast
