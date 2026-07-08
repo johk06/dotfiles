@@ -1,4 +1,5 @@
 timeout 120 '~/.config/swayidle/notify.sh start 20' resume '~/.config/swayidle/notify.sh stop'
-timeout 133 '~/.config/swayidle/warn.sh'
+timeout 133 '~/.config/swayidle/warn.sh "Locking session due to inactivity"'
 timeout 140 '~/.config/swayidle/lock.sh'
+timeout 250 '~/.config/swayidle/warn.sh "System going to sleep"'
 timeout 260 '~/.config/swayidle/lock.sh'
