@@ -64,6 +64,7 @@
     {"keys": "n", "action": "News"},
     {"keys": "m", "action": "Mail"},
     {"keys": "c", "action": "Calculator"},
+    {"keys": "e", "action": "Editor"},
     {"keys": "l", "action": "Listen"}
 ],
 "insert": [

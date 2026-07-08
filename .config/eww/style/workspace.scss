@@ -30,9 +30,6 @@
     &.active {
         background-color: mix($bg2, $accent, 80%);
     }
-    &.cut {
-        background-color: mix($bg3, $red, 80%);
-    }
 }
 
 .overview-scratch {
@@ -46,4 +43,9 @@
     font-size: 0.7rem;
     margin-left: 0.1rem;
     margin-bottom: 0.3rem;
+}
+
+.win-mark {
+    color: $fg2;
+    font-size: 0.8em;
 }

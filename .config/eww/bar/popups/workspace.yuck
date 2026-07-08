@@ -18,12 +18,16 @@
         (eventbox :tooltip "${win.name}"
             :onclick "swaymsg [con_id=${win.id}] focus >/dev/null&"
             :onrightclick "swaymsg [con_id=${win.id}] move window to scratchpad >/dev/null&"
-            (image
-                :path {win.icon}
-                :valign "center"
-                :halign "center"
-                :image-width {round(win.rect.width * overview-ws-width / 3, 0)}
-                :image-height {round(win.rect.height * overview-ws-height / 3, 0)}))))
+            (overlay
+                (image
+                    :path {win.icon}
+                    :valign "center"
+                    :halign "center"
+                    :image-width {round(win.rect.width * overview-ws-width / 3, 0)}
+                    :image-height {round(win.rect.height * overview-ws-height / 3, 0)})
+                (box :hexpand true :vexpand true :space-evenly false :valign "start"
+                    (label :text {arraylength(win.marks) > 0 ? "'${win.marks[0]}" : ""} :class "win-mark"))
+            ))))
 
 (defwidget ws-box [ws]
     (box :class "workspace ${ws.focused ? "active" : ""}"

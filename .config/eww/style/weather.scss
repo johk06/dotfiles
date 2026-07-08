@@ -19,6 +19,9 @@
     &.hot {
         background-color: mix($bg2, $orange);
     }
+    &.burning {
+        background-color: mix($bg2, $red);
+    }
 }
 
 .weather-hour-past {

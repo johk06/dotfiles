@@ -1,4 +1,6 @@
 (deflisten mpris "./bin/mpris.py 2>/dev/null")
+(deflisten mpd-next "mpc -f '%title%' queued
+mpc idleloop player | while read -r line; do mpc -f '%title%' queued; done")
 
 (defwidget mpris-status [pl]
     (label :style "margin-right: .6rem; min-width: 1.5rem;"
@@ -8,8 +10,10 @@
     (box :space-evenly false
         {pl.loop == "track" ? "(" : (pl.loop == "list" ? "[" : "")}
         (label :limit-width 30 :text text)
-        {pl.loop == "track" ? ")" : (pl.loop == "list" ? "]" : "")}
-        ))
+        (label :limit-width 10
+            :text {pl.player == "mpd" ? " >${mpd-next}" : ""}
+            :style "font-size: 0.7em; margin-left: 0.5em;")
+        {pl.loop == "track" ? ")" : (pl.loop == "list" ? "]" : "")}))
 
 (defwidget mpris-circle [pos]
     (circular-progress :value pos  :class "bar-circle"

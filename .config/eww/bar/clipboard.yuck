@@ -10,7 +10,7 @@
                 (stack :selected {clipboard.mime =~ "text/.*" ? 1 : 0 }
                     :transition "none"
                     :style "margin-left: .5rem"
-                    (label :class "text ${clipboard.state == "nil" ? "faint" : ""}" :text "(${clipboard.state == "nil" ? "Empty" : clipboard.mime})")
+                    (label :class "text ${clipboard.state == "nil" ? "faint" : ""}" :text "(${clipboard.state == "nil" ? "Empty" : clipboard.mime})" :limit-width 32)
                     (box :space-evenly false
                         (label :limit-width 48
                             :text {clipboard.data})

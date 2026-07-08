@@ -33,6 +33,7 @@ TERM_OVERRIDES = [
     ("^aerc$", "email"),
     ("^newsboat$", "newsboat"),
     ("^iamb", "internet-chat"),
+    ("^man ", "bookreader"),
 ]
 
 CLASS_OVERRIDES = {
