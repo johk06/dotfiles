@@ -1,4 +1,21 @@
+# Site-Specific {{{
+
+# The older vector skin works a bit better
+[[siteconf]]
+url = '^https?://[a-z]+\.wikipedia\.org/wiki/(?!.*useskin=.*)'
+rewrite-url = 'x => x.searchParams.append("useskin", "vector")'
+# }}}
+
 [start]
+startup-script = '''
+globalThis.runOnUrl = (command) => () => {
+    let link = pager.hoverLink;
+    if (link == '') {
+        link = pager.buffer.url;
+    }
+    pager.extern(command + " '" + link + "'", { suspend: false })
+}
+'''
 
 [buffer]
 images = true
@@ -6,13 +23,6 @@ images = true
 [external]
 download-dir = "~/Tmp/download/"
 history-size = 1024
-
-[cmd.jhk]
-openExternal = '''
-() => {
-    pager.extern("xdg-open '" + pager.hoverLink + "'", { suspend: false })
-}
-'''
 
 [status]
 format-mode = "overline"     # NOTE: no effect in kitty, which is why I use it
@@ -26,15 +36,24 @@ o = "load"
 O = "loadEmpty"
 go = "loadCursor"
 
+gh = "openHistory"
+
 # Clipboard {{{
 'y y' = "copyURL"
-'y c' = "copyCursorLINK"
+'y c' = "copyCursorLink"
 'y i' = "copyCursorImage"
 'p' = "gotoClipboardURL"
 # }}}
 
-x = 'jhk.openExternal'
-gs = 'jhk.toggleStyle'
+x = 'runOnUrl("xdg-open")'
+# mpv can handle a lot of web streams (youtube comes to mind), but make sure it opens a window
+'X m' = 'runOnUrl("mpv --force-window=immediate")'
+'C-w RET' = 'runOnUrl("kitty -e cha")'
+'g s' = 'toggleScripting'
+
+'C-k' = '() => pager.load("ddg:")'
+'g w' = '() => pager.load("wk:")'
+'g d' = '() => pager.load("wd:")'
 
 # Bookmarks {{{
 "'" = "gotoMark"
