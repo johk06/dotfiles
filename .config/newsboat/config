@@ -21,7 +21,7 @@ bind g everywhere home
 bind G everywhere end
 bind j everywhere down
 bind k everywhere up
-bind o everywhere set browser "w3m" ; open-in-browser
+bind o everywhere set browser "cha" ; open-in-browser
 bind O everywhere set browser "firefox" ; open-in-browser
 bind P everywhere set browser "mpv --force-window=immediate %u > /dev/null 2>&1 &" ; open-in-browser
 bind s everywhere sort

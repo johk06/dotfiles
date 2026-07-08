@@ -63,8 +63,10 @@ directory.fg = teal
 
 unread.bold = true
 
-flag_attachment.fg = green
+flag_attachment.fg = navy
 flag_replied.fg = #616E88
 flag_fold.fg = teal
 address.fg = teal
 bright_gray.fg = #616E88
+git_issue.fg = green
+git_message.fg = green
