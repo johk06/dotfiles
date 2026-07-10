@@ -4,3 +4,6 @@
 [submodule ".config/mpv/thumbfast"]
 	path = .config/mpv/thumbfast
 	url = https://github.com/po5/thumbfast
+[submodule ".local/share/typst/packages/jhk/notiz"]
+	path = .local/share/typst/packages/jhk/notiz
+	url = ssh://git@codeberg.org/jhk06/typst-notiz.git
