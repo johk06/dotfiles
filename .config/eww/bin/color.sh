@@ -44,6 +44,7 @@ recompile_scss "$XDG_CONFIG_HOME/swaync"
 recompile_scss "$XDG_CONFIG_HOME/wofi"
 recompile_scss "$XDG_CONFIG_HOME/gtklock/"
 recompile_scss "$XDG_CONFIG_HOME/wkeys/"
+recompile_scss "$XDG_CONFIG_HOME/bin/penmenu/"
 
 wait
 sleep 0.1

@@ -1,0 +1,40 @@
+@import "../..//eww/style/color.scss";
+* {
+    font-family: "Torus Pro", "Torus", "Cantarell";
+    font-weight: 600;
+    font-size: 14px;
+}
+.background {
+    background-color: transparent;
+}
+
+@mixin btn($name, $color, $fg) {
+    &.#{$name}{
+        color: $fg;
+        background-color: $color;
+        &:hover {
+            background-color: mix($bg1, $color);
+        }
+    }
+}
+.popup {
+    padding: .8em;
+    border-radius: 1em;
+    background-color: $bg0;
+    box-shadow: rgba(0,0,0,0.5) 0px 2px 4px;
+}
+.action-button {
+    background-color: $bg1;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    &:hover {
+        background-color: $bg2;
+    }
+    @include btn(cut, $yellow, $inv);
+    @include btn(copy, $green, $inv);
+    @include btn(paste, $lblue, $inv);
+    @include btn(undo, $snow0, $inv);
+
+    @include btn(screenshot, $magenta, $inv);
+    @include btn(write, $purple, $inv);
+    @include btn(close-window, $red, $inv);
+}
