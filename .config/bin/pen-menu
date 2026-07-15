@@ -1,0 +1,8 @@
+#!/bin/sh
+
+dev="$(
+	libwacom-list-local-devices |
+		yq -r '.devices[0].nodes[1]|to_entries[0].key'
+)"
+cd "$HOME/.config/bin/penmenu/" || exit
+exec "./init.lua" "$dev"
