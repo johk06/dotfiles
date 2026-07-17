@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+vdirsyncer metasync
+vdirsyncer sync
+
+# Adjust for displayname
+function relink {
+    for dir in "$1"/.raw/*; do
+    read -r dispname <"$dir/displayname"
+    link="$1/${dispname// /_}"
+    if [ ! -e "$link" ]; then
+        ln -sT "$dir" "$link"
+    fi
+    done
+}
+
+relink ~/.local/share/cal
+relink ~/.local/share/contacts

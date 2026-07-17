@@ -179,5 +179,5 @@
                 {todo-syncing ? "Reload..." : "Reload"})
             (button :class "button ${todo-syncing ? "active" :""}"
                 :timeout "356s"
-                :onclick "${EWW_CMD} update todo-syncing=true;pimsync sync; ${todo-reload};${EWW_CMD} update todo-syncing=false"
+                :onclick "${EWW_CMD} update todo-syncing=true;vdirsyncer sync; ${todo-reload};${EWW_CMD} update todo-syncing=false"
                 {todo-syncing ? "Sync..." : "Sync"}) )))

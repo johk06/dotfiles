@@ -1,0 +1,66 @@
+# vim: ft=toml
+[general]
+status_path = "~/.local/state/vdirsyncer/status"
+
+
+[storage contacts_remote]
+type = "carddav"
+url = "https://dav.mailbox.org"
+username.fetch = ["command", "pass-get", "mail/mailbox.org", "user"]
+password.fetch = ["command", "pass-get", "mail/mailbox.org", "."]
+
+[storage contacts_local]
+type = "filesystem"
+path = "~/.local/share/contacts/.raw/"
+fileext = ".vcf"
+
+[pair contacts]
+a = "contacts_local"
+b = "contacts_remote"
+collections = ["from a", "from b"]
+metadata = ["displayname"]
+
+[storage cal_remote]
+type = "caldav"
+url = "https://dav.mailbox.org"
+username.fetch = ["command", "pass-get", "mail/mailbox.org", "user"]
+password.fetch = ["command", "pass-get", "mail/mailbox.org", "."]
+
+[storage cal_local]
+type = "filesystem"
+path = "~/.local/share/cal/.raw/"
+fileext = ".ics"
+
+[pair cal]
+a = "cal_local"
+b = "cal_remote"
+collections = ["from a", "from b"]
+metadata = ["displayname"]
+
+[storage uni1_local]
+type = "filesystem"
+path = "~/.local/share/cal/uni1/"
+fileext = ".ics"
+
+[storage uni1_remote]
+type = "http"
+url.fetch = ["command", "pass-get", "uni/1", "calendar"]
+
+[pair uni1]
+a = "uni1_local"
+b = "uni1_remote"
+collections = null
+
+[storage uni2_local]
+type = "filesystem"
+path = "~/.local/share/cal/uni2/"
+fileext = ".ics"
+
+[storage uni2_remote]
+type = "http"
+url.fetch = ["command", "pass-get", "uni/2", "calendar"]
+
+[pair uni2]
+a = "uni2_local"
+b = "uni2_remote"
+collections = null
