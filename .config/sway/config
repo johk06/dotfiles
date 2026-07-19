@@ -53,18 +53,23 @@ input type:tablet_tool {
     map_to_output $mainS
 }
 
-exec swayidle -w
-exec playerctld
-exec nm-applet
-exec blueman-applet
-exec mpd-mpris
-exec wallpaper set
-exec $eww/run.sh
 # dbus secrets agent
 exec gnome-keyring-daemon
 # polkit
 exec /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
+
+# Media
+exec mpd && mpd-mpris # mpd exits when it daemonizes
+exec playerctld
+
+exec swayidle -w
+exec nm-applet
+exec blueman-applet
 exec udiskie
+
+# wait until the rest of the session is up
+exec sleep 2 && $eww/run.sh
+exec wallpaper set
 
 # autotiling layout
 exec_always pkill -f "python.*layout.py"
@@ -88,4 +93,5 @@ layer_effects "eww-background"  blur enable, blur_ignore_transparent enable
 include /etc/sway/config.d/*
 # not set by the above files yet
 exec dbus-update-activation-environment XDG_SESSION_TYPE GTK_IM_MODULE=fcitx
+
 workspace number 1
