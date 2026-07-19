@@ -20,6 +20,11 @@ if [[ "$1" == "select" ]]; then
     fi
     extra="-g"
     sleep 0.1
+elif [[ "$1" == "window" ]]; then
+    region="$(swaymsg -t get_tree | jq -r \
+        '..| ((.nodes? // empty), (.floating_nodes? // empty))[] | select(.focused) |.rect
+	    |"\(.x),\(.y) \(.width)x\(.height)"')"
+    extra="-g"
 fi
 
 create_file
