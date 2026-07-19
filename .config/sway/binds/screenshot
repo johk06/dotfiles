@@ -18,6 +18,7 @@ mode "screenshot" {
     # Record, always stores to disk
     bindsym Shift+S exec $sc/record screen; mode "default"
     bindsym Shift+V exec $sc/record select; mode "default"
+    bindsym Shift+W exec $sc/record window; mode "default"
 
     # Scan/Pick various things
     bindsym C exec $sc/pick-color; mode "default"
