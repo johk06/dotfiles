@@ -1,5 +1,16 @@
 Jhk.require_program("lua-language-server")
 
+---@param client vim.lsp.Client
+local is_nvim_file = function(client)
+    for buf, _ in pairs(client.attached_buffers) do
+        local name = vim.fs.basename(vim.api.nvim_buf_get_name(buf))
+        if name == ".nvim.lua" then
+            return true
+        end
+    end
+    return false
+end
+
 ---@type vim.lsp.Config
 return {
     filetypes = { "lua" },
@@ -21,7 +32,7 @@ return {
             }
         }
     },
-    on_init = function(client)
+    on_init = function(client, init)
         if not client.workspace_folders then
             return
         end
@@ -40,7 +51,7 @@ return {
         local libs = {
             "${3rd}/luv/library"
         }
-        if vim.g.is_neovim or is_in_rtp then
+        if vim.g.is_neovim or is_in_rtp or is_nvim_file(client) then
             version = "LuaJIT"
             -- load nvim-specific libraries only for config
             local nvim_libs = {

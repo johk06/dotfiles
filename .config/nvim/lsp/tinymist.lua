@@ -4,5 +4,6 @@ Jhk.require_program("tinymist")
 return {
     filetypes = { "typst" },
     cmd = { "tinymist" },
-    root_markers = { ".git" },
+    root_markers = { ".git", "typst.toml" },
+    settings = vim.g.typst_settings
 }
