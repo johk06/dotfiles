@@ -231,7 +231,7 @@ M.line_and_column_entries = function(line)
                 { parentdir,          "NonText" },
             }
         end,
-        ordinal = string.format("%s:%s:%d", text, filename, row),
+        ordinal = string.format("%s:%s:%d", text, filename, row or 0),
         lnum = row,
         col = col,
         filename = filename

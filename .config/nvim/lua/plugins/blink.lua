@@ -1,3 +1,47 @@
+--[[ Rationale {{{
+This is a fairly fast and capable completion engine.
+While I do not agree with all (or even a majority of) its design choices,
+I can simply not use these things.
+}}} ]]
+
+---@param ctx blink.cmp.Context
+---@param items blink.cmp.CompletionItem[]
+local keep_capitalization = function(ctx, items)
+    local kwd = ctx.get_keyword()
+    local correct, case
+    if kwd:match("^%l") then
+        correct = "^%u%l+$"
+        case = string.lower
+    elseif kwd:match("^%u") then
+        correct = "^%l+$"
+        case = string.upper
+    else
+        return items
+    end
+
+    local seen = {}
+    local out = {}
+    for _, itm in ipairs(items) do
+        local raw = itm.insertText
+        if not raw then
+            goto continue
+        end
+        if raw:match(correct) then
+            local text = case(raw:sub(1, 1)) .. raw:sub(2)
+            itm.insertText = text
+            itm.label = text
+        end
+        if not seen[itm.insertText] then
+            seen[itm.insertText] = true
+            table.insert(out, itm)
+        end
+
+        ::continue::
+    end
+
+    return out
+end
+
 ---@type zpack.Spec
 local M = {
     "saghen/blink.cmp",
@@ -16,11 +60,15 @@ M.opts = opts
 
 opts.keymap = {
     preset    = "none",
-    ["<C-e>"] = { "cancel", "fallback" },              -- [e]xit
-    ["<C-j>"] = { "show", "select_next", "fallback" }, -- really nice and quick directly under my index finger
-    ["<C-l>"] = { "accept", "show", "fallback" },      -- mirror command line
-    ["<C-n>"] = { "show", "select_next", "fallback" }, -- [n]ext
-    ["<C-p>"] = { "show", "select_prev", "fallback" }, -- [p]revious
+    -- exit, escape
+    ["<C-e>"] = { "cancel", "fallback" },
+    -- really nice and quick directly under my index finger,
+    -- TODO: check how much I use digraphs, maybe remap <C-k>?
+    ["<C-j>"] = { "show", "select_next", "fallback" },
+    -- mirror command line
+    ["<C-l>"] = { "accept", "show", "fallback" },
+    ["<C-n>"] = { "show", "select_next", "fallback" },
+    ["<C-p>"] = { "show", "select_prev", "fallback" },
 }
 
 opts.signature = {
@@ -79,12 +127,12 @@ opts.completion = {
     menu = {
         scrollbar = false,
         max_height = 24,
-        min_width = 30,
+        min_width = 24,
         draw = {
             columns = {
-                { "index" },
                 { "label",    "label_description", gap = 1 },
                 { "kind_icon" },
+                { "index" },
             },
             components = {}
         }
@@ -124,6 +172,7 @@ opts.completion.menu.draw.components = {
 -- (Neo)Vim has a nice omnifunc for css: 'ft-css-omni'
 local css_sources = { "omni", "lua_snippets", "path", "buffer" }
 
+
 opts.sources = {
     default = { "lsp", "path", "lua_snippets", "buffer" },
     per_filetype = {
@@ -143,6 +192,11 @@ opts.sources = {
                     return vim.fn.getcwd()
                 end
             }
+        },
+        buffer = {
+            -- When completing using a word beginning with a capital letter, keep that
+            -- Since the buffer mode is primarily in use in comments &c, this is nice
+            transform_items = keep_capitalization
         }
     }
 }

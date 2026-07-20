@@ -584,7 +584,7 @@ M.lsp_symbols = {
     Enum          = "= enum",
     EnumMember    = "- enum",
     Event         = "! ev",
-    Field         = ". field",
+    Field         = ". elem",
     File          = "$ file",
     Folder        = "/ dir",
     Function      = "λ func",

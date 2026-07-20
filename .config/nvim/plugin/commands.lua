@@ -472,3 +472,9 @@ command("Shuffle", function()
 end, {
     desc = "Jump to a random search match"
 })
+
+command("ToTerm", function(args)
+    api.nvim_open_term(0, {})
+end, {
+    desc = "Open current buffer as terminal"
+})
