@@ -114,10 +114,14 @@ M.attach = function(buf, opts, cb)
             M.previews[client] = M.previews[client] or {}
             M.previews[client][buf] = {
                 task = task,
+                scroll = true,
                 augroup = utils.autogroup("typst-preview." .. task, {
                     CursorMoved = function(ev)
                         if client.attached_buffers[ev.buf] then
-                            scroll_preview(client, task)
+                            local pv = find_preview(client, ev.buf)
+                            if pv and pv.scroll then
+                                scroll_preview(client, task)
+                            end
                         end
                     end
                 })
@@ -160,6 +164,27 @@ local action = function(fn)
 end
 M.close = action(function(client, buf, preview)
     exec_cmd(client, "tinymist.doKillPreview", { preview.task })
+    api.nvim_del_augroup_by_id(preview.augroup)
 end)
+
+M.set_autoscroll = function(value, buf)
+    buf = buf or 0
+    local preview = find_preview(get_tinymist(buf), buf)
+    if preview then
+        preview.scroll = value
+    end
+end
+M.get_autoscroll = function(buf)
+    buf = buf or 0
+    local preview = find_preview(get_tinymist(buf), buf)
+    return preview and preview.scroll
+end
+
+M.toggle_scroll = function(buf)
+    local cur = M.get_autoscroll(buf)
+    local new = not cur
+    M.set_autoscroll(new, buf)
+    utils.message("Typst", ("Autoscroll %sabled"):format(new and "en" or "dis"))
+end
 
 return M

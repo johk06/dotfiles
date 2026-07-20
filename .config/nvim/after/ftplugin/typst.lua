@@ -49,6 +49,10 @@ map("n", "<localleader>p", function()
     preview.attach(0, {})
     preview.open()
 end, { desc = "Typst: Preview" })
+
+map("n", "<localleader>s", function()
+    preview.toggle_scroll(0)
+end)
 -- }}}
 
 -- Quick equations
