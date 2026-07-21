@@ -1,8 +1,9 @@
 #!/bin/bash
 
-WALL="$HOME/.config/background/wall"
-THUMB="$HOME/.config/background/thumb"
-LOCK="$HOME/.config/background/lock"
+DIR="$HOME/.config/background"
+WALL="$DIR/wall"
+THUMB="$DIR/thumb"
+LOCK="$DIR/lock"
 
 THUMB_RESOLUTION=384x384 # Provides a clean 10x downscale from 3840x2160
 
@@ -44,4 +45,9 @@ both)
 set)
     set_walls
     ;;
+*) exit 1;;
 esac
+
+for hook in "$DIR"/hooks/*; do
+    "$hook" "$1"
+done

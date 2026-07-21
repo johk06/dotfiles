@@ -1,0 +1,19 @@
+#!/bin/sh
+
+SATURATION=100
+BRIGHTNESS=100
+
+usage() {
+    echo "Usage: img:avgcolor [-s SAT] [-b BRIGHT] FILE..." >&2
+    exit 1
+}
+
+while getopts "s:b:h" o; do
+    case "$o" in
+        s) SATURATION="$OPTARG";;
+        b) BRIGHTNESS="$OPTARG";;
+        '?'|h) usage;;
+    esac
+done
+shift $((OPTIND - 1))
+magick "$@" -kmeans 1 -modulate "$BRIGHTNESS,$SATURATION" -format '#%[hex:u]\n' info:-
