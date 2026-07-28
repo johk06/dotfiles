@@ -6,26 +6,12 @@ if [[ ! -d "$CACHEDIR" ]]; then
     mkdir "$CACHEDIR"
 fi
 
-function notify {
-    response="$(notify-send "Recognized text" "$1" \
-        --action=copy="Copy" \
-        --action=view="View")"
-    case "$response" in
-    copy)
-        wl-copy <"$2"
-        ;;
-    view)
-        xdg-open "$2"
-        ;;
-    esac
-}
-
 region="$(slurp -w 0 -b '#4c566acc' -s '#ffffff00')"
 sleep 0.1
 
 timestamp="$(date +"$DATEFMT")"
 imagename="$CACHEDIR/$timestamp.png"
-textfile="$CACHEDIR/$timestamp.txt"
+output="$CACHEDIR/$timestamp"
 
 if ! grim -g "$region" "$imagename"; then
     exit
@@ -36,6 +22,25 @@ if ! language="$(wayinput -l -1 -t "Language" -c $available)"; then
     exit
 fi
 language="${language:-eng}"
-text="$(tesseract -l "$language" "$imagename" - txt | tee "$textfile" >(wl-copy -p))"
+tesseract "$imagename" "$output" -l "$language" pdf
 
-notify "$text" "$textfile"
+if [[ "$1" == "txt" ]]; then
+    text="$(pdftotext "$output.pdf" - | tee "$output.txt")"
+    response="$(notify-send "Recognized text" "$text" \
+        --action=copy="Copy" \
+        --action=view="View"\
+        --action=pdf="View PDF")"
+    case "$response" in
+    copy)
+        wl-copy <"$output.txt"
+        ;;
+    view)
+        xdg-open "$output.txt"
+        ;;
+    pdf)
+        xdg-open "$output.pdf"
+        ;;
+    esac
+elif [[ "$1" == "pdf" ]]; then
+    zathura "$output.pdf"
+fi

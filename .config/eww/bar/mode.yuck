@@ -35,7 +35,7 @@
     {"keys": "w", "action": "Window" },
     {"keys": "c", "action": "Color"},
     {"keys": "q", "action": "QR-Code"},
-    {"keys": "t", "action": "Text"}
+    {"keys": "dt", "action": "OCR"}
 ],
 "config": [
     {"keys": "jk", "action": "Brightness"},

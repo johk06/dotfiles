@@ -23,7 +23,8 @@ mode "screenshot" {
     # Scan/Pick various things
     bindsym C exec $sc/pick-color; mode "default"
     bindsym Q exec $sc/scan-qr; mode "default"
-    bindsym T exec $sc/ocr; mode "default"
+    bindsym T exec $sc/ocr txt; mode "default"
+    bindsym D exec $sc/ocr pdf; mode "default"
 }
 
 # Shorthands if screenshot mode is not desirable
