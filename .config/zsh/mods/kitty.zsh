@@ -5,4 +5,6 @@ autoload -Uz -- "$KITTY_INSTALLATION_DIR/shell-integration/zsh/kitty-integration
 kitty-integration
 unfunction kitty-integration
 
+kitty @ env LS_COLORS="$LS_COLORS"
+
 KITTY_SHELL_INTEGRATION_ENABLED=1

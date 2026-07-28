@@ -127,7 +127,7 @@ bindall ^Xr zle-jhk-run-below
 # }}}
 # Autosuggestions {{{
 ZSH_AUTOSUGGEST_STRATEGY=(history completion)
-ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=8,bold"
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=8,underline"
 source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
 bindall -M viins '^ ' autosuggest-accept
 # }}}
@@ -215,7 +215,7 @@ zle -N delete-surround surround
 zle -N add-surround surround
 zle -N change-surround surround
 
-# NOTE: I cannot use ys &c due to the $KEYTIMEOUT but this is shorter anyways
+# NOTE: I cannot use ys & c due to the $KEYTIMEOUT but this is shorter anyways
 bindkey -M vicmd  q add-surround    # [q]uote
 bindkey -M visual q add-surround
 bindkey -M vicmd  Q change-surround

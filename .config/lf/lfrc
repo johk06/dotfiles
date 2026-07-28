@@ -16,6 +16,12 @@ map zt
 map c
 # }}}
 
+# Print and quit -- to select directories
+map Q :{{
+    $echo "$fx" > "/proc/$id/fd/1"
+    quit
+}}
+
 # Options {{{
 # Update view when files change
 set watch
