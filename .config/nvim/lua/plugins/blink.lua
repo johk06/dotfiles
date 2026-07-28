@@ -58,6 +58,21 @@ local M = {
 local opts = {}
 M.opts = opts
 
+---@param what string
+local show_only = function(what)
+    ---@param cmp blink.cmp.API
+    return function(cmp)
+        cmp.show { providers = { what } }
+    end
+end
+
+local map_source = function(key, what)
+    ---@type blink.cmp.KeymapCommand[]
+    local fn = { show_only(what) }
+    opts.keymap["<C-x>" .. key] = fn
+    opts.keymap["<C-x><C-" .. key .. ">"] = fn
+end
+
 opts.keymap = {
     preset    = "none",
     -- exit, escape
@@ -70,6 +85,11 @@ opts.keymap = {
     ["<C-n>"] = { "show", "select_next", "fallback" },
     ["<C-p>"] = { "show", "select_prev", "fallback" },
 }
+
+map_source("b", "buffer")
+map_source("f", "path")
+map_source("o", "omni")
+map_source("s", "lsp") -- [s]erver
 
 opts.signature = {
     enabled = true,

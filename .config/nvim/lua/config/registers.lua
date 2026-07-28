@@ -7,7 +7,7 @@ local utils = require("config.utils")
 ---@param s string
 ---@param reg string
 local set_from_str = function(s, reg)
-    local text = s:gsub("%s", "")
+    local text = s:gsub("%s*", "")
     local keycodes = vim.keycode(text):gsub("<Ignore>", "")
     fn.setreg(reg, keycodes)
 end
@@ -155,16 +155,31 @@ local shorten = function(s)
     return vim.trim(s):gsub("%s+", " ")
 end
 
-local assemble_line = function(width, ch, lookup)
+local assemble_lines = function(width, ch, lookup, lines)
     local out = {}
-    local tgt = math.floor((width - #ch) / #ch)
-    for _, chunk in ipairs(ch) do
-        local text = shorten(lookup[chunk[1]])
-        table.insert(out, chunk)
-        table.insert(out, {
-            (text:sub(1, math.min(#text, tgt))) .. (" "):rep(tgt - #text),
-            "NonText"
-        })
+    local per_line = math.floor(#ch / lines)
+    local tgt = math.floor(((width - per_line) / per_line))
+    for i = 1, lines do
+        local line = {}
+        for j = 1, per_line do
+            local idx = (i - 1) * per_line + j
+            local chunk = ch[idx]
+            if not chunk then
+                break
+            end
+
+            local text = shorten(lookup[chunk[1]])
+            local textwidth = fn.strdisplaywidth(text)
+            local slice_at = math.min(textwidth, tgt)
+            local charpos = vim.str_utf_pos(text)[slice_at]
+
+            table.insert(line, chunk)
+            table.insert(line, {
+                (text:sub(1, charpos)) .. (" "):rep(tgt - textwidth),
+                "NonText"
+            })
+        end
+        table.insert(out, line)
     end
 
     return out
@@ -191,16 +206,16 @@ local get_register_icons = function(target_width)
         end
     end
 
-    output.reg = assemble_line(target_width, output.reg, texts)
-    output.number = assemble_line(target_width, output.number, texts)
-    output.special = assemble_line(target_width, { { "+", "SpecialChar" }, { "*", "SpecialChar" } }, {
+    output.reg = assemble_lines(target_width, output.reg, texts, 2)
+    output.number = assemble_lines(target_width, output.number, texts, 2)
+    output.special = assemble_lines(target_width, { { "+", "SpecialChar" }, { "*", "SpecialChar" } }, {
         ["*"] = fn.getreg("*"),
         ["+"] = fn.getreg("+")
-    })
-    output.unnamed = assemble_line(target_width, { { '"', "SpecialChar" }, { "-", "SpecialChar" } }, {
+    }, 1)
+    output.unnamed = assemble_lines(target_width, { { '"', "SpecialChar" }, { "-", "SpecialChar" } }, {
         ['"'] = fn.getreg('"'),
         ["-"] = fn.getreg("-")
-    })
+    }, 1)
 
     return output
 end
@@ -230,11 +245,11 @@ local show_registers = function()
     vim.list_extend(first_line, regs.macro)
     local lines = {
         first_line,
-        regs.unnamed,
-        regs.special,
-        regs.number,
-        regs.reg
     }
+    vim.list_extend(lines, regs.unnamed)
+    vim.list_extend(lines, regs.special)
+    vim.list_extend(lines, regs.number)
+    vim.list_extend(lines, regs.reg)
     api.nvim_buf_set_lines(register_buf, 0, 0, false, empty_lines(#lines))
     for i, line in ipairs(lines) do
         api.nvim_buf_set_extmark(register_buf, ns, i - 1, 0, {
@@ -263,7 +278,6 @@ local hide_registers = function()
     register_win = nil
 end
 
-
 M.preview_on_key = function(key)
     api.nvim_feedkeys(key, "n")
     show_registers()
@@ -285,4 +299,3 @@ end
 -- }}}
 
 return M
-
