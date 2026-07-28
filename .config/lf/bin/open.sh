@@ -47,10 +47,11 @@ image/*)
     ;;
 text/* | application/json | inode/x-empty | application/javascript | application/x-wine-extension-ini)
     # just let neovim deal with everything
+    ROW="${lf_user_row:-1}"
     if [[ -n "$NVIM" ]]; then
-        run_in_tty nvr "$fx"
+        run_in_tty nvr "$fx" +"$ROW"
     else
-        run_in_tty nvim -b -- $fx
+        run_in_tty nvim -b +"$ROW" -- $fx
     fi
 
     ;;
