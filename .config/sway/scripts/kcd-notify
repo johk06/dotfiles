@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+
+ID=56789
+
+while IFS=$'\t' read -r ev cur total pct file; do
+    case "$ev" in
+    progress)
+        ID=$(notify-send -p -r "$ID" -i emblem-downloads "Receiving '$file'" "$cur of $total K ($pct%)")
+        ;;
+    done)
+        if [[ "$total" == false ]]; then
+            ID=$(notify-send -p -r "$ID" -i emblem-error "Failed to receive" "$file")
+        else
+            ID=$(notify-send -p -r "$ID" -i emblem-success "Received" "$file")
+        fi
+        ;;
+    esac
+done < <(kcd watch --json | jq -r --unbuffered '
+if .type == "share.progress" then
+[
+    "progress", (.payload.current / 1024 | round), (.payload.total / 1024 | round),
+    ((.payload.current / .payload.total) * 100 | round),
+    .payload.file
+] | join("\t")
+elif .type == "share.complete" then
+    [ "done", 0,0, .payload.success, .payload.file ] | join("\t")
+else empty end')

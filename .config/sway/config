@@ -63,6 +63,7 @@ exec mpd && mpd-mpris # mpd exits when it daemonizes
 exec playerctld
 
 exec kcd daemon
+exec $sc/kcd-notify # notify me when a file is downloading
 exec swayidle -w
 exec nm-applet
 exec blueman-applet
