@@ -1,0 +1,39 @@
+(deflisten phone "./bin/phone.py")
+
+(defwidget phone-toggle-button []
+    (box :class "dual-cbutton${arraylength(phone) > 0 ? " active" : ""}" :space-evenly false
+        (button :hexpand true
+            :timeout "16s"
+            (label :limit-width 12
+                :text "   ${ arraylength(phone) == 0 ? "No Phones" : phone[0].data.name}"))
+        (button :onclick "${EWW_CMD} update phone-revealed=${!phone-revealed}"
+            {phone-revealed ? "" : "" })))
+
+(defwidget phone-device [dev]
+    (box :orientation "vertical" :space-evenly false :class "card"
+        (box :space-evenly false
+            (box :hexpand true :halign "start"
+                (themed-icon :name "phone" :width 48 :height 48)
+                (battery-circle :percentage {dev.data.charge} :charging {dev.data.charging}))
+            (box :orientation "v" :style "margin-right: 1rem;"
+                (label :class "title" :text {dev.data.name} :limit-width 16)
+                (label :class "text" :text {dev.id} :limit-width 12)))
+        (box :space-evenly false
+            (button :class "button" :onclick `kcd clipboard ${dev.id}` "󰅇   Clipboard")
+            (button :class "button ${dev.data.ip != "null" ? "active" : ""}"
+                :onclick "kcd sftp request ${dev.id}"
+                "󰢭   SFTP")
+    (revealer :reveal {dev.data.ip != "null"} :transition "slideright" :duration "200ms"
+            (box :space-evenly false :orientation "v"
+                (button :class "button"
+                    :timeout "128s"
+                    :onclick `./bin/mount-phone.sh "${dev.data.name}" "${dev.data.path}" "${dev.data.ip}" "${dev.data.port}" "${dev.data.password}"` 
+                    "󱧺   Open")
+            )))))
+
+(defwidget phone-panel []
+    (box :space-evenly false :class "section" :orientation "vertical"
+        (box :space-evenly false
+            (scroll :style "min-height: 20rem;" :vscroll true :hexpand true (box :orientation "v" :hexpand true :space-evenly false
+                (for dev in {phone}
+                    (phone-device :dev dev)))))))

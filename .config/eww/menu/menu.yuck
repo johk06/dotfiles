@@ -5,7 +5,7 @@
 (include "menu/performance.yuck")
 (include "menu/status.yuck")
 (include "menu/toggles.yuck")
-(include "menu/valent.yuck")
+(include "menu/phone.yuck")
 (include "menu/vpn.yuck")
 (include "menu/wifi.yuck")
 
@@ -16,7 +16,7 @@
 (defvar tasks-revealed false)
 (defvar perf-revealed false)
 (defvar vpn-revealed false)
-(defvar valent-revealed false)
+(defvar phone-revealed false)
 (defvar agenda-revealed true)
 
 (defwidget battery-circle [percentage charging]
@@ -42,8 +42,8 @@
         (revealer :reveal {bt-revealed} :transition "slidedown" (bluetooth-panel))
         (revealer :reveal {wifi-revealed} :transition "slidedown" (wifi-panel))
 
-        (box (vpn-toggle-button) (valent-toggle-button))
-        (revealer :reveal {valent-revealed} :transition "slidedown" (valent-panel))
+        (box (vpn-toggle-button) (phone-toggle-button))
+        (revealer :reveal {phone-revealed} :transition "slidedown" (phone-panel))
         (revealer :reveal {vpn-revealed} :transition "slidedown" (vpn-panel))))
 
 (defwidget qmenu [] (eventbox :onhoverlost "./bin/popup.sh settings-panel settings-panel-open close&"

@@ -1,0 +1,32 @@
+.bg-workspace {
+    background-color: rgba($bg0, 30%);
+    min-width: 285px;
+    min-height: 162px;
+    margin: .4rem;
+    padding: .2rem;
+    border-radius: 12px;
+    border: 2px solid $bg0;
+    &.active {
+        border-color: $accent;
+    }
+}
+
+.bg-window {
+    background-color: rgba($bg1, 30%);
+    border-radius: 6px;
+    &.active {
+        background-color: rgba(mix($accent, $bg0, 90%), 50%);
+    }
+    &.float {
+        border: none;
+        box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 3px;
+    }
+}
+
+.bg-label {
+    color: $fg0;
+    background-color: $bg0;
+    border-radius: 12px;
+    padding: 0.5rem;
+    margin: .2rem;
+}

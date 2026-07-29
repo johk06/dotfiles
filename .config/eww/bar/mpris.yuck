@@ -24,15 +24,16 @@ mpc idleloop player | while read -r line; do mpc -f '%title%' queued; done")
 (defwidget mpris-bar-player [pl]
     (eventbox
         :onscroll "if [ {} = up ]; then eww update mpris-menu-selected=${min(arraylength(mpris) - 1,mpris-menu-selected+1)}; else eww update mpris-menu-selected=${max(mpris-menu-selected - 1, 0)}; fi"
-        (button :class "text-button ${pl.playing ? "mpris-playing" : "mpris-paused"}"
-        :onclick "playerctl -p ${pl.id} play-pause; eww update mpris-menu-selected=0"
-        :onrightclick "playerctld -p ${pl.id} shift"
-        :tooltip "${pl.title} by ${pl.artist?:"Unknown"}
+        (button 
+            :class "text-button ${pl.playing ? "mpris-playing" : "mpris-paused"}"
+            :onclick "playerctl -p ${pl.id} play-pause; eww update mpris-menu-selected=0"
+            :onrightclick "playerctld -p ${pl.id} shift"
+            :tooltip "${pl.title} by ${pl.artist?:"Unknown"}
 Playing in ${pl.player}"
-        (box :space-evenly false
-            (mpris-status :pl pl)
-            (mpris-title :text {pl.title?: "No Player"} :pl pl)
-            (mpris-circle :pos {(pl.playing ? ((EWW_TIME - pl.start_time) / pl.length) : pl.last_progress) * 100})))))
+            (box :space-evenly false
+                (mpris-status :pl pl)
+                (mpris-title :text {pl.title?: "No Player"} :pl pl)
+                (mpris-circle :pos {(pl.playing ? ((EWW_TIME - pl.start_time) / pl.length) : pl.last_progress) * 100})))))
 
 (defwidget mpris-current []
     (revealer :reveal {mpris != []} :transition "slideright"

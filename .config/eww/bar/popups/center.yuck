@@ -8,6 +8,7 @@
 "headset": "audio-headset",
 "audio-headset": "audio-headset",
 "audio-headset-bluetooth": "audio-headphones",
+"audio-card-analog": "audio-card",
 "audio-card-analog-pci": "audio-card",
 "audio-card-analog-usb": "audio-card",
 "audio-headset-analog-usb": "audio-headset",

@@ -66,19 +66,13 @@
 
 (deflisten batteries "bin/batteries.sh")
 
-(defwidget status-valent [dev]
-    (button
-        :class "status-text ${dev != "" ? "" : "inactive"} ${dev.battery.charging ? "recharging" : ""}" 
-        :tooltip {dev != "" ?
-            "Connected to ${dev.name}, ${dev?.battery?.percentage}% - ${dev.battery.charging ? "Charging" : "Discharging"}"
-            : "No Devices Connected"}
-        :onclick `${valent-call} ${dev.path} org.gtk.Actions Activate 'sava{sv}' share.text 1 s "$(wl-paste)" 0`
-        :onrightclick `${valent-call} ${dev.path} org.gtk.Actions Activate 'sava{sv}' share.uri 1 s "$(wl-paste)" 0`
-        (label
-            :text
-            " ${dev.battery.charging
-                ? (bat-charging[(dev.battery.percentage - dev.battery.percentage % 10)/10])
-                : (bat-discharging[(dev.battery.percentage - dev.battery.percentage % 10)/10])}")))
+(defwidget status-phone []
+    (box :space-evenly false (for dev in phone
+        (button :class "status-text ${dev.data.charging ? "recharging" : ""}"
+        (label :text
+            " ${dev.data.charging
+                ? (bat-charging[(dev.data.charge - dev.data.charge% 10)/10])
+                : (bat-discharging[(dev.data.charge - dev.data.charge% 10)/10])}")))))
 
 (defwidget status-batteries []
     (box :space-evenly false
@@ -165,8 +159,7 @@ ${dev.rate}W" : ""}"
 (defwidget status []
     (box :class "button" :space-evenly false
         (status-audio)
-        (revealer :transition "slideleft" :reveal {(valent.connected?.[0] ?: "") != ""}
-            (status-valent :dev {valent.connected?.[0] ?: ""}))
+        (status-phone)
         (status-batteries)
         (status-network)
         (status-settings)
