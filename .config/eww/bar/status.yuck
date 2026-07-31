@@ -66,14 +66,6 @@
 
 (deflisten batteries "bin/batteries.sh")
 
-(defwidget status-phone []
-    (box :space-evenly false (for dev in phone
-        (button :class "status-text ${dev.data.charging ? "recharging" : ""}"
-        (label :text
-            " ${dev.data.charging
-                ? (bat-charging[(dev.data.charge - dev.data.charge% 10)/10])
-                : (bat-discharging[(dev.data.charge - dev.data.charge% 10)/10])}")))))
-
 (defwidget status-batteries []
     (box :space-evenly false
         (for dev in {batteries}
@@ -159,7 +151,6 @@ ${dev.rate}W" : ""}"
 (defwidget status []
     (box :class "button" :space-evenly false
         (status-audio)
-        (status-phone)
         (status-batteries)
         (status-network)
         (status-settings)

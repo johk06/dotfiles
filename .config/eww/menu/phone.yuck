@@ -5,7 +5,7 @@
         (button :hexpand true
             :timeout "16s"
             (label :limit-width 12
-                :text "   ${ arraylength(phone) == 0 ? "No Phones" : phone[0].data.name}"))
+                :text "   ${ arraylength(phone) == 0 ? "No Phones" : phone[0].device.name}"))
         (button :onclick "${EWW_CMD} update phone-revealed=${!phone-revealed}"
             {phone-revealed ? "" : "" })))
 
@@ -14,20 +14,20 @@
         (box :space-evenly false
             (box :hexpand true :halign "start"
                 (themed-icon :name "phone" :width 48 :height 48)
-                (battery-circle :percentage {dev.data.charge} :charging {dev.data.charging}))
+                (battery-circle :percentage {dev.battery.charge} :charging {dev.battery.charging}))
             (box :orientation "v" :style "margin-right: 1rem;"
-                (label :class "title" :text {dev.data.name} :limit-width 16)
-                (label :class "text" :text {dev.id} :limit-width 12)))
+                (label :class "title" :text {dev.device.name} :limit-width 16)
+                (label :class "text" :text {dev.device.id} :limit-width 12)))
         (box :space-evenly false
-            (button :class "button" :onclick `kcd clipboard ${dev.id}` "󰅇   Clipboard")
-            (button :class "button ${dev.data.ip != "null" ? "active" : ""}"
-                :onclick "kcd sftp request ${dev.id}"
+            (button :class "button" :onclick `kcd clipboard ${dev.device.id}` "󰅇   Clipboard")
+            (button :class "button ${dev.sftp != "null" ? "active" : ""}"
+                :onclick "kcd sftp request ${dev.device.id}"
                 "󰢭   SFTP")
-    (revealer :reveal {dev.data.ip != "null"} :transition "slideright" :duration "200ms"
+    (revealer :reveal {dev.sftp != "null"} :transition "slideright" :duration "200ms"
             (box :space-evenly false :orientation "v"
                 (button :class "button"
                     :timeout "128s"
-                    :onclick `./bin/mount-phone.sh "${dev.data.name}" "${dev.data.path}" "${dev.data.ip}" "${dev.data.port}" "${dev.data.password}"` 
+                    :onclick `./bin/mount-phone.sh "${dev.device.name}" "${dev.sftp.path}" "${dev.sftp.ip}" "${dev.sftp.port}" "${dev.sftp.password}"` 
                     "󱧺   Open")
             )))))
 

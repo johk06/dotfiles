@@ -71,6 +71,10 @@
         }
     }
 
+    &.slim {
+        margin: unset;
+    }
+
     &.light {
         background-color: $bg3;
     }

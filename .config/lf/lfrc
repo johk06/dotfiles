@@ -103,6 +103,7 @@ map Yc cp-content
 map Yp cp-path
 map Yn cp-name
 map Yu cp-url
+map Ys share-phone
 map Pp push :clip-paste<space>
 map Pl paste-link
 map Pi clip-info

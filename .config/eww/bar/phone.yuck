@@ -1,0 +1,28 @@
+(defwidget status-phone-media [dev]
+    (box :space-evenly false
+        (button :class "button ${dev.media.isPlaying ? "mpris-playing" : "mpris-paused"} slim"
+            :tooltip "Playing ${dev.media.artist} - ${dev.media.title}
+Playing in ${dev.media.player}"
+            :onclick "kcd mpris toggle"
+            (box :space-evenly false
+                (label :style "font-size: 0.9rem;"
+                    :text "${dev.media.isPlaying ? "":"" }   ${dev.media.title}"
+                    :limit-width 12)
+                (mpris-circle :pos {(dev.media.pos / dev.media.length) * 100})))))
+
+(defwidget phone-element [dev]
+    (box :space-evenly false
+        (button :class "status-text ${dev.battery.charging ? "recharging" : ""}"
+            :style "margin-right: 0.8rem;"
+            :tooltip "${dev.device.name}: ${dev.battery.charge}% ${dev.battery.charging ? "(charging)" : ""}"
+            (label :text
+                " ${dev.battery.charging
+                    ? (bat-charging[(dev.battery.charge - dev.battery.charge% 10)/10])
+                    : (bat-discharging[(dev.battery.charge - dev.battery.charge% 10)/10])}"))
+        (revealer :transition "slideright" :reveal {dev.media != "null"}
+            (status-phone-media :dev {dev}))))
+
+(defwidget status-phone []
+    (box :space-evenly false :class "button" :style "padding-right: unset;"
+        (for dev in phone 
+            (phone-element :dev {dev}))))

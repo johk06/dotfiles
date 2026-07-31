@@ -11,7 +11,7 @@ while IFS=$'\t' read -r ev cur total pct file; do
         if [[ "$total" == false ]]; then
             ID=$(notify-send -p -r "$ID" -i emblem-error "Failed to receive" "$file")
         else
-            ID=$(notify-send -p -r "$ID" -i emblem-success "Received" "$file")
+            ID=$(notify-send -p -r "$ID" -i emblem-success "Transfer complete" "$file")
         fi
         ;;
     esac

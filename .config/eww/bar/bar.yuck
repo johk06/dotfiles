@@ -8,6 +8,7 @@
 (include "./bar/mpris.yuck")
 (include "./bar/notifications.yuck")
 (include "./bar/clock.yuck")
+(include "./bar/phone.yuck")
 
 (defwindow bar
     :monitor '["DP-1", "eDP-1", 0]'
@@ -41,6 +42,7 @@
             (box :space-evenly false :class "top-bar-right"
                 (mpris-current)
                 (systray-expander)
+                (status-phone)
                 (status)
                 (clock)))))
 
