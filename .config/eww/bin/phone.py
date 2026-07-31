@@ -28,7 +28,7 @@ for line in proc.stdout:
     else:
         id = obj["deviceId"]
         if state.get(id) is None:
-            state[id] = {}
+            state[id] = {"id": id}
 
         key = EVMAP.get(ev, ev)
         state[id][key] = obj["payload"]
