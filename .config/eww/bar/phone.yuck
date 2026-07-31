@@ -1,3 +1,5 @@
+(defvar status-phone-expanded false)
+
 (defwidget status-phone-media [dev]
     (box :space-evenly false
         (button :class "button ${dev.media.isPlaying ? "mpris-playing" : "mpris-paused"} slim"
@@ -13,13 +15,14 @@ Playing in ${dev.media.player}"
 (defwidget phone-element [dev]
     (box :space-evenly false
         (button :class "status-text ${dev.battery.charging ? "recharging" : ""}"
-            :style "margin-right: 0.8rem;"
+            :onclick "${EWW_CMD} update status-phone-expanded=${!status-phone-expanded}"
+             :style "margin-right: 0.8rem;"
             :tooltip "${dev.device.name}: ${dev.battery.charge}% ${dev.battery.charging ? "(charging)" : ""}"
             (label :text
                 " ${dev.battery.charging
                     ? (bat-charging[(dev.battery.charge - dev.battery.charge% 10)/10])
                     : (bat-discharging[(dev.battery.charge - dev.battery.charge% 10)/10])}"))
-        (revealer :transition "slideright" :reveal {dev.media != "null"}
+        (revealer :transition "slideright" :reveal {dev.media != "null" && status-phone-expanded}
             (status-phone-media :dev {dev}))))
 
 (defwidget status-phone []
