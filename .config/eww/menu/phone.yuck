@@ -1,4 +1,6 @@
-(deflisten phone "./bin/phone.py")
+(deflisten phone
+    :initial '[]'
+    "./bin/phone.py")
 
 (defwidget phone-toggle-button []
     (box :class "dual-cbutton${arraylength(phone) > 0 ? " active" : ""}" :space-evenly false

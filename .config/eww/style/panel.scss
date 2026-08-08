@@ -32,6 +32,11 @@
         padding: 0em .2em;
     }
 
+    &.blend {
+        border-radius: 12px;
+        padding: 0em 0.8rem;
+    }
+
     &:hover {
         background-color: $bg2;
     }
