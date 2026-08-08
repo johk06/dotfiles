@@ -14,11 +14,7 @@ end
 
 -- General Purpose {{{
 local toggle_text = function()
-  if S.text.visible() then
-    S.text.hide()
-  else
-    S.text.show()
-  end
+  S.text.visible = not S.text.visible
 end
 
 local move = function(dir, inc)
@@ -41,8 +37,7 @@ end
 
 local scale = function(inc)
   return function()
-    local cur = S.viewer.get_scale()
-    S.viewer.set_abs_scale(cur + inc)
+    S.viewer.set_abs_scale(S.viewer.scale + inc)
   end
 end
 
@@ -68,12 +63,12 @@ end
 -- }}}
 
 -- General config {{{
-S.set_mode("viewer")            -- mode at startup
-S.enable_antialiasing(true)     -- anti-aliasing
-S.enable_decoration(true)       -- window title/buttons/borders
-S.enable_overlay(false)         -- window overlay mode
-S.enable_exif_orientation(true) -- image orientation by EXIF
-S.set_dnd_button("MouseRight")  -- drag-and-drop mouse button
+S.mode = "viewer"           -- mode at startup
+S.antialiasing = true       -- anti-aliasing
+S.decoration = true         -- window title/buttons/borders
+S.overlay = false           -- window overlay mode
+S.exif_orientation = true   -- image orientation by EXIF
+S.dnd_button = "MouseRight" -- drag-and-drop mouse button
 -- }}}
 -- Colors {{{
 local color = function(sub, name, col)
@@ -95,30 +90,30 @@ S.viewer.set_image_chessboard(20, 0xff333333, 0xff4c4c4c)
 S.set_format_params('raw', { camera_wb = true }) -- use camera white balance
 
 -- Gallery {{{
-S.imagelist.set_order("numeric")   -- list order
-S.imagelist.enable_reverse(false)  -- reverse order
-S.imagelist.enable_recursive(true) -- recursive directory reading
-S.imagelist.enable_adjacent(false) -- add adjacent files from same dir
-S.imagelist.enable_fsmon(true)     -- enable file system monitoring
+S.imagelist.order = "numeric" -- list order
+S.imagelist.reverse = false   -- reverse order
+S.imagelist.recursive = true  -- recursive directory reading
+S.imagelist.adjacent = false  -- add adjacent files from same dir
+S.imagelist.fsmon = true      -- enable file system monitoring
 -- }}}
 -- Text {{{
-S.text.set_font("Fira Code") -- font name
-S.text.set_size(16)          -- font size in pixels
-S.text.set_spacing(0)        -- line spacing
-S.text.set_padding(10)       -- padding from window edge
-S.text.set_timeout(5)        -- layer hide timeout
-S.text.set_status_timeout(3) -- status message hide timeout
+S.text.font = "Fira Code" -- font name
+S.text.size = 16          -- font size in pixels
+S.text.spacing = 0        -- line spacing
+S.text.padding = 10       -- padding from window edge
+S.text.timeout = 5        -- layer hide timeout
+S.text.status_timeout = 3 -- status message hide timeout
 -- }}}
 -- Viewer {{{
-S.viewer.set_default_scale("optimal")   -- default image scale
-S.viewer.set_default_position("center") -- default image position
-S.viewer.set_drag_button("MouseLeft")   -- mouse button to drag image
-S.viewer.enable_centering(true)         -- enable automatic centering
-S.viewer.enable_loop(true)              -- enable image list loop mode
-S.viewer.limit_preload(1)               -- number of images to preload
-S.viewer.limit_history(1)               -- number of the history cache
-S.viewer.set_pinch_factor(1.0)          -- pinch gesture factor
-S.viewer.set_text("topleft", {          -- top left text block scheme
+S.viewer.default_scale = "optimal"   -- default image scale
+S.viewer.default_position = "center" -- default image position
+S.viewer.drag_button = "MouseLeft"   -- mouse button to drag image
+S.viewer.autocenter = true           -- enable automatic centering
+S.viewer.loop = true                 -- enable image list loop mode
+S.viewer.preload = 1                 -- number of images to preload
+S.viewer.history = 1                 -- number of the history cache
+S.viewer.pinch_factor = 1.0          -- pinch gesture factor
+S.viewer.set_text("topleft", {       -- top left text block scheme
   "{name}",
   "Fmt:\t{format}",
   "Size:\t{sizehr}",
@@ -193,18 +188,18 @@ end)
 
 mousev("ScrollUp", function()
   local pos = S.get_mouse_pos()
-  local scale = S.viewer.get_scale()
+  local scale = S.viewer.scale
   scale = scale + scale / 10
   S.viewer.set_abs_scale(scale, pos.x, pos.y);
 end)
 mousev("ScrollDown", function()
   local pos = S.get_mouse_pos()
-  local scale = S.viewer.get_scale()
+  local scale = S.viewer.scale
   scale = scale - scale / 10
   S.viewer.set_abs_scale(scale, pos.x, pos.y);
 end)
 
-mapv("v", function() S.set_mode("gallery") end)
+mapv("v", function() S.mode = "gallery" end)
 mapv("r", function()
   S.viewer.rotate(90)
 end)
@@ -213,16 +208,16 @@ mapv("m", function()
   S.viewer.rotate(180)
 end)
 
-mapv("n", function() S.viewer.switch_image("next") end)
-mapv("Shift+n", function() S.viewer.switch_image("prev") end)
-mapv("g", function() S.viewer.switch_image("first") end)
-mapv("Shift+g", function() S.viewer.switch_image("last") end)
+mapv("n", function() S.gallery.select("right") end)
+mapv("Shift+n", function() S.gallery.select("left") end)
+mapv("g", function() S.gallery.select("first") end)
+mapv("Shift+g", function() S.gallery.select("last") end)
 -- }}}
 -- Gallery Mappings {{{
 local mouseg = S.gallery.on_mouse
 local mapg = S.gallery.on_key
-mapg("Return", function() S.set_mode("viewer") end)
-mouseg("MouseLeft", function() S.set_mode("viewer") end)
+mapg("Return", function() S.mode = "viewer" end)
+mouseg("MouseLeft", function() S.mode = "viewer" end)
 for k, dir in pairs {
   h = "left",
   l = "right",
@@ -234,24 +229,24 @@ for k, dir in pairs {
   d = "pgdown",
 } do
   mapg(k, function()
-    S.gallery.switch_image(dir)
+    S.gallery.select(dir)
   end)
 end
 -- }}}
 
 -- Gallery {{{
-S.gallery.set_aspect("fill")          -- thumbnail aspect ratio
-S.gallery.set_thumb_size(200)         -- thumbnail size in pixels
-S.gallery.set_padding_size(5)         -- padding between thumbnails
-S.gallery.set_border_size(5)          -- border size for selected thumbnail
-S.gallery.set_selected_scale(1.2)     -- scale for selected thumbnail
-S.gallery.set_pinch_factor(100.0)     -- pinch gesture factor
-S.gallery.enable_hover(true)          -- enable mouse following
-S.gallery.limit_cache(100)            -- number of thumbnails stored in memory
-S.gallery.enable_embedded_thumb(true) -- use embedded thumbnails
-S.gallery.enable_preload(false)       -- preloading invisible thumbnails
-S.gallery.enable_pstore(false)        -- enable persistent storage for thumbnails
-S.gallery.set_text("topleft", {       -- top left text block scheme
+S.gallery.aspect = "fill"       -- thumbnail aspect ratio
+S.gallery.thumb_size = 200      -- thumbnail size in pixels
+S.gallery.padding_size = 5      -- padding between thumbnails
+S.gallery.border_size = 5       -- border size for selected thumbnail
+S.gallery.selected_scale = 1.2  -- scale for selected thumbnail
+S.gallery.pinch_factor = 100.0  -- pinch gesture factor
+S.gallery.hover = true          -- enable mouse following
+S.gallery.cache = 100           -- number of thumbnails stored in memory
+S.gallery.embedded_thumb = true -- use embedded thumbnails
+S.gallery.preload = false       -- preloading invisible thumbnails
+S.gallery.pstore = false        -- enable persistent storage for thumbnails
+S.gallery.set_text("topleft", { -- top left text block scheme
   "{name}",
 })
 S.gallery.set_text("topright", { -- top right text block scheme
