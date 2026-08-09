@@ -174,9 +174,19 @@ map(obj, "gG", textobjs.entire_buffer)
 -- this is a heuristic, for "proper variable" declarations use `iv` from treesitter
 map("o", "=", textobjs.variable_value)
 
-map(obj, ".", textobjs.treesitter_node)
-map(obj, "<", textobjs.treesitter_parent)
-map(obj, ">", textobjs.treesitter_child)
+
+local ts_select = require("vim.treesitter._select")
+local with_count = function(fn)
+    return function()
+        fn(vim.v.count1)
+    end
+end
+map(obj, "<", with_count(ts_select.select_parent))
+map(obj, ">", with_count(ts_select.select_child))
+map(mov, "].", with_count(ts_select.select_next))
+map(mov, "[.", with_count(ts_select.select_prev))
+map(mov, "]>", with_count(ts_select.select_grow_next))
+map(mov, "[<", with_count(ts_select.select_grow_prev))
 -- }}}
 
 --[[ focus the current fold
@@ -209,10 +219,10 @@ for _, severity in ipairs(vim.diagnostic.severity) do
 end
 
 local builtin_brackets = {
-    { "]s", "[s" },          -- spelling errors
-    { "]z", "[z" },          -- folds
-    { "]c", "[c]" },         -- diffs
-    { "g,", "g;" },          -- changes
+    { "]s", "[s" },  -- spelling errors
+    { "]z", "[z" },  -- folds
+    { "]c", "[c]" }, -- diffs
+    { "g,", "g;" },  -- changes
 }
 local bracket_with_count = function(command)
     local ok, err = pcall(vim.api.nvim_cmd, {

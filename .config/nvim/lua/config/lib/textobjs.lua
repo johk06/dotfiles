@@ -2,7 +2,6 @@ local M = {}
 local api = vim.api
 local esc = api.nvim_replace_termcodes("<esc>", true, false, true)
 local ftpref = require("config.lib.ftpref")
-local utils = require("config.utils")
 
 local MAX_LINES_FORWARD = 20
 
@@ -279,47 +278,6 @@ function M.create_pattern_obj(patterns)
     return M.create_textobj(pattern_obj, { patterns = patterns })
 end
 
--- }}}
--- Treesitter {{{
-local ts = vim.treesitter
-
----@type textobject
----@param opts {transform: fun(node: TSNode): TSNode?}
-local ts_object = function(pos, lcount, opts)
-    local parser, err = ts.get_parser(0)
-    if not parser then
-        return utils.error("Treesitter", err or "")
-    end
-
-    if #pos == 2 then
-        vim.list_extend(pos, pos)
-    end
-    pos[1] = pos[1] - 1
-    pos[3] = pos[3] - 1
-    local node = parser:node_for_range(pos)
-    if not node then
-        return
-    end
-    node = opts.transform and opts.transform(node) or node
-
-    local srow, scol, erow, ecol = ts.get_node_range(node)
-
-    return { srow + 1, scol, erow + 1, ecol - 1 }, "char"
-end
-
-M.treesitter_node = M.create_textobj(ts_object, {})
-M.treesitter_parent = M.create_textobj(ts_object, {
-    ---@param node TSNode
-    transform = function(node)
-        return node:parent()
-    end
-})
-M.treesitter_child = M.create_textobj(ts_object, {
-    ---@param node TSNode
-    transform = function(node)
-        return node:child(vim.v.count)
-    end
-})
 -- }}}
 -- Miscellaneous {{{
 local function foldmarker_object(pos, count, opts)
