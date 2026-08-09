@@ -78,9 +78,9 @@ end
 ---@type config.op.operator_func
 local multiply_operator = function(mode, region, extra)
     local before = extra.args and extra.args.before or false
-    local target = before and region[1] or region[2]
+    local target = before and { region[1], region[2] } or { region[3], region[4] }
 
-    if mode == "char" and region[1][1] == region[2][1] then
+    if mode == "char" and region[1] == region[3] then
         local text = operators.get_region(mode, region)
         local sel = text[1]
         if not (sel:match("%s$") or sel:match("^%s") or sel:match("%W$") or sel:match("^%W")) then
@@ -165,16 +165,12 @@ end)
  Swap two regions based on three motions
 ]]
 local range = vim.treesitter._range
-local region_to_range = function(region)
-    return { region[1][1], region[1][2], region[2][1], region[2][2] }
-end
-
 local last_transpose
 local transpose_range_1
 local next_transpose_phase
-local transpose_phase_2 = operators.make_operator("jhk-transpose-2", function(mode)
-    local r1 = region_to_range(transpose_range_1)
-    local r2 = region_to_range(operators.get_op_region(mode))
+local transpose_phase_2 = operators.make_operator("jhk-transpose-2", function(mode, region)
+    local r1 = transpose_range_1
+    local r2 = region
     if range.intercepts(r1, r2) then
         utils.error("Transpose", "Ranges cannot intersect")
         return
@@ -200,8 +196,8 @@ local transpose_phase_2 = operators.make_operator("jhk-transpose-2", function(mo
     next_transpose_phase = nil
 end, {}, false)
 
-local transpose_phase_1 = operators.make_operator("jhk-transpose-1", function(mode)
-    transpose_range_1 = operators.get_op_region(mode)
+local transpose_phase_1 = operators.make_operator("jhk-transpose-1", function(mode, region)
+    transpose_range_1 = region
     local next_step = next_transpose_phase[1]
     if type(next_step) == "function" then
         next_step()

@@ -51,14 +51,14 @@ end
 
 local map_select_operator = function(keys, capture, desc)
     require("config.lib.operators").map_function(keys, function(mode, region)
-        local endline = region[2][1]
+        local endline = region[3]
         require("multicursor-nvim").action(function(ctx)
             cursor_for_ts_node(ctx, capture, {
-                region[1][1] - 1,
-                region[1][2],
+                region[1] - 1,
+                region[2],
                 endline - 1,
                 mode == "line" and #vim.api.nvim_buf_get_lines(0, endline - 1, endline, false)[1] or
-                region[2][2]
+                region[4]
             })
         end)
     end, { desc = desc, no_repeated = true })
@@ -103,10 +103,10 @@ function M.config()
      each line, at the same position as the original one
      for charwise mode on a single line: create a single cursor at the destination of the motion ]]
     operators.map_function("--", function(mode, region, extra)
-        if mode == "line" or region[2][1] ~= region[1][1] then
+        if mode == "line" or region[3] ~= region[1] then
             local original_column = vim.fn.charcol(".")
             mc.action(function(ctx)
-                for i = region[1][1] + 1, region[2][1] do
+                for i = region[1] + 1, region[3] do
                     local cursor = ctx:addCursor()
                     cursor:setPos({ i, original_column })
                     cursor:feedkeys(original_column .. "|")
@@ -116,7 +116,7 @@ function M.config()
             mc.action(function(ctx)
                 local main = ctx:mainCursor()
                 main:clone()
-                main:setPos({ region[2][1], region[2][2] + 1 })
+                main:setPos({ region[3], region[4] + 1 })
             end)
         end
     end, { normal_only = true, no_repeated = true, desc = "Cursor: New for motion" })

@@ -25,11 +25,11 @@ local function get_mark(mark)
 end
 
 local function get_op_region(mode)
-    if mode == "visual" then
-        return { get_mark "<", get_mark ">" }
-    else
-        return { get_mark "[", get_mark "]" }
-    end
+    local range = mode == "visual"
+        and { get_mark "<", get_mark ">" }
+        or { get_mark "[", get_mark "]" }
+
+    return { range[1][1], range[1][2], range[2][1], range[2][2] }
 end
 
 M.get_op_region = get_op_region
@@ -39,29 +39,29 @@ function Jhk.opfunc(mode)
 end
 
 ---@param mode "char"|"line"
----@param region config.region
+---@param region Range4
 M.get_region = function(mode, region)
     if mode == "line" then
-        return vim.api.nvim_buf_get_lines(0, region[1][1] - 1, region[2][1], false)
+        return vim.api.nvim_buf_get_lines(0, region[1] - 1, region[3], false)
     else
-        return vim.api.nvim_buf_get_text(0, region[1][1] - 1, region[1][2], region[2][1] - 1, region[2][2] + 1,
+        return vim.api.nvim_buf_get_text(0, region[1] - 1, region[2], region[3] - 1, region[4] + 1,
             {})
     end
 end
 
 ---@param mode "char"|"line"
----@param region config.region
+---@param region Range4
 ---@param replacement string[]
 M.set_region = function(mode, region, replacement)
     if mode == "line" then
-        vim.api.nvim_buf_set_lines(0, region[1][1] - 1, region[2][1], false, replacement)
+        vim.api.nvim_buf_set_lines(0, region[1] - 1, region[3], false, replacement)
     else
-        vim.api.nvim_buf_set_text(0, region[1][1] - 1, region[1][2], region[2][1] - 1, region[2][2] + 1, replacement)
+        vim.api.nvim_buf_set_text(0, region[1] - 1, region[2], region[3] - 1, region[4] + 1, replacement)
     end
 end
 
 ---@alias config.op.extra {saved: table, repeated: boolean, args: table, hijacked_count: integer}
----@alias config.op.operator_func fun(mode: "char"|"line", region: config.region, extra: config.op.extra)
+---@alias config.op.operator_func fun(mode: "char"|"line", region: Range4, extra: config.op.extra)
 
 ---@param name string
 ---@param cb config.op.operator_func
