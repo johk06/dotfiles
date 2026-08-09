@@ -111,19 +111,20 @@ M.attach = function(buf, opts, cb)
                 return
             end
 
+            local on_cursor_move = function(ev)
+                if client.attached_buffers[ev.buf] then
+                    local pv = find_preview(client, ev.buf)
+                    if pv and pv.scroll then
+                        scroll_preview(client, task)
+                    end
+                end
+            end
             M.previews[client] = M.previews[client] or {}
             M.previews[client][buf] = {
                 task = task,
                 scroll = true,
                 augroup = utils.autogroup("typst-preview." .. task, {
-                    CursorMoved = function(ev)
-                        if client.attached_buffers[ev.buf] then
-                            local pv = find_preview(client, ev.buf)
-                            if pv and pv.scroll then
-                                scroll_preview(client, task)
-                            end
-                        end
-                    end
+                    CursorMoved = on_cursor_move,
                 })
             }
 

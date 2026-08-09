@@ -2,6 +2,7 @@ local M = {}
 local api = vim.api
 local esc = api.nvim_replace_termcodes("<esc>", true, false, true)
 local ftpref = require("config.lib.ftpref")
+local utils = require("config.utils")
 
 local MAX_LINES_FORWARD = 20
 
@@ -17,13 +18,11 @@ Important ones:
  - arbitrary single-line regexes
  - entire buffer: gG
  - variable value: =
+ - arbitrary treesitter node: .
 }}} ]]
-
 -- Infrastructure {{{
----@alias config.point [integer, integer]
----@alias config.region [config.point, config.point]
 ---@alias seltype "line"|"char"
----@alias textobj_function fun(pos: config.point, lcount: integer, opts: any?): config.region|config.point?, seltype?
+---@alias textobject fun(pos: Range2|Range4, lcount: integer, opts: any?): ((Range2|Range4)?, seltype?)
 
 ---@param cmdstr string
 local function norm(cmdstr)
@@ -40,17 +39,16 @@ local function getline(lnum)
     return api.nvim_buf_get_lines(0, lnum - 1, lnum, true)[1]
 end
 
+---@param sel Range2 | Range4 Either a point or a region
 local set_selection = function(mode, sel)
     norm("m`")
-    -- motion
     ---@cast mode seltype
-    if type(sel[1]) == "number" then
-        ---@cast sel config.point
+    if #sel == 2 then -- motion
+        ---@cast sel Range2
         api.nvim_win_set_cursor(0, sel)
     else -- textobject
-        ---@cast sel config.region
         local vimode = api.nvim_get_mode().mode
-        api.nvim_win_set_cursor(0, sel[1])
+        api.nvim_win_set_cursor(0, { sel[1], sel[2] })
 
         local isvisreg = vimode:find("v")
         local isvisline = vimode:find("V")
@@ -67,15 +65,26 @@ local set_selection = function(mode, sel)
             if linewise then norm("V") else norm("v") end
         end
 
-        api.nvim_win_set_cursor(0, sel[2])
+        api.nvim_win_set_cursor(0, { sel[3], sel[4] })
     end
 end
 
----@param fn textobj_function
+---@param fn textobject
 ---@param opts table<string, any>
 function M.create_textobj(fn, opts)
     return function()
         local curpos = api.nvim_win_get_cursor(0)
+        if api.nvim_get_mode().mode == "v" then
+            local vis = vim.fn.getpos("v")
+            local cur =  vim.fn.getpos(".")
+            if vis[2] > cur[2] or (vis[2] == cur[2] and vis[3] > cur[3]) then
+                vis, cur = cur, vis
+            end
+            curpos = {
+                vis[2], vis[3],
+                cur[2], cur[3]
+            }
+        end
         local lcount = api.nvim_buf_line_count(0)
         local sel, mode = fn(curpos, lcount, opts)
         if (not sel) or (not mode) then
@@ -90,7 +99,7 @@ end
 -- }}}
 
 -- Diagnostics {{{
----@type textobj_function
+---@type textobject
 local function diagnostic(pos, lcount, opts)
     local args = {
         wrap = false,
@@ -120,7 +129,7 @@ local function diagnostic(pos, lcount, opts)
                 return diagnostic({ target.end_lnum + 2, target.end_col + 2 }, lcount, opts)
             end
         end
-        return { { target.lnum + 1, target.col }, { target.end_lnum + 1, target.end_col - 1 } }, "char"
+        return { target.lnum + 1, target.col, target.end_lnum + 1, target.end_col - 1 }, "char"
     end
 
     return nil, nil
@@ -132,7 +141,6 @@ M.diagnostic_warn = M.create_textobj(diagnostic, { type = vim.diagnostic.severit
 M.diagnostic_info = M.create_textobj(diagnostic, { type = vim.diagnostic.severity.INFO })
 M.diagnostic_hint = M.create_textobj(diagnostic, { type = vim.diagnostic.severity.HINT })
 -- }}}
-
 -- Indent {{{
 local function line_is_blank(lnum)
     local line = getline(lnum)
@@ -186,14 +194,13 @@ local function indent(pos, lcount, opts)
         nextl = nextl - 1
     end
 
-    return { { prevl, 1 }, { nextl, 1 } }, "line"
+    return { prevl, 1, nextl, 1 }, "line"
 end
 
 M.indent_inner = M.create_textobj(indent, { outer = false })
 M.indent_outer = M.create_textobj(indent, { outer = true })
 M.indent_outer_with_last = M.create_textobj(indent, { outer = true, always_last = true })
 -- }}}
-
 -- Variable assignments {{{
 -- Very coarse variable assigned value logic
 M.variable_value = M.create_textobj(function(pos, lcount, opts)
@@ -210,10 +217,9 @@ M.variable_value = M.create_textobj(function(pos, lcount, opts)
 
     -- try to avoid common suffixes
     local trailing_sep = line:match("([,;]%s*)$")
-    return { { lnum, eq_value_pos }, { lnum, #line - (trailing_sep and #trailing_sep + 1 or 1) } }, "char"
+    return { lnum, eq_value_pos, lnum, #line - (trailing_sep and #trailing_sep + 1 or 1) }, "char"
 end, {})
 -- }}}
-
 -- Patterns {{{
 local find_any = function(text, patterns, startpos)
     for _, pattern in ipairs(patterns) do
@@ -266,7 +272,7 @@ local function pattern_obj(pos, lcount, opts)
 
     local obj_start = (type(g1) ~= "number" and #g1 or 0) + startpos
     local obj_end = endpos - (type(g2) ~= "number" and #g2 or 0)
-    return { { curline, obj_start - 1 }, { curline, obj_end - 1 } }, "char"
+    return { curline, obj_start - 1, curline, obj_end - 1 }, "char"
 end
 
 function M.create_pattern_obj(patterns)
@@ -274,7 +280,47 @@ function M.create_pattern_obj(patterns)
 end
 
 -- }}}
+-- Treesitter {{{
+local ts = vim.treesitter
 
+---@type textobject
+---@param opts {transform: fun(node: TSNode): TSNode?}
+local ts_object = function(pos, lcount, opts)
+    local parser, err = ts.get_parser(0)
+    if not parser then
+        return utils.error("Treesitter", err or "")
+    end
+
+    if #pos == 2 then
+        vim.list_extend(pos, pos)
+    end
+    pos[1] = pos[1] - 1
+    pos[3] = pos[3] - 1
+    local node = parser:node_for_range(pos)
+    if not node then
+        return
+    end
+    node = opts.transform and opts.transform(node) or node
+
+    local srow, scol, erow, ecol = ts.get_node_range(node)
+
+    return { srow + 1, scol, erow + 1, ecol - 1 }, "char"
+end
+
+M.treesitter_node = M.create_textobj(ts_object, {})
+M.treesitter_parent = M.create_textobj(ts_object, {
+    ---@param node TSNode
+    transform = function(node)
+        return node:parent()
+    end
+})
+M.treesitter_child = M.create_textobj(ts_object, {
+    ---@param node TSNode
+    transform = function(node)
+        return node:child(vim.v.count)
+    end
+})
+-- }}}
 -- Miscellaneous {{{
 local function foldmarker_object(pos, count, opts)
     local marker = vim.opt.foldmarker:get()
@@ -314,14 +360,14 @@ local function foldmarker_object(pos, count, opts)
     end
 
     local ret = {
-        { startline + (opts.outer and 0 or 1), 0 },
-        { endline - (opts.outer and 0 or 1),   0 },
+        startline + (opts.outer and 0 or 1), 0,
+        endline - (opts.outer and 0 or 1), 0,
     }
     return ret, "line"
 end
 
 M.entire_buffer = M.create_textobj(function(_, lcount, _)
-    return { { 1, 0 }, { lcount, 0 } }, "line"
+    return { 1, 0, lcount, 0 }, "line"
 end, {})
 
 M.foldmarker_outer = M.create_textobj(foldmarker_object, { outer = true })

@@ -173,6 +173,10 @@ map(obj, "gG", textobjs.entire_buffer)
 -- C-style variable value; ignore visual mode since = is useful there
 -- this is a heuristic, for "proper variable" declarations use `iv` from treesitter
 map("o", "=", textobjs.variable_value)
+
+map(obj, ".", textobjs.treesitter_node)
+map(obj, "<", textobjs.treesitter_parent)
+map(obj, ">", textobjs.treesitter_child)
 -- }}}
 
 --[[ focus the current fold

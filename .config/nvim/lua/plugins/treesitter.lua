@@ -201,6 +201,12 @@ local attach = function(buf, language)
     return true
 end
 
+---@param buf integer
+local detach = function(buf)
+    local bo = vim.bo[buf]
+    vim.treesitter.stop(buf)
+end
+
 M.config = function()
     require("config.utils").user_autogroup("config.treesitter.update", {
         TSUpdate = function()
@@ -233,12 +239,16 @@ M.config = function()
             local buf = ev.buf
             local ft = vim.bo[buf].ft
 
-
             local language = vim.treesitter.language.get_lang(ft) or ft
-            if not attach(buf, language) and parsers[language] then
-                ts.install(language):await(function()
-                    attach(buf, language)
-                end)
+            local attached = attach(buf, language)
+            if not attached then
+                if parsers[language] then
+                    ts.install(language):await(function()
+                        attach(buf, language)
+                    end)
+                else
+                    detach(buf)
+                end
             end
         end
     })

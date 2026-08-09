@@ -390,21 +390,25 @@ command("Modeline", function(args)
 
     local set_cmd = {}
     for _, opt in ipairs(args.fargs) do
-        local ok, val = pcall(api.nvim_get_option_value, opt, {})
-        if not ok then
-            utils.error("Modeline", val)
-            return
-        end
-        local set
-        if val == true then
-            set = opt
-        elseif val == false then
-            set = "no" .. opt
+        if opt:find("[a-z]=") then
+            table.insert(set_cmd, opt)
         else
-            set = ("%s=%s"):format(opt, val):gsub("[:%s]", "\\%1")
-        end
+            local ok, val = pcall(api.nvim_get_option_value, opt, {})
+            if not ok then
+                utils.error("Modeline", val)
+                return
+            end
+            local set
+            if val == true then
+                set = opt
+            elseif val == false then
+                set = "no" .. opt
+            else
+                set = ("%s=%s"):format(opt, val):gsub("[:%s]", "\\%1")
+            end
 
-        table.insert(set_cmd, set)
+            table.insert(set_cmd, set)
+        end
     end
 
     local directive = ("vim: set %s :"):format(table.concat(set_cmd, " "))
