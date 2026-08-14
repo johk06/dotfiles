@@ -138,6 +138,73 @@ end)
 S.viewer.bind_reset()
 S.gallery.bind_reset()
 
+local get_scaled_rel = function(x, ix, s)
+  return math.floor((x - ix) / s)
+end
+
+local get_px_coords = function()
+  local cursor = S.get_mouse_pos()
+  local relative = S.viewer.get_position()
+  local pict = S.viewer.get_image()
+  local scale = S.viewer.scale
+  local px_x = get_scaled_rel(cursor.x, relative.x, scale)
+  local px_y = get_scaled_rel(cursor.y, relative.y, scale)
+
+  if not pict
+      or px_x < 0 or px_x > pict.width
+      or px_y < 0 or px_y > pict.height then
+    return nil
+  end
+  return { x = px_x, y = px_y }
+end
+
+local measurements = {}
+local show_coord = function(c)
+  return string.format("%d,%d", c.x, c.y)
+end
+local show_distance = function(a, b)
+  local dx = a.x - b.x
+  local dy = a.y - b.y
+
+  local point = show_coord({ x = dx, y = dy })
+  return point .. ("=%.1fpx"):format(math.sqrt(dx * dx + dy * dy))
+end
+local display_measurements = function()
+  local text = {}
+  for i, m in ipairs(measurements) do
+    local next = measurements[i + 1]
+    local txt = show_coord(m)
+    if next then
+      txt = txt .. " to " .. show_coord(next) .. " : " .. show_distance(m, next)
+    end
+    table.insert(text, txt)
+  end
+  S.text.status = table.concat(text, "\n")
+end
+local measure_image = function()
+  local c = get_px_coords()
+  if not c then
+    return
+  end
+  table.insert(measurements, c)
+  display_measurements()
+end
+
+local clear_mesaurement = function()
+  measurements = {}
+  S.text.status = "[Measurement Cleared]"
+end
+local set_measurement = function()
+  if #measurements > 1 then
+    table.remove(measurements)
+  end
+  measure_image()
+end
+local drop_measurement = function()
+  table.remove(measurements)
+  display_measurements()
+end
+
 -- Mappings for everywhere {{{
 mapboth("q", S.exit, false)
 mapboth("w", on_current(function(img)
@@ -212,6 +279,11 @@ mapv("n", function() S.gallery.select("right") end)
 mapv("Shift+n", function() S.gallery.select("left") end)
 mapv("g", function() S.gallery.select("first") end)
 mapv("Shift+g", function() S.gallery.select("last") end)
+
+mapv("Escape", clear_mesaurement)
+mapv("Backspace", drop_measurement)
+mousev("Ctrl+MouseLeft", measure_image)
+mousev("Ctrl+MouseRight", set_measurement)
 -- }}}
 -- Gallery Mappings {{{
 local mouseg = S.gallery.on_mouse
