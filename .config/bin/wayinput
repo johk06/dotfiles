@@ -95,12 +95,20 @@ class InputWindow(Gtk.Window):
     def on_add(self, buffer: Gtk.EntryBuffer, pos, text: str, _len):
         buffer_text = buffer.get_text()
         if self.args.numeric:
-            if not (text.isdigit() or (text == "." and buffer_text.count(".") <= 1)):
+            if not (
+                text.isdigit()
+                or (text == "." and buffer_text.count(".") <= 1)
+                or (text == "-" and pos == 0 and buffer_text.count("-") <= 1)
+            ):
                 buffer.handler_block_by_func(self.on_add)
-                new_text = "".join([c for c in buffer_text if c.isdigit() or c == "."])
-                parts = new_text.split(".", 1)
-                prefix = parts[0] + "." + parts[1].replace(".", '')
-                buffer.set_text(prefix, len(prefix))
+                buffer.delete_text(pos, 1)
+                if text == "-":
+                    isneg = buffer_text[0] == "-"
+                    if isneg:
+                        buffer.delete_text(0, 1)
+                    else:
+                        buffer.insert_text(0, "-", 1)
+
                 buffer.handler_unblock_by_func(self.on_add)
                 return
         length = buffer.get_length()
