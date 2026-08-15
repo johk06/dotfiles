@@ -69,14 +69,13 @@
 (defwidget status-batteries []
     (box :space-evenly false
         (for dev in {batteries}
-            (label
+            (button
                 :class "status-text ${dev.charging ? "recharging" : (dev.value < 20 ? "alert" : "")}"
                 :tooltip "${dev.name}: ${dev.value}%${dev.to_empty != "null" ? "
 ${formattime(dev.to_empty, "%H:%M left", "UTC")}" : ""}${dev.to_full != "null" ? "
 ${formattime(dev.to_full, "%H:%M until full", "UTC")}" : ""}${dev.rate != "null" ? "
 ${dev.rate}W" : ""}"
-                :text
-                    "${bat-types[dev.type]}${dev.charging
+                "${bat-types[dev.type]}${dev.charging
                     ? (bat-charging[(dev.value - dev.value % 10)/10])
                     : (bat-discharging[(dev.value - dev.value % 10)/10])}${dev.internal ? "   ${dev.value}%": ""}"))))
 
@@ -86,21 +85,15 @@ ${dev.rate}W" : ""}"
     (button
         :class "status-text ${audio.out.mute ? "inactive" : (center-popup-reveal && center-popup-layer == 0 && audio-popup-kind == "out" ? "active" : "")}"
         :onclick "pamixer -t"
+        :onrightclick "pamixer -t --default-source"
         :tooltip "${audio.out.name}: ${audio.out.vol}%"
-        (label :text {audio.out.mute ? "󰸈" : (audio.out.vol > 70 ? "󰕾" : (audio.out.vol > 20 ? "󰖀" : "󰕿"))} 
-        ))
-    (button
-        :class "status-text ${audio.in.mute ? "inactive" : (center-popup-reveal && center-popup-layer == 0 && audio-popup-kind == "in" ? "active" : "")}"
-        :timeout "128s"
-        :onclick "pamixer -t --default-source"
-        :onrightclick "~/.config/sway/scripts/toggle-numen"
-        :onmiddleclick "~/.config/sway/scripts/toggle-numen kill"
-        :tooltip "${audio.in.name}: ${audio.in.vol}%"
         (box :space-evenly false
-            (label :text {audio.in.mute ? "󰍭" : "󰍬"})
-            (label 
-                :class "status-text ${numen-state == "listening" ? "nested-active" : (numen-state == "off" ? "inactive" : "" )}"
-                :text {numen-state == "listening" ? "" : "󰩅"})))))
+            (label :xalign -1
+                :style "min-width: 3em;"
+                :text
+                "${audio.out.mute ? "󰸈" : (audio.out.vol > 70 ? "󰕾" : (audio.out.vol > 20 ? "󰖀" : "󰕿"))} ${audio.out.vol}%")
+            (label :class "status-text small ${audio.in.mute ? "inactive" : ""}"
+                :text {audio.in.mute ? "󰍭" : "󰍬"}) ))))
 
 (defwidget status-network []
     (button :class "status-text ${vpn.active ? "" : "inactive"}"
@@ -131,7 +124,7 @@ ${dev.rate}W" : ""}"
 
 (defwidget status-settings []
     (button
-        :class "status-text ${service-swayidle ? "" : "inactive"}" 
+        :class "status-text ${service-swayidle ? "" : "inactive"} ${center-popup-reveal && center-popup-layer == 1 ? "active" : ""}"
         :timeout "16s"
         :onclick "killall swayidle && ${EWW_CMD} update service-swayidle=false || { ${EWW_CMD} update service-swayidle=true; swayidle -w& }"
         (box :space-evenly false
@@ -149,7 +142,7 @@ ${dev.rate}W" : ""}"
                     :text "${formattime(EWW_TIME - recording-info.start, "%M:%S", "UTC")}")))))
 
 (defwidget status []
-    (box :class "button" :space-evenly false
+    (box :class "button" :style "padding: unset;" :space-evenly false
         (status-audio)
         (status-batteries)
         (status-network)

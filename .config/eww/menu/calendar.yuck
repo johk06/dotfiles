@@ -92,7 +92,7 @@
                 :onclick "${EWW_CMD} update agenda-expanded-todo=${agenda-expanded-todo == item.id ? 0 : item.id}"
                 {agenda-expanded-todo == item.id ? "" : "" })
             (box :hexpand true :halign "start"
-                (button :tooltip {item.summary} :class "todo-title"
+                (button :tooltip {item.summary} :class "todo-title ${item.priority <= 4 ? "critical" : ""}"
                     :timeout "128s"
                     :onclick "todo done ${item.id}; ${todo-reload}"
                     (label :text {item.summary} :limit-width 20)))

@@ -51,6 +51,12 @@
             color: $polar4;
         }
     }
+    &.critical {
+        > label {
+            text-decoration: underline;
+            text-decoration-color: $red;
+        }
+    }
 }
 
 .todo-task {

@@ -14,11 +14,15 @@ Playing in ${dev.media.player}"
                     :limit-width 12)
                 (mpris-circle :pos {(dev.media.pos / dev.media.length) * 100})))))
 
-(defwidget status-phone-actions [dev] (box
+(defwidget status-phone-actions [dev] (box :space-evenly false
+    (button :class "status-text"
+        :timeout "16m"
+        :onclick `kcd clipboard ${dev.id}`
+        " ")
     (button :class "status-text"
         :timeout "16m"
         :onclick `kcd share ${dev.id} "$(zenity --file-selection)"`
-        " ")))
+        "󰈪")))
 
 (defwidget phone-element [dev]
     (box :space-evenly false
@@ -28,9 +32,8 @@ Playing in ${dev.media.player}"
                 : "${EWW_CMD} update status-phone-expanded=${dev.id}"}
             :tooltip "${dev.device.name}: ${dev.battery.charge}% ${dev.battery.charging ? "(charging)" : ""}"
             (label :text
-                " ${dev.battery.charging
-                    ? (bat-charging[(dev.battery.charge - dev.battery.charge% 10)/10])
-                    : (bat-discharging[(dev.battery.charge - dev.battery.charge% 10)/10])}"))
+                " ${(dev.battery.charging ? bat-charging : bat-discharging)
+                    [(dev.battery.charge - dev.battery.charge% 10)/10]}"))
         (revealer :transition "slideright" :reveal {status-phone-expanded == dev.id}
             (box :space-evenly false
                 :style "margin-left: 0.4em;"

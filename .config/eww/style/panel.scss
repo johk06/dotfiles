@@ -24,17 +24,12 @@
 }
 
 .status-text {
-    padding: 0em .5em;
-    border-radius: 6px;
+    border-radius: 12px;
+    padding: 0em 0.8rem;
     color: $fg0;
 
     &.small {
         padding: 0em .2em;
-    }
-
-    &.blend {
-        border-radius: 12px;
-        padding: 0em 0.8rem;
     }
 
     &:hover {
@@ -49,6 +44,7 @@
 
     &.active {
         background-color: mix($bg1, $accent, 60%);
+        * { color: $fg0; }
     }
     &.nested-active {
         color: $accent;
