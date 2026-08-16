@@ -8,6 +8,8 @@ bindsym --locked XF86AudioLowerVolume        exec $audio DEFAULT_SINK lower 3
 bindsym --locked Ctrl+XF86AudioRaiseVolume   exec $audio DEFAULT_SINK raise 10
 bindsym --locked Ctrl+XF86AudioLowerVolume   exec $audio DEFAULT_SINK lower 10
 bindsym --locked XF86AudioMute               exec $audio DEFAULT_SINK mute
+# toggle all playing streams
+bindsym --locked Ctrl+XF86AudioMute          exec $sc/toggle-mute-active
 
 # Input
 bindsym --locked Mod1+XF86AudioRaiseVolume      exec $audio DEFAULT_SOURCE raise 3

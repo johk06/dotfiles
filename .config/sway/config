@@ -62,8 +62,9 @@ exec /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
 exec mpd && mpd-mpris # mpd exits when it daemonizes
 exec playerctld
 
-exec kcd daemon
-exec $sc/kcd-notify # notify me when a file is downloading
+exec killall kcd
+exec sleep 1 && kcd daemon
+exec sleep 1 && $sc/kcd-notify # notify me when a file is downloading
 exec swayidle -w
 exec nm-applet
 exec blueman-applet

@@ -1,0 +1,7 @@
+#!/bin/sh
+
+pactl --format=json list sink-inputs |
+    jq '.[]|select(.corked | not).index' |
+    while read -r id; do
+        pactl set-sink-input-mute $id toggle
+    done

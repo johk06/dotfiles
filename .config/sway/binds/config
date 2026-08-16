@@ -7,12 +7,12 @@ mode "config" {
     bindsym Escape mode "default" 
 
     # Brightness, similar to audio in ./media
-    bindsym K exec $sc/brightness set +5
-    bindsym J exec $sc/brightness set -5
+    bindsym K       exec $sc/brightness set +5
+    bindsym J       exec $sc/brightness set -5
     bindsym Shift+K exec $sc/brightness set +20
     bindsym Shift+J exec $sc/brightness set -20
-    bindsym Mod4+K exec $sc/brightness set +50
-    bindsym Mod4+J exec $sc/brightness set -50
+    bindsym Mod4+K  exec $sc/brightness set +50
+    bindsym Mod4+J  exec $sc/brightness set -50
 
     # Color temperature, N to enter a value in Kelvin
     bindsym N exec killall gammastep || gammastep -O 3000; mode "default"
@@ -35,6 +35,9 @@ mode "config" {
 
     bindsym Plus opacity plus 0.05
     bindsym Minus opacity minus 0.05
+    # can be useful to hide a window
+    bindsym 0 opacity set 0.00
+    bindsym 1 opacity set 1.00
 
     bindsym A exec swaymsg animation_duration_ms "$(wayinput -n -l -1 -t "Animation Duration")"; mode "default"
 

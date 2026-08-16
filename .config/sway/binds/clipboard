@@ -42,7 +42,7 @@ mode "clipboard" {
     bindsym Mod1+T exec $sc/translate -p; mode "default"
 
     # Play it in a media player, e.g. for youtube videos
-    # NOTE: `force-window=immediate` makes sure that it does not wait for the stream to load to shown a window
+    # NOTE: `force-window=immediate` makes sure that it does not wait for the stream to load to show a window
     bindsym M exec mpv --force-window=immediate "$(wl-paste)"; mode "default"
     bindsym Mod1+M exec mpv --force-window=immediate "$(wl-paste -p)"; mode "default"
 
