@@ -155,10 +155,11 @@ map("n", leader .. "h", function()
 end, { desc = "Buffer: Hide win" })
 
 ---@param cb fun(bufnr: integer)
-local on_hidden = function(cb)
+local on_hidden = function(cb, preserve_alt)
     local alt = vim.fn.bufnr("#")
     for _, buf in ipairs(api.nvim_list_bufs()) do
-        if buf ~= alt and vim.bo[buf].buflisted and fn.bufwinid(buf) == -1 then
+        if (not preserve_alt or buf ~= alt)
+            and vim.bo[buf].buflisted and fn.bufwinid(buf) == -1 then
             cb(buf)
         end
     end
@@ -166,7 +167,10 @@ end
 
 -- Clear hidden buffers
 map("n", leader .. "c", function()
-    on_hidden(delete_buffer)
+    on_hidden(delete_buffer, true)
+end, { desc = "Buffer: Clear Hidden" })
+map("n", leader .. "C", function()
+    on_hidden(delete_buffer, false)
 end, { desc = "Buffer: Clear Hidden" })
 -- }}}
 --[[ Tabs {{{

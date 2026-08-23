@@ -50,3 +50,20 @@
   (#eq? @_arg "-c")
   (#offset! @injection.content 0 1 0 -1)
   (#set! injection.include-children))
+
+; The same with -e
+((command
+  name: (command_name) @_command @injection.language
+  argument: (word) @_arg
+  argument: [
+    (string) @injection.content
+    (concatenation
+      (string) @injection.content)
+    (raw_string) @injection.content
+    (concatenation
+      (raw_string) @injection.content)
+  ])
+  (#any-of? @_command "gnuplot" "ripe")
+  (#eq? @_arg "-e")
+  (#offset! @injection.content 0 1 0 -1)
+  (#set! injection.include-children))

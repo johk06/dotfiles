@@ -7,6 +7,16 @@ map("n", "<localleader>f", [[ysa")%a:format()<Left>]], {
     desc = "Lua: Format string"
 })
 
+map("n", "<localleader>k", 'ysiw"ysa"]', {
+    remap = true,
+    desc = "Lua: String Key"
+})
+
+map("n", "<localleader>K", 'ds"ds]', {
+    remap = true,
+    desc = "Lua: Remove string Key"
+})
+
 map("n", "<localleader>p", function()
     vim.cmd([[keeppatterns s/(\s*/, /]])
     vim.cmd.normal { "ipcall(", bang = true }

@@ -425,7 +425,11 @@ M.ft_mapper = function()
     local buf = api.nvim_get_current_buf()
     local map = M.local_mapper(buf, { group = true })
 
-    vim.b.undo_ftplugin = ("%s | call v:lua.require'config.utils'.unmap_group(%d)"):format(vim.b.undo_ftplugin, buf)
+    local undo = ""
+    if vim.b.undo_ftplugin then
+        undo = vim.b.undo_ftplugin .. "|"
+    end
+    vim.b.undo_ftplugin = undo .. ("call v:lua.require'config.utils'.unmap_group(%d)"):format(buf)
     return map
 end
 
