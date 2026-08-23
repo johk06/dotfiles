@@ -143,9 +143,12 @@ def get_scratchpad(i3: i3ipc.Con):
     ret = []
     scratch = i3.scratchpad().descendants()
 
+    index = 0
     for node in scratch:
         as_win = dump_con_desc(node)
         if as_win:
+            index+=1
+            as_win["index"] = index
             ret.append(as_win)
 
     return ret

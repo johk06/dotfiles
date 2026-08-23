@@ -37,9 +37,9 @@
 }
 
 .overview-scratch {
-    @extend .button;
+    @extend .bbutton;
     border-radius: 12px;
-    padding: .3rem;
+    padding: 0rem 0.3rem;
     margin: .1rem;
 }
 

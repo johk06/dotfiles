@@ -39,23 +39,20 @@
                     (label :class "workspace-name" :text {ws.icon}))))))
 
 (defwidget ws-overview-scratch []
-    (stack :selected {sway.scratch_count > 0 ? 1 : 0}
-        :width overview-ws-width :height overview-ws-height
-        (box (label :class "text faint" :text "Scratch Empty"))
-        (box (scroll :vexpand true :vscroll true (box :orientation "v"
+    (box :style "min-height: 3.4rem" :visible {sway.scratch_count > 0} 
+        (scroll :hexpand true :hscroll true (box :orientation "h" :spacing 12
             :space-evenly false
-            :style "padding: .5rem;"
-            :valign "start"
             (for win in {sway.scratch}
                 (button :class "overview-scratch" :tooltip {win.name}
                     :onclick "swaymsg '[con_id=${win.id}]' scratchpad show >/dev/null"
                     (box :space-evenly false
+                        (label :text {win.index} :yalign -1)
                         (image
-                            :style "margin-right: .4rem; margin-left: .4rem;"
+                            :style "margin-right: .4rem;"
                             :path {win.icon}
                             :image-width 16 :image-height 16)
                         (label :limit-width 16
-                            :class "text" :text {win.name})))))))))
+                            :class "text" :text {win.name}))))))))
 
 (defwidget ws-overview []
     (eventbox
@@ -63,11 +60,11 @@
         (revealer
             :reveal {ws-overview-reveal}
             :transition "slidedown"
-            (box (box :class "popup-win" :space-evenly false
-                (ws-overview-scratch)
+            (box (box :class "popup-win" :space-evenly false :orientation "v"
                 (box
                     (for ws in {sway.workspaces}
-                        (ws-box :ws {ws}))))))))
+                        (ws-box :ws {ws})))
+                (ws-overview-scratch))))))
 
 (defwindow ws-overview-win
     :monitor '["DP-1", "eDP-1", 0]'

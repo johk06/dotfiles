@@ -91,7 +91,7 @@ ${dev.rate}W" : ""}"
             (label :xalign -1
                 :style "min-width: 3em;"
                 :text
-                "${audio.out.mute ? "󰸈" : (audio.out.vol > 70 ? "󰕾" : (audio.out.vol > 20 ? "󰖀" : "󰕿"))} ${audio.out.vol}%")
+                "${audio.out.mute ? "󰸈" : (audio.out.vol > 70 ? "󰕾" : (audio.out.vol > 20 ? "󰖀" : "󰕿"))}  ${audio.out.vol}%")
             (label :class "status-text small ${audio.in.mute ? "inactive" : ""}"
                 :text {audio.in.mute ? "󰍭" : "󰍬"}) ))))
 

@@ -150,6 +150,14 @@
     }
 }
 
+.bbutton {
+    @extend .button;
+    background-color: $bg0;
+    &:hover {
+        background-color: $bg1;
+    }
+}
+
 .active {
     background-color: $accent;
     color: $inv;
