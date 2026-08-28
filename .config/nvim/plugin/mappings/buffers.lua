@@ -61,9 +61,9 @@ local goto_buf = function()
     local target = get_buf_idx()
     if not target then return end
 
-    local win = fn.bufwinid(target)
-    if win > 0 then
-        api.nvim_set_current_win(win)
+    local win = fn.win_findbuf(target)
+    if #win ~= 0 then
+        api.nvim_set_current_win(win[1])
         return
     end
 
@@ -79,10 +79,10 @@ map("n", leader .. leader, goto_buf, { desc = "Buffer: Show" })
 map("n", "<C-s>", function()
     if vim.v.count == 0 then
         local alt = fn.bufnr("#")
-        local w = fn.bufwinid(alt)
+        local w = fn.win_findbuf(alt)
 
-        if w ~= -1 then
-            api.nvim_set_current_win(w)
+        if #w ~= 0 then
+            api.nvim_set_current_win(w[1])
         else
             api.nvim_set_current_buf(alt)
         end
@@ -116,6 +116,12 @@ map("n", leader .. "p", function()
     if not buf then return end
     vim.cmd(("%dpb"):format(buf))
 end, { desc = "Buffer: Show Preview" })
+map("n", leader .. "m", function()
+    local target = get_buf_idx()
+    if not target then return end
+
+    fn.setreg("#", target)
+end, { desc = "Buffer: Set alt (mark)" })
 -- }}}
 -- Closing {{{
 map("n", leader .. "P", "<cmd>pclose<cr>", { desc = "Buffer: Close Preview" })
