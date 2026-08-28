@@ -15,6 +15,7 @@ local apostrophe_never_paired = {
     "scheme",
     "text",
     "typst",
+    "ripe"
 }
 
 local double_dollar = {

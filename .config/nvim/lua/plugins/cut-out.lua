@@ -8,6 +8,6 @@ return {
         keys = "yd",
         on_found = function(matches, _)
             require("config.utils").message("Cut-Out", ("%d matches"):format(#matches))
-        end
+        end,
     }
 }

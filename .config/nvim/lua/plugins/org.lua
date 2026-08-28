@@ -15,10 +15,6 @@ local M = {
     end,
     dependencies = {
         {
-            "johk06/orgmode-eval",
-            opts = {},
-        },
-        {
             "nvim-orgmode/telescope-orgmode.nvim"
         }
     }
@@ -229,7 +225,6 @@ end
 M.config = function()
     local orgmode = require("orgmode")
     local custom = require("config.plugins.orgmode")
-    local eval = require("orgmode-eval")
     local utils = require("config.utils")
 
     orgmode.setup(opts)
@@ -264,9 +259,6 @@ M.config = function()
         map("i", "<M-CR>", function()
             orgmode.action("org_mappings.meta_return")
         end)
-
-        map("n", "<space>e", eval.run_code_block)
-        map("n", "<space>E", eval.clear_buffer)
 
         -- Mimic markdown and the builtin help files
         map("n", "gO", custom.table_of_contents)
