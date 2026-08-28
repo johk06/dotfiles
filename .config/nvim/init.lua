@@ -115,6 +115,7 @@ o.linebreak = true
 o.breakindent = true
 o.breakindentopt = "sbr"
 o.showbreak = "» "
+o.list = true
 
 -- recognize 0b* and 0x* and don't treat numbers as negative where it doesn't
 -- make sense
@@ -127,13 +128,13 @@ opt.fillchars = {
     msgsep = "─", -- match the window border
 }
 
+-- only show things that are ambiguous
 opt.listchars = {
-    eol = "$",
-    multispace = " · ",
-    nbsp = "󱁐",
-    space = "·",
+    nbsp = "⋄",
     tab = "» ",
     trail = "_",
+    extends = "…",
+    precedes = "…",
 }
 
 opt.guicursor = {
