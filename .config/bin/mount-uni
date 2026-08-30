@@ -2,7 +2,7 @@
 
 # Mount uni nextcloud using webdav
 
-MOUNTPOINT="${1:-$HOME/Tmp/uni}"
+MOUNTPOINT="${1:-$HOME/uni/cloud}"
 mkdir -p "$MOUNTPOINT"
 
 pass-get "uni/1" cloud user cloudurl | {
@@ -14,7 +14,7 @@ pass-get "uni/1" cloud user cloudurl | {
     export RCLONE_CONFIG_UNI_URL="$URL/remote.php/dav/files/$USER"
     export RCLONE_CONFIG_UNI_VENDOR=nextcloud
     export RCLONE_CONFIG_UNI_USER="$USER"
-    export RCLONE_CONFIG_UNI_PASS="$(rclone obscure "$PASS")"
+    export RCLONE_CONFIG_UNI_PASS="$(echo  "$PASS" | rclone obscure -)"
 
     rclone mount UNI: "$MOUNTPOINT" \
         --vfs-cache-mode writes
