@@ -2,10 +2,10 @@
     background-color: $bg1;
     border-radius: 12px;
     margin: 0.4rem;
-    :last-child {
+    .tray-reveal-button {
         color: $fg0;
         border-radius: 12px;
-        padding: 0em 0.6rem 0em 0.5rem;
+        padding: 0em 1rem 0em 0.9rem;
         transition: background-color 0.3s ease, color 0.3s ease;
         &:hover {
             background-color: $bg2;
@@ -14,6 +14,7 @@
 }
 
 .tray-box {
+    border-radius: 12px;
     background-color: $tray-bg;
     > * {
         &:hover {
@@ -39,9 +40,10 @@ window {
 }
 menu {
     background-color: $bg0;
-    border-radius: 24;
+    border-radius: 16px;
     color: $fg0;
     margin: 2rem;
+    padding: 0.6rem;
 
     menu {
         border-radius: 8px;
@@ -53,17 +55,13 @@ menu {
         border-radius: 2rem;
         background-color: $bg-faint;
     }
-    > menuitem {
+    menuitem {
         transition: background-color 0.3s ease, color 0.3s ease;
         border-radius: 8px;
-        min-height: 1rem;
-        padding: 0.1rem;
+        min-height: 1.2rem;
+        padding: 0.5rem;
         margin: .1rem;
-        color: $fg0;
 
-        &:disabled{
-            color: $bg3;
-        }
         &:hover {
             background-color: $bg1;
         }
@@ -74,13 +72,14 @@ menu {
     }
 }
 
+menu label:disabled {
+    color: $bright-gray;
+}
+
 menubar {
     > menuitem {
-        padding: 0.07rem 1.15rem 0.07rem 0.85rem;
-        border-radius: 12;
+        border-radius: 12px;
         background-color: $bg2;
-        color: $fg0;
-        margin: .5rem;
         &:hover{
             background-color: $bg3;
         }

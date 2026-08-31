@@ -24,7 +24,7 @@
 }
 
 .overview-window {
-    background-color: $bg2;
+    background-color: $bg0;
     border-radius: 6px;
     border: 2px solid $bg1;
     &.float {
@@ -32,7 +32,7 @@
         box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 3px;
     }
     &.active {
-        background-color: mix($bg2, $accent, 80%);
+        background-color: mix($bg0, $accent, 50%);
     }
 }
 

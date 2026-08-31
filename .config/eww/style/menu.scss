@@ -1,0 +1,17 @@
+.card {
+    background-color: $bg0;
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 4px 6px;
+    border-radius: 12px;
+    padding: 0.3rem;
+    margin: 0.4rem;
+    &:drop(active) {
+        background-color: $bg1;
+    }
+}
+
+.section {
+    background-color: $bg1;
+    border-radius: 14px;
+    padding: .2rem;
+    margin: .4rem;
+}

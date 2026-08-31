@@ -302,14 +302,6 @@
     }
 }
 
-.top-bar {
-    background-color: $bg0;
-}
-
-.top-bar-left {}
-.top-bar-center {}
-.top-bar-right {}
-
 .title {
     @extend .text;
     margin-top: .8em;
@@ -323,7 +315,6 @@
     min-height: 1rem;
     min-width: 1rem;
 }
-
 
 .rounded-image {
     margin: .8rem;
@@ -348,35 +339,6 @@ tooltip{
         background-clip: padding-box;
         border-radius: 12px;
     }
-}
-
-.card {
-    background-color: $bg0;
-    box-shadow: rgba(0, 0, 0, 0.3) 0px 4px 6px;
-    border-radius: 12px;
-    padding: 0.3rem;
-    margin: 0.4rem;
-    &:drop(active) {
-        background-color: $bg1;
-    }
-}
-
-.popup-win {
-    background-color: $bg0;
-    box-shadow: rgba(0, 0, 0, 0.3) 0px 4px 6px;
-    margin: 2rem;
-    margin-top: 4rem;
-    padding: 0.4rem;
-    border-radius: 24px;
-    min-width: 10rem;
-    min-height: 4rem;
-}
-
-.section {
-    background-color: $bg1;
-    border-radius: 14px;
-    padding: .2rem;
-    margin: .4rem;
 }
 
 .circle {
@@ -449,6 +411,8 @@ tooltip{
     border-radius: 12px;
 }
 
+@import "./bar.scss";
+@import "./menu.scss";
 @import "./modes.scss";
 @import "./tray.scss";
 @import "./weather.scss";
