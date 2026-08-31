@@ -1,12 +1,13 @@
 (deflisten clipboard "wl-paste -w bin/clipboard.sh")
 
+
 (defwidget clipboard-info []
     (box :space-evenly false :visible {mode.change == "default" || mode.change == "clipboard"}
         (button :class "text-button"
             :onclick "wl-copy -c"
-            :onrightclick "xdg-open ${clipboard.data}"
+            :onmiddleclick "xdg-open ${clipboard.data}" :timeout "128s"
             (box :space-evenly false
-                (label :class "text pink" :text '"+')
+                (label :class "text" :text '"+')
                 (stack :selected {clipboard.mime =~ "text/.*" ? 1 : 0 }
                     :transition "none"
                     :style "margin-left: .5rem"

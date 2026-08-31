@@ -43,7 +43,7 @@
                 :class "sbutton ${rfkill.wlan ? "alert" : ""}"
                 :onclick "rfkill toggle wlan"
                 "${rfkill.wlan ? "󰤩" : "󱛎"}   Kill"))
-        (scroll :style "min-height: 26rem;" :vscroll true :hexpand true (box :orientation "vertical" :hexpand true :space-evenly false
+        (scroll :style "min-height: 16rem;" :vscroll true :hexpand true (box :orientation "vertical" :hexpand true :space-evenly false
             (for net in wifis
                 (box :orientation "vertical" :space-evenly false :class "card"
                     (box :space-evenly false

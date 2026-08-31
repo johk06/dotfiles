@@ -33,12 +33,12 @@
                 :tooltip "${public-ip}"
                 (label :limit-width 32
                     :text "󰇧   public: ${public-ip.ip}, ${public-ip.city} ${public-ip.country}" )))
-        (box :space-evenly false :orientation "v" :halign "start" (for local in local-ips
+        (box :space-evenly false :orientation "h" :halign "start" (for local in local-ips
             (box :space-evenly false :hexpand true (button :class "sbutton"
                 :onclick "wl-copy '${local.ip}'"
                 :tooltip "${local.dev}: ${local.ip} via ${local.via}"
                 "󰛳   ${local.dev}: ${local.ip}"))))
-        (scroll :style "min-height: 14rem; margin-top: .6rem;"
+        (scroll :style "min-height: 12rem; margin-top: .6rem;"
             :vscroll true :hexpand true
             (box :orientation "v" :hexpand true :space-evenly false
                 (for vpn-con in vpns

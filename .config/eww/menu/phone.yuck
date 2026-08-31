@@ -36,6 +36,6 @@
 (defwidget phone-panel []
     (box :space-evenly false :class "section" :orientation "vertical"
         (box :space-evenly false
-            (scroll :style "min-height: 20rem;" :vscroll true :hexpand true (box :orientation "v" :hexpand true :space-evenly false
+            (scroll :style "min-height: 9rem;" :vscroll true :hexpand true (box :orientation "v" :hexpand true :space-evenly false
                 (for dev in {phone}
                     (phone-device :dev dev)))))))

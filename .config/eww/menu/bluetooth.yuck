@@ -78,6 +78,6 @@
                 :onclick "bluetoothctl scan ${bt-meta.scanning ? "off" : "on"}; ${EWW_CMD} poll bt-meta bt-devices"
                 :timeout "16s"
                 "󰐷   Scanning"))
-        ; comfortably fits 3 devices without scrolling
-        (scroll :style "min-height: 26rem;" :vscroll true :hexpand true
+        ; comfortably fits 2 devices without scrolling
+        (scroll :style "min-height: 20rem;" :vscroll true :hexpand true
             (bluetooth-device-list))))

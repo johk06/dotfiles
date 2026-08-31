@@ -1,11 +1,12 @@
 .mpris-playing, .mpris-paused {
-    padding-right: .2rem;
+    padding-right: unset;
 }
 .mpris-playing {
-    background: linear-gradient(90deg, mix($bg1, $accent), $bg0);
-    &:hover {
-        background: linear-gradient(90deg, $accent, mix($bg2, $accent) 20%, $bg1);
-    }
+    background-color: $bg0;
+    /* background: linear-gradient(90deg, mix($bg1, $accent), $bg0); */
+    /* &:hover { */
+    /*     background: linear-gradient(90deg, $accent, mix($bg2, $accent) 20%, $bg1); */
+    /* } */
 }
 
 .mpris-paused {
