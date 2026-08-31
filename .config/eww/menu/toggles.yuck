@@ -1,80 +1,20 @@
 (defvar nightlight-strengh 3000)
 (defpoll look-nightlight :interval "10m" "pgrep gammastep >/dev/null && echo true || echo false")
 (defpoll look-theme :interval "10m" "./bin/color.sh get")
-
-;; For any of these processes: determine if they are running
 (defpoll service-swayidle :interval "20m"
     "pgrep swayidle >/dev/null && echo true || echo false")
-(defpoll service-blueman :run-while {perf-revealed} :interval "20m"
-    `pgrep blueman-applet >/dev/null 2>&1 && echo true || echo false`)
-(defpoll service-networkmanager :run-while {perf-revealed} :interval "20m"
-    `pgrep nm-applet >/dev/null 2>&1 && echo true || echo false`)
-(defpoll service-fcitx5 :run-while {perf-revealed} :interval "20m"
-    `pgrep fcitx5 >/dev/null 2>&1 && echo true || echo false`)
-(defpoll service-autotile :run-while {perf-revealed} :interval "20m"
-    `pgrep -f 'python.*layout.py' >/dev/null 2>&1 && echo true || echo false`)
-(defpoll service-udiskie :run-while {perf-revealed} :interval "20m"
-    `pgrep -f 'udiskie' >/dev/null 2>&1 && echo true || echo false`)
 
-
-(defwidget look-toggle-buttons []
+(defwidget toggle-buttons []
     (box :space-evenly false :orientation "vertical"
         (box
             (button :class "cbutton ${look-nightlight ? "active" : ""}"
                 :onclick "killall gammastep && ${EWW_CMD} update look-nightlight=false || { ${EWW_CMD} update look-nightlight=true; gammastep -O ${nightlight-strengh}& }"
-                "${look-nightlight ? "󰖔" : ""}   Nightlight")
+                "${look-nightlight ? "󰖔" : ""}   Eyes")
             (button :class "cbutton"
                 :onclick "./bin/color.sh"
                 :timeout "128s"
-                "${look-theme == "light" ? "" : "󰖔"}   Colorscheme"))))
-
-(defwidget tasks-toggle-button []
-    (box :class "dual-cbutton ${service-swayidle ? "active" : ""}" :space-evenly false
-        (button :hexpand true
-            :onclick "killall swayidle && ${EWW_CMD} update service-swayidle=false || { ${EWW_CMD} update service-swayidle=true; swayidle -w& }"
-            :onrightclick "${EWW_CMD} update perf-revealed=${!perf-revealed}"
-            :timeout "16s"
-            "${service-swayidle ? "󰒲" : "󰒳"}    Go to Sleep")
-        (button
-            :onclick "${EWW_CMD} update tasks-revealed=${!tasks-revealed}"
-            {tasks-revealed ? "" : "" })))
-
-(defwidget pid-toggle [running to-kill command var text]
-    (box :space-evenly false :halign "start" :style "margin-left: 1rem; padding: .2rem;"
-        (checkbox :checked {running}
-            :timeout "16s"
-            :onunchecked "pkill ${to-kill}&& ${EWW_CMD} update ${var}=false"
-            :onchecked "${command}& ${EWW_CMD} update ${var}=true")
-        (label :class "text" :text {text})))
-(defwidget tasks-panel []
-    (box :space-evenly false :orientation "vertical" :class "section" :style "padding: .8rem;"
-        (pid-toggle
-            :running service-blueman
-            :var "service-blueman"
-            :to-kill "blueman-applet"
-            :command "blueman-applet"
-            :text "Blueman Applet")
-        (pid-toggle
-            :running service-udiskie
-            :var "service-udiskie"
-            :to-kill "udiskie"
-            :command "udiskie"
-            :text "Monitor Disks")
-        (pid-toggle
-            :running service-networkmanager
-            :var "service-networkmanager"
-            :to-kill "nm-applet"
-            :command "nm-applet"
-            :text "Networkmanager Applet")
-        (pid-toggle
-            :running service-fcitx5
-            :var "service-fcitx5"
-            :to-kill "fcitx5"
-            :command "fcitx5"
-            :text "fcitx5 IME")
-        (pid-toggle
-            :running service-autotile
-            :var "service-autotile"
-            :to-kill "-f 'python.*layout.py'"
-            :command "~/.config/sway/scripts/layout.py"
-            :text "Autotiling")))
+                "${look-theme == "light" ? "" : "󰖔"}   Theme")
+            (button :class "cbutton ${service-swayidle ? "active" : ""}"
+                :onclick "killall swayidle && ${EWW_CMD} update service-swayidle=false || { ${EWW_CMD} update service-swayidle=true; swayidle -w& }"
+                :timeout "16s"
+                "${service-swayidle ? "󰒲" : "󰒳"}    Sleep"))))

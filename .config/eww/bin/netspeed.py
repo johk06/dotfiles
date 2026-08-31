@@ -31,6 +31,8 @@ while True:
         "recv_pretty": format_size(diff_recv),
         "sent_rel": (diff_sent / UPPER_SENT) * 100,
         "recv_rel": (diff_recv / UPPER_RECV) * 100,
+        "sent": diff_sent,
+        "recv": diff_recv
     }, fp=sys.stdout)
     sys.stdout.write("\n")
     sys.stdout.flush()

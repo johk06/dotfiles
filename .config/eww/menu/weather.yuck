@@ -60,20 +60,21 @@
         :text "${weather.weatherDesc[0].value} at ${weather.temp_C}°C"))
 
 (defwidget weather-for-day [weather label now]
-    (box :class "todo-task" :orientation "v" :space-evenly false :style "padding: 1rem;"
+    (box :class "todo-task" :orientation "v" :space-evenly false :style "padding: 0.7rem;"
         (centerbox
             (label :halign "start" :class "todo-title" :text {label})
             (label :class "text" :text "󱩷   ${weather.astronomy[0].sunrise} to ${weather.astronomy[0].sunset}")
             (label :halign "end" :class "text" :text "${weather.mintempC}°C to ${weather.maxtempC}°C")
         )
-        (scroll :class "slider" :hscroll true :hexpand true :style "min-height: 8rem; margin-top: 1rem;"
+        (scroll :class "slider" :hscroll true :hexpand true :style "min-height: 6rem; margin-top: 1rem;"
             (box :spacing 12 (for hour in {jq(weather.hourly, ".[2:]")} (box :space-evenly false :orientation "v"
                 :class "weather-hour ${( now > hour.time  ? "weather-hour-past" :
                     hour.tempC < 0 ? "cold" : (hour.tempC < 10 ? "cool" : (hour.tempC < 20 ? "temperate" : (hour.tempC < 30 ? "warm" : (hour.tempC < 35 ? "hot" : "burning"))))
                 )}"
+                :tooltip "${hour.weatherDesc[0].value} - feels like ${hour.FeelsLikeC}°C"
                 (label :text "${replace(hour.time, "00$", "")}:00" :vexpand true)
                 (themed-icon :name {weather-icons[hour.weatherCode]} :width 32 :height 32)
-                (label :text "${hour.weatherDesc[0].value}" :limit-width 12)
+                ;; (label :text "${hour.weatherDesc[0].value}" :limit-width 12)
                 (label :text "${hour.tempC}°C")))))))
 
 (defwidget weather-controls [] (box :space-evenly false :class "agenda-control"

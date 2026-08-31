@@ -62,10 +62,19 @@
     (label :text "Today is ${formattime(EWW_TIME, "%a, %b %d. %Y")}" :class "text")
     (status-weather :weather {weather.current_condition[0]})
     (box :space-evenly false :vexpand true :hexpand true :orientation "v"
-        (box :space-evenly false (button :class "sbutton"
-            :onclick "${EWW_CMD} update agenda-revealed=${!agenda-revealed}"
-            :style "min-width: 6.4rem;"
-            "${agenda-revealed ? "Hide" : "Show"} Agenda")))))
+        (centerbox :space-evenly false
+            (button :class "sbutton"
+                :onclick "${EWW_CMD} update agenda-revealed=${!agenda-revealed}"
+                :style "min-width: 3rem;"
+                "Cal  ")
+            (button :class "sbutton ${qmenu-autoclose ? "" : "active"}"
+                :onclick "${EWW_CMD} update qmenu-autoclose=${!qmenu-autoclose}"
+                :style "min-width: 3rem;"
+                "Keep")
+            (button :class "sbutton"
+                :onclick "${EWW_CMD} update perf-revealed=${!perf-revealed}"
+                :style "min-width: 3rem;"
+                "Stat  ") ))))
 
 (defwidget status-panel []
     (box :space-evenly false :orientation "vertical" :hexpand true

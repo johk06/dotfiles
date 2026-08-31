@@ -14,29 +14,29 @@
 (defvar bt-revealed false)
 (defvar wifi-revealed false)
 (defvar tasks-revealed false)
-(defvar perf-revealed false)
 (defvar vpn-revealed false)
 (defvar phone-revealed false)
-(defvar agenda-revealed true)
+
+(defvar agenda-revealed false)
+(defvar perf-revealed false)
+
+(defvar qmenu-autoclose true)
 
 (defwidget battery-circle [percentage charging]
     (circular-progress :visible {(percentage) > 0} :thickness 6 :value {percentage}
         :tooltip "${percentage}% - ${charging ? "Charging" : "Discharging"}"
-        :class "battery-circle-${percentage < 20 ? "critical" 
-            : (percentage < 40 ? "low" 
+        :class "battery-circle-${percentage < 20 ? "critical"
+            : (percentage < 40 ? "low"
                 : (percentage < 80 ? "medium" : "high"))}"
         (label :text {charging ? bat-charging[(percentage - percentage % 10) / 10] : bat-discharging[(percentage - percentage % 10) / 10]})))
 
-(defwidget qmenu-right [] 
+(defwidget qmenu-right []
     (box :orientation "v" :space-evenly false
         (status-panel)
         (mpris-panel)
         (audio-panel)
 
-        (look-toggle-buttons)
-        (box (tasks-toggle-button) (perf-toggle-button))
-        (revealer :reveal {tasks-revealed} :transition "slidedown" (tasks-panel))
-        (revealer :reveal {perf-revealed} :transition "slidedown" (performance-panel))
+        (toggle-buttons)
 
         (box (bt-toggle-button) (wifi-toggle-button))
         (revealer :reveal {bt-revealed} :transition "slidedown" (bluetooth-panel))
@@ -46,23 +46,28 @@
         (revealer :reveal {phone-revealed} :transition "slidedown" (phone-panel))
         (revealer :reveal {vpn-revealed} :transition "slidedown" (vpn-panel))))
 
-(defwidget qmenu [] (eventbox :onhoverlost "./bin/popup.sh settings-panel settings-panel-open close&"
-    (revealer 
+(defwidget qmenu [] (eventbox :onhoverlost {qmenu-autoclose ? "./bin/popup.sh settings-panel settings-panel-open close&" : ""}
+    (revealer
         :reveal {settings-panel-open}
         :transition "slideleft"
-        (box (box :class "right-panel" 
-            :orientation "h" 
+        (box (box :class "right-panel"
+            :orientation "h"
             :space-evenly false
-            (revealer 
-                :reveal {agenda-revealed} 
+            (revealer
+                :reveal {agenda-revealed}
                 :transition "slideleft"
                 (box :space-evenly false :vexpand true
                     (agenda-section)))
-            (qmenu-right))))))
+            (qmenu-right)
+            (revealer
+                :reveal {perf-revealed}
+                :transition "slideright"
+                (box :space-evenly false :vexpand true
+                    (performance-section))))))))
 
-(defwindow settings-panel 
+(defwindow settings-panel
     :monitor '["DP-1", "eDP-1", 0]'
-    :geometry (geometry 
+    :geometry (geometry
         :x -20
         :y -20
         :width 0
@@ -75,7 +80,7 @@
 
 (defwindow qmenu-edge
     :monitor '["DP-1", "eDP-1", 0]'
-    :geometry (geometry 
+    :geometry (geometry
         :x 0
         :y 0
         :width 12
@@ -83,5 +88,5 @@
         :anchor "top right")
     :stacking "overlay"
     :exclusive false
-    (eventbox 
+    (eventbox
         :onhover "./bin/popup.sh settings-panel settings-panel-open open& disown"))

@@ -7,7 +7,7 @@
         margin-bottom: .4rem;
         border-radius: 12px;
         background-color: $bg3;
-        min-width: 12rem;
+        min-width: 20rem;
         highlight {
             border-radius: 12px;
             background-color: $accent;
@@ -47,5 +47,16 @@
     @extend .perf-scale;
     trough highlight {
         background-color: $lblue;
+    }
+}
+
+.perf-graph {
+    margin: 0.3rem;
+    color: $accent;
+    &.net-up {
+        color: $dblue;
+    }
+    &.net-down {
+        color: $lblue;
     }
 }

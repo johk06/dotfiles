@@ -5,22 +5,22 @@
     color: $fg0;
 
     &.cold {
-        background-color: mix($bg2, $dblue);
+        background-color: mix($bg2, $dblue, 60%);
     }
     &.cool {
-        background-color: mix($bg2, $teal);
+        background-color: mix($bg2, $teal, 60%);
     }
     &.temperate {
-        background-color: mix($bg2, $green);
+        background-color: mix($bg2, $green, 60%);
     }
     &.warm {
-        background-color: mix($bg2, $yellow);
+        background-color: mix($bg2, $yellow, 60%);
     }
     &.hot {
-        background-color: mix($bg2, $orange);
+        background-color: mix($bg2, $orange, 60%);
     }
     &.burning {
-        background-color: mix($bg2, $red);
+        background-color: mix($bg2, $red, 60%);
     }
 }
 

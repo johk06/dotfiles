@@ -8,9 +8,9 @@
 (defpoll cpu-governor :interval "20m" "cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor")
 
 (defvar cpu-governor-names '{
-"performance": "󰓅   Performance",
-"schedutil": "󰾆   Efficiency",
-"powersave": "󰾆   Efficiency"
+    "performance": "󰓅   Perf",
+    "schedutil": "󰾆   Eff",
+    "powersave": "󰾆   Eff"
 }')
 
 (defvar mem-kb 1024)
@@ -19,57 +19,79 @@
 
 (defwidget colored-scale [value left right ?temp ?class ?min ?max]
     (box :space-evenly false :orientation "v"
-        (box :space-evenly false 
-            (box :halign "start" :hexpand true 
+        (box :space-evenly false
+            (box :halign "start" :hexpand true
                 (label :class "perf-label" :text left))
             (label :class "perf-label-right" :text right))
-        (scale 
+        (scale
             :min {min?:0}
             :max {max?:100}
             :active false
             :value {value}
-            :class "perf-scale-${class?: (temp > 70 ? "critical" 
-                : (temp > 60 ? "hot" 
-                : (temp > 50 ? "warm" 
-                : (temp > 40 ? "normal" 
+            :class "perf-scale-${class?: (temp > 70 ? "critical"
+                : (temp > 60 ? "hot"
+                : (temp > 50 ? "warm"
+                : (temp > 40 ? "normal"
                 : "cool"))))}")))
 
-(defwidget performance-panel []
-    (box :hexpand true :space-evenly false :orientation "v"
-        (box :orientation "v" :hexpand true :class "section" :space-evenly false
-            (label :class "text" :text "${perf-pcount} Userspace Processes")
-            (colored-scale :value {EWW_CPU.avg}
-                :temp {EWW_TEMPS[cpu-sensor]}
-                :left "CPU: ${round(EWW_CPU.avg, 1)}%"
-                :right "${EWW_TEMPS[cpu-sensor]}°C")
-            (colored-scale :value {EWW_RAM.used_mem_perc}
-                :class "mem" 
-                :left "Mem: ${round(EWW_RAM.used_mem_perc, 1)}%"
-                :right "${round(EWW_RAM.used_mem / mem-gb, 1)}GB / ${round(EWW_RAM.total_mem / mem-gb, 1)}GB")
-            (colored-scale :value {perf-gpu?.usage?:0}
-                :temp {EWW_TEMPS[gpu-sensor]} 
-                :left "GFX: ${perf-gpu?.usage?:"?"}%"
-                :right "${EWW_TEMPS[gpu-sensor]}°C")
-            (colored-scale :value {(perf-gpu.mem_used / perf-gpu.mem_total) * 100}
-                :class "mem" 
-                :left "Mem: ${round((perf-gpu.mem_used / perf-gpu.mem_total) * 100, 1)}%"
-                :right "${round(perf-gpu.mem_used / mem-gb, 1)}GB / ${round(perf-gpu.mem_total / mem-gb, 1)}GB")
-            (colored-scale :value {perf-net.sent_rel}
-                :class "net-up"
-                :left "Send: ${perf-net.sent_pretty}/s"
-                :right "Total: ${perf-net.total_sent_pretty}")
-            (colored-scale :value {perf-net.recv_rel}
-                :class "net-down" 
-                :left "Recv: ${perf-net.recv_pretty}/s"
-                :right "Total: ${perf-net.total_recv_pretty}"))))
+(defwidget performance-scales []
+    (box :orientation "v" :hexpand true :class "section" :space-evenly false
+        (label :class "text" :text "${perf-pcount} Userspace Processes")
+        (colored-scale :value {EWW_CPU.avg}
+            :temp {EWW_TEMPS[cpu-sensor]}
+            :left "CPU: ${round(EWW_CPU.avg, 1)}%"
+            :right "${EWW_TEMPS[cpu-sensor]}°C")
+        (colored-scale :value {EWW_RAM.used_mem_perc}
+            :class "mem"
+            :left "Mem: ${round(EWW_RAM.used_mem_perc, 1)}%"
+            :right "${round(EWW_RAM.used_mem / mem-gb, 1)}GB / ${round(EWW_RAM.total_mem / mem-gb, 1)}GB")
+        (colored-scale :value {perf-gpu?.usage?:0}
+            :temp {EWW_TEMPS[gpu-sensor]}
+            :left "GFX: ${perf-gpu?.usage?:"?"}%"
+            :right "${EWW_TEMPS[gpu-sensor]}°C")
+        (colored-scale :value {(perf-gpu.mem_used / perf-gpu.mem_total) * 100}
+            :class "mem"
+            :left "Mem: ${round((perf-gpu.mem_used / perf-gpu.mem_total) * 100, 1)}%"
+            :right "${round(perf-gpu.mem_used / mem-gb, 1)}GB / ${round(perf-gpu.mem_total / mem-gb, 1)}GB")
+        (colored-scale :value {perf-net.sent_rel}
+            :class "net-up"
+            :left "Send: ${perf-net.sent_pretty}/s"
+            :right "Total: ${perf-net.total_sent_pretty}")
+        (colored-scale :value {perf-net.recv_rel}
+            :class "net-down"
+            :left "Recv: ${perf-net.recv_pretty}/s"
+            :right "Total: ${perf-net.total_recv_pretty}")))
 
-(defwidget perf-toggle-button []
-    (box :class "dual-cbutton${cpu-governor == "performance" ? " active" : ""}" :space-evenly false
-        (button :hexpand true
-            :onclick "./bin/cpu_governor.sh ${cpu-governor == "performance" ? "powersave" : "performance"}; ${EWW_CMD} update cpu-governor=$(< /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor)"
-            :onrightclick "${EWW_CMD} update perf-revealed=${!perf-revealed}"
-            :timeout "16s"
-            {cpu-governor-names[cpu-governor]})
-        (button
-            :onclick "${EWW_CMD} update perf-revealed=${!perf-revealed}"
-            {perf-revealed ? "" : "" })))
+(defwidget perf-graph-section [value title ?class]
+    (box :orientation "v" :hexpand true :class "section" :space-evenly false
+        (label :class "text" :text {title})
+        (graph :vexpand true
+            :value {value}
+            :line-style "round"
+            :class "perf-graph ${class}"
+            :thickness 2 :time-range "45s"
+            :dynamic true
+           )))
+
+(defwidget performance-graphs [] (box :orientation "v" :vexpand true
+    (box :space-evenly false :orientation "v"
+        (overlay :vexpand true
+        (box :vexpand true (perf-graph-section :value {EWW_CPU.avg * 100} :title "CPU"))
+        (box :space-evenly false :valign "start" :style "padding: 5px"
+                (governor-toggle-button))))
+    (box
+        (perf-graph-section :value {perf-net.sent} :title "Net Up" :class "net-up")
+        (perf-graph-section :value {perf-net.recv} :title "Net Down" :class "net-down"))
+))
+
+(defwidget performance-section []
+    (box :hexpand true :space-evenly false :orientation "v"
+        (performance-scales)
+        (performance-graphs)))
+
+(defwidget governor-toggle-button []
+    (button :class "scbutton ${cpu-governor == "performance" ? "active" : ""}"
+        :onclick "./bin/cpu_governor.sh ${cpu-governor == "performance" ? "powersave" : "performance"}; ${EWW_CMD} update cpu-governor=$(< /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor)"
+        :onrightclick "${EWW_CMD} update perf-revealed=${!perf-revealed}"
+        :timeout "16s"
+        (label :text {cpu-governor-names[cpu-governor]} :limit-width 12)))
