@@ -16,6 +16,9 @@ def format_size(byte_value):
             return f"{byte_value:.1f}{unit}"
         byte_value /= 1024
 
+def pos(n):
+    return max(n, 0)
+
 while True:
     net_stats_1 = psutil.net_io_counters()
     time.sleep(1)
@@ -29,10 +32,10 @@ while True:
         "total_recv_pretty": format_size(net_stats_2[1]),
         "sent_pretty": format_size(diff_sent),
         "recv_pretty": format_size(diff_recv),
-        "sent_rel": (diff_sent / UPPER_SENT) * 100,
-        "recv_rel": (diff_recv / UPPER_RECV) * 100,
-        "sent": diff_sent,
-        "recv": diff_recv
+        "sent_rel": pos((diff_sent / UPPER_SENT) * 100),
+        "recv_rel": pos((diff_recv / UPPER_RECV) * 100),
+        "sent": pos(diff_sent),
+        "recv": pos(diff_recv)
     }, fp=sys.stdout)
     sys.stdout.write("\n")
     sys.stdout.flush()
