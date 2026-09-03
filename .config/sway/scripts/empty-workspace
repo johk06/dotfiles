@@ -30,7 +30,7 @@ new_index="$(swaymsg -t get_workspaces |
 ')"
 
 if [ "$screen" != "$MAIN" ]; then
-    name="s$new_index"
+    name=".$new_index"
 else
     name="$new_index"
 fi

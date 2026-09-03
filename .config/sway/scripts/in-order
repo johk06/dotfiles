@@ -3,7 +3,7 @@
 cur_workspace="$(swaymsg -t get_workspaces | jq -r '.[]|select(.focused).name')"
 
 prefix=""
-if [[ "$cur_workspace" == s* ]]; then
+if [[ "$cur_workspace" == .* ]]; then
     prefix="s"
     cur_workspace="${cur_workspace:1}"
 fi
