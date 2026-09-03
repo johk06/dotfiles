@@ -23,7 +23,7 @@ AUTO_GAPS_SCREENS = {"DP-1"}
 # disable scaling when on this workspace
 DISABLE_SCALING_ON_WS = 10
 # scale to fall back to on all other workspaces
-DEFAULT_SCALE = 1.4
+DEFAULT_SCALE = 1.3
 # }}}
 
 

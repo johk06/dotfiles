@@ -133,7 +133,7 @@ def sort_by_name(ws):
 
 
 def wsicon(name):
-    if name[0] == "s":
+    if name[0] == ".":
         return chr(ord("α") + int(name[1:]) - 1)
     else:
         return str(name)

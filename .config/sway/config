@@ -6,6 +6,11 @@ set $sc ~/.config/sway/scripts
 set $mainS DP-1
 set $otherS DP-3
 set $eww ~/.config/eww
+ # prefix for secondary screen workspaces
+set $S1 .1
+set $S2 .2
+set $S3 .3
+set $S4 .4
 
 set $floating "floating enable; resize set width 800px height 600px"
 

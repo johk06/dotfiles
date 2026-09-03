@@ -1,16 +1,17 @@
 # vim: ft=swayconfig
 
 # Popups, float by default and maybe set size (if the window is too small or too big otherwise)
-for_window [app_id="zenity"]               floating enable
-for_window [app_id="yad"]                  floating enable
-for_window [app_id="valent"]               floating enable
-for_window [app_id=".*blueman.*"]          floating enable
-for_window [app_id="pavucontrol"]          floating enable
-for_window [app_id="org.pipewire.Helvum"]  floating enable
-for_window [app_id="nm-connection-editor"] floating enable
-for_window [app_id="satty"]                floating enable
-for_window [app_id="nwg-icon-picker"]      floating enable, resize set 300px 400px
-for_window [app_id="qalculate-gtk"]        floating enable, resize set 300px 400px
+for_window [app_id="zenity"]                 floating enable
+for_window [app_id="yad"]                    floating enable
+for_window [app_id="valent"]                 floating enable
+for_window [app_id="xdg-desktop-portal-gtk"] floating enable
+for_window [app_id=".*blueman.*"]            floating enable
+for_window [app_id="pavucontrol"]            floating enable
+for_window [app_id="org.pipewire.Helvum"]    floating enable
+for_window [app_id="nm-connection-editor"]   floating enable
+for_window [app_id="satty"]                  floating enable
+for_window [app_id="nwg-icon-picker"]        floating enable, resize set 300px 400px
+for_window [app_id="qalculate-gtk"]          floating enable, resize set 300px 400px
 
 # Make sure I do not type passwords into the wrong dialog
 set $popup-critical \

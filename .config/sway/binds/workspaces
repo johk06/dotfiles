@@ -91,20 +91,20 @@ bindsym $mod+Ctrl+0 move window to workspace number 10; workspace number 10
 # Secondary {{{
 # The arrow keys are nice for this since they're out of the way,
 # but still present an ordered list
-bindsym $mod+Left workspace s1
-bindsym $mod+Down workspace s2
-bindsym $mod+Right workspace s3
-bindsym $mod+Up workspace s4
+bindsym $mod+Left workspace $S1
+bindsym $mod+Down workspace $S2
+bindsym $mod+Right workspace $S3
+bindsym $mod+Up workspace $S4
 
-bindsym $mod+Shift+Left move window to workspace s1
-bindsym $mod+Shift+Down move window to workspace s2
-bindsym $mod+Shift+Right move window to workspace s3
-bindsym $mod+Shift+Up move window to workspace s4
+bindsym $mod+Shift+Left move window to workspace $S1
+bindsym $mod+Shift+Down move window to workspace $S2
+bindsym $mod+Shift+Right move window to workspace $S3
+bindsym $mod+Shift+Up move window to workspace $S4
 
-bindsym $mod+Ctrl+Left move window to workspace s1; workspace s1
-bindsym $mod+Ctrl+Down move window to workspace s2; workspace s2
-bindsym $mod+Ctrl+Right move window to workspace s3; workspace s3
-bindsym $mod+Ctrl+Up move window to workspace s4; workspace s4
+bindsym $mod+Ctrl+Left move window to workspace $S1; workspace $S1
+bindsym $mod+Ctrl+Down move window to workspace $S2; workspace $S2
+bindsym $mod+Ctrl+Right move window to workspace $S3; workspace $S3
+bindsym $mod+Ctrl+Up move window to workspace $S4; workspace $S4
 # }}}
 # Next / Previous {{{
 # This very nicely mirrors Vim
