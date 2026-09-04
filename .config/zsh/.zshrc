@@ -95,6 +95,7 @@ nameddirs=(
 )
 
 # my own config
+source "$ZDOTDIR/env.zsh"
 source "$ZDOTDIR/zle.zsh"
 source "$ZDOTDIR/aliases.zsh"
 source "$ZDOTDIR/prompt.zsh"

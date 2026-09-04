@@ -5,7 +5,8 @@ export SSH_ASKPASS=/usr/lib/seahorse/ssh-askpass
 export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
 export MPD_HOST="$XDG_RUNTIME_DIR/mpd/socket"
 
-path+=("$HOME/.local/bin" "$HOME/.config/bin")
+
+path=("$HOME/.local/bin" "$HOME/.config/bin" $path)
 
 local WS=/tmp/workspaces/$USER
 mkdir -p $WS/{cache,build,download,0,1,2,3,4,5,6,7}
