@@ -2,9 +2,9 @@
 (include "widgets/icon.yuck")
 
 ; Pseudo-constants
-(defpoll HOME :interval "200h" 'echo "$HOME"')
+(defvar HOME {get_env("HOME")})
+(defvar USER {get_env("USER")})
 (defpoll HOSTNAME :interval "200h" 'hostname')
-(defpoll USER :interval "200h" 'whoami')
 (defpoll BOOTTIME :interval "200h" "awk '/btime/ {print $2}' /proc/stat")
 
 (defwidget hsep [height]

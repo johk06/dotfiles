@@ -3,17 +3,21 @@
 mpc idleloop player | while read -r line; do mpc -f '%title%' queued; done")
 
 (defwidget mpris-status [pl]
-    (label :style "margin-right: .6rem; min-width: 1.5rem;"
-        :text "${pl.playing ? "≈" : "="}${pl.shuffle ? "?" : ""}"))
+    (label :style "margin-right: .2rem; min-width: 1.5rem;"
+        :text "${pl.playing ? "󰎇" : "󰎊"}${pl.shuffle ? "~" : ""}"))
+
+(defwidget mpris-mpd-details [pl] 
+    (box :visible {pl.player == "mpd"} :space-evenly false
+        (label :limit-width 10
+            :text ">${mpd-next}"
+            :style "font-size: 0.8em; margin-left: .4rem;")))
 
 (defwidget mpris-title [pl text]
     (box :space-evenly false
-        {pl.loop == "track" ? "(" : (pl.loop == "list" ? "[" : "")}
+        {pl.loop == "track" ? "( " : (pl.loop == "list" ? "[" : "")}
         (label :limit-width 30 :text text)
-        (label :limit-width 10
-            :text {pl.player == "mpd" ? " >${mpd-next}" : ""}
-            :style "font-size: 0.7em; margin-left: 0.5em;")
-        {pl.loop == "track" ? ")" : (pl.loop == "list" ? "]" : "")}))
+        (mpris-mpd-details :pl pl)
+        {pl.loop == "track" ? " )" : (pl.loop == "list" ? "]" : "")}))
 
 (defwidget mpris-circle [pos]
     (circular-progress :value pos  :class "bar-circle"
