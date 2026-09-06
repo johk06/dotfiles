@@ -253,18 +253,22 @@ mapv("Ctrl+Z", function()
   S.viewer.set_fix_scale("height")
 end)
 
-mousev("ScrollUp", function()
+mousev("Ctrl+ScrollUp", function()
   local pos = S.get_mouse_pos()
   local scale = S.viewer.scale
   scale = scale + scale / 10
   S.viewer.set_abs_scale(scale, pos.x, pos.y);
 end)
-mousev("ScrollDown", function()
+mousev("Ctrl+ScrollDown", function()
   local pos = S.get_mouse_pos()
   local scale = S.viewer.scale
   scale = scale - scale / 10
   S.viewer.set_abs_scale(scale, pos.x, pos.y);
 end)
+mousev("ScrollUp", move("y", 75))
+mousev("ScrollDown", move("y", -75))
+mousev("ScrollRight", move("x", -75))
+mousev("ScrollLeft", move("x", 75))
 
 mapv("v", function() S.mode = "gallery" end)
 mapv("r", function()
@@ -275,10 +279,8 @@ mapv("m", function()
   S.viewer.rotate(180)
 end)
 
-mapv("n", function() S.gallery.select("right") end)
-mapv("Shift+n", function() S.gallery.select("left") end)
-mapv("g", function() S.gallery.select("first") end)
-mapv("Shift+g", function() S.gallery.select("last") end)
+mapv("n", function() S.viewer.open("next") end)
+mapv("Shift+n", function() S.viewer.open("prev") end)
 
 mapv("Escape", clear_mesaurement)
 mapv("Backspace", drop_measurement)
@@ -304,6 +306,8 @@ for k, dir in pairs {
     S.gallery.select(dir)
   end)
 end
+mouseg("ScrollDown", function() S.gallery.select("down") end)
+mouseg("ScrollUp", function() S.gallery.select("up") end)
 -- }}}
 
 -- Gallery {{{
