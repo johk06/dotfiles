@@ -58,12 +58,11 @@ set mouse
 
 # Quite cool
 set incfilter true
-# }}}
 
 set rulerfile "~/.config/lf/ruler"
 source "~/.config/lf/fmt.conf"
 source "~/.config/lf/commands.conf"
-
+# }}}
 # Layout {{{
 set ratios '1:2:3'
 # Set the ratio/preview mode dynamically
@@ -92,7 +91,6 @@ map <c-z> $ kill -STOP $PPID
 map tt trash-trash
 map tr trash-restore
 map tDD trash-clear
-
 # completely delete a file
 map D delete
 
@@ -130,13 +128,11 @@ map g~ cd ~
 map gt cd ~/Tmp
 map gT cd ~/.local/share/Trash/files
 map g/ cd /
-map gc cd ~/.config
 map gr cd-eval \$XDG_RUNTIME_DIR
-map gD cd ~/Downloads
 map gw cd ~/ws
 map gm cd-eval /run/media/$USER/
-map gd cd /dev/disk/by-label/
 map gM cd-eval \$XDG_RUNTIME_DIR/gvfs
+map gd cd /dev/disk/by-label/
 map g<space> fzf-cd
 # }}}
 # Selections {{{
@@ -154,8 +150,10 @@ map X push :glob-unselect<space>
 map * push :glob-select<space>**<left>
 # Starts-With
 map ^ push :glob-select<space>*<left>
-# Ends-With, cannot use $ because it's already used for shell
+# Ends-With (extension), cannot use $ because it's already used for shell
 map = push :glob-select<space>*.
+# Filter by file extension
+map . push :filter<enter>.*\.
 
 map F push :select<space>
 map <space>f fzf-select
@@ -164,9 +162,9 @@ map <space>/ rg-select
 # Zoxide
 map Z zi
 map z push :z<space>
-# }}}
 # bookmark
 map M mark-save
+# }}}
 # Sorting {{{
 map st :set sortby time; set info 'time'
 map sa :set sortby atime; set info 'atime'
@@ -190,6 +188,7 @@ map it set info "time"
 map if set info "time:size"
 map is set info "size"
 map ia set info "atime"
+map iv set info "time:size:user:perm"
 map ib set info "btime"
 map ic set info "ctime"
 map iu set info "user:group"
@@ -215,15 +214,13 @@ map Iw wallpaper
 # }}}
 
 map <c-f> :{{
-    setfilter 
+    setfilter
     filter
 }}
 map <c-l> :{{
-    setfilter 
+    setfilter
     redraw
 }}
-# Filter by file extension
-map . push :filter<enter>.*\.
 
 # File systems ([b]lock devices) {{{
 map bm push :block-mount<space>

@@ -35,15 +35,8 @@ application/pdf)
     disown
     ;;
 image/*)
-    imv_pid="$(pidof imv-"${XDG_SESSION_TYPE,,}" || echo)"
-    if [[ -z "$imv_pid" ]]; then
-        echo "$fx" | imv &
-        disown
-    else
-        # FIXME: imv performs shell expansions
-        imv-msg "$imv_pid" open "$(aescape "$fx")" next
-        imv-msg "$imv_pid" next
-    fi
+    swayimg "$fx" &
+    disown
     ;;
 text/* | application/json | inode/x-empty | application/javascript | application/x-wine-extension-ini)
     # just let neovim deal with everything
@@ -76,7 +69,8 @@ application/x-archive | application/x-cpio | application/x-tar | application/x-b
 
     ;;
 video/*)
-    mpv $fx & disown
+    mpv $fx &
+    disown
     ;;
 *)
     for file in $fx; do
