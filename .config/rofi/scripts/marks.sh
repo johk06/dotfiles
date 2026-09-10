@@ -20,7 +20,7 @@ if ((ROFI_RETV == 0)); then
     done <"$BOOKMARKS_FILE"
 
     while IFS=$'\t' read -r name url; do
-        printf '%s\n%s\0icon\x1f%s\x1finfo\x1f%s:%s\t' "$name" "in firefox" "firefox" "bookmark" "$url"
+        printf '%s\n%s\0icon\x1f%s\x1finfo\x1f%s:%s\t' "$name" "in firefox: $url" "firefox" "bookmark" "$url"
     done < <(firefox-marks)
 else
     IFS=":" read -r type value <<<"$ROFI_INFO"
@@ -28,6 +28,8 @@ else
         if [[ -z "$ROFI_DATA" ]]; then
             url="$value"
         else
+            # Use the data as an actual format string to interpolate URL queries
+            # shellcheck disable=2059 
             printf -v url "$ROFI_DATA" "$*"
         fi
         (launch-or-inside firefox firefox --new-window "$url" >/dev/null 2>&1) &
