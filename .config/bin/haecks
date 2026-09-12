@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+# Interactively work on a script
+
+separator() {
+    printf '\e[90m%*s\e[0m\n' "$COLUMNS" '' | tr ' ' '-'
+}
+
+FILE="$(realpath "$1")"
+PARENT="${FILE%/*}"
+BASENAME="${FILE##*/}"
+
+BUF="$(mktemp)"
+cat > "$BUF"
+inotifywait -q -m "$PARENT" --format '%e %f' | while read -r ev file; do
+    if [[ "$file" == "$BASENAME" ]] && [[ "$ev" == *_WRITE* ]]; then
+        separator
+        cat "$BUF" | "$FILE"
+    fi
+done
+rm "$BUF"
