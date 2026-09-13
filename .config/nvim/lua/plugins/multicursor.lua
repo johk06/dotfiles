@@ -5,7 +5,9 @@ local M = {
 }
 
 --[[ Information {{{
-Multiple cursors for neovim:
+TODO: replace with neovim-native multicursor once that becomes available
+
+Multiple cursors for Neovim:
 I generally use them as a replacement for macros and complex :g commands
 
 Leader Key: - (looks somewhat like an underscore cursor)
@@ -14,7 +16,7 @@ on my keyboard.
 
 Ways to add cursors:
 - motion: --<motion>
-- search: /<search term><cr>-/
+- search: /<search term><cr>-
 - word match (like *):
     - all: -*
     - in scope: -w<motion>
@@ -49,16 +51,13 @@ local cursor_for_ts_node = function(ctx, capture, range)
     main:delete()
 end
 
+local op = require("config.lib.operators")
 local map_select_operator = function(keys, capture, desc)
-    require("config.lib.operators").map_function(keys, function(mode, region)
+    op.map_function(keys, function(mode, region)
         local endline = region[3]
         require("multicursor-nvim").action(function(ctx)
             cursor_for_ts_node(ctx, capture, {
-                region[1] - 1,
-                region[2],
-                endline - 1,
-                mode == "line" and #vim.api.nvim_buf_get_lines(0, endline - 1, endline, false)[1] or
-                region[4]
+                op.linewise_region(region, mode)
             })
         end)
     end, { desc = desc, no_repeated = true })
@@ -100,7 +99,7 @@ function M.config()
 
     --[[ Turn multiple cursors into another vim command more than a full mode
      for linewise mode or when spanning multiple lines: create one cursor for
-     each line, at the same position as the original one
+     each line, in the same column as the original one
      for charwise mode on a single line: create a single cursor at the destination of the motion ]]
     operators.map_function("--", function(mode, region, extra)
         if mode == "line" or region[3] ~= region[1] then
@@ -124,18 +123,6 @@ function M.config()
     map("x", "--", mc.visualToCursors, { desc = "Cursor: On each line" })
     -- put one cursor at each current search result
     map("n", "-/", mc.searchAllAddCursors, { desc = "Cursor: New for /" })
-
-    -- align cursors: all to same column
-    map(action, "-|", function()
-        mc.action(function(ctx)
-            local maincol = vim.fn.charcol(".")
-            ctx:forEachCursor(function(cursor)
-                if not cursor:isMainCursor() then
-                    cursor:feedkeys(maincol .. "|")
-                end
-            end)
-        end)
-    end, { desc = "Cursor: Align column" })
 
     -- really useful with syntactically aware textobjects:
     -- `-wif` puts a cursor on every match in a function
@@ -174,8 +161,8 @@ function M.config()
     end, { desc = "Cursor: Select references" })
 
     map("n", "-s", function()
-        require("leap").leap {
-            target_windows = { 0 },
+        require("leap.main").leap {
+            windows = { vim.api.nvim_get_current_win() },
             action = function(args)
                 mc.action(function(ctx)
                     ctx:addCursor():setPos(args.pos)
@@ -183,6 +170,9 @@ function M.config()
             end
         }
     end, { desc = "Cursor: New for leap" })
+
+    map("n", "-<cr>", mc.toggleCursor, { desc = "Cursor: Add" })
+    map("n", "-<space>", mc.enableCursors, { desc = "Cursor: Enable" })
     -- }}}
 
     -- Visual Selections {{{
@@ -225,7 +215,7 @@ function M.config()
     map("x", "A", mc.appendVisual)
 
     mc.addKeymapLayer(function(set)
-        set("n", "-i", function()
+        set("n", "-#", function()
             mc.action(function(ctx)
                 ctx:forEachCursor(function(cursor, i)
                     cursor:feedkeys(("i%d\x1b"):format(i), {

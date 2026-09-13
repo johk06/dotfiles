@@ -27,7 +27,7 @@ M.config = function()
     -- o_s is taken by surround, this is a surprisingly amazing map
     map("o", "<Space>", "<Plug>(leap-next-to)")
 
-    --[[ Leap Remote
+    --[[ Leap Visits
         Much more flexible than the classic remap for every textobject,
         this avoids enumerating all textobjects here.
         No map for visual mode, since r is useful there
@@ -37,8 +37,8 @@ M.config = function()
         - Yanking/deleting a region and pasting it at the cursor
         - Quick changes in other regions required by edits at the cursor
         - Fold text using zf, without needing to go near it ]]
-    local remote = require("leap.remote")
-    map("o", "r", remote.action)
+    local visit = require("leap.visit")
+    map("o", "r", visit.action)
 
     --[[ [u]sing, this primarily allows for edits to regions that are not visible
         this is usually *not* a replacement for :s
@@ -46,8 +46,11 @@ M.config = function()
         (why did you not just move normally...).
         Then, there's <C-g> and <C-t> to move forward and back
         TODO: maybe there's more things that could use the u prefix? ]]
-    map("o", "u/", function() remote.action { jumper = "/" } end)
-    map("o", "u?", function() remote.action { jumper = "?" } end)
+    map("o", "u/", function() visit.action { jumper = "/" } end)
+    map("o", "u?", function() visit.action { jumper = "?" } end)
+
+    -- anchor the cursor at the current position, return to it after the next command
+    map(utils.mode_action, "<M-s>", function() visit.action { jumper = false } end)
 
     -- HACK: override colors only after it has been setup
     vim.api.nvim_create_autocmd("User", {
