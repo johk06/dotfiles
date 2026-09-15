@@ -46,7 +46,8 @@
     {"keys": "t", "action": "Theme"},
     {"keys": "a", "action": "Animation"},
     {"keys": "wr", "action": "Wallpaper"},
-    {"keys": "p", "action": "Clear Pass"}
+    {"keys": "p", "action": "Clear Pass"},
+    {"keys": "s", "action": "Screen"}
 ],
 "clipboard": [
     {"keys": "M-*", "action": "Sel-", "mod": true},

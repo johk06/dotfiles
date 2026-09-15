@@ -64,11 +64,10 @@ exec gnome-keyring-daemon
 exec /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
 
 # Media
-exec mpd && mpd-mpris # mpd exits when it daemonizes
 exec playerctld
 
-exec killall kcd
-exec sleep 1 && kcd daemon
+exec start-maybe kcd daemon && $sc/kcd-notify
+exec start-maybe mpd && mpd-mpris
 exec sleep 1 && $sc/kcd-notify # notify me when a file is downloading
 exec swayidle -w
 exec nm-applet

@@ -42,6 +42,8 @@ mode "config" {
     bindsym A exec swaymsg animation_duration_ms "$(wayinput -n -l -1 -t "Animation Duration")"; mode "default"
 
     bindsym P exec $sc/reload-passwords; mode "default"
+
+    bindsym S output $otherS toggle; mode "default"
 }
 
 bindsym $mod+C mode "config"

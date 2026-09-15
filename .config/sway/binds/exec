@@ -50,6 +50,7 @@ bindsym $mod+Minus exec killall rofi || ~/.config/rofi/applets/pass/run.sh
 
 # Show overview popup
 bindsym $mod+Comma exec $eww/bin/popup.sh ws-overview-win ws-overview-reveal
+bindsym $mod+Shift+Comma exec $eww/bin/popup.sh settings-panel settings-panel-open
 
 # Like a Vim leader key
 mode "exec" {
