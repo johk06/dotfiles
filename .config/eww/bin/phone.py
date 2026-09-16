@@ -11,7 +11,7 @@ EVMAP = {
     "battery.update": "battery",
     "battery.threshold": "battery",
     "mpris.update": "media",
-    "sftp.mount": "sftp"
+    "sftp.mount": "sftp",
 }
 
 state = {}
@@ -23,7 +23,9 @@ proc = subprocess.Popen(
 for line in proc.stdout:
     obj = json.loads(line)
     ev = obj["type"]
-    if ev in ("device.removed", "device.disconnected"):
+    if ev == "state.snapshot":
+        state = {dev["id"]: dev for dev in obj["payload"]["devices"]}
+    elif ev in ("device.removed", "device.disconnected"):
         state[id] = None
     else:
         id = obj["deviceId"]
