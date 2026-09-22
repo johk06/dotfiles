@@ -60,6 +60,15 @@ M.set_region = function(mode, region, replacement)
     end
 end
 
+M.linewise_region = function(region, mode)
+    local endline = region[3]
+    return region[1] - 1,
+        region[2],
+        endline - 1,
+        mode == "line" and #vim.api.nvim_buf_get_lines(0, endline - 1, endline, false)[1] or
+        region[4]
+end
+
 ---@alias config.op.extra {saved: table, repeated: boolean, args: table, hijacked_count: integer}
 ---@alias config.op.operator_func fun(mode: "char"|"line", region: Range4, extra: config.op.extra)
 

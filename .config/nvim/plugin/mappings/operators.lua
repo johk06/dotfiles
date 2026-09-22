@@ -163,11 +163,16 @@ end)
 
 --[[ Transposing {{{
  Swap two regions based on three motions
+ - select the from
+ - move the cursor
+ - select the to
 ]]
+local hlns = api.nvim_create_namespace("config.exchange")
 local range = vim.treesitter._range
 local last_transpose
 local transpose_range_1
 local next_transpose_phase
+
 local transpose_phase_2 = operators.make_operator("jhk-transpose-2", function(mode, region)
     local r1 = transpose_range_1
     local r2 = region
@@ -194,6 +199,7 @@ local transpose_phase_2 = operators.make_operator("jhk-transpose-2", function(mo
     last_transpose = nil
     transpose_range_1 = nil
     next_transpose_phase = nil
+    api.nvim_buf_clear_namespace(0, hlns, 0, -1)
 end, {}, false)
 
 local transpose_phase_1 = operators.make_operator("jhk-transpose-1", function(mode, region)
@@ -205,6 +211,7 @@ local transpose_phase_1 = operators.make_operator("jhk-transpose-1", function(mo
         api.nvim_feedkeys(next_step, "")
         api.nvim_feedkeys(transpose_phase_2() .. next_transpose_phase[2], "")
     end
+     vim.hl.range(0, hlns, "Visual", { region[1] - 1, region[2] }, { region[3] - 1, region[4] + 1 })
 end, {}, false)
 
 local transpose_by_motion = function(keys, left, tfer, right)

@@ -10,6 +10,8 @@
 ] @punctuation.delimiter
   (#set! priority 200))
 
+; ("function" @keyword.function (#set! @keyword.function conceal "λ"))
+;
 ; NOTE: maybe I want this at some point
 ; highlight require calls like module imports
 ; (function_call

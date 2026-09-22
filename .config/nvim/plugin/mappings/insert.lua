@@ -10,7 +10,6 @@ local api = vim.api
 local fn = vim.fn
 local utils = require("config.utils")
 local map = utils.map
-local abbrev = utils.abbrev
 -- }}}
 
 --[[ Why would I want to do smth so un-vimmy?
