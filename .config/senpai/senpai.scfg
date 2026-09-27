@@ -1,0 +1,27 @@
+# NOTE: this program has a bad name; but it still works well
+
+# home
+# address "irc+insecure://10.0.0.49"
+# username "jhk"
+# nickname "jhk"
+# password-cmd pass "social/irc/bouncer"
+
+address "chat.sr.ht"
+nickname "johhk"
+username "johhk"
+password-cmd pass-get "social/irc/bouncer" sourcehut-token
+
+# uses harper ls
+spell-check true
+colors {
+    prompt 15
+    status 15
+    nicks base
+    nicks self teal
+}
+
+pane-widths {
+    nicknames 8
+    channels 12
+    members 12
+}
