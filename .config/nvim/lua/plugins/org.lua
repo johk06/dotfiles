@@ -194,7 +194,7 @@ opts.mappings.org = {
 local custom_opts = {
     language = function(file, value, buf)
         if type(value) == "string" then
-            if value:match("%s*%-%s*") then
+            if value:match("%s*-%s*") then
                 vim.bo[buf].spelllang = ""
             else
                 vim.bo[buf].spelllang = value:gsub("%s*,", ",")
