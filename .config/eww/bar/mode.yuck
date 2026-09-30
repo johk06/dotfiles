@@ -66,6 +66,7 @@
     {"keys": "m", "action": "Mail"},
     {"keys": "c", "action": "Calculator"},
     {"keys": "e", "action": "Editor"},
+    {"keys": "i", "action": "IRC"},
     {"keys": "l", "action": "Listen"}
 ],
 "insert": [

@@ -14,16 +14,16 @@ mpc idleloop player | while read -r line; do mpc -f '%title%' queued; done")
 
 (defwidget mpris-title [pl text]
     (box :space-evenly false
-        {pl.loop == "track" ? "( " : (pl.loop == "list" ? "[" : "")}
+        {pl.loop == "track" ? "( " : (pl.loop == "list" ? "[ " : "")}
         (label :limit-width 30 :text text)
         (mpris-mpd-details :pl pl)
-        {pl.loop == "track" ? " )" : (pl.loop == "list" ? "]" : "")}))
+        {pl.loop == "track" ? " )" : (pl.loop == "list" ? " ]" : "")}))
 
 (defwidget mpris-circle [pos]
-    (circular-progress :value pos  :class "bar-circle"
+    (circular-progress :value {pos?:0} :class "bar-circle"
         :start-at 75
         :thickness 2
-        (label :text {round(pos, 0)})))
+        (label :text {round(pos ?: 0, 0)})))
 
 (defwidget mpris-bar-player [pl]
     (eventbox
@@ -37,7 +37,7 @@ Playing in ${pl.player}"
             (box :space-evenly false
                 (mpris-status :pl pl)
                 (mpris-title :text {pl.title?: "No Player"} :pl pl)
-                (mpris-circle :pos {(pl.playing ? ((EWW_TIME - pl.start_time) / pl.length) : pl.last_progress) * 100})))))
+                (mpris-circle :pos {((pl.playing ? ((EWW_TIME - pl.start_time) / pl.length) : pl.last_progress)?:0) * 100})))))
 
 (defwidget mpris-current []
     (revealer :reveal {mpris != []} :transition "slideright"

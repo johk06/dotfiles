@@ -61,6 +61,7 @@ mode "exec" {
     bindsym l exec $sc/exec-with --pid "kitty rmpc" $floating; mode "default"
     bindsym c exec qalculate-gtk; mode "default"
     bindsym e exec $interact $EDITOR; mode "default"
+    bindsym i exec $sc/exec-with --pid "kitty senpai" $floating; mode "default"
 }
 
 bindsym $mod+Backslash mode "exec"

@@ -3,7 +3,7 @@
 (defwidget status-phone-media [dev]
     (box :space-evenly false
         :style "margin-left: 0.4em;"
-        (button :visible {dev.media != "null"} 
+        (button :visible {dev.media != "null" && dev.media.player != ""}
             :class "button ${dev.media.isPlaying ? "mpris-playing" : "mpris-paused"} slim"
             :tooltip "Playing ${dev.media.artist} - ${dev.media.title}
 Playing in ${dev.media.player}"

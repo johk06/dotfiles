@@ -8,4 +8,4 @@
     (box :space-evenly false :visible {mode.change == "default"}
         (label :limit-width 40
             :class "text-button ${private-window-ids[sway.active?.app_id?:""] == true ? "password" : ""}"
-            :text {sway.active == "null" ? "(Empty)" : sway.active.name})))
+            :text "${sway.active == "null" ? "(Empty)" : sway.active.name}")))

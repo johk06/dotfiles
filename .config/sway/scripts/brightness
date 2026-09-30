@@ -10,7 +10,7 @@ get)
     if has_internal; then
         brightnessctl -P get
     else
-        ddcutil -d 1 getvcp 10 --lazy-sleep --sleep-multiplier 0.1 -t | cut -d" " -f4 | grep -v "Retrying"
+        ddcutil -d 1 getvcp 10 | tr ':,' '\n' | awk -F" " '$1 == "current" { print $4 }'
     fi
     ;;
 set)
@@ -31,8 +31,9 @@ set)
         eww update brightness="$new"
         "$XDG_CONFIG_HOME/eww/bin/center_popup.sh" bright 2 &
         for ((d = 1; d <= $(swaymsg -t get_outputs | jq 'length'); d++)); do
-            ddcutil setvcp 10 -d $d $new >/dev/null
+            ddcutil setvcp 10 -d $d $new >/dev/null &
         done
+        wait
     fi
     ;;
 rawset)
@@ -41,9 +42,10 @@ rawset)
         brightnessctl set $new%
     else
         for ((d = 1; d <= $(swaymsg -t get_outputs | jq 'length'); d++)); do
-            ddcutil setvcp 10 -d $d $new >/dev/null 2>&1
+            ddcutil setvcp 10 -d $d $new >/dev/null 2>&1 &
         done
     fi
+    wait
     eww update brightness="$new"
     ;;
 esac

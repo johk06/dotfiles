@@ -1,5 +1,5 @@
-(deflisten perf-net "./bin/netspeed.py")
-(deflisten perf-gpu "./bin/gpu.sh")
+(deflisten perf-net :initial '{}' "./bin/netspeed.py")
+(deflisten perf-gpu :initial '{}' "./bin/gpu.sh")
 (defpoll perf-pcount :run-while perf-revealed :interval "4s" "LIBPROC_HIDE_KERNEL=1 pgrep --count .")
 
 (defvar gpu-sensor "AMDGPU_JUNCTION")
@@ -27,7 +27,7 @@
             :min {min?:0}
             :max {max?:100}
             :active false
-            :value {value}
+            :value {value?:0}
             :class "perf-scale-${class?: (temp > 70 ? "critical"
                 : (temp > 60 ? "hot"
                 : (temp > 50 ? "warm"
@@ -66,7 +66,7 @@
     (box :orientation "v" :hexpand true :class "section" :space-evenly false
         (label :class "text" :text {title})
         (graph :vexpand true
-            :value {value}
+            :value {value?:0}
             :line-style "round"
             :class "perf-graph ${class}"
             :thickness 2 :time-range "45s"
