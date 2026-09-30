@@ -49,5 +49,5 @@ set)
 esac
 
 for hook in "$DIR"/hooks/*; do
-    "$hook" "$1"
+    "$hook" "$1" &
 done

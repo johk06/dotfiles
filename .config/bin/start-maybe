@@ -1,0 +1,5 @@
+#!/bin/sh
+
+pkill -xf "$*"
+sleep 1
+exec "$@"
