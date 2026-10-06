@@ -101,6 +101,9 @@ local typst_symbol_names = {
 
     -- sets
     ["in"]            = "∈",
+    ["in.not"]        = "∉",
+    ["eq.triple"]     = "≡",
+
     subset            = "⊂",
     ["subset.eq"]     = "⊆",
     inter             = "∩",
@@ -118,6 +121,7 @@ local typst_symbol_names = {
     ["arrow.b"]       = "↓",
 
     times             = "×",
+    ["times.o"]       = "⊗",
     sqrt              = "√",
     slash             = "/",
     dagger            = "†",
@@ -133,6 +137,7 @@ local typst_symbol_names = {
     exists            = "∃",
     forall            = "∀",
     infinity          = "∞",
+    oo                = "∞",
     hbar              = "ℏ"
 }
 
@@ -142,6 +147,7 @@ local typst_brace_names = {
     -- not a standard typst function, but I often use physica
     iprod = { "⟨", "⟩" },
     -- ditto
+    norm = { "∥", "∥" },
     Set = { "{", "}" }
 }
 
