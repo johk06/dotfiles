@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+# Usage: colpipe cmd1 cmd2 ... cmdn
+# Run stdin through each command and columnate the results
+# col[umnate] pipe[line]
+
+FILE="$(mktemp)"
+DIR="$(mktemp -d)"
+trap 'rm -f "$FILE"; rm -rf "$DIR"' EXIT
+
+cat >"$FILE"
+cols=("$FILE")
+i=0
+for cmd in "$@"; do
+    out="$DIR/$i"
+    sh -c "$cmd" <"$FILE" >"$out" &
+    cols+=("$out")
+    ((i++))
+done
+wait
+
+paste -d $'\x1f' "${cols[@]}" | column -L -ts$'\x1f'
