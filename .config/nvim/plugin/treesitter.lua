@@ -23,6 +23,8 @@ local typst_symbol_names = {
     ["beta.alt"]      = "ϐ",
     Gamma             = "Γ",
     gamma             = "γ",
+    Digamma           = "Ϝ",
+    digamma           = "ϝ",
     Delta             = "Δ",
     delta             = "δ",
     Epsilon           = "Ε",
@@ -78,13 +80,16 @@ local typst_symbol_names = {
 
     -- other letters
     CC                = "ℂ",
+    EE                = "𝔼",
+    FF                = "𝔽",
+    II                = "𝕀",
+    Im                = "ℑ",
+    KK                = "𝕂",
     NN                = "ℕ",
     QQ                = "ℚ",
     RR                = "ℝ",
-    ZZ                = "ℤ",
-    II                = "𝕀",
-    Im                = "ℑ",
     Re                = "ℜ",
+    ZZ                = "ℤ",
 
     -- attachable operations
     sum               = "∑",
@@ -103,6 +108,7 @@ local typst_symbol_names = {
     ["in"]            = "∈",
     ["in.not"]        = "∉",
     ["eq.triple"]     = "≡",
+    ["eq.est"]        = "≙",
 
     subset            = "⊂",
     ["subset.eq"]     = "⊆",
@@ -125,6 +131,8 @@ local typst_symbol_names = {
     sqrt              = "√",
     slash             = "/",
     dagger            = "†",
+    bot               = "⊥",
+    top               = "⊤",
 
     ["plus.minus"]    = "±",
     approx            = "≈",
