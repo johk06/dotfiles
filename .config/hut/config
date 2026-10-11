@@ -1,0 +1,5 @@
+# vim: ft=scfg
+instance "sr.ht" {
+	origin "sr.ht"
+	access-token-cmd pass-get "git/sourcehut" token
+}
