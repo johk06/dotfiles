@@ -31,7 +31,8 @@ mode "config" {
 
     # Wallpaper, r to randomize
     bindsym W exec ~/.config/rofi/applets/wallpapers/run.sh; mode "default"
-    bindsym R exec $sc/shuffle-wallpaper
+    bindsym Shift+R exec $sc/shuffle-wallpaper
+    bindsym R exec $sc/shuffle-wallpaper rarely-used
 
     bindsym Plus opacity plus 0.05
     bindsym Minus opacity minus 0.05

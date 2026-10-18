@@ -1,3 +1,11 @@
 #!/bin/sh
 
-wallpaper both "$(find ~/.config/background/img -type f -print0 | shuf -z -n 1)"
+WALLS="$HOME/.config/background/img"
+if [ "$1" = "rarely-used" ]; then
+    find "$WALLS" -type f -printf '%A@ %p\0' | sort -z -n | head -z -n 20 | cut -z -d' ' -f2-
+else
+    find "$WALLS" -type f -print0
+fi | shuf -z -n 1 | {
+    read -r wall
+    wallpaper both "$wall"
+}
