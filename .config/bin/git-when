@@ -3,8 +3,16 @@
 # When did changes happen?
 # Show amount of commits per month, sorted by month, most recent first
 
-git log --format='%ad' --date=format:'%b %Y' "$@" |
+FORMAT="%b %Y"
+SORT="-k 3nr -k 2Mr"
+if [ "$1" = "-d" ] || [ "$1" = "--day" ]; then
+    FORMAT="%d %b %Y"
+    SORT="-k4nr -k 3Mr -k 2nr"
+    shift
+fi
+
+git log --format='%ad' --date=format:"$FORMAT" "$@" |
     sort |
     uniq -c |
     # 3:year 2:month, both reverse
-    sort -k 3nr -k 2Mr
+    sort $SORT
