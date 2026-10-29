@@ -9,6 +9,10 @@ if [ "$1" = "-d" ] || [ "$1" = "--day" ]; then
     FORMAT="%d %b %Y"
     SORT="-k4nr -k 3Mr -k 2nr"
     shift
+elif [ "$1" = -y ]|| [ "$1" = "--year" ]; then
+    FORMAT="%Y"
+    SORT="-k 2nr"
+    shift
 fi
 
 git log --format='%ad' --date=format:"$FORMAT" "$@" |
